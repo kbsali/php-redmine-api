@@ -92,21 +92,8 @@ class Client {
     public function listUsers() {
         $arr = $this->getUsers();
         $ret = array();
-        foreach($arr as $e) {
-            $ret[(string)$e->login] = (int)$e->id;
-        }
-        return $ret;
-    }
-
-    /**
-     * Returns an array of trackers with name/id pairs
-     * @return array
-     */
-    public function listTrackers() {
-        $arr = $this->getTrackers();
-        $ret = array();
-        foreach($arr as $e) {
-            $ret[(string)$e->name] = (int)$e->id;
+        foreach($arr['users'] as $e) {
+            $ret[$e['login']] = (int)$e['id'];
         }
         return $ret;
     }
@@ -118,8 +105,21 @@ class Client {
     public function listStatuses() {
         $arr = $this->getStatuses();
         $ret = array();
-        foreach($arr as $e) {
-            $ret[(string)$e->name] = (int)$e->id;
+        foreach($arr['issue_statuses'] as $e) {
+            $ret[$e['name']] = (int)$e['id'];
+        }
+        return $ret;
+    }
+
+    /**
+     * Returns an array of trackers with name/id pairs
+     * @return array
+     */
+    public function listTrackers() {
+        $arr = $this->getTrackers();
+        $ret = array();
+        foreach($arr['trackers'] as $e) {
+            $ret[$e['name']] = (int)$e['id'];
         }
         return $ret;
     }
@@ -131,8 +131,8 @@ class Client {
     public function listProjects() {
         $arr = $this->getProjects();
         $ret = array();
-        foreach($arr as $e) {
-            $ret[(string)$e->name] = (int)$e->id;
+        foreach($arr['projects'] as $e) {
+            $ret[$e['name']] = (int)$e['id'];
         }
         return $ret;
     }
@@ -144,8 +144,8 @@ class Client {
     public function listIssueCategories($project) {
         $arr = $this->getIssueCategories($project);
         $ret = array();
-        foreach($arr as $e) {
-            $ret[(string)$e->name] = (int)$e->id;
+        foreach($arr['issue_categories'] as $e) {
+            $ret[$e['name']] = (int)$e['id'];
         }
         return $ret;
     }
@@ -227,102 +227,53 @@ class Client {
         return $this->categories[(string)$category];
     }
 
-
     /**
-     * @param mixed $restUrl
-     * @param string $method. (default: 'GET')
-     * @param string $data. (default: "")
-     * @return false|SimpleXMLElement
+     * Gets a json $url and tries to decode it
+     * @param  string $url
+     * @return array
      */
-    private function runRequest($restUrl, $method = 'GET', $data = '') {
-        $method = strtolower($method);
-        $this->curl = curl_init();
-
-        // Authentication
-        if(isset($this->apikey)) {
-            curl_setopt($this->curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
-            curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        }
-        curl_setopt($this->curl, CURLOPT_URL, $this->url.$restUrl);
-        curl_setopt($this->curl, CURLOPT_PORT , 80);
-        curl_setopt($this->curl, CURLOPT_VERBOSE, 0);
-        curl_setopt($this->curl, CURLOPT_HEADER, 0);
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
-            "Content-Type: text/xml",
-            "Content-length: ".strlen($data)
-        ));
-
-        // Request
-        switch ($method) {
-            case 'post':
-                curl_setopt($this->curl, CURLOPT_POST, 1);
-                if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
-                break;
-            case 'put':
-                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-                if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
-                break;
-            case 'delete':
-                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
-            default: // get
-                break;
-        }
-        // Run the request
-        try {
-            $response = curl_exec($this->curl);
-            if(curl_errno($this->curl)) {
-                curl_close($this->curl);
-                return false;
-            }
-        } catch (\Exception $e) {
+    public function get($url) {
+        if(false === $json = $this->runRequest($url, 'GET')) {
             return false;
         }
-        if($response) {
-            if(substr($response, 0, 1) == '<') {
-                return new \SimpleXMLElement($response);
-            }
-            return false;
-        }
-        return true;
+        return json_decode($json, true);
     }
 
     /**
-     * @return false|SimpleXMLElement
+     * @return false|array
      */
     public function getUsers() {
-        return $this->runRequest('/users.xml', 'GET');
+        return $this->get('/users.json');
     }
 
     /**
-     * @return false|SimpleXMLElement
+     * @return false|array
      */
     public function getStatuses() {
-        return $this->runRequest('/issue_statuses.xml', 'GET');
+        return $this->get('/issue_statuses.json');
     }
 
     /**
-     * @return false|SimpleXMLElement
+     * @return false|array
      */
     public function getTrackers() {
-        return $this->runRequest('/trackers.xml', 'GET');
+        return $this->get('/trackers.json');
     }
 
     /**
-     * @return false|SimpleXMLElement
+     * @return false|array
      */
     public function getProjects() {
-        return $this->runRequest('/projects.xml', 'GET');
+        return $this->get('/projects.json');
     }
 
     /**
-     * @return false|SimpleXMLElement
+     * @return false|array
      */
     public function getIssues() {
         // @todo implement filters!
         // $filters = array('project_id', 'tracker_id', 'assigned_to_id', 'status_id', 'query_id', 'offset', 'limit', 'created_on'); // cf_*
-        return $this->runRequest('/issues.xml', 'GET');
+        return $this->get('/issues.json');
     }
 
     /**
@@ -330,7 +281,7 @@ class Client {
      * @return false|SimpleXMLElement
      */
     public function getIssueCategories($project) {
-        return $this->runRequest('/projects/'.$project.'/issue_categories.xml', 'GET');
+        return $this->get('/projects/'.$project.'/issue_categories.json');
     }
 
     public function createIssue(array $params = array()) {
@@ -465,5 +416,65 @@ class Client {
             $xml->addChild('notes', htmlspecialchars($params['notes']));
         }
         return $this->runRequest('/issues/'.$issueId.'.xml', 'PUT', $xml->asXML() );
+    }
+
+    /**
+     * @param mixed $restUrl
+     * @param string $method. (default: 'GET')
+     * @param string $data. (default: "")
+     * @return false|SimpleXMLElement
+     */
+    private function runRequest($restUrl, $method = 'GET', $data = '') {
+        $method = strtolower($method);
+        $this->curl = curl_init();
+
+        // Authentication
+        if(isset($this->apikey)) {
+            curl_setopt($this->curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
+            curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        }
+        curl_setopt($this->curl, CURLOPT_URL, $this->url.$restUrl);
+        curl_setopt($this->curl, CURLOPT_PORT , 80);
+        curl_setopt($this->curl, CURLOPT_VERBOSE, 0);
+        curl_setopt($this->curl, CURLOPT_HEADER, 0);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
+            "Content-Type: text/xml",
+            "Content-length: ".strlen($data)
+        ));
+
+        // Request
+        switch ($method) {
+            case 'post':
+                curl_setopt($this->curl, CURLOPT_POST, 1);
+                if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
+                break;
+            case 'put':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
+                break;
+            case 'delete':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                break;
+            default: // get
+                break;
+        }
+        // Run the request
+        try {
+            $response = curl_exec($this->curl);
+            if(curl_errno($this->curl)) {
+                curl_close($this->curl);
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+        if($response) {
+            if(substr($response, 0, 1) == '<') {
+                return new \SimpleXMLElement($response);
+            }
+            return $response;
+        }
+        return true;
     }
 }
