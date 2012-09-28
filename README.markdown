@@ -26,7 +26,7 @@ Then create a composer.json file in the root of your project:
 ```yaml
 {
     "require": {
-        "knplabs/github-api": "*"
+        "kbsali/redmine-api": "*"
     },
     "minimum-stability": "dev"
 }
@@ -50,9 +50,12 @@ $apikey  = '1234567890xxxxxx'; // generated in redmine : http://redmine.example.
 $project = 'theProject'; // name of the project you would to interact with (optional)
 
 $client = new Redmine\Client($rmUrl, $rmApikey);
-$client->init($project);
 
-var_dump($client);die;
+print_r($rmClient->getUsers());
+print_r($rmClient->listUsers());
+
+$client->init($project);
+var_dump($client);
 ```
 ## Documentation
 
