@@ -2,6 +2,16 @@
 
 namespace Redmine;
 
+/**
+ * Simple PHP Redmine client
+ * based on the original class publish Thomas Spycher : http://tspycher.com/2011/03/using-the-redmine-api-with-php/
+ *
+ * Eventually it should look like the brillant php-github-api by Ornicar! :)
+ *
+ * @author Kevin Saliou <kevin at saliou dot name>
+ *
+ * Website: http://github.com/kbsali/php-redmine-api
+ */
 class Client {
 
     const PRIO_LOW       = 1;
@@ -59,123 +69,162 @@ class Client {
         $this->apikey = $apikey;
     }
 
+    /**
+     * Loads users, trackers, statuses, projects
+     * and issue categories if $project is provided
+     * @param  string $project name of the project
+     */
     public function init($project = null) {
-        $this->listUsers();
-        $this->listTrackers();
-        $this->listStatuses();
-        $this->listProjects();
+        $this->users = $this->listUsers();
+        $this->trackers = $this->listTrackers();
+        $this->statuses = $this->listStatuses();
+        $this->projects = $this->listProjects();
         if (null !== $project) {
-            $this->listIssueCategories($project);
+            $this->categories = $this->listIssueCategories($project);
         }
     }
 
 
-
+    /**
+     * Returns an array of users with login/id pairs
+     * @return array
+     */
     public function listUsers() {
         $arr = $this->getUsers();
+        $ret = array();
         foreach($arr as $e) {
-            $this->users[(string)$e->login] = (int)$e->id;
+            $ret[(string)$e->login] = (int)$e->id;
         }
+        return $ret;
     }
 
+    /**
+     * Returns an array of trackers with name/id pairs
+     * @return array
+     */
     public function listTrackers() {
         $arr = $this->getTrackers();
+        $ret = array();
         foreach($arr as $e) {
-            $this->trackers[(string)$e->name] = (int)$e->id;
+            $ret[(string)$e->name] = (int)$e->id;
         }
+        return $ret;
     }
 
+    /**
+     * Returns an array of statuses with name/id pairs
+     * @return array
+     */
     public function listStatuses() {
         $arr = $this->getStatuses();
+        $ret = array();
         foreach($arr as $e) {
-            $this->statuses[(string)$e->name] = (int)$e->id;
+            $ret[(string)$e->name] = (int)$e->id;
         }
+        return $ret;
     }
 
+    /**
+     * Returns an array of projects with name/id pairs
+     * @return array
+     */
     public function listProjects() {
         $arr = $this->getProjects();
+        $ret = array();
         foreach($arr as $e) {
-            $this->projects[(string)$e->name] = (int)$e->id;
+            $ret[(string)$e->name] = (int)$e->id;
         }
+        return $ret;
     }
 
+    /**
+     * Returns an array of categories with name/id pairs
+     * @return array
+     */
     public function listIssueCategories($project) {
         $arr = $this->getIssueCategories($project);
+        $ret = array();
         foreach($arr as $e) {
-            $this->categories[(string)$e->name] = (int)$e->id;
+            $ret[(string)$e->name] = (int)$e->id;
         }
+        return $ret;
     }
 
 
 
     /**
+     * Returns the id of a project given its name
      * @param string $project
-     * @return false|string
+     * @return false|int
      */
     public function getProjectId($project) {
         if(!is_array($this->projects) || 0 === count($this->projects)) {
-            $this->listProjects();
+            $this->projects = $this->listProjects();
         }
-        if(isset($this->projects[$project])) {
-            return $this->projects[(string)$project];
+        if(!isset($this->projects[$project])) {
+            return false;
         }
-        return false;
+        return $this->projects[(string)$project];
     }
 
     /**
+     * Returns the id of a user given its username
      * @param string $username
-     * @return false|string
+     * @return false|int
      */
     public function getUserId($username) {
         if(!is_array($this->users) || 0 === count($this->users)) {
-            $this->listUsers();
+            $this->users = $this->listUsers();
         }
-        if(isset($this->users[$username])) {
-            return $this->users[(string)$username];
+        if(!isset($this->users[$username])) {
+            return false;
         }
-        return false;
+        return $this->users[(string)$username];
     }
 
     /**
+     * Returns the id of a status given its name
      * @param string $status
-     * @return false|string
+     * @return int
      */
     public function getStatusId($status) {
         if(!is_array($this->statuses) || 0 === count($this->statuses)) {
-            $this->listStatuses();
+            $this->statuses = $this->listStatuses();
         }
-        if(isset($this->statuses[$status])) {
-            return $this->statuses[(string)$status];
+        if(!isset($this->statuses[$status])) {
+            return 1;
         }
-        return 1;
+        return $this->statuses[(string)$status];
     }
 
     /**
+     * Returns the id of a tracker given its name
      * @param string $tracker
-     * @return false|string
+     * @return int
      */
     public function getTrackerId($tracker) {
         if(!is_array($this->trackers) || 0 === count($this->trackers)) {
-            $this->listTrackers();
+            $this->trackers = $this->listTrackers();
         }
-        if(isset($this->trackers[$tracker])) {
-            return $this->trackers[(string)$tracker];
+        if(!isset($this->trackers[$tracker])) {
+            return 1;
         }
-        return 1;
+        return $this->trackers[(string)$tracker];
     }
 
     /**
+     * Returns the id of a category given its name
      * @param string $category
-     * @return false|string
+     * @return int
      */
     public function getIssueCategoryId($category) {
         if(!is_array($this->categories) || 0 === count($this->categories)) {
             return 1;
         }
-        if(isset($this->categories[$category])) {
-            return $this->categories[(string)$category];
+        if(!isset($this->categories[$category])) {
+            return 1;
         }
-        return 1;
+        return $this->categories[(string)$category];
     }
 
 
@@ -183,7 +232,7 @@ class Client {
      * @param mixed $restUrl
      * @param string $method. (default: 'GET')
      * @param string $data. (default: "")
-     * @return void
+     * @return false|SimpleXMLElement
      */
     private function runRequest($restUrl, $method = 'GET', $data = '') {
         $method = strtolower($method);
@@ -206,16 +255,16 @@ class Client {
 
         // Request
         switch ($method) {
-            case "post":
+            case 'post':
                 curl_setopt($this->curl, CURLOPT_POST, 1);
                 if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
                 break;
-            case "put":
+            case 'put':
                 curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
                 if(isset($data)) {curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);}
                 break;
-            case "delete":
-                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+            case 'delete':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
             default: // get
                 break;
@@ -240,43 +289,48 @@ class Client {
     }
 
     /**
-     * @return void
+     * @return false|SimpleXMLElement
      */
     public function getUsers() {
-        return $this->runRequest('/users.xml', 'GET', '');
+        return $this->runRequest('/users.xml', 'GET');
     }
 
     /**
-     * @return void
+     * @return false|SimpleXMLElement
      */
     public function getStatuses() {
-        return $this->runRequest('/issue_statuses.xml', 'GET', '');
+        return $this->runRequest('/issue_statuses.xml', 'GET');
     }
 
     /**
-     * @return void
+     * @return false|SimpleXMLElement
      */
     public function getTrackers() {
-        return $this->runRequest('/trackers.xml', 'GET', '');
+        return $this->runRequest('/trackers.xml', 'GET');
     }
 
     /**
-     * @return void
+     * @return false|SimpleXMLElement
      */
     public function getProjects() {
-        return $this->runRequest('/projects.xml', 'GET', '');
+        return $this->runRequest('/projects.xml', 'GET');
+    }
+
+    /**
+     * @return false|SimpleXMLElement
+     */
+    public function getIssues() {
+        // @todo implement filters!
+        // $filters = array('project_id', 'tracker_id', 'assigned_to_id', 'status_id', 'query_id', 'offset', 'limit', 'created_on'); // cf_*
+        return $this->runRequest('/issues.xml', 'GET');
     }
 
     /**
      * @param mixed $projectId
-     * @return void
+     * @return false|SimpleXMLElement
      */
-    public function getIssues($projectId) {
-        return $this->runRequest('/issues.xml'.$projectId, 'GET', '');
-    }
-
     public function getIssueCategories($project) {
-        return $this->runRequest('/projects/'.$project.'/issue_categories.xml', 'GET', '');
+        return $this->runRequest('/projects/'.$project.'/issue_categories.xml', 'GET');
     }
 
     public function createIssue(array $params = array()) {
