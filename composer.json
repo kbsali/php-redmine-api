@@ -1,0 +1,27 @@
+{
+    "name": "kbsali/redmine-api",
+    "type": "library",
+    "description": "Redmine API client",
+    "homepage": "https://github.com/kbsali/php-redmine-api",
+    "keywords": ["redmine", "api"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Saliou",
+            "email": "kevin@saliou.name",
+            "homepage": "http://kbsali.github.com"
+        }
+    ],
+    "require": {
+        "php":                ">=5.3.2",
+        "ext-curl":           "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Redmine": "lib/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}
