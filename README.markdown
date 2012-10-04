@@ -7,7 +7,22 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 ## Features
 
 * Follows PSR-0 conventions and coding standard: autoload friendly
-* ...? :)
+* API entry points implementation state :
+ * OK Attachments
+ * *NOK Groups*
+ * OK Issues
+ * OK Issue Categories
+ * *NOK Issue Relations*
+ * OK Issue Statuses
+ * OK News
+ * OK Projects
+ * *NOK Project Memberships*
+ * OK Queries
+ * OK Roles
+ * OK Time Entries
+ * OK Trackers
+ * OK Users
+ * OK Versions
 
 ## Requirements
 
@@ -62,7 +77,7 @@ $client->api('issue')->create(array(
 ));
 ```
 
-see example.php
+see `example.php`
 
 ### Contributors
 

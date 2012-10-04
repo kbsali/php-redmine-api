@@ -27,8 +27,7 @@ $client->api('project')->create(array(
     'identifier' => 'the_identifier',
 ));
 $client->api('project')->update(4, array(
-    'name'       => 'different name',
-    // 'identifier' => 'the_identifier',
+    'name' => 'different name',
 ));
 $client->api('project')->remove(4);
 
@@ -90,3 +89,56 @@ $client->api('issue_category')->update(10, array(
     'name' => 'new category name',
 ));
 $client->api('issue_category')->remove(10);
+
+// ----------------------------
+// Versions
+$client->api('version')->all('test');
+$client->api('version')->listing('test');
+$client->api('version')->show(2);
+$client->api('version')->getIdByName('test', 'v2');
+$client->api('version')->create('test', array(
+    'name' => 'v3432',
+));
+$client->api('version')->update(3, array(
+    'name' => 'v1121',
+));
+$client->api('version')->remove(3);
+
+// ----------------------------
+// Attachments
+$client->api('attachment')->show(1);
+
+// ----------------------------
+// News
+$client->api('news')->all('test');
+$client->api('news')->all();
+
+// ----------------------------
+// Roles
+$client->api('role')->all();
+$client->api('role')->listing();
+
+// ----------------------------
+// Queries
+$client->api('query')->all();
+
+// ----------------------------
+// Time entries
+$client->api('time_entry')->all();
+$client->api('time_entry')->show(1);
+$client->api('time_entry')->create(array(
+    'project_id'    => 3,
+    // 'issue_id'    => 140,
+    // 'spent_on'    => null,
+    'hours'       => 12,
+    'activity_id' => 8,
+    'comments'    => 'blbblblbla!',
+));
+$client->api('time_entry')->update(2, array(
+    'issue_id'    => 140,
+    // 'spent_on'    => null,
+    'hours'       => 8,
+    'activity_id' => 9,
+    'comments'    => 'aaaaa!',
+));
+$client->api('time_entry')->remove(2);

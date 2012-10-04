@@ -43,6 +43,11 @@ class Client
                     $api = new Api\Attachment($this);
                     break;
 
+                // @todo implement!
+                // case 'group':
+                //     $api = new Api\Group($this);
+                //     break;
+
                 case 'issue':
                     $api = new Api\Issue($this);
                     break;
@@ -50,6 +55,11 @@ class Client
                 case 'issue_category':
                     $api = new Api\IssueCategory($this);
                     break;
+
+                // @todo implement!
+                // case 'issue_relation':
+                //     $api = new Api\IssueRelation($this);
+                //     break;
 
                 case 'issue_status':
                     $api = new Api\IssueStatus($this);
@@ -62,6 +72,11 @@ class Client
                 case 'project':
                     $api = new Api\Project($this);
                     break;
+
+                // @todo implement!
+                // case 'project_membershipt':
+                //     $api = new Api\ProjectMembershipt($this);
+                //     break;
 
                 case 'query':
                     $api = new Api\Query($this);
