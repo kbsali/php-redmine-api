@@ -29,10 +29,10 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Get extended information about an issue by its username, repo and number
+     * Get extended information about an issue gitven its id
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON
      *
-     * @param  string $id the issue number
+     * @param  string $id the issue id
      * @return array  information about the issue
      */
     public function show($id)

@@ -107,7 +107,7 @@ class User extends AbstractApi
     }
 
     /**
-     * Update user information's
+     * Update user's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
      * @param  string            $id     the user id

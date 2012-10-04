@@ -105,7 +105,7 @@ class IssueCategory extends AbstractApi
     }
 
     /**
-     * Update issue category information's
+     * Update issue category's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
      * @param  string            $id     the issue category id

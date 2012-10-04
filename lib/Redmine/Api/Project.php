@@ -102,7 +102,7 @@ class Project extends AbstractApi
     }
 
     /**
-     * Update project information's
+     * Update project's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param  string            $id     the project id

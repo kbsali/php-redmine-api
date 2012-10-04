@@ -4,12 +4,7 @@ namespace Redmine;
 
 /**
  * Simple PHP Redmine client
- * based on the original class publish Thomas Spycher : http://tspycher.com/2011/03/using-the-redmine-api-with-php/
- *
- * Eventually it should look like the brillant php-github-api by Ornicar! :)
- *
  * @author Kevin Saliou <kevin at saliou dot name>
- *
  * Website: http://github.com/kbsali/php-redmine-api
  */
 class Client
@@ -36,9 +31,7 @@ class Client
 
     /**
      * @param string $name
-     *
      * @return ApiInterface
-     *
      * @throws \InvalidArgumentException
      */
     public function api($name)
@@ -46,28 +39,52 @@ class Client
         if (!isset($this->apis[$name])) {
             switch ($name) {
 
-                case 'issue_category':
-                    $api = new Api\IssueCategory($this);
-                    break;
-
-                case 'project':
-                    $api = new Api\Project($this);
-                    break;
-
-                case 'issue_status':
-                    $api = new Api\IssueStatus($this);
-                    break;
-
-                case 'tracker':
-                    $api = new Api\Tracker($this);
+                case 'attachment':
+                    $api = new Api\Attachment($this);
                     break;
 
                 case 'issue':
                     $api = new Api\Issue($this);
                     break;
 
+                case 'issue_category':
+                    $api = new Api\IssueCategory($this);
+                    break;
+
+                case 'issue_status':
+                    $api = new Api\IssueStatus($this);
+                    break;
+
+                case 'news':
+                    $api = new Api\News($this);
+                    break;
+
+                case 'project':
+                    $api = new Api\Project($this);
+                    break;
+
+                case 'query':
+                    $api = new Api\Query($this);
+                    break;
+
+                case 'role':
+                    $api = new Api\Role($this);
+                    break;
+
+                case 'time_entry':
+                    $api = new Api\TimeEntry($this);
+                    break;
+
+                case 'tracker':
+                    $api = new Api\Tracker($this);
+                    break;
+
                 case 'user':
                     $api = new Api\User($this);
+                    break;
+
+                case 'version':
+                    $api = new Api\Version($this);
                     break;
 
                 default:
