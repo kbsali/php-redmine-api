@@ -47,7 +47,7 @@ Then create a composer.json file in the root of your project:
 }
 ```
 
-...and install our dependencies using:
+... and install your dependencies using:
 ```bash
 $ php composer.phar install
 ```
@@ -71,7 +71,7 @@ $client->api('user')->listing();
 
 $client->api('issue')->create(array(
     'project_id'  => 'test',
-    'subject'     => 'test api (xml',
+    'subject'     => 'test api (xml)',
     'description' => 'test api',
     'assigned_to' => 'user1',
 ));
@@ -82,4 +82,4 @@ see `example.php`
 ### Contributors
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
-- Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for his the php-github-api library too (i would like to update this library following php-github-api's steps)!
+- Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
