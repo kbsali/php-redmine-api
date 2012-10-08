@@ -19,7 +19,7 @@ class News extends AbstractApi
      */
     public function all($project = null)
     {
-        if(null === $project) {
+        if (null === $project) {
             $this->news = $this->get('/news.json');
         } else {
             $this->news = $this->get('/projects/'.$project.'/news.json');

@@ -30,7 +30,7 @@ class Client
     }
 
     /**
-     * @param string $name
+     * @param  string                    $name
      * @return ApiInterface
      * @throws \InvalidArgumentException
      */
