@@ -41,9 +41,8 @@ Then create a composer.json file in the root of your project:
 ```yaml
 {
     "require": {
-        "kbsali/redmine-api": "*"
-    },
-    "minimum-stability": "dev"
+        "kbsali/redmine-api": "dev-master"
+    }
 }
 ```
 
