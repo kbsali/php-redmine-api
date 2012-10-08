@@ -78,4 +78,4 @@ see `example.php`
 ### Contributors
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
-- Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for his the php-github-api library too (i would like to update this library following php-github-api's steps)!
+- Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
