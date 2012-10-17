@@ -10,6 +10,14 @@ namespace Redmine;
 class Client
 {
     /**
+     * @var array
+     */
+    private static $defaultPorts = array(
+        'http'  => 80,
+        'https' => 443,
+    );
+
+    /**
      * @var string
      */
     private $url;
@@ -163,21 +171,32 @@ class Client
      * @param  string                        $method
      * @param  string                        $data
      * @return false|SimpleXMLElement|string
+     * @throws \Exception                    If anything goes wrong on curl request
      */
     private function runRequest($path, $method = 'GET', $data = '')
     {
+        $tmp = parse_url($this->url.$path);
+
+        if (isset($tmp['port'])) {
+            $port = $tmp['port'];
+        } else {
+            $port = self::$defaultPorts[$tmp['scheme']];
+        }
+
         $curl = curl_init();
         if (isset($this->apikey)) {
             curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
         curl_setopt($curl, CURLOPT_URL, $this->url.$path);
-        curl_setopt($curl, CURLOPT_PORT , 80);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_PORT , $port);
+        if (80 !== $port) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        }
 
-        $tmp = parse_url($path);
         if ('xml' === substr($tmp['path'], -3)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: text/xml',
@@ -196,20 +215,18 @@ class Client
             case 'DELETE':
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
-            default: // get
+            default: // GET
                 break;
         }
-        try {
-            $response = curl_exec($curl);
-            if (curl_errno($curl)) {
-                curl_close($curl);
+        $response = curl_exec($curl);
 
-                return false;
-            }
+        if (curl_errno($curl)) {
+            $e = new \Exception(curl_error($curl), curl_errno($curl));
             curl_close($curl);
-        } catch (\Exception $e) {
-            return false;
+            throw $e;
         }
+        curl_close($curl);
+
         if ($response) {
             if ('<' === substr($response, 0, 1)) {
                 return new \SimpleXMLElement($response);
