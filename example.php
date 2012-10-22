@@ -5,6 +5,16 @@ require_once 'vendor/autoload.php';
 $client = new Redmine\Client('http://redmine.example.com', '1234567890abcdfgh');
 
 // ----------------------------
+// [OPTIONAL] if you want to check
+// the servers' SSL certificate on Curl call
+$client->setCheckSslCertificate(true);
+
+// ----------------------------
+// [OPTIONAL] set the port
+// (it will try to guess it from the url)
+$client->setPort(8080);
+
+// ----------------------------
 // Trackers
 $client->api('tracker')->all();
 $client->api('tracker')->listing();

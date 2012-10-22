@@ -18,6 +18,11 @@ class Client
     );
 
     /**
+     * @var int
+     */
+    private $port;
+
+    /**
      * @var string
      */
     private $url;
@@ -26,6 +31,11 @@ class Client
      * @var string
      */
     private $apikey;
+
+    /**
+     * @var boolean
+     */
+    private $checkSslCertificate = false;
 
     /**
      * @param string $url
@@ -167,6 +177,53 @@ class Client
     }
 
     /**
+     * Turns on/off ssl certificate check
+     * @param boolean $check
+     */
+    public function setCheckSslCertificate($check = false)
+    {
+        $this->checkSslCertificate = $check;
+    }
+
+    /**
+     * Set the port of the connection
+     * @param int $port
+     */
+    public function setPort($port = null)
+    {
+        if (null !== $port) {
+            $this->port = (int) $port;
+        }
+    }
+
+    /**
+     * Returns the port of the current connection,
+     * if not set, it will try to guess the port
+     * from the given $urlPath
+     * @param  string $urlPath the url called
+     * @return int
+     */
+    public function getPort($urlPath = null)
+    {
+        if (null === $urlPath) {
+            return $this->port;
+        }
+        if (null !== $this->port) {
+            return $this->port;
+        }
+        $tmp = parse_url($urlPath);
+
+        if (isset($tmp['port'])) {
+            $this->setPort($tmp['port']);
+
+            return $this->port;
+        }
+        $this->setPort(self::$defaultPorts[$tmp['scheme']]);
+
+        return $this->port;
+    }
+
+    /**
      * @param  string                        $path
      * @param  string                        $method
      * @param  string                        $data
@@ -175,13 +232,7 @@ class Client
      */
     private function runRequest($path, $method = 'GET', $data = '')
     {
-        $tmp = parse_url($this->url.$path);
-
-        if (isset($tmp['port'])) {
-            $port = $tmp['port'];
-        } else {
-            $port = self::$defaultPorts[$tmp['scheme']];
-        }
+        $this->getPort($this->url.$path);
 
         $curl = curl_init();
         if (isset($this->apikey)) {
@@ -192,11 +243,12 @@ class Client
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_PORT , $port);
-        if (80 !== $port) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_PORT , $this->port);
+        if (80 !== $this->port) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
         }
 
+        $tmp = parse_url($this->url.$path);
         if ('xml' === substr($tmp['path'], -3)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: text/xml',

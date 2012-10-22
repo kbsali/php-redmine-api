@@ -74,7 +74,7 @@ $client->api('issue')->create(array(
 
 see `example.php`
 
-### Contributors
+### Thanks!
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
 - Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
