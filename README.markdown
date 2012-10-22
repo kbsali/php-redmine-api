@@ -24,6 +24,18 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
  * OK Users
  * OK Versions
 
+## Todo
+
+* API entry points :
+ * Finish implementing *Groups*
+ * Finish implementing *Issue Relations*
+ * Finish implementing *Project Memberships*
+* Check header's response code (especially for POST/PUT/DELETE requests)
+ * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
+* Maybe use Buzz or Guzzle for handling http connections
+ * https://github.com/kriswallsmith/Buzz
+ * https://github.com/guzzle/guzzle
+
 ## Requirements
 
 * PHP >= 5.3.2 with [cURL](http://php.net/manual/en/book.curl.php) extension,
