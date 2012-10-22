@@ -152,3 +152,18 @@ $client->api('time_entry')->update(2, array(
     'comments'    => 'aaaaa!',
 ));
 $client->api('time_entry')->remove(2);
+
+// ----------------------------
+// Issue relations
+$client->api('issue_relation')->all(16);
+$client->api('issue_relation')->show(2);
+$client->api('issue_relation')->remove(2);
+
+// ----------------------------
+// Group (of members)
+$client->api('group')->all();
+$client->api('group')->listing();
+
+// ----------------------------
+// Project memberships
+$client->api('membership')->all(1);

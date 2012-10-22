@@ -27,11 +27,11 @@ class IssueCategory extends AbstractApi
     }
 
     /**
-     * Returns an array of projects with name/id pairs
+     * Returns an array of categories with name/id pairs
      *
-     * @param string|int $project project id or literal identifier
-     * @param  $forceUpdate to force the update of the projects var
-     * @return array list of projects (id => project name)
+     * @param  string|int $project     project id or literal identifier
+     * @param  boolean    $forceUpdate to force the update of the projects var
+     * @return array      list of projects (id => project name)
      */
     public function listing($project, $forceUpdate = false)
     {

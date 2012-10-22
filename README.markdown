@@ -9,14 +9,14 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Follows PSR-0 conventions and coding standard: autoload friendly
 * API entry points implementation state :
  * OK Attachments
- * *NOK Groups*
+ * *NOK Groups - only very partially implemented*
  * OK Issues
  * OK Issue Categories
- * *NOK Issue Relations*
+ * *NOK Issue Relations - only very partially implemented*
  * OK Issue Statuses
  * OK News
  * OK Projects
- * *NOK Project Memberships*
+ * *NOK Project Memberships - only very partially implemented*
  * OK Queries
  * OK Roles
  * OK Time Entries
