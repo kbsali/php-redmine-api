@@ -15,12 +15,12 @@ class TimeEntry extends AbstractApi
     /**
      * List time entries
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-     *
+     * @param array $params to allow offset/limit to be passed
      * @return array list of time entries found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->timeEntries = $this->get('/time_entries.json');
+        $this->timeEntries = $this->get('/time_entries.json?'.$this->http_build_str($params));
 
         return $this->timeEntries;
     }
