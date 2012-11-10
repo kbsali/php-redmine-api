@@ -28,7 +28,9 @@ $client->api('issue_status')->getIdByName('New');
 // ----------------------------
 // Project
 $client->api('project')->all();
-$client->api('project')->all(10);
+$client->api('project')->all(array(
+    'limit' => 10
+));
 $client->api('project')->listing();
 $client->api('project')->listing();
 $client->api('project')->show(1);
