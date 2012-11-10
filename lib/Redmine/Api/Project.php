@@ -16,11 +16,12 @@ class Project extends AbstractApi
      * List projects
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
+     * @param int $limit limit of projects
      * @return array list of projects found
      */
-    public function all()
+    public function all($limit = 999)
     {
-        $this->projects = $this->get('/projects.json');
+        $this->projects = $this->get('/projects.json?limit=' . $limit);
 
         return $this->projects;
     }
