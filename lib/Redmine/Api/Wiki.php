@@ -32,15 +32,16 @@ class Wiki extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-an-old-version-of-a-wiki-page
      *
      * @param  int|string $project the project name
-     * @param  string $page    the page name
-     * @param  int $version version of the page
-     * @return array  information about the issue
+     * @param  string     $page    the page name
+     * @param  int        $version version of the page
+     * @return array      information about the issue
      */
     public function show($project, $page, $version = null)
     {
         $path = null === $version
             ? '/projects/'.$project.'/wiki/'.$page.'.json'
             : '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json';
+
         return $this->get($path);
     }
 
@@ -49,9 +50,9 @@ class Wiki extends AbstractApi
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  int|string $project the project name
-     * @param  string $page    the page name
-     * @param  array             $params the new issue data
+     * @param  int|string        $project the project name
+     * @param  string            $page    the page name
+     * @param  array             $params  the new issue data
      * @return \SimpleXMLElement
      */
     public function create($project, $page, array $params = array())
@@ -77,7 +78,7 @@ class Wiki extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Deleting-a-wiki-page
      *
      * @param  int|string $project the project name
-     * @param  string $page    the page name
+     * @param  string     $page    the page name
      * @return string
      */
     public function remove($project, $page)

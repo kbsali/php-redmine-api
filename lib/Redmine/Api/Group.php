@@ -80,7 +80,7 @@ class Group extends AbstractApi
      * available $params :
      * - include: a coma separated list of associations to include in the response: users,memberships
      *
-     * @param  int $id the group id
+     * @param  int   $id the group id
      * @return array
      */
     public function show($id, array $params = array())
@@ -104,7 +104,7 @@ class Group extends AbstractApi
      * Adds an existing user to a group
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST-2
      *
-     * @param  int    $id id of the group
+     * @param  int    $id     id of the group
      * @param  int    $userId id of the user
      * @return string
      */
@@ -119,7 +119,7 @@ class Group extends AbstractApi
      * Removes a user from a group
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE-2
      *
-     * @param  int    $id id of the group
+     * @param  int    $id     id of the group
      * @param  int    $userId id of the user
      * @return string
      */

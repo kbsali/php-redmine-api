@@ -15,7 +15,7 @@ class TimeEntry extends AbstractApi
     /**
      * List time entries
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-     * @param array $params to allow offset/limit to be passed
+     * @param  array $params to allow offset/limit to be passed
      * @return array list of time entries found
      */
     public function all(array $params = array())

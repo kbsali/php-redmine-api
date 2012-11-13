@@ -44,8 +44,8 @@ class Issue extends AbstractApi
      * available $params :
      * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
-     * @param  string $id the issue id
-     * @param  array $params extra associated data
+     * @param  string $id     the issue id
+     * @param  array  $params extra associated data
      * @return array  information about the issue
      */
     public function show($id, array $params = array())

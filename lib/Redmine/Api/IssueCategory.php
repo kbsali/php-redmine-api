@@ -134,7 +134,7 @@ class IssueCategory extends AbstractApi
      * available $params :
      * - reassign_to_id : when there are issues assigned to the category you are deleting, this parameter lets you reassign these issues to the category with this id
      *
-     * @param  int    $id id of the category
+     * @param  int    $id     id of the category
      * @param  array  $params extra GET parameters
      * @return string
      */

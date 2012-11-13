@@ -48,7 +48,7 @@ class Role extends AbstractApi
      * Returns the list of permissions for a given role (Redmine v2.2.0)
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET-2
      *
-     * @param  int $id the role id
+     * @param  int   $id the role id
      * @return array
      */
     public function show($id)
