@@ -104,6 +104,6 @@ see `example.php`
 
 ## Contributors
 
-- Kevin Saliou (@kbsali)
-- @wsuff
+- Kevin Saliou 		(@kbsali)
+- William Suffill 	(@wsuff)
 - @marloscarmo
