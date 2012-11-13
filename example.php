@@ -70,6 +70,17 @@ $client->api('issue')->all(array('tracker_id' => 3));
 $client->api('issue')->all(array('tracker_id' => 'closed'));
 $client->api('issue')->all(array('assigned_to_id' => 5));
 $client->api('issue')->all(array('project_id' => 'test'));
+$client->api('issue')->all(array(
+    'offset'         => 100,
+    'limit'          => 100,
+    'sort'           => 'id',
+    'project_id'     => 'test',
+    'tracker_id'     => 2,
+    'status_id'      => 'open',
+    'assigned_to_id' => 1,
+    // 'cf_x'        => ,
+    'query_id'       => 3,
+));
 $client->api('issue')->create(array(
     'project_id'     => 'test',
     'subject'        => 'test api (xml) 3',
@@ -102,6 +113,9 @@ $client->api('issue_category')->update(10, array(
     'name' => 'new category name',
 ));
 $client->api('issue_category')->remove(10);
+$client->api('issue_category')->remove(10, array(
+    'reassign_to_id' => 1
+));
 
 // ----------------------------
 // Versions
@@ -129,6 +143,7 @@ $client->api('news')->all();
 // ----------------------------
 // Roles
 $client->api('role')->all();
+$client->api('role')->show(1);
 $client->api('role')->listing();
 
 // ----------------------------
@@ -157,6 +172,10 @@ $client->api('time_entry')->update(2, array(
 $client->api('time_entry')->remove(2);
 
 // ----------------------------
+// Time entry activities
+$client->api('time_entry_activity')->all();
+
+// ----------------------------
 // Issue relations
 $client->api('issue_relation')->all(16);
 $client->api('issue_relation')->show(2);
@@ -166,7 +185,21 @@ $client->api('issue_relation')->remove(2);
 // Group (of members)
 $client->api('group')->all();
 $client->api('group')->listing();
+$client->api('group')->show(1, array('include' => 'users,memberships'));
+$client->api('group')->remove(1);
+$client->api('group')->addUser(1, 2);
+$client->api('group')->removeUser(1, 2);
 
 // ----------------------------
 // Project memberships
 $client->api('membership')->all(1);
+
+// ----------------------------
+// Issue priorities
+$client->api('issue_priority')->all();
+
+// ----------------------------
+// Wiki
+$client->api('wiki')->all('testProject');
+$client->api('wiki')->show('testProject', 'about');
+$client->api('wiki')->show('testProject', 'about', 23);

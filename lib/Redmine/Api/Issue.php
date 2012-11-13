@@ -19,8 +19,18 @@ class Issue extends AbstractApi
     /**
      * List issues
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+     * available $params :
+     * - offset: skip this number of issues in response (optional)
+     * - limit: number of issues per page (optional)
+     * - sort: column to sort with. Append :desc to invert the order.
+     * - project_id: get issues from the project with the given id, where id is either project id or project identifier
+     * - tracker_id: get issues from the tracker with the given id
+     * - status_id: get issues with the given status id only. Possible values: open, closed, * to get open and closed issues, status id
+     * - assigned_to_id: get issues which are assigned to the given user id
+     * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
+     * - query_id : id of the previously saved query
      *
-     * @param  array $params the additional parameters like project_id, tracker_id...
+     * @param  array $params the additional parameters (cf avaiable $params above)
      * @return array list of issues found
      */
     public function all(array $params = array())
@@ -31,13 +41,16 @@ class Issue extends AbstractApi
     /**
      * Get extended information about an issue gitven its id
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON
+     * available $params :
+     * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
      * @param  string $id the issue id
+     * @param  array $params extra associated data
      * @return array  information about the issue
      */
-    public function show($id)
+    public function show($id, array $params = array())
     {
-        return $this->get('/issues/'.urlencode($id).'.json');
+        return $this->get('/issues/'.urlencode($id).'.json?'.$this->http_build_str($params));
     }
 
     /**

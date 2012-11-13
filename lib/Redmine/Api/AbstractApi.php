@@ -64,7 +64,7 @@ abstract class AbstractApi
         if (!is_array($query)) {
             return null;
         }
-        if ($arg_separator == '') {
+        if ('' === $arg_separator) {
             $arg_separator = ini_get('arg_separator.output');
         }
         $args = array();

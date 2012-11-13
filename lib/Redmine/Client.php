@@ -74,6 +74,10 @@ class Client
                     $api = new Api\IssueCategory($this);
                     break;
 
+                case 'issue_priority':
+                    $api = new Api\IssuePriority($this);
+                    break;
+
                 // @todo finish implementation!
                 case 'issue_relation':
                     $api = new Api\IssueRelation($this);
@@ -106,6 +110,10 @@ class Client
 
                 case 'time_entry':
                     $api = new Api\TimeEntry($this);
+                    break;
+
+                case 'time_entry_activity':
+                    $api = new Api\TimeEntryActivity($this);
                     break;
 
                 case 'tracker':

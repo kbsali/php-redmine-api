@@ -55,4 +55,16 @@ class Membership extends AbstractApi
 
         return $this->post('/projects/'.$project.'/memberships.xml', $xml->asXML());
     }
+
+    /**
+     * Delete a membership
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
+     *
+     * @param  int  $id id of the membership
+     * @return void
+     */
+    public function remove($id)
+    {
+        return $this->delete('/memberships/'.$id.'.xml');
+    }
 }

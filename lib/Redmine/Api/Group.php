@@ -71,4 +71,60 @@ class Group extends AbstractApi
 
         return $this->post('/projects/groups.xml', $xml->asXML());
     }
+
+    // public function update(array $params = array()) {}
+
+    /**
+     * Returns details of a group.
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET-2
+     * available $params :
+     * - include: a coma separated list of associations to include in the response: users,memberships
+     *
+     * @param  int $id the group id
+     * @return array
+     */
+    public function show($id, array $params = array())
+    {
+        return $this->get('/groups/'.urlencode($id).'.json?'.$this->http_build_str($params));
+    }
+
+    /**
+     * Delete a group
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE
+     *
+     * @param  int    $id id of the group
+     * @return string
+     */
+    public function remove($id)
+    {
+        return $this->delete('/groups/'.$id.'.xml');
+    }
+
+    /**
+     * Adds an existing user to a group
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST-2
+     *
+     * @param  int    $id id of the group
+     * @param  int    $userId id of the user
+     * @return string
+     */
+    public function addUser($id, $userId)
+    {
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
+
+        return $this->post('/groups/'.$id.'/user/users.xml', $xml->asXML());
+    }
+
+    /**
+     * Removes a user from a group
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE-2
+     *
+     * @param  int    $id id of the group
+     * @param  int    $userId id of the user
+     * @return string
+     */
+    public function removeUser($id, $userId)
+    {
+        return $this->delete('/groups/'.$id.'/user/'.$userId.'.xml');
+    }
 }

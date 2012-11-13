@@ -69,7 +69,7 @@ class Project extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/projects/'.urlencode($id).'.json?include=trackers,issue_categories');
+        return $this->get('/projects/'.urlencode($id).'.json?include=trackers,issue_categories,attachments,relations');
     }
 
     /**

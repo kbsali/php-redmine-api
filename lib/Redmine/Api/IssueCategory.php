@@ -131,12 +131,15 @@ class IssueCategory extends AbstractApi
     /**
      * Delete an issue category
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#DELETE
+     * available $params :
+     * - reassign_to_id : when there are issues assigned to the category you are deleting, this parameter lets you reassign these issues to the category with this id
      *
      * @param  int    $id id of the category
+     * @param  array  $params extra GET parameters
      * @return string
      */
-    public function remove($id)
+    public function remove($id, array $params = array())
     {
-        return $this->delete('/issue_categories/'.$id.'.xml');
+        return $this->delete('/issue_categories/'.$id.'.xml?'.$this->http_build_str($params));
     }
 }
