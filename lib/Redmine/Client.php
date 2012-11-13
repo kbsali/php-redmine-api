@@ -128,6 +128,10 @@ class Client
                     $api = new Api\Version($this);
                     break;
 
+                case 'wiki':
+                    $api = new Api\Wiki($this);
+                    break;
+
                 default:
                     throw new \InvalidArgumentException();
             }

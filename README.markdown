@@ -9,20 +9,23 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Follows PSR-0 conventions and coding standard: autoload friendly
 * API entry points implementation state :
  * OK Attachments
- * *NOK Groups - only very partially implemented*
+ * *NOK Groups - only partially implemented*
  * OK Issues
  * OK Issue Categories
- * *NOK Issue Relations - only very partially implemented*
+ * OK Issue Priorities
+ * *NOK Issue Relations - only partially implemented*
  * OK Issue Statuses
  * OK News
  * OK Projects
- * *NOK Project Memberships - only very partially implemented*
+ * *NOK Project Memberships - only partially implemented*
  * OK Queries
  * OK Roles
  * OK Time Entries
+ * OK Time Entry Activities
  * OK Trackers
  * OK Users
  * OK Versions
+ * *NOK Wiki - only partially implemented*
 
 ## Todo
 
@@ -35,6 +38,14 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Maybe use Buzz or Guzzle for handling http connections
  * https://github.com/kriswallsmith/Buzz
  * https://github.com/guzzle/guzzle
+
+## Limitations
+
+Redmine is missing some APIs for a full remote management of the data :
+* List of activities : http://www.redmine.org/issues/11464
+* ...
+
+A possible solution to this would be to create an extra APIs implementing the missing entry points. See existing effort in doing so : https://github.com/rschobbert/redmine-miss-api
 
 ## Requirements
 
@@ -90,3 +101,9 @@ see `example.php`
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
 - Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
+
+## Contributors
+
+- Kevin Saliou (@kbsali)
+- @wsuff
+- @marloscarmo
