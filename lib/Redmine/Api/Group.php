@@ -28,8 +28,8 @@ class Group extends AbstractApi
     /**
      * Returns an array of groups with name/id pairs
      *
-     * @param  $forceUpdate to force the update of the groups var
-     * @return array list of groups (id => name)
+     * @param  boolean $forceUpdate to force the update of the groups var
+     * @return array   list of groups (id => name)
      */
     public function listing($forceUpdate = false)
     {

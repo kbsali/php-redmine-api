@@ -28,8 +28,8 @@ class User extends AbstractApi
     /**
      * Returns an array of users with login/id pairs
      *
-     * @param  $forceUpdate to force the update of the users var
-     * @return array list of users (id => username)
+     * @param  boolean $forceUpdate to force the update of the users var
+     * @return array   list of users (id => username)
      */
     public function listing($forceUpdate = false)
     {

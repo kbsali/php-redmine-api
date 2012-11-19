@@ -27,22 +27,23 @@ class Project extends AbstractApi
     }
 
     /**
-     * Returns an array of projects with name/id pairs
+     * Returns an array of projects with name/id pairs (or id/name if $reserse is false)
      *
-     * @param  $forceUpdate to force the update of the projects var
-     * @return array list of projects (id => project name)
+     * @param  boolean $forceUpdate to force the update of the projects var
+     * @param  boolean $reverse     to return an array indexed by name rather than id
+     * @return array   list of projects (id => project name)
      */
-    public function listing($forceUpdate = false)
+    public function listing($forceUpdate = false, $reverse = true)
     {
         if (true === $forceUpdate || empty($this->projects)) {
             $this->all();
         }
         $ret = array();
         foreach ($this->projects['projects'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
+            $ret[$e[(int) 'id']] =  $e['name'];
         }
 
-        return $ret;
+        return $reverse ? array_flip($ret) : $ret;
     }
 
     /**
