@@ -16,13 +16,15 @@ class User extends AbstractApi
      * List users
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
+     * @param  array $params the additional parameters (cf available $params above)
      * @return array list of users found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->users = $this->get('/users.json');
+        $this->users = $this->get('/users.json?'.$this->http_build_str($params));
 
         return $this->users;
+    }
     }
 
     /**
