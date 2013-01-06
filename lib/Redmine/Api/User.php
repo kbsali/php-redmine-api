@@ -25,7 +25,6 @@ class User extends AbstractApi
 
         return $this->users;
     }
-    }
 
     /**
      * Returns an array of users with login/id pairs
