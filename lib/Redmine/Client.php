@@ -38,6 +38,11 @@ class Client
     private $checkSslCertificate = false;
 
     /**
+	 * @var array APIs
+	 */
+	private $apis = array();
+
+    /**
      * @param string $url
      * @param string $apikey
      */
@@ -49,7 +54,7 @@ class Client
 
     /**
      * @param  string                    $name
-     * @return ApiInterface
+     * @return Api\AbstractApi
      * @throws \InvalidArgumentException
      */
     public function api($name)
