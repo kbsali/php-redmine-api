@@ -38,6 +38,11 @@ class Client
     private $checkSslCertificate = false;
 
     /**
+	 * @var array APIs
+	 */
+	private $apis = array();
+
+    /**
      * @param string $url
      * @param string $apikey
      */
