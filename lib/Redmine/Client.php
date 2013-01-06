@@ -49,7 +49,7 @@ class Client
 
     /**
      * @param  string                    $name
-     * @return ApiInterface
+     * @return Api\AbstractApi
      * @throws \InvalidArgumentException
      */
     public function api($name)
