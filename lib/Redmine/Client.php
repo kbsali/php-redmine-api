@@ -272,6 +272,12 @@ class Client
             ));
         }
 
+        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/octet-stream',
+            ));
+        }
+
         switch ($method) {
             case 'POST':
                 curl_setopt($curl, CURLOPT_POST, 1);
