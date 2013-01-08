@@ -271,6 +271,11 @@ class Client
                 'Content-Type: text/xml',
             ));
         }
+        if ('json' === substr($tmp['path'], -4)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+            ));
+        }
 
         if ('/uploads.json' === $path || '/uploads.xml' === $path) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(

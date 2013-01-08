@@ -198,4 +198,18 @@ class Issue extends AbstractApi
 
         return $params;
     }
+
+    /**
+     * Attach a file to an issue issue number. Requires authentication.
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
+     *
+     * @param  string            $id     the issue number
+     * @param  array             $attachment
+     * @return bool|string
+     */
+    public function attach($id, array $attachment)
+    {
+        $request['issue'] = array('id' => $id, 'uploads' => array('upload' => $attachment));
+        return $this->put('/issues/'.$id.'.json', json_encode($request));
+    }
 }
