@@ -99,6 +99,7 @@ $client->api('issue')->update(140, array(
 
 $client->api('issue')->setIssueStatus(140, 'Resolved');
 $client->api('issue')->addNoteToIssue(140, 'some comment');
+$client->api('issue')->remove(140);
 
 // ----------------------------
 // Issue categories

@@ -212,4 +212,14 @@ class Issue extends AbstractApi
         $request['issue'] = array('id' => $id, 'uploads' => array('upload' => $attachment));
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }
+    
+    /**
+     * Remove a issue by issue number
+     *
+     * @param  string            $id     the issue number
+     */
+    public function remove($id)
+    {
+        return $this->delete('/issues/'.$id.'.xml');
+    }
 }
