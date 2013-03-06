@@ -41,7 +41,7 @@ class Version extends AbstractApi
         }
         $ret = array();
         foreach ($this->versions['versions'] as $e) {
-            $ret[$e[(int) 'id']] =  $e['name'];
+            $ret[(int) $e['id']] =  $e['name'];
         }
 
         return $reverse ? array_flip($ret) : $ret;
