@@ -80,6 +80,10 @@ $client->api('issue')->all(array(
     'assigned_to_id' => 1,
     // 'cf_x'        => ,
     'query_id'       => 3,
+    'custom_fields'  => array(
+        'id'    => SOME_CUSTOM_FIELD_ID,
+        'value' => 'some value of this custom field',
+    ),
 ));
 $client->api('issue')->create(array(
     'project_id'     => 'test',
