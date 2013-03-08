@@ -48,6 +48,7 @@ $client->api('project')->remove(4);
 // Users
 $client->api('user')->all();
 $client->api('user')->listing();
+$client->api('user')->getCurrentUser();
 $client->api('user')->getIdByUsername('kbsali');
 $client->api('user')->show(3);
 $client->api('user')->update(3, array(
