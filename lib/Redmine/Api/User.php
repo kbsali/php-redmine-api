@@ -46,6 +46,16 @@ class User extends AbstractApi
     }
 
     /**
+     * Return the current user data
+     *
+     * @return array current user data 
+     */
+    public function getCurrentUser() 
+    {
+        return $this->get('/users/current.json');
+    }
+
+    /**
      * Get a user id given its username
      * @param  string $username
      * @return int

@@ -106,4 +106,4 @@ see `example.php`
 
 - Kevin Saliou 		(@kbsali)
 - William Suffill 	(@wsuff)
-- @marloscarmo
+- Marlos Carmo      (@marloscarmo)
