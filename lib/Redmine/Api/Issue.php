@@ -88,8 +88,19 @@ class Issue extends AbstractApi
         $params = array_filter(array_merge($defaults, $params));
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
+
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k && is_array($v)) {
+                $custom_fields_item = $xml->addChild('custom_fields', '');
+                $custom_fields_item->addAttribute('type', 'array');
+                foreach ($v as $field) {
+                    $item = $custom_fields_item->addChild('custom_field', '');
+                    $item->addAttribute('id', $field['id']);
+                    $item->addChild('value', $field['value']);
+                }
+            } else {
+                $item = $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/issues.xml', $xml->asXML());
@@ -203,20 +214,21 @@ class Issue extends AbstractApi
      * Attach a file to an issue issue number. Requires authentication.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param  string            $id     the issue number
-     * @param  array             $attachment
+     * @param  string      $id         the issue number
+     * @param  array       $attachment
      * @return bool|string
      */
     public function attach($id, array $attachment)
     {
         $request['issue'] = array('id' => $id, 'uploads' => array('upload' => $attachment));
+
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }
-    
+
     /**
      * Remove a issue by issue number
      *
-     * @param  string            $id     the issue number
+     * @param string $id the issue number
      */
     public function remove($id)
     {
