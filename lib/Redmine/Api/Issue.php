@@ -54,6 +54,32 @@ class Issue extends AbstractApi
     }
 
     /**
+     * Build the XML for an issue
+     * @param array             $params for the new/updated issue data
+     * @return \SimpleXMLElement
+     */
+    private function buildIssueXML(array $params = array())
+    {
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
+        
+        foreach ($params as $k => $v) {
+            if ('custom_fields' === $k && is_array($v)) {
+                $custom_fields_item = $xml->addChild('custom_fields', '');
+                $custom_fields_item->addAttribute('type', 'array');
+                foreach ($v as $field) {
+                    $item = $custom_fields_item->addChild('custom_field', '');
+                    $item->addAttribute('id', $field['id']);
+                    $item->addChild('value', $field['value']);
+                }
+            } else {
+                $item = $xml->addChild($k, $v);
+            }
+        }
+
+        return $xml;
+    }
+
+    /**
      * Create a new issue given an array of $params
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
@@ -87,21 +113,7 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
-
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $custom_fields_item = $xml->addChild('custom_fields', '');
-                $custom_fields_item->addAttribute('type', 'array');
-                foreach ($v as $field) {
-                    $item = $custom_fields_item->addChild('custom_field', '');
-                    $item->addAttribute('id', $field['id']);
-                    $item->addChild('value', $field['value']);
-                }
-            } else {
-                $item = $xml->addChild($k, $v);
-            }
-        }
+        $xml = $this->buildIssueXML($params);
 
         return $this->post('/issues.xml', $xml->asXML());
         // $json = json_encode(array('issue' => $params));
@@ -140,10 +152,7 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
+        $xml = $this->buildIssueXML($params);
 
         return $this->put('/issues/'.$id.'.xml', $xml->asXML());
     }
