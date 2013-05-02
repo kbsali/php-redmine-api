@@ -55,20 +55,20 @@ class Issue extends AbstractApi
 
     /**
      * Build the XML for an issue
-     * @param array             $params for the new/updated issue data
+     * @param  array             $params for the new/updated issue data
      * @return \SimpleXMLElement
      */
     private function buildIssueXML(array $params = array())
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
-        
+
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
                 $custom_fields_item = $xml->addChild('custom_fields', '');
                 $custom_fields_item->addAttribute('type', 'array');
                 foreach ($v as $field) {
                     $item = $custom_fields_item->addChild('custom_field', '');
-                    $item->addAttribute('id', $field['id']);
+                    $item->addAttribute('id', (int) $field['id']);
                     $item->addChild('value', $field['value']);
                 }
             } else {
