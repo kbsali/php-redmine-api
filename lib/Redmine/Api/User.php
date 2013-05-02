@@ -48,9 +48,9 @@ class User extends AbstractApi
     /**
      * Return the current user data
      *
-     * @return array current user data 
+     * @return array current user data
      */
-    public function getCurrentUser() 
+    public function getCurrentUser()
     {
         return $this->get('/users/current.json');
     }
