@@ -153,7 +153,7 @@ class Version extends AbstractApi
 
     private function validateSharing(array $params = array())
     {
-        $arr = array(
+        $arrSharing = array(
             'none'        => 'Not shared',
             'descendants' => 'With subprojects',
             'hierarchy'   => 'With project hierarchy',
