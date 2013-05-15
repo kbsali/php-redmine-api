@@ -27,7 +27,7 @@ class Version extends AbstractApi
     }
 
     /**
-     * Returns an array of projects with name/id pairs (or id/name if $reserse is false)
+     * Returns an array of name/id pairs (or id/name if not $reverse) of issue versions for $project.
      *
      * @param  string|int $project     project id or literal identifier
      * @param  boolean    $forceUpdate to force the update of the projects var
@@ -48,7 +48,7 @@ class Version extends AbstractApi
     }
 
     /**
-     * Get a category id given its name and related project
+     * Get an issue version id given its name and related project
      *
      * @param  string|int $project project id or literal identifier
      * @param  string     $name
@@ -65,7 +65,7 @@ class Version extends AbstractApi
     }
 
     /**
-     * Get extended information about an issue category
+     * Get extended information about an issue version
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET-2
      *
      * @param  string $id the issue category id
@@ -77,7 +77,7 @@ class Version extends AbstractApi
     }
 
     /**
-     * Create a new issue category of $project given an array of $params
+     * Create a new version for $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#POST
      *
      * @param  string|int        $project project id or literal identifier
@@ -166,10 +166,10 @@ class Version extends AbstractApi
     }
 
     /**
-     * Delete an issue category
+     * Delete a version.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#DELETE
      *
-     * @param  int    $id id of the category
+     * @param  int    $id id of the version
      * @return string
      */
     public function remove($id)
