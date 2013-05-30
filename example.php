@@ -138,13 +138,29 @@ $client->api('issue')->setIssueStatus($issueId, 'Resolved');
 $client->api('issue')->addNoteToIssue($issueId, 'some comment');
 $client->api('issue')->remove($issueId);
 
-// To upload a file + attach it to $issueId
+// To upload a file + attach it to an existing issue with $issueId
 $upload = json_decode( $client->api('attachment')->upload($filecontent) );
 $client->api('issue')->attach($issueId, array(
     'token'        => $upload->upload->token,
     'filename'     => 'MyFile.pdf',
     'description'  => 'MyFile is better then YourFile...',
     'content_type' => 'application/pdf'
+));
+
+// Or, create a new issue with the file attached in one step
+$upload = json_decode( $client->api('attachment')->upload($filecontent) );
+$client->api('issue')->create(array(
+    'project_id'  => 'myproject',
+    'subject'     => 'A test issue',
+    'description' => 'Here goes the issue description',
+    'uploads'     => array(
+        array(
+          'token'       => $upload->upload->token,
+          'filename'    => 'MyFile.pdf',
+          'description' => 'MyFile is better then YourFile...',
+          'content_type'=> 'application/pdf'
+        )
+    )
 ));
 
 // ----------------------------
