@@ -71,6 +71,15 @@ class Issue extends AbstractApi
                     $item->addAttribute('id', (int) $field['id']);
                     $item->addChild('value', $field['value']);
                 }
+            } else if ('uploads' === $k && is_array($v)) {
+                $uploads_item = $xml->addChild('uploads', '');
+                $uploads_item->addAttribute('type', 'array');
+                foreach ($v as $upload) {
+                    $upload_item = $uploads_item->addChild('upload', '');
+                    foreach($upload as $upload_k => $upload_v) {
+                      $upload_item->addChild($upload_k, $upload_v);
+                    }
+                }
             } else {
                 $item = $xml->addChild($k, $v);
             }
