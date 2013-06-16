@@ -33,9 +33,9 @@ class Issue extends AbstractApi
      * @param  array $params the additional parameters (cf avaiable $params above)
      * @return array list of issues found
      */
-    public function all(array $params = array())
+    public function all(array $params = array(),$project = NULL)
     {
-        return $this->get('/issues.json?'.$this->http_build_str($params));
+        return $this->get((!is_null($project) ? '/projects/'.$project : '').'/issues.json?'.$this->http_build_str($params));
     }
 
     /**
