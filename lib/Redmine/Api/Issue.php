@@ -35,7 +35,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = array())
     {
-        return $this->get('/issues.json?'.$this->http_build_str($params));
+        return $this->get('/issues.json?'.http_build_query($params));
     }
 
     /**
@@ -50,7 +50,7 @@ class Issue extends AbstractApi
      */
     public function show($id, array $params = array())
     {
-        return $this->get('/issues/'.urlencode($id).'.json?'.$this->http_build_str($params));
+        return $this->get('/issues/'.urlencode($id).'.json?'.http_build_query($params));
     }
 
     /**

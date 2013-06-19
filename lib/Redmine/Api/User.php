@@ -21,7 +21,7 @@ class User extends AbstractApi
      */
     public function all(array $params = array())
     {
-        $this->users = $this->get('/users.json?'.$this->http_build_str($params));
+        $this->users = $this->get('/users.json?'.http_build_query($params));
 
         return $this->users;
     }

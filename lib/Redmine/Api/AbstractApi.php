@@ -58,23 +58,4 @@ abstract class AbstractApi
     {
         return $this->client->delete($path);
     }
-
-    public function http_build_str($query, $prefix='', $arg_separator='')
-    {
-        if (!is_array($query)) {
-            return null;
-        }
-        if ('' === $arg_separator) {
-            $arg_separator = ini_get('arg_separator.output');
-        }
-        $args = array();
-        foreach ($query as $key => $val) {
-            $name = $prefix.$key;
-            if (!is_numeric($name)) {
-                $args[] = rawurlencode($name).'='.urlencode($val);
-            }
-        }
-
-        return implode($arg_separator, $args);
-    }
 }

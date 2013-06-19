@@ -85,7 +85,7 @@ class Group extends AbstractApi
      */
     public function show($id, array $params = array())
     {
-        return $this->get('/groups/'.urlencode($id).'.json?'.$this->http_build_str($params));
+        return $this->get('/groups/'.urlencode($id).'.json?'.http_build_query($params));
     }
 
     /**

@@ -20,7 +20,7 @@ class TimeEntry extends AbstractApi
      */
     public function all(array $params = array())
     {
-        $this->timeEntries = $this->get('/time_entries.json?'.$this->http_build_str($params));
+        $this->timeEntries = $this->get('/time_entries.json?'.http_build_query($params));
 
         return $this->timeEntries;
     }

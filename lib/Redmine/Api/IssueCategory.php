@@ -140,6 +140,6 @@ class IssueCategory extends AbstractApi
      */
     public function remove($id, array $params = array())
     {
-        return $this->delete('/issue_categories/'.$id.'.xml?'.$this->http_build_str($params));
+        return $this->delete('/issue_categories/'.$id.'.xml?'.http_build_query($params));
     }
 }
