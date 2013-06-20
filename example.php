@@ -97,10 +97,8 @@ $client->api('issue')->all(array(
     'assigned_to_id' => $userId,
     // 'cf_x'        => ,
     'query_id'       => 3,
-    'custom_fields'  => array(
-        'id'    => SOME_CUSTOM_FIELD_ID,
-        'value' => 'some value of this custom field',
-    ),
+    'cf_1'           => 'some value of this custom field', // where 1 = id of the customer field
+    //  cf_SOME_CUSTOM_FIELD_ID => 'value'
 ));
 $client->api('issue')->create(array(
     'project_id'     => 'test',
