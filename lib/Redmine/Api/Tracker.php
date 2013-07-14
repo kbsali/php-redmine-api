@@ -43,4 +43,20 @@ class Tracker extends AbstractApi
 
         return $ret;
     }
+
+    /**
+     * Get a tracket id given its name
+     *
+     * @param  string|int $name tracker name
+     * @return int|false
+     */
+    public function getIdByName($name)
+    {
+        $arr = $this->listing();
+        if (!isset($arr[$name])) {
+            return false;
+        }
+
+        return $arr[(string) $name];
+    }
 }

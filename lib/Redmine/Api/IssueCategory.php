@@ -51,7 +51,7 @@ class IssueCategory extends AbstractApi
      *
      * @param  string|int $project project id or literal identifier
      * @param  string     $name
-     * @return int
+     * @return int|false
      */
     public function getIdByName($project, $name)
     {
