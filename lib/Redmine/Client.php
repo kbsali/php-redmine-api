@@ -50,8 +50,6 @@ class Client
      */
     private $apis = array();
 
-
-
     /**
      * Error strings if json is invalid
      */
