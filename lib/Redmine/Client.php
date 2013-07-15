@@ -50,6 +50,18 @@ class Client
      */
     private $apis = array();
 
+
+
+    /**
+     * Error strings if json is invalid
+     */
+    private static $json_errors = array(
+        JSON_ERROR_NONE => 'No error has occurred',
+        JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+        JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+        JSON_ERROR_SYNTAX => 'Syntax error',
+    );
+
     /**
      * @param string $url
      * @param string $apikey
@@ -174,25 +186,16 @@ class Client
      */
     public function decode($string)
     {
-
         $decoded = json_decode( $string, true );
 
         if (null == $decoded) {
-            $json_errors = array(
-                    JSON_ERROR_NONE => 'No error has occurred',
-                    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
-                    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-                    JSON_ERROR_SYNTAX => 'Syntax error',
-            );
             if (json_last_error() == JSON_ERROR_NONE) {
                 return $string;
             } else {
-                return $json_errors[json_last_error()];
+                return self::$json_errors[json_last_error()];
             }
-        } else {
-            return $decoded;
         }
-
+        return $decoded;
     }
 
     /**
