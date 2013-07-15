@@ -38,6 +38,14 @@ class Client
     private $checkSslCertificate = false;
 
     /**
+     *
+     * Flag to determine authentication method
+     *
+     * @var boolean
+     */
+    private $useHttpAuth = true;
+
+    /**
      * @var array APIs
      */
     private $apis = array();
@@ -157,8 +165,34 @@ class Client
         if (false === $json = $this->runRequest($path, 'GET')) {
             return false;
         }
+        return $this->decode($json);
+    }
 
-        return json_decode($json, true);
+    /**
+     * Decodes json response
+     * @param unknown $json
+     */
+    public function decode($string)
+    {
+
+        $decoded = json_decode( $string, true );
+
+        if (null == $decoded) {
+            $json_errors = array(
+                    JSON_ERROR_NONE => 'No error has occurred',
+                    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+                    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+                    JSON_ERROR_SYNTAX => 'Syntax error',
+            );
+            if (json_last_error() == JSON_ERROR_NONE) {
+                return $string;
+            } else {
+                return $json_errors[json_last_error()];
+            }
+        } else {
+            return $decoded;
+        }
+
     }
 
     /**
@@ -200,6 +234,11 @@ class Client
     public function setCheckSslCertificate($check = false)
     {
         $this->checkSslCertificate = $check;
+    }
+
+    public function setUseHttpAuth($use = true)
+    {
+        $this->useHttpAuth = $use;
     }
 
     /**
@@ -252,7 +291,7 @@ class Client
         $this->getPort($this->url.$path);
 
         $curl = curl_init();
-        if (isset($this->apikey)) {
+        if (isset($this->apikey) && $this->useHttpAuth) {
             curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
@@ -269,17 +308,20 @@ class Client
         if ('xml' === substr($tmp['path'], -3)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: text/xml',
+                'X-Redmine-API-Key: '.$this->apikey
             ));
         }
         if ('json' === substr($tmp['path'], -4)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/json',
+                'X-Redmine-API-Key: '.$this->apikey
             ));
         }
 
         if ('/uploads.json' === $path || '/uploads.xml' === $path) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/octet-stream',
+                'X-Redmine-API-Key: '.$this->apikey
             ));
         }
 
