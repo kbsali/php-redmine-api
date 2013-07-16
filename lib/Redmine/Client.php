@@ -175,25 +175,26 @@ class Client
         if (false === $json = $this->runRequest($path, 'GET')) {
             return false;
         }
+
         return $this->decode($json);
     }
 
     /**
      * Decodes json response
-     * @param unknown $json
+     * @param  string $json
+     * @return array
      */
-    public function decode($string)
+    public function decode($json)
     {
-        $decoded = json_decode( $string, true );
-
-        if (null == $decoded) {
-            if (json_last_error() == JSON_ERROR_NONE) {
-                return $string;
-            } else {
-                return self::$json_errors[json_last_error()];
-            }
+        $decoded = json_decode($json, true);
+        if (null !== $decoded) {
+            return $decoded;
         }
-        return $decoded;
+        if (JSON_ERROR_NONE === json_last_error()) {
+            return $json;
+        }
+
+        return self::$json_errors[json_last_error()];
     }
 
     /**
@@ -237,6 +238,10 @@ class Client
         $this->checkSslCertificate = $check;
     }
 
+    /**
+     * Turns on/off http auth
+     * @param boolean $check
+     */
     public function setUseHttpAuth($use = true)
     {
         $this->useHttpAuth = $use;
@@ -258,7 +263,7 @@ class Client
      * if not set, it will try to guess the port
      * from the given $urlPath
      * @param  string $urlPath the url called
-     * @return int
+     * @return int    the port number
      */
     public function getPort($urlPath = null)
     {

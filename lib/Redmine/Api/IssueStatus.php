@@ -46,7 +46,7 @@ class IssueStatus extends AbstractApi
 
     /**
      * Get a status id given its name
-     * @param  string $name
+     * @param  string    $name
      * @return int|false
      */
     public function getIdByName($name)

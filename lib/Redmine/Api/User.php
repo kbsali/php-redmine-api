@@ -38,7 +38,7 @@ class User extends AbstractApi
             $this->all();
         }
         $ret = array();
-        if(is_array($this->users) && isset($this->users['users'])) {
+        if (is_array($this->users) && isset($this->users['users'])) {
             foreach ($this->users['users'] as $e) {
                 $ret[$e['login']] = (int) $e['id'];
             }
