@@ -166,6 +166,15 @@ class Client
     }
 
     /**
+     * Returns Url
+     * @return string
+     */
+    public function getUrl()
+    {
+       return $this->url;
+    }
+
+    /**
      * HTTP GETs a json $path and tries to decode it
      * @param  string $path
      * @return array
