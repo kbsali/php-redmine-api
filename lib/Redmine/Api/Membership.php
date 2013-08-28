@@ -102,10 +102,10 @@ class Membership extends AbstractApi
                 $item = $xml->addChild($k);
                 $item->addAttribute('type', 'array');
                 foreach ($v as $role) {
-                    $item = $item->addChild('role_id', $role);
+                    $item->addChild('role_id', $role);
                 }
             } else {
-                $item = $xml->addChild($k, $v);
+                $xml->addChild($k, $v);
             }
         }
 
