@@ -66,7 +66,7 @@ Then create a composer.json file in the root of your project:
 ```yaml
 {
     "require": {
-        "kbsali/redmine-api": "dev-master"
+        "kbsali/redmine-api": "~1.0"
     }
 }
 ```
