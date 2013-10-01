@@ -217,7 +217,7 @@ class Issue extends AbstractApi
             unset($params['tracker']);
         }
         if (isset($params['assigned_to'])) {
-            $params['assigned_to'] = $this->client->api('user')->getIdByUsername($params['assigned_to']);
+            $params['assigned_to_id'] = $this->client->api('user')->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
         if (isset($params['author'])) {
