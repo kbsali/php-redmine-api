@@ -48,7 +48,7 @@ class Membership extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = $this->buildMembershipXML($params);
+        $xml = $this->buildXML($params);
 
         return $this->post('/projects/'.$project.'/memberships.xml', $xml->asXML());
     }
@@ -71,7 +71,7 @@ class Membership extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = $this->buildMembershipXML($params);
+        $xml = $this->buildXML($params);
 
         return $this->put('/memberships/'.$id.'.xml', $xml->asXML());
     }
@@ -93,7 +93,7 @@ class Membership extends AbstractApi
      * @param  array             $params for the new/updated membership data
      * @return \SimpleXMLElement
      */
-    private function buildMembershipXML(array $params = array())
+    private function buildXML(array $params = array())
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
 

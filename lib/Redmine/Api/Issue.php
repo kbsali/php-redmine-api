@@ -58,7 +58,7 @@ class Issue extends AbstractApi
      * @param  array             $params for the new/updated issue data
      * @return \SimpleXMLElement
      */
-    private function buildIssueXML(array $params = array())
+    private function buildXML(array $params = array())
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
 
@@ -71,6 +71,12 @@ class Issue extends AbstractApi
                     $item->addAttribute('id', (int) $field['id']);
                     $item->addChild('value', $field['value']);
                 }
+            } elseif ('watcher_user_ids' === $k && is_array($v)) {
+                $watcher_user_ids = $xml->addChild('watcher_user_ids', '');
+                $watcher_user_ids->addAttribute('type', 'array');
+                foreach ($v as $watcher) {
+                    $watcher_user_ids->addChild('watcher_user_id', (int) $watcher);
+                }
             } elseif ('uploads' === $k && is_array($v)) {
                 $uploads_item = $xml->addChild('uploads', '');
                 $uploads_item->addAttribute('type', 'array');
@@ -81,7 +87,7 @@ class Issue extends AbstractApi
                     }
                 }
             } else {
-                $item = $xml->addChild($k, $v);
+                $xml->addChild($k, $v);
             }
         }
 
@@ -99,31 +105,31 @@ class Issue extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'subject'        => null,
-            'description'    => null,
+            'subject'          => null,
+            'description'      => null,
 
-            // 'project'     => null,
-            // 'category'    => null,
-            // 'status'      => null,
-            // 'tracker'     => null,
-            // 'assigned_to' => null,
-            // 'author'      => null,
+            // 'project'          => null,
+            // 'category'         => null,
+            // 'status'           => null,
+            // 'tracker'          => null,
+            // 'assigned_to'      => null,
+            // 'author'           => null,
 
-            'project_id'     => null,
-            'category_id'    => null,
-            'priority_id'    => null,
-            'status_id'      => null,
-            'tracker_id'     => null,
-            'assigned_to_id' => null,
-            'author_id'      => null,
-            'due_date'       => null,
-            'start_date'     => null,
+            'project_id'       => null,
+            'category_id'      => null,
+            'priority_id'      => null,
+            'status_id'        => null,
+            'tracker_id'       => null,
+            'assigned_to_id'   => null,
+            'author_id'        => null,
+            'due_date'         => null,
+            'start_date'       => null,
+            'watcher_user_ids' => null,
         );
         $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = $this->buildIssueXML($params);
-
+        $xml = $this->buildXML($params);
         return $this->post('/issues.xml', $xml->asXML());
         // $json = json_encode(array('issue' => $params));
         // return $this->post('/issues.json', $json);
@@ -161,7 +167,7 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = $this->buildIssueXML($params);
+        $xml = $this->buildXML($params);
 
         return $this->put('/issues/'.$id.'.xml', $xml->asXML());
     }
