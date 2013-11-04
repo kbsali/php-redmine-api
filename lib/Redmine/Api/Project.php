@@ -16,7 +16,7 @@ class Project extends AbstractApi
      * List projects
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array array with optional params 'limit' and 'offset'
+     * @param  array $params array with optional params 'limit' and 'offset'
      * @return array list of projects found
      */
     public function all(array $params = array())
