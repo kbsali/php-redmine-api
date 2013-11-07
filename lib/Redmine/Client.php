@@ -2,6 +2,8 @@
 
 namespace Redmine;
 
+use SimpleXMLElement;
+
 /**
  * Simple PHP Redmine client
  * @author Kevin Saliou <kevin at saliou dot name>
@@ -36,6 +38,11 @@ class Client
      * @var boolean
      */
     private $checkSslCertificate = false;
+
+    /**
+     * @var boolean
+     */
+    private $checkSslHost = false;
 
     /**
      *
@@ -248,8 +255,18 @@ class Client
     }
 
     /**
-     * Turns on/off http auth
+     * Turns on/off ssl host certificate check
      * @param boolean $check
+     */
+    public function setCheckSslHost($check = false)
+    {
+      $this->checkSslHost = $check;
+    }
+
+    /**
+     * Turns on/off http auth
+     * @param bool $use
+     * @internal param bool $check
      */
     public function setUseHttpAuth($use = true)
     {
@@ -317,6 +334,7 @@ class Client
         curl_setopt($curl, CURLOPT_PORT , $this->port);
         if (80 !== $this->port) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
         }
 
         $tmp = parse_url($this->url.$path);
