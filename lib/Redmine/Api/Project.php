@@ -16,7 +16,8 @@ class Project extends AbstractApi
      * List projects
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  int   $limit limit of projects
+     * @param array $params
+     * @internal param int $limit limit of projects
      * @return array list of projects found
      */
     public function all(array $params = array())
@@ -77,7 +78,8 @@ class Project extends AbstractApi
      * Create a new project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array             $params the new project data
+     * @param  array $params the new project data
+     * @throws \Exception
      * @return \SimpleXMLElement
      */
     public function create(array $params = array())
@@ -87,7 +89,9 @@ class Project extends AbstractApi
             'identifier'  => null,
             'description' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+
+        $params = array_filter(array_merge($defaults, $params), array( $this, 'isNotNull'));
+
         if(
             !isset($params['name'])
          || !isset($params['identifier'])
@@ -101,6 +105,10 @@ class Project extends AbstractApi
         }
 
         return $this->post('/projects.xml', $xml->asXML());
+    }
+
+    private function isNotNull($var) {
+      return !is_null($var);
     }
 
     /**
