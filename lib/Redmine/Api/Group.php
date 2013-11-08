@@ -69,7 +69,7 @@ class Group extends AbstractApi
             $xml->addChild($k, $v);
         }
 
-        return $this->post('/projects/groups.xml', $xml->asXML());
+        return $this->post('/groups.xml', $xml->asXML());
     }
 
     // public function update(array $params = array()) {}
