@@ -26,15 +26,11 @@ class Project extends AbstractApi
 
         $projects = array();
 
-        while ( $limit > 0 )
-        {
-            if ( $limit > 100 )
-            {
+        while ($limit > 0) {
+            if ($limit > 100) {
                 $_limit = 100;
                 $limit -= 100;
-            }
-            else
-            {
+            } else {
                 $_limit = $limit;
                 $limit = 0;
             }
