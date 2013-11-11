@@ -90,7 +90,10 @@ class Project extends AbstractApi
             'description' => null,
         );
 
-        $params = array_filter(array_merge($defaults, $params), array( $this, 'isNotNull'));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array( $this, '_isNotNull')
+        );
 
         if(
             !isset($params['name'])
@@ -107,8 +110,16 @@ class Project extends AbstractApi
         return $this->post('/projects.xml', $xml->asXML());
     }
 
-    private function isNotNull($var) {
-      return !is_null($var);
+    /**
+     * Checks if the variable passed is not null
+     *
+     * @param mixed $var Variable to be checked
+     *
+     * @return bool
+     */
+    private function _isNotNull($var)
+    {
+        return !is_null($var);
     }
 
     /**
