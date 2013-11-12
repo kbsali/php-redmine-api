@@ -103,10 +103,8 @@ abstract class AbstractApi
                 $_limit = $limit;
                 $limit = 0;
             }
-            $params = array(
-                'limit'  => $_limit,
-                'offset' => $offset
-            );
+            $params['limit'] = $_limit;
+            $params['offset'] = $offset;
             $ret = array_merge($ret, $this->get($endpoint . '?' . http_build_query($params)));
             $offset += $_limit;
         }
