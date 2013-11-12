@@ -16,11 +16,12 @@ class IssueStatus extends AbstractApi
      * List issue statuses
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses#GET
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of issue statuses found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->issueStatuses = $this->get('/issue_statuses.json');
+        $this->issueStatuses = $this->retrieveAll('/issue_statuses.json', $params);
 
         return $this->issueStatuses;
     }

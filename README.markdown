@@ -95,6 +95,9 @@ $client->api('issue')->create(array(
     'description' => 'a long description blablabla',
     'assigned_to' => 'user1',
 ));
+$client->api('issue')->all(array(
+    'limit' => 1000
+));
 ```
 
 see `example.php`

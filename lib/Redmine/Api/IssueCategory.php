@@ -17,11 +17,12 @@ class IssueCategory extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of issue categories found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->issueCategories = $this->get('/projects/'.$project.'/issue_categories.json');
+        $this->issueCategories = $this->retrieveAll('/projects/'.$project.'/issue_categories.json', $params);
 
         return $this->issueCategories;
     }

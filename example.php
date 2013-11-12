@@ -81,7 +81,9 @@ $client->api('user')->create(array(
 // ----------------------------
 // Issues
 $client->api('issue')->show($issueId);
-$client->api('issue')->all();
+$client->api('issue')->all(array(
+    'limit' => 100
+));
 $client->api('issue')->all(array('category_id'    => $categoryId));
 $client->api('issue')->all(array('tracker_id'     => $trackerId));
 $client->api('issue')->all(array('tracker_id'     => 'closed'));

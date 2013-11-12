@@ -66,8 +66,48 @@ abstract class AbstractApi
      *
      * @return bool
      */
-    protected function _isNotNull($var)
+    protected function isNotNull($var)
     {
         return !is_null($var);
+    }
+
+    /**
+     * Retrieves all the elements of a given endpoint (even if the
+     * total number of elements is greater than 100)
+     *
+     * @param  string $endpoint API end point
+     * @param  array  $params   optional parameters to be passed to the api (offset, limit, ...)
+     * @return array  elements found
+     */
+    protected function retrieveAll($endpoint, array $params = array())
+    {
+        if (empty($params)) {
+            return $this->get($endpoint);
+        }
+        $defaults = array(
+            'limit'  => 25,
+            'offset' => 0,
+        );
+        $params = array_filter(array_merge($defaults, $params));
+
+        $ret = array();
+
+        while ($limit > 0) {
+            if ($limit > 100) {
+                $_limit = 100;
+                $limit -= 100;
+            } else {
+                $_limit = $limit;
+                $limit = 0;
+            }
+            $params = array(
+                'limit'  => $_limit,
+                'offset' => $offset
+            );
+            $ret = array_merge($ret, $this->get($endpoint . '?' . http_build_query($params)));
+            $offset += $_limit;
+        }
+
+        return $ret;
     }
 }

@@ -15,12 +15,13 @@ class News extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
      *
      * @param  string|int $project project id or literal identifier [optional]
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of news found
      */
-    public function all($project = null)
+    public function all($project = null, array $params = array())
     {
         $path = null === $project ? '/news.json' : '/projects/'.$project.'/news.json';
-        $this->news = $this->get($path);
+        $this->news = $this->retrieveAll($path, $params);
 
         return $this->news;
     }

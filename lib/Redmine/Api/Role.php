@@ -16,11 +16,12 @@ class Role extends AbstractApi
      * List roles
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of roles found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->roles = $this->get('/roles.json');
+        $this->roles = $this->retrieveAll('/roles.json', $params);
 
         return $this->roles;
     }

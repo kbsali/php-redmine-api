@@ -17,11 +17,12 @@ class Membership extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of memberships found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->memberships = $this->get('/projects/'.$project.'/memberships.json');
+        $this->memberships = $this->retrieveAll('/projects/'.$project.'/memberships.json', $params);
 
         return $this->memberships;
     }

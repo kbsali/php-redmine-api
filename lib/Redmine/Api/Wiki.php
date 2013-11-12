@@ -16,11 +16,12 @@ class Wiki extends AbstractApi
      * List wiki pages of given $project
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of wiki pages found for the given project
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->wikiPages = $this->get('/projects/'.$project.'/wiki/index.json');
+        $this->wikiPages = $this->retrieveAll('/projects/'.$project.'/wiki/index.json', $params);
 
         return $this->wikiPages;
     }

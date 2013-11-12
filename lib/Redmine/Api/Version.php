@@ -17,11 +17,12 @@ class Version extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of versions found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->versions = $this->get('/projects/'.$project.'/versions.json');
+        $this->versions = $this->retrieveAll('/projects/'.$project.'/versions.json', $params);
 
         return $this->versions;
     }

@@ -16,32 +16,12 @@ class Project extends AbstractApi
      * List projects
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array array with optional params 'limit' and 'offset'
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of projects found
      */
     public function all(array $params = array())
     {
-        $limit = ( isset($params['limit']) ) ? intval($params['limit']) : 25;
-        $offset = ( isset($params['offset']) ) ? intval($params['offset']) : 0;
-
-        $projects = array();
-
-        while ($limit > 0) {
-            if ($limit > 100) {
-                $_limit = 100;
-                $limit -= 100;
-            } else {
-                $_limit = $limit;
-                $limit = 0;
-            }
-
-            $params = array('limit' => $_limit, 'offset' => $offset);
-            $projects = array_merge($projects, $this->get('/projects.json?'.http_build_query($params)));
-
-            $offset += $_limit;
-        }
-
-        $this->projects = $projects;
+        $this->projects = $this->retrieveAll('/projects.json', $params);
 
         return $this->projects;
     }
@@ -111,7 +91,7 @@ class Project extends AbstractApi
 
         $params = array_filter(
             array_merge($defaults, $params),
-            array( $this, '_isNotNull')
+            array($this, 'isNotNull')
         );
 
         if(

@@ -17,11 +17,12 @@ class IssueRelation extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
      * @param  int   $issueId the issue id
+     * @param  array $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of relations found
      */
-    public function all($issueId)
+    public function all($issueId, array $params = array())
     {
-        $this->relations = $this->get('/issues/'.urlencode($issueId).'/relations.json');
+        $this->relations = $this->retrieveAll('/issues/'.urlencode($issueId).'/relations.json', $params);
 
         return $this->relations;
     }

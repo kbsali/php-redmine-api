@@ -35,7 +35,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = array())
     {
-        return $this->get('/issues.json?'.http_build_query($params));
+        return $this->retrieveAll('/issues.json', $params);
     }
 
     /**

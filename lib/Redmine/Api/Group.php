@@ -16,11 +16,12 @@ class Group extends AbstractApi
      * List groups
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of groups found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->groups = $this->get('/groups.json');
+        $this->groups = $this->retrieveAll('/groups.json', $params);
 
         return $this->groups;
     }
