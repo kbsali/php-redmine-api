@@ -58,4 +58,16 @@ abstract class AbstractApi
     {
         return $this->client->delete($path);
     }
+
+    /**
+     * Checks if the variable passed is not null
+     *
+     * @param mixed $var Variable to be checked
+     *
+     * @return bool
+     */
+    protected function _isNotNull($var)
+    {
+        return !is_null($var);
+    }
 }
