@@ -91,6 +91,9 @@ abstract class AbstractApi
         $params = array_filter(array_merge($defaults, $params));
 
         $ret = array();
+        
+        $limit = $params['limit'];
+        $offset = $params['offset'];
 
         while ($limit > 0) {
             if ($limit > 100) {
