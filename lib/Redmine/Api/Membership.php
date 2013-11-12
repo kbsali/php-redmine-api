@@ -57,8 +57,8 @@ class Membership extends AbstractApi
      * Update membership information's by id
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
      *
-     * @param  int        $id     id of the membership
-     * @param  array      $params the new membership data
+     * @param  int               $id     id of the membership
+     * @param  array             $params the new membership data
      * @return \SimpleXMLElement
      */
     public function update($id, array $params = array())
@@ -67,7 +67,7 @@ class Membership extends AbstractApi
             'role_ids' => null
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(!isset($params['role_ids'])) {
+        if (!isset($params['role_ids'])) {
             throw new \Exception('Missing mandatory parameters');
         }
 

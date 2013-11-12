@@ -26,15 +26,11 @@ class Project extends AbstractApi
 
         $projects = array();
 
-        while ( $limit > 0 )
-        {
-            if ( $limit > 100 )
-            {
+        while ($limit > 0) {
+            if ($limit > 100) {
                 $_limit = 100;
                 $limit -= 100;
-            }
-            else
-            {
+            } else {
                 $_limit = $limit;
                 $limit = 0;
             }
@@ -101,7 +97,7 @@ class Project extends AbstractApi
      * Create a new project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array $params the new project data
+     * @param  array             $params the new project data
      * @throws \Exception
      * @return \SimpleXMLElement
      */
@@ -131,18 +127,6 @@ class Project extends AbstractApi
         }
 
         return $this->post('/projects.xml', $xml->asXML());
-    }
-
-    /**
-     * Checks if the variable passed is not null
-     *
-     * @param mixed $var Variable to be checked
-     *
-     * @return bool
-     */
-    private function _isNotNull($var)
-    {
-        return !is_null($var);
     }
 
     /**
