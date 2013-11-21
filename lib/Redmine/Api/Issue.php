@@ -211,7 +211,7 @@ class Issue extends AbstractApi
             unset($params['project']);
 
             if (isset($params['category'])) {
-                $params['category_id'] = $this->client->api('issue_category')->getIdByName($params['project_id'], $params['project']);
+                $params['category_id'] = $this->client->api('issue_category')->getIdByName($params['project_id'], $params['category']);
                 unset($params['category']);
             }
         }
