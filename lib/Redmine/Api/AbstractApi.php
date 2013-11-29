@@ -88,10 +88,13 @@ abstract class AbstractApi
             'limit'  => 25,
             'offset' => 0,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
 
         $ret = array();
-        
+
         $limit = $params['limit'];
         $offset = $params['offset'];
 

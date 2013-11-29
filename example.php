@@ -86,7 +86,7 @@ $client->api('issue')->all(array(
 ));
 $client->api('issue')->all(array('category_id'    => $categoryId));
 $client->api('issue')->all(array('tracker_id'     => $trackerId));
-$client->api('issue')->all(array('tracker_id'     => 'closed'));
+$client->api('issue')->all(array('status_id'      => 'closed'));
 $client->api('issue')->all(array('assigned_to_id' => $userId));
 $client->api('issue')->all(array('project_id'     => 'test'));
 $client->api('issue')->all(array(
