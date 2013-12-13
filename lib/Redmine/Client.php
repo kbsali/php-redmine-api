@@ -86,86 +86,66 @@ class Client
     {
         if (!isset($this->apis[$name])) {
             switch ($name) {
-
                 case 'attachment':
                     $api = new Api\Attachment($this);
                     break;
-
                 // @todo finish implementation!
                 case 'group':
                     $api = new Api\Group($this);
                     break;
-
                 case 'issue':
                     $api = new Api\Issue($this);
                     break;
-
                 case 'issue_category':
                     $api = new Api\IssueCategory($this);
                     break;
-
                 case 'issue_priority':
                     $api = new Api\IssuePriority($this);
                     break;
-
                 // @todo finish implementation!
                 case 'issue_relation':
                     $api = new Api\IssueRelation($this);
                     break;
-
                 case 'issue_status':
                     $api = new Api\IssueStatus($this);
                     break;
-
                 // @todo finish implementation!
                 case 'membership':
                     $api = new Api\Membership($this);
                     break;
-
                 case 'news':
                     $api = new Api\News($this);
                     break;
-
                 case 'project':
                     $api = new Api\Project($this);
                     break;
-
                 case 'query':
                     $api = new Api\Query($this);
                     break;
-
                 case 'role':
                     $api = new Api\Role($this);
                     break;
-
                 case 'time_entry':
                     $api = new Api\TimeEntry($this);
                     break;
-
                 case 'time_entry_activity':
                     $api = new Api\TimeEntryActivity($this);
                     break;
-
                 case 'tracker':
                     $api = new Api\Tracker($this);
                     break;
-
                 case 'user':
                     $api = new Api\User($this);
                     break;
-
                 case 'version':
                     $api = new Api\Version($this);
                     break;
-
                 case 'wiki':
                     $api = new Api\Wiki($this);
                     break;
-
                 default:
                     throw new \InvalidArgumentException();
             }
-
             $this->apis[$name] = $api;
         }
 
@@ -247,41 +227,52 @@ class Client
 
     /**
      * Turns on/off ssl certificate check
-     * @param boolean $check
+     * @param  boolean $check
+     * @return Client
      */
     public function setCheckSslCertificate($check = false)
     {
         $this->checkSslCertificate = $check;
+
+        return $this;
     }
 
     /**
      * Turns on/off ssl host certificate check
-     * @param boolean $check
+     * @param  boolean $check
+     * @return Client
      */
     public function setCheckSslHost($check = false)
     {
-      $this->checkSslHost = $check;
+        $this->checkSslHost = $check;
+
+        return $this;
     }
 
     /**
      * Turns on/off http auth
-     * @param bool $use
-     * @internal param bool $check
+     * @param  bool   $use
+     * @return Client
      */
     public function setUseHttpAuth($use = true)
     {
         $this->useHttpAuth = $use;
+
+        return $this;
     }
 
     /**
      * Set the port of the connection
-     * @param int $port
+     * @param  int    $port
+     * @return Client
      */
     public function setPort($port = null)
     {
         if (null !== $port) {
             $this->port = (int) $port;
         }
+
+        return $this;
     }
 
     /**

@@ -7,8 +7,7 @@ use Redmine\Client;
 /**
  * Abstract class for Api classes
  *
- * @author Thibault Duplessis <thibault.duplessis at gmail dot com>
- * @author Joseph Bielawski <stloyd@gmail.com>
+ * @author Kevin Saliou <kevin at saliou dot name>
  */
 abstract class AbstractApi
 {

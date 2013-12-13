@@ -53,27 +53,12 @@ A possible solution to this would be to create an extra APIs implementing the mi
 * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
  * then obtain your *API access key* in your profile page : /my/account
 
-## Autoload
+## Install
 
-The first step to use `php-redmine-api` is to download composer:
+Through [composer](http://getcomposer.org/download/), simply run :
 
 ```bash
-$ curl -s http://getcomposer.org/installer | php
-```
-
-Then create a composer.json file in the root of your project:
-
-```yaml
-{
-    "require": {
-        "kbsali/redmine-api": "~1.0"
-    }
-}
-```
-
-... and install your dependencies using:
-```bash
-$ php composer.phar install
+$ php composer.phar require kbsali/redmine-api:1.*
 ```
 
 ## Basic usage of `php-redmine-api` client
@@ -106,9 +91,3 @@ see `example.php`
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
 - Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
-
-## Contributors
-
-- Kevin Saliou    (@kbsali)
-- William Suffill (@wsuff)
-- Marlos Carmo    (@marloscarmo)

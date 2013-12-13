@@ -14,7 +14,6 @@ class TimeEntryActivity extends AbstractApi
 
     /**
      * List time entry activities
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationstime_entry_activitiesformat
      *
      * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of time entry activities found
