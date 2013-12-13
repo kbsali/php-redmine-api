@@ -277,3 +277,34 @@ $client->api('wiki')->create('testProject', 'about', array(
     'version'  => null,
 ));
 $client->api('wiki')->remove('testProject', 'about');
+
+
+// ----------------------------
+// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
+$issues['all'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => '*',
+])['total_count'];
+
+$issues['opened'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => 'open',
+])['total_count'];
+
+$issues['closed'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => 'closed',
+])['total_count'];
+
+print_r($issues);
+/*
+Array
+(
+    [all] => 8
+    [opened] => 7
+    [closed] => 1
+)
+*/

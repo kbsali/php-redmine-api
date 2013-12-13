@@ -10,6 +10,7 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * API entry points implementation state :
  * OK Attachments
  * *NOK Groups - only partially implemented*
+ * OK Custom Fields
  * OK Issues
  * OK Issue Categories
  * OK Issue Priorities

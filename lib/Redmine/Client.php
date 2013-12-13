@@ -93,6 +93,9 @@ class Client
                 case 'group':
                     $api = new Api\Group($this);
                     break;
+                case 'custom_fields':
+                    $api = new Api\CustomField($this);
+                    break;
                 case 'issue':
                     $api = new Api\Issue($this);
                     break;
