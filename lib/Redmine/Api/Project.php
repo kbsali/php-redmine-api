@@ -102,16 +102,16 @@ class Project extends AbstractApi
         }
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
-		foreach ($params as $k => $v) {
-			if ('tracker_ids' == $k && is_array($v)) {
-    			$trackers = $xml->addChild('tracker_ids', '');
-    			$trackers->addAttribute('type', 'array');
-    			foreach ($v as $id) {
-    				$trackers->addChild('tracker', $id);
-    			}
-			} else {
-			    $xml->addChild($k, $v);
-			}
+        foreach ($params as $k => $v) {
+            if ('tracker_ids' == $k && is_array($v)) {
+                $trackers = $xml->addChild('tracker_ids', '');
+                $trackers->addAttribute('type', 'array');
+                foreach ($v as $id) {
+                    $trackers->addChild('tracker', $id);
+                }
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/projects.xml', $xml->asXML());
