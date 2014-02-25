@@ -283,6 +283,10 @@ class Client
         return $this;
     }
     
+    /**
+     * Returns Redmine response code
+     * @return int
+     */
     public function getResponseCode() 
     {
         return $this->responseCode;
