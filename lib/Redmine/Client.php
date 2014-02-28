@@ -56,6 +56,11 @@ class Client
      * @var array APIs
      */
     private $apis = array();
+    
+    /**
+     * @var int|null Redmine response code, null if request is not still completed
+     */
+    private $responseCode = null;
 
     /**
      * Error strings if json is invalid
@@ -277,6 +282,15 @@ class Client
 
         return $this;
     }
+    
+    /**
+     * Returns Redmine response code
+     * @return int
+     */
+    public function getResponseCode() 
+    {
+        return $this->responseCode;
+    }
 
     /**
      * Returns the port of the current connection,
@@ -314,6 +328,7 @@ class Client
      */
     private function runRequest($path, $method = 'GET', $data = '')
     {
+        $this->responseCode = null;
         $this->getPort($this->url.$path);
 
         $curl = curl_init();
@@ -368,6 +383,7 @@ class Client
                 break;
         }
         $response = curl_exec($curl);
+        $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         if (curl_errno($curl)) {
             $e = new \Exception(curl_error($curl), curl_errno($curl));
