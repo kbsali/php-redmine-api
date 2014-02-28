@@ -35,6 +35,11 @@ class Client
     private $apikey;
 
     /**
+     * @var string or null
+     */
+    private $pass;
+
+    /**
      * @var boolean
      */
     private $checkSslCertificate = false;
@@ -70,11 +75,15 @@ class Client
     /**
      * @param string $url
      * @param string $apikey
+     * @param string $pass (string or null)
+     *
+     * Usage: apikey can be auth key or username. Password needs to be set if username is given.
      */
-    public function __construct($url, $apikey)
+    public function __construct($url, $apikey, $pass = null)
     {
         $this->url    = $url;
         $this->apikey = $apikey;
+        $this->pass = $pass;
     }
 
     /**
@@ -318,8 +327,13 @@ class Client
 
         $curl = curl_init();
         if (isset($this->apikey) && $this->useHttpAuth) {
-            curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
-            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            if ($this->pass) {
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.$this->pass );
+                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            } else {
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
+                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            }
         }
         curl_setopt($curl, CURLOPT_URL, $this->url.$path);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
@@ -332,24 +346,22 @@ class Client
         }
 
         $tmp = parse_url($this->url.$path);
+        $httpHeader = array();
         if ('xml' === substr($tmp['path'], -3)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Content-Type: text/xml',
-                'X-Redmine-API-Key: '.$this->apikey
-            ));
+            $httpHeader[] = 'Content-Type: text/xml';
         }
         if ('json' === substr($tmp['path'], -4)) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'X-Redmine-API-Key: '.$this->apikey
-            ));
+            $httpHeader[] = 'Content-Type: application/json';
+        }
+        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
+            $httpHeader[] = 'Content-Type: application/octet-stream';
         }
 
-        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/octet-stream',
-                'X-Redmine-API-Key: '.$this->apikey
-            ));
+        if (!empty($httpHeader)) {
+            if (!$this->pass) {
+                $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikey;
+            }
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
         }
 
         switch ($method) {
