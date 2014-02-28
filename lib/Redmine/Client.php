@@ -126,7 +126,7 @@ class Client
         if (isset($this->apis[$name])) {
             return $this->apis[$name];
         }
-        $c = 'Api\\'.$classes[$name];
+        $c = 'Redmine\Api\\'.$classes[$name];
         $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];
