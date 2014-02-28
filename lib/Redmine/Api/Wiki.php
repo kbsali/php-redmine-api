@@ -63,7 +63,6 @@ class Wiki extends AbstractApi
             'comments' => null,
             'version'  => null,
         );
-        $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
@@ -71,7 +70,7 @@ class Wiki extends AbstractApi
             $xml->addChild($k, $v);
         }
 
-        return $this->post('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
+        return $this->put('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
     }
 
     /**
