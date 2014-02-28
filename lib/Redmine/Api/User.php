@@ -113,7 +113,11 @@ class User extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ($k == 'custom_fields') {
+                $this->attachCustomFieldXML($xml,$v);
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/users.xml', $xml->asXML());
@@ -142,7 +146,11 @@ class User extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ($k == 'custom_fields') {
+                $this->attachCustomFieldXML($xml,$v);
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->put('/users/'.$id.'.xml', $xml->asXML());
