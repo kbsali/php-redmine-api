@@ -32,7 +32,7 @@ class Client
     /**
      * @var string
      */
-    private $apikey;
+    private $apikeyOrUsername;
 
     /**
      * @var string or null
@@ -61,7 +61,7 @@ class Client
      * @var array APIs
      */
     private $apis = array();
-    
+
     /**
      * @var int|null Redmine response code, null if request is not still completed
      */
@@ -71,23 +71,24 @@ class Client
      * Error strings if json is invalid
      */
     private static $json_errors = array(
-        JSON_ERROR_NONE => 'No error has occurred',
-        JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+        JSON_ERROR_NONE      => 'No error has occurred',
+        JSON_ERROR_DEPTH     => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-        JSON_ERROR_SYNTAX => 'Syntax error',
+        JSON_ERROR_SYNTAX    => 'Syntax error',
     );
 
     /**
-     * @param string $url
-     * @param string $apikey
-     * @param string $pass (string or null)
+     * Usage: apikeyOrUsername can be auth key or username.
+     * Password needs to be set if username is given.
      *
-     * Usage: apikey can be auth key or username. Password needs to be set if username is given.
+     * @param string $url
+     * @param string $apikeyOrUsername
+     * @param string $pass             (string or null)
      */
-    public function __construct($url, $apikey, $pass = null)
+    public function __construct($url, $apikeyOrUsername, $pass = null)
     {
-        $this->url    = $url;
-        $this->apikey = $apikey;
+        $this->url = $url;
+        $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
 
@@ -98,73 +99,35 @@ class Client
      */
     public function api($name)
     {
-        if (!isset($this->apis[$name])) {
-            switch ($name) {
-                case 'attachment':
-                    $api = new Api\Attachment($this);
-                    break;
-                // @todo finish implementation!
-                case 'group':
-                    $api = new Api\Group($this);
-                    break;
-                case 'custom_fields':
-                    $api = new Api\CustomField($this);
-                    break;
-                case 'issue':
-                    $api = new Api\Issue($this);
-                    break;
-                case 'issue_category':
-                    $api = new Api\IssueCategory($this);
-                    break;
-                case 'issue_priority':
-                    $api = new Api\IssuePriority($this);
-                    break;
-                // @todo finish implementation!
-                case 'issue_relation':
-                    $api = new Api\IssueRelation($this);
-                    break;
-                case 'issue_status':
-                    $api = new Api\IssueStatus($this);
-                    break;
-                // @todo finish implementation!
-                case 'membership':
-                    $api = new Api\Membership($this);
-                    break;
-                case 'news':
-                    $api = new Api\News($this);
-                    break;
-                case 'project':
-                    $api = new Api\Project($this);
-                    break;
-                case 'query':
-                    $api = new Api\Query($this);
-                    break;
-                case 'role':
-                    $api = new Api\Role($this);
-                    break;
-                case 'time_entry':
-                    $api = new Api\TimeEntry($this);
-                    break;
-                case 'time_entry_activity':
-                    $api = new Api\TimeEntryActivity($this);
-                    break;
-                case 'tracker':
-                    $api = new Api\Tracker($this);
-                    break;
-                case 'user':
-                    $api = new Api\User($this);
-                    break;
-                case 'version':
-                    $api = new Api\Version($this);
-                    break;
-                case 'wiki':
-                    $api = new Api\Wiki($this);
-                    break;
-                default:
-                    throw new \InvalidArgumentException();
-            }
-            $this->apis[$name] = $api;
+        $classes = array(
+            'attachment'          => 'Attachment',
+            'group'               => 'Group',
+            'custom_fields'       => 'CustomField',
+            'issue'               => 'Issue',
+            'issue_category'      => 'IssueCategory',
+            'issue_priority'      => 'IssuePriority',
+            'issue_relation'      => 'IssueRelation',
+            'issue_status'        => 'IssueStatus',
+            'membership'          => 'Membership',
+            'news'                => 'News',
+            'project'             => 'Project',
+            'query'               => 'Query',
+            'role'                => 'Role',
+            'time_entry'          => 'TimeEntry',
+            'time_entry_activity' => 'TimeEntryActivity',
+            'tracker'             => 'Tracker',
+            'user'                => 'User',
+            'version'             => 'Version',
+            'wiki'                => 'Wiki',
+        );
+        if (!isset($classes[$name])) {
+            throw new \InvalidArgumentException();
         }
+        if (isset($this->apis[$name])) {
+            return $this->apis[$name];
+        }
+        $c = 'Api\\'.$classes[$name];
+        $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];
     }
@@ -291,12 +254,12 @@ class Client
 
         return $this;
     }
-    
+
     /**
      * Returns Redmine response code
      * @return int
      */
-    public function getResponseCode() 
+    public function getResponseCode()
     {
         return $this->responseCode;
     }
@@ -341,14 +304,13 @@ class Client
         $this->getPort($this->url.$path);
 
         $curl = curl_init();
-        if (isset($this->apikey) && $this->useHttpAuth) {
-            if ($this->pass) {
-                curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.$this->pass );
-                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        if (isset($this->apikeyOrUsername) && $this->useHttpAuth) {
+            if (null === $this->pass) {
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999) );
             } else {
-                curl_setopt($curl, CURLOPT_USERPWD, $this->apikey.':'.rand(100000, 199999) );
-                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass );
             }
+            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
         curl_setopt($curl, CURLOPT_URL, $this->url.$path);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
@@ -373,8 +335,8 @@ class Client
         }
 
         if (!empty($httpHeader)) {
-            if (!$this->pass) {
-                $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikey;
+            if (null === $this->pass) {
+                $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
             }
             curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
         }
@@ -405,6 +367,7 @@ class Client
         curl_close($curl);
 
         if ($response) {
+            // if response is XML, return an SimpleXMLElement object
             if ('<' === substr($response, 0, 1)) {
                 return new \SimpleXMLElement($response);
             }

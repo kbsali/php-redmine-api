@@ -18,7 +18,11 @@ $versionId       = 2;
 
 // ----------------------------
 // Instanciate a redmine client
+// --> with ApiKey
 $client = new Redmine\Client('http://redmine.example.com', '1234567890abcdfgh');
+
+// --> with Username/Password
+$client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 
 // ----------------------------
 // [OPTIONAL] if you want to check
