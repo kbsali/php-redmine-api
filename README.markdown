@@ -71,6 +71,8 @@ $ php composer.phar require kbsali/redmine-api:1.*
 require_once 'vendor/autoload.php';
 
 $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
+//-- OR --
+$client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 
 $client->api('user')->all();
 $client->api('user')->listing();
