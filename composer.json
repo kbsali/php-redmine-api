@@ -9,7 +9,7 @@
         {
             "name": "Kevin Saliou",
             "email": "kevin@saliou.name",
-            "homepage": "http://kbsali.github.com"
+            "homepage": "http://kevin.saliou.name"
         }
     ],
     "require": {
@@ -20,8 +20,5 @@
         "psr-0": {
             "Redmine": "lib/"
         }
-    },
-    "config": {
-        "bin-dir": "bin/"
     }
 }

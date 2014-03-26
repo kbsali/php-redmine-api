@@ -329,8 +329,7 @@ class Client
         }
         if ('/uploads.json' === $path || '/uploads.xml' === $path) {
             $httpHeader[] = 'Content-Type: application/octet-stream';
-        }
-        elseif ('json' === substr($tmp['path'], -4)) {
+        } elseif ('json' === substr($tmp['path'], -4)) {
             $httpHeader[] = 'Content-Type: application/json';
         }
 
