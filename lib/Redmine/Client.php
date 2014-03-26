@@ -327,11 +327,11 @@ class Client
         if ('xml' === substr($tmp['path'], -3)) {
             $httpHeader[] = 'Content-Type: text/xml';
         }
-        if ('json' === substr($tmp['path'], -4)) {
-            $httpHeader[] = 'Content-Type: application/json';
-        }
         if ('/uploads.json' === $path || '/uploads.xml' === $path) {
             $httpHeader[] = 'Content-Type: application/octet-stream';
+        }
+        elseif ('json' === substr($tmp['path'], -4)) {
+            $httpHeader[] = 'Content-Type: application/json';
         }
 
         if (!empty($httpHeader)) {
