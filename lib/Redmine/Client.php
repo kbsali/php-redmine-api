@@ -35,6 +35,11 @@ class Client
     private $apikeyOrUsername;
 
     /**
+     * @var string
+     */
+    private $apikeyHeaderName = 'X-Redmine-API-Key';
+
+    /**
      * @var string or null
      */
     private $pass;
@@ -256,6 +261,27 @@ class Client
     }
 
     /**
+     * Set the name of the HTTP header used to set the API key for authentication
+     * @param string  $name
+     * @return Client
+     */
+    public function setApikeyHeaderName($name = null) {
+        if (null !== $name) {
+            $this->apikeyHeaderName = $name;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the HTTP header used to set the API key for authentication
+     * @return string
+     */
+    public function getApikeyHeaderName() {
+        return $this->apikeyHeaderName;
+    }
+
+    /**
      * Returns Redmine response code
      * @return int
      */
@@ -335,7 +361,7 @@ class Client
 
         if (!empty($httpHeader)) {
             if (null === $this->pass) {
-                $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
+                $httpHeader[] = $this->apikeyHeaderName.': '.$this->apikeyOrUsername;
             }
             curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
         }
