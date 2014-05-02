@@ -33,7 +33,7 @@ class Membership extends AbstractApi
      *
      * @param  string|int        $project project id or literal identifier
      * @param  array             $params  the new membership data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -60,7 +60,7 @@ class Membership extends AbstractApi
      *
      * @param  int               $id     id of the membership
      * @param  array             $params the new membership data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params = array())
     {
@@ -92,11 +92,11 @@ class Membership extends AbstractApi
     /**
      * Build the XML for a membership
      * @param  array             $params for the new/updated membership data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
 
         foreach ($params as $k => $v) {
             if ('role_ids' === $k && is_array($v)) {

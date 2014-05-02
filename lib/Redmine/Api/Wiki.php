@@ -54,7 +54,7 @@ class Wiki extends AbstractApi
      * @param  int|string        $project the project name
      * @param  string            $page    the page name
      * @param  array             $params  the new issue data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create($project, $page, array $params = array())
     {
@@ -65,7 +65,7 @@ class Wiki extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

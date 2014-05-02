@@ -89,7 +89,7 @@ class User extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
      * @param  array             $params the new user data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -111,7 +111,7 @@ class User extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k) {
                 $this->attachCustomFieldXML($xml, $v);
@@ -129,7 +129,7 @@ class User extends AbstractApi
      *
      * @param  string            $id     the user id
      * @param  array             $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -144,7 +144,7 @@ class User extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k) {
                 $this->attachCustomFieldXML($xml, $v);

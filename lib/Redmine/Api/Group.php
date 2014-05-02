@@ -50,7 +50,7 @@ class Group extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
      *
      * @param  array             $params the new group data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -65,7 +65,7 @@ class Group extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><group></group>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><group></group>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -111,7 +111,7 @@ class Group extends AbstractApi
      */
     public function addUser($id, $userId)
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
 
         return $this->post('/groups/'.$id.'/user/users.xml', $xml->asXML());
     }

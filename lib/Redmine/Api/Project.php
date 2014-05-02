@@ -79,7 +79,7 @@ class Project extends AbstractApi
      *
      * @param  array             $params the new project data
      * @throws \Exception
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -101,7 +101,7 @@ class Project extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
             if ('tracker_ids' == $k && is_array($v)) {
                 $trackers = $xml->addChild('tracker_ids', '');
@@ -123,7 +123,7 @@ class Project extends AbstractApi
      *
      * @param  string            $id     the project id
      * @param  array             $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -135,7 +135,7 @@ class Project extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

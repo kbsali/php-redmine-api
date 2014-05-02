@@ -2,7 +2,7 @@
 
 namespace Redmine;
 
-use SimpleXMLElement;
+use Redmine\Api\SimpleXMLElement;
 
 /**
  * Simple PHP Redmine client
@@ -394,7 +394,7 @@ class Client
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
             if ('<' === substr($response, 0, 1)) {
-                return new \SimpleXMLElement($response);
+                return new SimpleXMLElement($response);
             }
 
             return $response;
