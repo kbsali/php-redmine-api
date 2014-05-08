@@ -42,7 +42,7 @@ class TimeEntry extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param  array             $params the new time entry data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -62,7 +62,7 @@ class TimeEntry extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -76,7 +76,7 @@ class TimeEntry extends AbstractApi
      *
      * @param  id                $id
      * @param  array             $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -91,7 +91,7 @@ class TimeEntry extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

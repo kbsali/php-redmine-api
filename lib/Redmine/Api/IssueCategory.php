@@ -82,7 +82,7 @@ class IssueCategory extends AbstractApi
      *
      * @param  string|int        $project project id or literal identifier
      * @param  array             $params  the new issue category data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -97,7 +97,7 @@ class IssueCategory extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -111,7 +111,7 @@ class IssueCategory extends AbstractApi
      *
      * @param  string            $id     the issue category id
      * @param  array             $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -121,7 +121,7 @@ class IssueCategory extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

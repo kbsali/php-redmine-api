@@ -56,11 +56,11 @@ class Issue extends AbstractApi
     /**
      * Build the XML for an issue
      * @param  array             $params for the new/updated issue data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
 
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
@@ -100,7 +100,7 @@ class Issue extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
      * @param  array             $params the new issue data
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -142,7 +142,7 @@ class Issue extends AbstractApi
      *
      * @param  string            $id     the issue number
      * @param  array             $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
