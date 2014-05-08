@@ -41,7 +41,7 @@ class TimeEntry extends AbstractApi
      * Create a new time entry given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param  array             $params the new time entry data
+     * @param  array            $params the new time entry data
      * @return SimpleXMLElement
      */
     public function create(array $params = array())
@@ -74,8 +74,8 @@ class TimeEntry extends AbstractApi
      * Update time entry's informations
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param  id                $id
-     * @param  array             $params
+     * @param  id               $id
+     * @param  array            $params
      * @return SimpleXMLElement
      */
     public function update($id, array $params)

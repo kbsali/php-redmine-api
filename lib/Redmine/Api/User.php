@@ -88,7 +88,7 @@ class User extends AbstractApi
      * Create a new user given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
-     * @param  array             $params the new user data
+     * @param  array            $params the new user data
      * @return SimpleXMLElement
      */
     public function create(array $params = array())
@@ -127,8 +127,8 @@ class User extends AbstractApi
      * Update user's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param  string            $id     the user id
-     * @param  array             $params
+     * @param  string           $id     the user id
+     * @param  array            $params
      * @return SimpleXMLElement
      */
     public function update($id, array $params)

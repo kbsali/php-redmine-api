@@ -49,7 +49,7 @@ class Group extends AbstractApi
      * Create a new group with a group of users assigned
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
      *
-     * @param  array             $params the new group data
+     * @param  array            $params the new group data
      * @return SimpleXMLElement
      */
     public function create(array $params = array())

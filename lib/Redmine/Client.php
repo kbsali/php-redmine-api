@@ -262,10 +262,11 @@ class Client
 
     /**
      * Set the name of the HTTP header used to set the API key for authentication
-     * @param string  $name
+     * @param  string $name
      * @return Client
      */
-    public function setApikeyHeaderName($name = null) {
+    public function setApikeyHeaderName($name = null)
+    {
         if (null !== $name) {
             $this->apikeyHeaderName = $name;
         }
@@ -277,7 +278,8 @@ class Client
      * Returns the name of the HTTP header used to set the API key for authentication
      * @return string
      */
-    public function getApikeyHeaderName() {
+    public function getApikeyHeaderName()
+    {
         return $this->apikeyHeaderName;
     }
 

@@ -51,9 +51,9 @@ class Wiki extends AbstractApi
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  int|string        $project the project name
-     * @param  string            $page    the page name
-     * @param  array             $params  the new issue data
+     * @param  int|string       $project the project name
+     * @param  string           $page    the page name
+     * @param  array            $params  the new issue data
      * @return SimpleXMLElement
      */
     public function create($project, $page, array $params = array())

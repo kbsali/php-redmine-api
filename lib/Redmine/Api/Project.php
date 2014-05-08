@@ -77,7 +77,7 @@ class Project extends AbstractApi
      * Create a new project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array             $params the new project data
+     * @param  array            $params the new project data
      * @throws \Exception
      * @return SimpleXMLElement
      */
@@ -121,8 +121,8 @@ class Project extends AbstractApi
      * Update project's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  string            $id     the project id
-     * @param  array             $params
+     * @param  string           $id     the project id
+     * @param  array            $params
      * @return SimpleXMLElement
      */
     public function update($id, array $params)

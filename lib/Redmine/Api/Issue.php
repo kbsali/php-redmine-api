@@ -55,7 +55,7 @@ class Issue extends AbstractApi
 
     /**
      * Build the XML for an issue
-     * @param  array             $params for the new/updated issue data
+     * @param  array            $params for the new/updated issue data
      * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
@@ -99,7 +99,7 @@ class Issue extends AbstractApi
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  array             $params the new issue data
+     * @param  array            $params the new issue data
      * @return SimpleXMLElement
      */
     public function create(array $params = array())
@@ -140,8 +140,8 @@ class Issue extends AbstractApi
      * Update issue information's by username, repo and issue number. Requires authentication.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param  string            $id     the issue number
-     * @param  array             $params
+     * @param  string           $id     the issue number
+     * @param  array            $params
      * @return SimpleXMLElement
      */
     public function update($id, array $params)

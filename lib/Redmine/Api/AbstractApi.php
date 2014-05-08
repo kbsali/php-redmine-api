@@ -28,12 +28,13 @@ abstract class AbstractApi
 
     /**
      * Returns whether or not the last api call failed.
-     *
      * @return bool
      */
-    public function lastCallFailed() {
-        $clientResponseCode = $this->client->getResponseCode();
-        return $clientResponseCode < 200 || $clientResponseCode >= 400;
+    public function lastCallFailed()
+    {
+        $code = $this->client->getResponseCode();
+
+        return 200 < $code || $code >= 400;
     }
 
     /**
@@ -47,7 +48,7 @@ abstract class AbstractApi
     /**
      * {@inheritDoc}
      */
-    public function post($path, $data)
+    protected function post($path, $data)
     {
         return $this->client->post($path, $data);
     }

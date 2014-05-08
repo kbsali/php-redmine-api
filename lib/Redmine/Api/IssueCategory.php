@@ -80,8 +80,8 @@ class IssueCategory extends AbstractApi
      * Create a new issue category of $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#POST
      *
-     * @param  string|int        $project project id or literal identifier
-     * @param  array             $params  the new issue category data
+     * @param  string|int       $project project id or literal identifier
+     * @param  array            $params  the new issue category data
      * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
@@ -109,8 +109,8 @@ class IssueCategory extends AbstractApi
      * Update issue category's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
-     * @param  string            $id     the issue category id
-     * @param  array             $params
+     * @param  string           $id     the issue category id
+     * @param  array            $params
      * @return SimpleXMLElement
      */
     public function update($id, array $params)

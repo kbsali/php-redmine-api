@@ -31,8 +31,8 @@ class Membership extends AbstractApi
      * Create a new membership for $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#POST
      *
-     * @param  string|int        $project project id or literal identifier
-     * @param  array             $params  the new membership data
+     * @param  string|int       $project project id or literal identifier
+     * @param  array            $params  the new membership data
      * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
@@ -58,8 +58,8 @@ class Membership extends AbstractApi
      * Update membership information's by id
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
      *
-     * @param  int               $id     id of the membership
-     * @param  array             $params the new membership data
+     * @param  int              $id     id of the membership
+     * @param  array            $params the new membership data
      * @return SimpleXMLElement
      */
     public function update($id, array $params = array())
@@ -91,7 +91,7 @@ class Membership extends AbstractApi
 
     /**
      * Build the XML for a membership
-     * @param  array             $params for the new/updated membership data
+     * @param  array            $params for the new/updated membership data
      * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
