@@ -16,11 +16,12 @@ class Group extends AbstractApi
      * List groups
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of groups found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->groups = $this->get('/groups.json');
+        $this->groups = $this->retrieveAll('/groups.json', $params);
 
         return $this->groups;
     }
@@ -48,8 +49,8 @@ class Group extends AbstractApi
      * Create a new group with a group of users assigned
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
      *
-     * @param  array             $params the new group data
-     * @return \SimpleXMLElement
+     * @param  array            $params the new group data
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -64,12 +65,12 @@ class Group extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><group></group>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><group></group>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
 
-        return $this->post('/projects/groups.xml', $xml->asXML());
+        return $this->post('/groups.xml', $xml->asXML());
     }
 
     // public function update(array $params = array()) {}
@@ -110,7 +111,7 @@ class Group extends AbstractApi
      */
     public function addUser($id, $userId)
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
 
         return $this->post('/groups/'.$id.'/user/users.xml', $xml->asXML());
     }

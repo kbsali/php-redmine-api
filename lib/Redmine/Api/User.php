@@ -16,12 +16,12 @@ class User extends AbstractApi
      * List users
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
-     * @param  array $params the additional parameters (cf available $params above)
+     * @param  array $params to allow offset/limit (and more) to be passed
      * @return array list of users found
      */
     public function all(array $params = array())
     {
-        $this->users = $this->get('/users.json?'.http_build_query($params));
+        $this->users = $this->retrieveAll('/users.json', $params);
 
         return $this->users;
     }
@@ -88,8 +88,8 @@ class User extends AbstractApi
      * Create a new user given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
-     * @param  array             $params the new user data
-     * @return \SimpleXMLElement
+     * @param  array            $params the new user data
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -111,9 +111,13 @@ class User extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k) {
+                $this->attachCustomFieldXML($xml, $v);
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/users.xml', $xml->asXML());
@@ -123,9 +127,9 @@ class User extends AbstractApi
      * Update user's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param  string            $id     the user id
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  string           $id     the user id
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -140,9 +144,13 @@ class User extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k) {
+                $this->attachCustomFieldXML($xml, $v);
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->put('/users/'.$id.'.xml', $xml->asXML());

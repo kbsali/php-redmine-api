@@ -17,11 +17,12 @@ class Version extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of versions found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->versions = $this->get('/projects/'.$project.'/versions.json');
+        $this->versions = $this->retrieveAll('/projects/'.$project.'/versions.json', $params);
 
         return $this->versions;
     }
@@ -80,9 +81,9 @@ class Version extends AbstractApi
      * Create a new version for $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#POST
      *
-     * @param  string|int        $project project id or literal identifier
-     * @param  array             $params  the new issue category data
-     * @return \SimpleXMLElement
+     * @param  string|int       $project project id or literal identifier
+     * @param  array            $params  the new issue category data
+     * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -102,7 +103,7 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -114,9 +115,9 @@ class Version extends AbstractApi
      * Update issue category's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Versions#PUT
      *
-     * @param  string            $id     the issue category id
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  string           $id     the issue category id
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -131,7 +132,7 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

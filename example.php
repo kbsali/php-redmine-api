@@ -18,7 +18,11 @@ $versionId       = 2;
 
 // ----------------------------
 // Instanciate a redmine client
+// --> with ApiKey
 $client = new Redmine\Client('http://redmine.example.com', '1234567890abcdfgh');
+
+// --> with Username/Password
+$client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 
 // ----------------------------
 // [OPTIONAL] if you want to check
@@ -81,10 +85,12 @@ $client->api('user')->create(array(
 // ----------------------------
 // Issues
 $client->api('issue')->show($issueId);
-$client->api('issue')->all();
+$client->api('issue')->all(array(
+    'limit' => 100
+));
 $client->api('issue')->all(array('category_id'    => $categoryId));
 $client->api('issue')->all(array('tracker_id'     => $trackerId));
-$client->api('issue')->all(array('tracker_id'     => 'closed'));
+$client->api('issue')->all(array('status_id'      => 'closed'));
 $client->api('issue')->all(array('assigned_to_id' => $userId));
 $client->api('issue')->all(array('project_id'     => 'test'));
 $client->api('issue')->all(array(
@@ -275,3 +281,34 @@ $client->api('wiki')->create('testProject', 'about', array(
     'version'  => null,
 ));
 $client->api('wiki')->remove('testProject', 'about');
+
+
+// ----------------------------
+// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
+$issues['all'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => '*',
+])['total_count'];
+
+$issues['opened'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => 'open',
+])['total_count'];
+
+$issues['closed'] = $client->api('issue')->all([
+    'limit'      => 1,
+    'tracker_id' => 1,
+    'status_id'  => 'closed',
+])['total_count'];
+
+print_r($issues);
+/*
+Array
+(
+    [all] => 8
+    [opened] => 7
+    [closed] => 1
+)
+*/

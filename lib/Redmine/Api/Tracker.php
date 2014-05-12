@@ -16,11 +16,12 @@ class Tracker extends AbstractApi
      * List trackers
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of trackers found
      */
-    public function all()
+    public function all(array $params = array())
     {
-        $this->trackers = $this->get('/trackers.json');
+        $this->trackers = $this->retrieveAll('/trackers.json', $params);
 
         return $this->trackers;
     }

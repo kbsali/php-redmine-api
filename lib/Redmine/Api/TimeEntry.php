@@ -15,12 +15,12 @@ class TimeEntry extends AbstractApi
     /**
      * List time entries
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-     * @param  array $params to allow offset/limit to be passed
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of time entries found
      */
     public function all(array $params = array())
     {
-        $this->timeEntries = $this->get('/time_entries.json?'.http_build_query($params));
+        $this->timeEntries = $this->retrieveAll('/time_entries.json', $params);
 
         return $this->timeEntries;
     }
@@ -41,8 +41,8 @@ class TimeEntry extends AbstractApi
      * Create a new time entry given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param  array             $params the new time entry data
-     * @return \SimpleXMLElement
+     * @param  array            $params the new time entry data
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -62,7 +62,7 @@ class TimeEntry extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -74,9 +74,9 @@ class TimeEntry extends AbstractApi
      * Update time entry's informations
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param  id                $id
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  id               $id
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -91,7 +91,7 @@ class TimeEntry extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

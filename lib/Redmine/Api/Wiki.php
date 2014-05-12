@@ -16,11 +16,12 @@ class Wiki extends AbstractApi
      * List wiki pages of given $project
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of wiki pages found for the given project
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->wikiPages = $this->get('/projects/'.$project.'/wiki/index.json');
+        $this->wikiPages = $this->retrieveAll('/projects/'.$project.'/wiki/index.json', $params);
 
         return $this->wikiPages;
     }
@@ -50,10 +51,10 @@ class Wiki extends AbstractApi
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  int|string        $project the project name
-     * @param  string            $page    the page name
-     * @param  array             $params  the new issue data
-     * @return \SimpleXMLElement
+     * @param  int|string       $project the project name
+     * @param  string           $page    the page name
+     * @param  array            $params  the new issue data
+     * @return SimpleXMLElement
      */
     public function create($project, $page, array $params = array())
     {
@@ -62,15 +63,14 @@ class Wiki extends AbstractApi
             'comments' => null,
             'version'  => null,
         );
-        $params = $this->cleanParams($params);
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
 
-        return $this->post('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
+        return $this->put('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
     }
 
     /**

@@ -17,11 +17,12 @@ class IssueCategory extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of issue categories found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->issueCategories = $this->get('/projects/'.$project.'/issue_categories.json');
+        $this->issueCategories = $this->retrieveAll('/projects/'.$project.'/issue_categories.json', $params);
 
         return $this->issueCategories;
     }
@@ -79,9 +80,9 @@ class IssueCategory extends AbstractApi
      * Create a new issue category of $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#POST
      *
-     * @param  string|int        $project project id or literal identifier
-     * @param  array             $params  the new issue category data
-     * @return \SimpleXMLElement
+     * @param  string|int       $project project id or literal identifier
+     * @param  array            $params  the new issue category data
+     * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -96,7 +97,7 @@ class IssueCategory extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -108,9 +109,9 @@ class IssueCategory extends AbstractApi
      * Update issue category's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
-     * @param  string            $id     the issue category id
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  string           $id     the issue category id
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -120,7 +121,7 @@ class IssueCategory extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

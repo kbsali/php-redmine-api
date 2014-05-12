@@ -35,7 +35,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = array())
     {
-        return $this->get('/issues.json?'.http_build_query($params));
+        return $this->retrieveAll('/issues.json', $params);
     }
 
     /**
@@ -55,12 +55,12 @@ class Issue extends AbstractApi
 
     /**
      * Build the XML for an issue
-     * @param  array             $params for the new/updated issue data
-     * @return \SimpleXMLElement
+     * @param  array            $params for the new/updated issue data
+     * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
 
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
@@ -99,8 +99,8 @@ class Issue extends AbstractApi
      * The issue is assigned to the authenticated user.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  array             $params the new issue data
-     * @return \SimpleXMLElement
+     * @param  array            $params the new issue data
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -130,6 +130,7 @@ class Issue extends AbstractApi
         $params = array_filter(array_merge($defaults, $params));
 
         $xml = $this->buildXML($params);
+
         return $this->post('/issues.xml', $xml->asXML());
         // $json = json_encode(array('issue' => $params));
         // return $this->post('/issues.json', $json);
@@ -139,9 +140,9 @@ class Issue extends AbstractApi
      * Update issue information's by username, repo and issue number. Requires authentication.
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param  string            $id     the issue number
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  string           $id     the issue number
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -210,7 +211,7 @@ class Issue extends AbstractApi
             unset($params['project']);
 
             if (isset($params['category'])) {
-                $params['category_id'] = $this->client->api('issue_category')->getIdByName($params['project_id'], $params['project']);
+                $params['category_id'] = $this->client->api('issue_category')->getIdByName($params['project_id'], $params['category']);
                 unset($params['category']);
             }
         }

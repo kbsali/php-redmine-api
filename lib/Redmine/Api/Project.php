@@ -16,12 +16,12 @@ class Project extends AbstractApi
      * List projects
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  int   $limit limit of projects
+     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
      * @return array list of projects found
      */
     public function all(array $params = array())
     {
-        $this->projects = $this->get('/projects.json?'.http_build_query($params));
+        $this->projects = $this->retrieveAll('/projects.json', $params);
 
         return $this->projects;
     }
@@ -77,8 +77,9 @@ class Project extends AbstractApi
      * Create a new project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  array             $params the new project data
-     * @return \SimpleXMLElement
+     * @param  array            $params the new project data
+     * @throws \Exception
+     * @return SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -87,7 +88,12 @@ class Project extends AbstractApi
             'identifier'  => null,
             'description' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
+
         if(
             !isset($params['name'])
          || !isset($params['identifier'])
@@ -95,9 +101,17 @@ class Project extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('tracker_ids' == $k && is_array($v)) {
+                $trackers = $xml->addChild('tracker_ids', '');
+                $trackers->addAttribute('type', 'array');
+                foreach ($v as $id) {
+                    $trackers->addChild('tracker', $id);
+                }
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/projects.xml', $xml->asXML());
@@ -107,9 +121,9 @@ class Project extends AbstractApi
      * Update project's information
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param  string            $id     the project id
-     * @param  array             $params
-     * @return \SimpleXMLElement
+     * @param  string           $id     the project id
+     * @param  array            $params
+     * @return SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -121,7 +135,7 @@ class Project extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }

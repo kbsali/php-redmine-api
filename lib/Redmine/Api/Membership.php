@@ -17,11 +17,12 @@ class Membership extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
      * @param  string|int $project project id or literal identifier
+     * @param  array      $params  optional parameters to be passed to the api (offset, limit, ...)
      * @return array      list of memberships found
      */
-    public function all($project)
+    public function all($project, array $params = array())
     {
-        $this->memberships = $this->get('/projects/'.$project.'/memberships.json');
+        $this->memberships = $this->retrieveAll('/projects/'.$project.'/memberships.json', $params);
 
         return $this->memberships;
     }
@@ -30,9 +31,9 @@ class Membership extends AbstractApi
      * Create a new membership for $project given an array of $params
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#POST
      *
-     * @param  string|int        $project project id or literal identifier
-     * @param  array             $params  the new membership data
-     * @return \SimpleXMLElement
+     * @param  string|int       $project project id or literal identifier
+     * @param  array            $params  the new membership data
+     * @return SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -57,9 +58,9 @@ class Membership extends AbstractApi
      * Update membership information's by id
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
      *
-     * @param  int        $id     id of the membership
-     * @param  array      $params the new membership data
-     * @return \SimpleXMLElement
+     * @param  int              $id     id of the membership
+     * @param  array            $params the new membership data
+     * @return SimpleXMLElement
      */
     public function update($id, array $params = array())
     {
@@ -67,7 +68,7 @@ class Membership extends AbstractApi
             'role_ids' => null
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(!isset($params['role_ids'])) {
+        if (!isset($params['role_ids'])) {
             throw new \Exception('Missing mandatory parameters');
         }
 
@@ -90,12 +91,12 @@ class Membership extends AbstractApi
 
     /**
      * Build the XML for a membership
-     * @param  array             $params for the new/updated membership data
-     * @return \SimpleXMLElement
+     * @param  array            $params for the new/updated membership data
+     * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
 
         foreach ($params as $k => $v) {
             if ('role_ids' === $k && is_array($v)) {
