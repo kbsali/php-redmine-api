@@ -56,8 +56,9 @@ $client->api('project')->listing();
 $client->api('project')->show($projectId);
 $client->api('project')->getIdByName('Elvis');
 $client->api('project')->create(array(
-    'name'       => 'some name',
-    'identifier' => 'the_identifier',
+    'name'        => 'some name',
+    'identifier'  => 'the_identifier',
+    'tracker_ids' => array(),
 ));
 $client->api('project')->update($projectId, array(
     'name' => 'different name',
@@ -128,6 +129,7 @@ $client->api('issue')->create(array(
             'value' => $_POST['EMAIL'],
         ),
     ),
+    'watcher_user_ids' => array(),
 ));
 $client->api('issue')->update($issueId, array(
     // 'subject'        => 'test note (xml) 1',
@@ -262,7 +264,8 @@ $client->api('group')->removeUser($groupId, $userId);
 $client->api('membership')->all($projectId);
 $client->api('membership')->create($projectId, array(
     'user_id'  => null,
-    'role_ids' => null,
+    'user_ids' => array(),
+    'role_ids' => array(),
 ));
 $client->api('membership')->remove($membershipId);
 

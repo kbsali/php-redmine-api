@@ -118,15 +118,16 @@ abstract class AbstractApi
             }
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
+
             $newDataSet = (array) $this->get($endpoint . '?' . http_build_query($params));
             $ret = array_merge_recursive($ret, $newDataSet);
+
             $offset += $_limit;
-            // Break if the data set is the last one, as the offset is greater
-            // than the total count
-            if (empty($newDataSet)
-                || (array_key_exists('offset', $newDataSet)
-                && array_key_exists('total_count', $newDataSet)
-                && $newDataSet['offset'] >= $newDataSet['total_count'])
+            if (empty($newDataSet) || (
+                    isset($newDataSet['offset']) &&
+                    isset($newDataSet['total_count']) &&
+                    $newDataSet['offset'] >= $newDataSet['total_count']
+                )
             ) {
                 $limit = 0;
             }
@@ -143,15 +144,17 @@ abstract class AbstractApi
      * @return $xml             Element
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
-    protected function attachCustomFieldXML($xml, $fields)
+    protected function attachCustomFieldXML(SimpleXMLElement $xml, $fields)
     {
-        $fieldsXML = $xml->addChild('custom_fields');
-        $fieldsXML->addAttribute('type', 'array');
+        $fields = $xml->addChild('custom_fields');
+        $fields->addAttribute('type', 'array');
         foreach ($fields as $field) {
-            $fieldXML = $fieldsXML->addChild('custom_field');
-            $fieldXML->addAttribute('name', $field['name']);
-            $fieldXML->addAttribute('id', $field['id']);
-            $fieldXML->addChild('value', $field['value']);
+            $field = $fields->addChild('custom_field');
+            if (isset($field['name'])) {
+                $field->addAttribute('name', $field['name']);
+            }
+            $field->addAttribute('id', $field['id']);
+            $field->addChild('value', $field['value']);
         }
 
         return $xml;

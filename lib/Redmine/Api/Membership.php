@@ -43,8 +43,7 @@ class Membership extends AbstractApi
             'role_ids' => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
-           (!isset($params['user_ids']) && !isset($params['user_id']))
+        if((!isset($params['user_ids']) && !isset($params['user_id']))
          || !isset($params['role_ids'])
         ) {
             throw new \Exception('Missing mandatory parameters');
