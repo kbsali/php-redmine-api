@@ -144,17 +144,17 @@ abstract class AbstractApi
      * @return $xml             Element
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
-    protected function attachCustomFieldXML(SimpleXMLElement $xml, $fields)
+    protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
     {
-        $fields = $xml->addChild('custom_fields');
-        $fields->addAttribute('type', 'array');
+        $_fields = $xml->addChild('custom_fields');
+        $_fields->addAttribute('type', 'array');
         foreach ($fields as $field) {
-            $field = $fields->addChild('custom_field');
+            $_field = $_fields->addChild('custom_field');
             if (isset($field['name'])) {
-                $field->addAttribute('name', $field['name']);
+                $_field->addAttribute('name', $field['name']);
             }
-            $field->addAttribute('id', $field['id']);
-            $field->addChild('value', $field['value']);
+            $_field->addAttribute('id', $field['id']);
+            $_field->addChild('value', $field['value']);
         }
 
         return $xml;
