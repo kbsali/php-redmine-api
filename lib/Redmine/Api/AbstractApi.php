@@ -118,8 +118,18 @@ abstract class AbstractApi
             }
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
-            $ret = array_merge_recursive($ret, $this->get($endpoint . '?' . http_build_query($params)));
+            $newDataSet = (array) $this->get($endpoint . '?' . http_build_query($params));
+            $ret = array_merge_recursive($ret, $newDataSet);
             $offset += $_limit;
+            // Break if the data set is the last one, as the offset is greater
+            // than the total count
+            if (empty($newDataSet)
+                || (array_key_exists('offset', $newDataSet)
+                && array_key_exists('total_count', $newDataSet)
+                && $newDataSet['offset'] >= $newDataSet['total_count'])
+            ) {
+                $limit = 0;
+            }
         }
 
         return $ret;
