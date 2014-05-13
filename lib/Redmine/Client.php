@@ -326,7 +326,7 @@ class Client
      * @return false|SimpleXMLElement|string
      * @throws \Exception                    If anything goes wrong on curl request
      */
-    private function runRequest($path, $method = 'GET', $data = '')
+    protected function runRequest($path, $method = 'GET', $data = '')
     {
         $this->responseCode = null;
         $this->getPort($this->url.$path);

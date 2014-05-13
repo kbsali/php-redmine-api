@@ -283,6 +283,11 @@ $client->api('wiki')->create('testProject', 'about', array(
     'comments' => null,
     'version'  => null,
 ));
+$client->api('wiki')->update('testProject', 'about', array(
+    'text'     => null,
+    'comments' => null,
+    'version'  => null,
+));
 $client->api('wiki')->remove('testProject', 'about');
 
 

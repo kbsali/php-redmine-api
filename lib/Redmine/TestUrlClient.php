@@ -2,8 +2,13 @@
 
 namespace Redmine;
 
-class TestClient extends Client
+class TestUrlClient extends Client
 {
+    public function get($path)
+    {
+        return $this->runRequest($path, 'GET');
+    }
+
     /**
      * @param  string                        $path
      * @param  string                        $method
@@ -13,9 +18,9 @@ class TestClient extends Client
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {
-        if(in_array($method, array('GET', 'DELETE'))) {
-            throw new \Exception('not available');
-        }
-        return $data;
+        return array(
+            'path' => $path,
+            'method' => $method,
+        );
     }
 }
