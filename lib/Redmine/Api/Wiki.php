@@ -27,15 +27,14 @@ class Wiki extends AbstractApi
     }
 
     /**
-     *
-     * Getting [an old version of ] a wiki page
+     * Getting [an old version of] a wiki page
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-a-wiki-page
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-an-old-version-of-a-wiki-page
      *
      * @param  int|string $project the project name
      * @param  string     $page    the page name
      * @param  int        $version version of the page
-     * @return array      information about the issue
+     * @return array      information about the wiki page
      */
     public function show($project, $page, $version = null)
     {
@@ -47,13 +46,11 @@ class Wiki extends AbstractApi
     }
 
     /**
-     * Create a new issue given an array of $params
-     * The issue is assigned to the authenticated user.
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
+     * Create a new wiki page given an array of $params
      *
      * @param  int|string       $project the project name
      * @param  string           $page    the page name
-     * @param  array            $params  the new issue data
+     * @param  array            $params  the new wiki page data
      * @return SimpleXMLElement
      */
     public function create($project, $page, array $params = array())
@@ -71,6 +68,19 @@ class Wiki extends AbstractApi
         }
 
         return $this->put('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
+    }
+
+    /**
+     * Updates wiki page $page
+     *
+     * @param  int|string       $project the project name
+     * @param  string           $page    the page name
+     * @param  array            $params  the new wiki page data
+     * @return SimpleXMLElement
+     */
+    public function update($project, $page, array $params = array())
+    {
+        return $this->create($project, $page, $params);
     }
 
     /**
