@@ -2,7 +2,6 @@
 
 namespace Redmine\Tests;
 
-use Redmine\Client;
 use Redmine\TestClient;
 
 class IssueXmlTest extends \PHPUnit_Framework_TestCase
@@ -24,6 +23,38 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
     }
 
+    public function testCreateComplexWithUpload()
+    {
+        $res = $this->client->api('issue')->create(array(
+            'project_id'  => 'myproject',
+            'subject'     => 'A test issue',
+            'description' => 'Here goes the issue description',
+            'uploads'     => array(
+                array(
+                  'token'       => 'asdfasdfasdfasdf',
+                  'filename'    => 'MyFile.pdf',
+                  'description' => 'MyFile is better then YourFile...',
+                  'content_type'=> 'application/pdf'
+                )
+            )
+        ));
+
+        $xml = '<?xml version="1.0"?>
+<issue>
+    <subject>A test issue</subject>
+    <description>Here goes the issue description</description>
+    <project_id>myproject</project_id>
+    <uploads type="array">
+      <upload>
+        <token>asdfasdfasdfasdf</token>
+        <filename>MyFile.pdf</filename>
+        <description>MyFile is better then YourFile...</description>
+        <content_type>application/pdf</content_type>
+      </upload>
+    </uploads>
+</issue>';
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+    }
     public function testCreateComplex()
     {
         $res = $this->client->api('issue')->create(array(

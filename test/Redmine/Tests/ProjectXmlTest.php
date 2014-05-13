@@ -2,7 +2,6 @@
 
 namespace Redmine\Tests;
 
-use Redmine\Client;
 use Redmine\TestClient;
 
 class ProjectXmlTest extends \PHPUnit_Framework_TestCase
