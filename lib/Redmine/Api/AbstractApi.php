@@ -123,7 +123,11 @@ abstract class AbstractApi
             $offset += $_limit;
             // Break if the data set is the last one, as the offset is greater
             // than the total count
-            if ($newDataSet['offset'] >= $newDataSet['total_count']) {
+            if (empty($newDataSet)
+                || (array_key_exists('offset', $newDataSet)
+                && array_key_exists('total_count', $newDataSet)
+                && $newDataSet['offset'] >= $newDataSet['total_count'])
+            ) {
                 $limit = 0;
             }
         }
