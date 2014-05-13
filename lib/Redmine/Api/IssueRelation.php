@@ -48,11 +48,11 @@ class IssueRelation extends AbstractApi
      * Delete a relation
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#DELETE
      *
-     * @param  int     $id the relation id
-     * @return boolean
+     * @param  int    $id the relation id
+     * @return string
      */
     public function remove($id)
     {
-        return ' ' !== $this->delete('/relations/'.$id.'.xml');
+        return $this->delete('/relations/'.$id.'.xml');
     }
 }

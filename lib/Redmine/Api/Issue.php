@@ -239,7 +239,12 @@ class Issue extends AbstractApi
      */
     public function attach($id, array $attachment)
     {
-        $request['issue'] = array('id' => $id, 'uploads' => array('upload' => $attachment));
+        $request['issue'] = array(
+            'id' => $id,
+            'uploads' => array(
+                'upload' => $attachment
+            )
+        );
 
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }
