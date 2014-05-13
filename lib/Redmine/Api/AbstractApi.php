@@ -121,6 +121,11 @@ abstract class AbstractApi
             $newDataSet = (array) $this->get($endpoint . '?' . http_build_query($params));
             $ret = array_merge_recursive($ret, $newDataSet);
             $offset += $_limit;
+            // Break if the data set is the last one, as the offset is greater
+            // than the total count
+            if ($newDataSet['offset'] >= $newDataSet['total_count']) {
+                $limit = 0;
+            }
         }
 
         return $ret;
