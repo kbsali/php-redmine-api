@@ -123,7 +123,7 @@ abstract class AbstractApi
             $ret = array_merge_recursive($ret, $newDataSet);
 
             $offset += $_limit;
-            if (empty($newDataSet) || !array_key_exists('limit', $newDataSet) || (
+            if (empty($newDataSet) || !isset($newDataSet['limit']) || (
                     isset($newDataSet['offset']) &&
                     isset($newDataSet['total_count']) &&
                     $newDataSet['offset'] >= $newDataSet['total_count']
