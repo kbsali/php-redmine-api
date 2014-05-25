@@ -105,7 +105,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
             'assigned_to_id' => 1,
             'status_id'      => 2,
             'priority_id'    => 5,
-            'due_date'       => date('Y-m-d'),
+            'due_date'       => '2014-05-13',
 
             // not testable because this will trigger a status name to id resolving
             // 'status'         => 'Resolved',
