@@ -39,6 +39,57 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function testGetUrlReturnsValueFromConstructor()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame('http://test.local', $client->getUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetPortReturnsPortFromConstructorHttpUrl()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame(80, $client->getPort());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetPortReturnsPortFromConstructorUrlHttps()
+    {
+        $client = new Client('https://test.local', 'asdf');
+
+        $this->assertSame(443, $client->getPort());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetPortReturnsPortFromConstructorUrlWithPort()
+    {
+        $client = new Client('http://test.local:8080', 'asdf');
+
+        $this->assertSame(8080, $client->getPort());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetPortReturnsSetPort()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame($client, $client->setPort(28080));
+        $this->assertSame(28080, $client->getPort());
+    }
+
+    /**
+     * @test
      * @dataProvider getApiClassesProvider
      */
     public function shouldGetApiInstance($apiName, $class)
