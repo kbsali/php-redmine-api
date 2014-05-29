@@ -91,6 +91,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function testGetApikeyHeaderNameReturnsSetApikeyHeaderName()
+    {
+        // Test values
+        $headerName = 'X-Header-Redmine-API-Auth';
+        $otherHeaderName = 'X-Header-API-Auth';
+
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame($client, $client->setApikeyHeaderName($headerName));
+        $this->assertSame($headerName, $client->getApikeyHeaderName());
+
+        $this->assertSame($client, $client->setApikeyHeaderName(null));
+        $this->assertSame($headerName, $client->getApikeyHeaderName());
+
+        $this->assertSame($client, $client->setApikeyHeaderName($otherHeaderName));
+        $this->assertSame($otherHeaderName, $client->getApikeyHeaderName());
+    }
+
+    /**
+     * @test
+     */
     public function testDecodeJsonWithValidJson()
     {
         // Test values
