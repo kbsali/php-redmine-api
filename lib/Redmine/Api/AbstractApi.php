@@ -34,7 +34,7 @@ abstract class AbstractApi
     {
         $code = $this->client->getResponseCode();
 
-        return 200 < $code || $code >= 400;
+        return 200 != $code && 201 != $code;
     }
 
     /**
