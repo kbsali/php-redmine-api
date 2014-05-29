@@ -93,6 +93,7 @@ class Client
     public function __construct($url, $apikeyOrUsername, $pass = null)
     {
         $this->url = $url;
+        $this->getPort($url);
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
@@ -295,19 +296,16 @@ class Client
     /**
      * Returns the port of the current connection,
      * if not set, it will try to guess the port
-     * from the given $urlPath
-     * @param  string $urlPath the url called
+     * from the url of the client.
+     *
      * @return int    the port number
      */
-    public function getPort($urlPath = null)
+    public function getPort()
     {
-        if (null === $urlPath) {
-            return $this->port;
-        }
         if (null !== $this->port) {
             return $this->port;
         }
-        $tmp = parse_url($urlPath);
+        $tmp = parse_url($this->getUrl());
 
         if (isset($tmp['port'])) {
             $this->setPort($tmp['port']);
@@ -329,7 +327,6 @@ class Client
     protected function runRequest($path, $method = 'GET', $data = '')
     {
         $this->responseCode = null;
-        $this->getPort($this->url.$path);
 
         $curl = curl_init();
         if (isset($this->apikeyOrUsername) && $this->useHttpAuth) {
@@ -344,8 +341,8 @@ class Client
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_PORT , $this->port);
-        if (80 !== $this->port) {
+        curl_setopt($curl, CURLOPT_PORT , $this->getPort());
+        if (80 !== $this->getPort()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
         }
