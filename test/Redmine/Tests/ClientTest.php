@@ -91,6 +91,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function testGetResponseCodeIsInitialNull()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertNull($client->getResponseCode());
+    }
+
+    /**
+     * @test
+     */
     public function testGetApikeyHeaderNameReturnsSetApikeyHeaderName()
     {
         // Test values
