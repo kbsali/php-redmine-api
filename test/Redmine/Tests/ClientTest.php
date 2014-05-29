@@ -90,6 +90,73 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function testDecodeJsonWithValidJson()
+    {
+        // Test values
+        $inputJson = '{"projects":[{"id":1,"name":"Redmine",'
+            . '"identifier":"redmine","status":1,'
+            . '"created_on":"2007-09-29T10:03:04Z"}],'
+            . '"total_count":1,"offset":0,"limit":25}';
+        $expectedData = array(
+            'projects' => array(
+                0 => array(
+                    'id' => 1,
+                    'name' => 'Redmine',
+                    'identifier' => 'redmine',
+                    'status' => 1,
+                    'created_on' => '2007-09-29T10:03:04Z',
+                )
+            ),
+            'total_count' => 1,
+            'offset' => 0,
+            'limit' => 25
+        );
+
+        // Create the object under test
+        $client = new Client('http://test.local', 'asdf');
+
+        // Perform the tests
+        $this->assertSame($expectedData, $client->decode($inputJson));
+    }
+
+    /**
+     * @test
+     */
+    public function testDecodeJsonWithEmptyJson()
+    {
+        // Test values
+        $inputJson = '';
+        $expectedData = '';
+
+        // Create the object under test
+        $client = new Client('http://test.local', 'asdf');
+
+        // Perform the tests
+        $this->assertSame($expectedData, $client->decode($inputJson));
+    }
+
+    /**
+     * @test
+     */
+    public function testDecodeJsonWithSyntaxError()
+    {
+        // Test values
+        $invalidJson = '"projects":[{"id":1,"name":"Redmine",'
+            . '"identifier":"redmine","status":1,'
+            . '"created_on":"2007-09-29T10:03:04Z"}],'
+            . '"total_count":1,"offset":0,"limit":25';
+        $expectedError = 'Syntax error';
+
+        // Create the object under test
+        $client = new Client('http://test.local', 'asdf');
+
+        // Perform the tests
+        $this->assertSame($expectedError, $client->decode($invalidJson));
+    }
+
+    /**
+     * @test
      * @dataProvider getApiClassesProvider
      */
     public function shouldGetApiInstance($apiName, $class)
