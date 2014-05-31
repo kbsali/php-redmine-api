@@ -322,6 +322,75 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test create()
+     *
+     * @covers ::create
+     * @covers ::post
+     * @test
+     *
+     * @return void
+     */
+    public function testCreateCallsPost()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $postParameter = array(
+            'name' => 'Group Name',
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/groups'),
+                    $this->logicalXor(
+                        $this->stringEndsWith('.json'),
+                        $this->stringEndsWith('.xml')
+                    )
+                ),
+                $this->stringContains('<group><name>Group Name</name></group>')
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Group($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create($postParameter));
+    }
+
+    /**
+     * Test create()
+     *
+     * @covers ::create
+     * @covers ::post
+     * @expectedException Exception
+     * @test
+     *
+     * @return void
+     */
+    public function testCreateThrowsExceptionIsNameIsMissing()
+    {
+        // Test values
+        $postParameter = array();
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Create the object under test
+        $api = new Group($client);
+
+        // Perform the tests
+        $api->create($postParameter);
+    }
+
+    /**
      * Test removeUser()
      *
      * @covers ::addUser
