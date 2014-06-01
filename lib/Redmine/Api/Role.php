@@ -34,7 +34,7 @@ class Role extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->roles)) {
+        if (empty($this->roles) || $forceUpdate) {
             $this->all();
         }
         $ret = array();
