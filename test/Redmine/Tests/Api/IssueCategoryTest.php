@@ -248,4 +248,82 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->show(5));
     }
+
+    /**
+     * Test remove()
+     *
+     * @covers ::delete
+     * @covers ::remove
+     * @test
+     *
+     * @return void
+     */
+    public function testRemoveCallsDelete()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('delete')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/issue_categories/5'),
+                    $this->logicalXor(
+                        $this->stringContains('.json?'),
+                        $this->stringContains('.xml?')
+                    )
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->remove(5));
+    }
+
+    /**
+     * Test remove()
+     *
+     * @covers ::delete
+     * @covers ::remove
+     * @test
+     *
+     * @return void
+     */
+    public function testRemoveCallsDeleteWithParameters()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array('not-used');
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('delete')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/issue_categories/5'),
+                    $this->logicalXor(
+                        $this->stringContains('.json?'),
+                        $this->stringContains('.xml?')
+                    ),
+                    $this->stringContains('not-used')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->remove(5, $parameters));
+    }
 }
