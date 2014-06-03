@@ -34,7 +34,7 @@ class User extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->users)) {
+        if (empty($this->users) || $forceUpdate) {
             $this->all();
         }
         $ret = array();
