@@ -34,7 +34,7 @@ class Tracker extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->trackers)) {
+        if (empty($this->trackers) || $forceUpdate) {
             $this->all();
         }
         $ret = array();

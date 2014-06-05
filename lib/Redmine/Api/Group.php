@@ -34,7 +34,7 @@ class Group extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->groups)) {
+        if (empty($this->groups) || $forceUpdate) {
             $this->all();
         }
         $ret = array();

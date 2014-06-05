@@ -34,7 +34,7 @@ class CustomField extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->customFields)) {
+        if (empty($this->customFields) || $forceUpdate) {
             $this->all();
         }
         $ret = array();

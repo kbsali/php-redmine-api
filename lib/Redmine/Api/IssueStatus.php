@@ -34,7 +34,7 @@ class IssueStatus extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        if (empty($this->issueStatuses)) {
+        if (empty($this->issueStatuses) || $forceUpdate) {
             $this->all();
         }
         $ret = array();
