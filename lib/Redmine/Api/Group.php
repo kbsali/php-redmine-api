@@ -113,7 +113,7 @@ class Group extends AbstractApi
     {
         $xml = new SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
 
-        return $this->post('/groups/'.$id.'/user/users.xml', $xml->asXML());
+        return $this->post('/groups/'.$id.'/users.xml', $xml->asXML());
     }
 
     /**
