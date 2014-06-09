@@ -249,4 +249,67 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         $this->assertSame($response, $api->attach(5, $attachment));
     }
+
+    /**
+     * Test addWatcher()
+     *
+     * @covers ::addWatcher
+     * @test
+     *
+     * @return void
+     */
+    public function testAddWatcherCallsPost()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                $this->stringStartsWith('/issues/5/watchers.xml'),
+                $this->stringEndsWith('<user_id>10</user_id>')
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->addWatcher(5, 10));
+    }
+
+    /**
+     * Test removeWatcher()
+     *
+     * @covers ::removeWatcher
+     * @test
+     *
+     * @return void
+     */
+    public function testRemoveWatcherCallsPost()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('delete')
+            ->with(
+                $this->stringStartsWith('/issues/5/watchers/10.xml')
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->removeWatcher(5, 10));
+    }
 }
