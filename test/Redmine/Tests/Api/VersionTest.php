@@ -683,4 +683,299 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($api->getIdByName(5, 'Version 1'));
         $this->assertSame(5, $api->getIdByName(5, 'Version 5'));
     }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers       ::create
+     * @covers       ::validateSharing
+     * @dataProvider validSharingProvider
+     * @test
+     *
+     * @param string $sharingValue
+     * @param string $sharingXmlElement
+     *
+     * @return void
+     */
+    public function testCreateWithValidSharing($sharingValue, $sharingXmlElement)
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/projects/test/versions.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<version>'),
+                    $this->stringEndsWith('</version>' . PHP_EOL),
+                    $this->stringContains('<name>Test version</name>'),
+                    $this->stringContains($sharingXmlElement)
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create('test', $parameters));
+    }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers       ::create
+     * @covers       ::validateSharing
+     * @dataProvider validEmptySharingProvider
+     * @test
+     *
+     * @param string $sharingValue
+     *
+     * @return void
+     */
+    public function testCreateWithValidEmptySharing($sharingValue)
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/projects/test/versions.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<version>'),
+                    $this->stringEndsWith('</version>' . PHP_EOL),
+                    $this->stringContains('<name>Test version</name>'),
+                    $this->logicalNot(
+                        $this->stringContains('<sharing')
+                    )
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create('test', $parameters));
+    }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers            ::create
+     * @covers            ::validateSharing
+     * @dataProvider      invalidSharingProvider
+     * @expectedException Exception
+     * @test
+     *
+     * @param string $sharingValue
+     *
+     * @return void
+     */
+    public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
+    {
+        // Test values
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Create the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $api->create('test', $parameters);
+    }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers       ::update
+     * @covers       ::validateSharing
+     * @dataProvider validSharingProvider
+     * @test
+     *
+     * @param string $sharingValue
+     * @param string $sharingXmlElement
+     *
+     * @return void
+     */
+    public function testUpdateWithValidSharing($sharingValue, $sharingXmlElement)
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Update the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                '/versions/test.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<version>'),
+                    $this->stringEndsWith('</version>' . PHP_EOL),
+                    $this->stringContains('<name>Test version</name>'),
+                    $this->stringContains($sharingXmlElement)
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Update the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->update('test', $parameters));
+    }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers       ::update
+     * @covers       ::validateSharing
+     * @dataProvider validEmptySharingProvider
+     * @test
+     *
+     * @param string $sharingValue
+     *
+     * @return void
+     */
+    public function testUpdateWithValidEmptySharing($sharingValue)
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Update the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                '/versions/test.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<version>'),
+                    $this->stringEndsWith('</version>' . PHP_EOL),
+                    $this->stringContains('<name>Test version</name>'),
+                    $this->logicalNot(
+                        $this->stringContains('<sharing')
+                    )
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Update the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->update('test', $parameters));
+    }
+
+    /**
+     * Test validateSharing()
+     *
+     * @covers            ::update
+     * @covers            ::validateSharing
+     * @dataProvider      invalidSharingProvider
+     * @expectedException Exception
+     * @test
+     *
+     * @param string $sharingValue
+     *
+     * @return void
+     */
+    public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
+    {
+        // Test values
+        $parameters = array(
+            'name' => 'Test version',
+            'sharing' => $sharingValue,
+        );
+
+        // Update the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Update the object under test
+        $api = new Version($client);
+
+        // Perform the tests
+        $api->update('test', $parameters);
+    }
+
+    /**
+     * Data provider for valid sharing values
+     *
+     * @return array[]
+     */
+    public function validSharingProvider()
+    {
+        return array(
+            array('none', '<sharing>none</sharing>'),
+            array('descendants', '<sharing>descendants</sharing>'),
+            array('hierarchy', '<sharing>hierarchy</sharing>'),
+            array('tree', '<sharing>tree</sharing>'),
+            array('system', '<sharing>system</sharing>'),
+        );
+    }
+
+    /**
+     * Data provider for valid empty sharing values
+     *
+     * @return array[]
+     */
+    public function validEmptySharingProvider()
+    {
+        return array(
+            array(null),
+            array(false),
+            array(''),
+        );
+    }
+
+    /**
+     * Data provider for invalid sharing values
+     *
+     * @return array[]
+     */
+    public function invalidSharingProvider()
+    {
+        return array(
+            array('all'),
+            array('invalid'),
+        );
+    }
 }
