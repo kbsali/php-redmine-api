@@ -184,7 +184,7 @@ class Issue extends AbstractApi
      */
     public function removeWatcher($id, $watcher_user_id)
     {
-        return $this->delete('/issues/'.$id.'/watchers/'.$watcher_user_id.'.xml', $xml->asXML());
+        return $this->delete('/issues/'.$id.'/watchers/'.$watcher_user_id.'.xml');
     }
 
     /**

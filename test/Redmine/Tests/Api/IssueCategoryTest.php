@@ -326,4 +326,154 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->remove(5, $parameters));
     }
+
+    /**
+     * Test getIdByName()
+     *
+     * @covers ::getIdByName
+     * @test
+     *
+     * @return void
+     */
+    public function testGetIdByNameMakesGetRequest()
+    {
+        // Test values
+        $getResponse = array(
+            'issue_categories' => array(
+                array('id' => 5, 'name' => 'IssueCategory 5')
+            ),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->stringStartsWith('/projects/5/issue_categories.json')
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $this->assertFalse($api->getIdByName(5, 'IssueCategory 1'));
+        $this->assertSame(5, $api->getIdByName(5, 'IssueCategory 5'));
+    }
+
+    /**
+     * Test create()
+     *
+     * @covers ::post
+     * @covers ::create
+     * @expectedException Exception
+     * @test
+     *
+     * @return void
+     */
+    public function testCreateThrowsExceptionIfNameIsMissing()
+    {
+        // Test values
+        $parameters = array(
+            'name' => null,
+            'assigned_to_id' => 2,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $api->create(5, $parameters);
+    }
+
+    /**
+     * Test create()
+     *
+     * @covers ::post
+     * @covers ::create
+     * @test
+     *
+     * @return void
+     */
+    public function testCreateCallsPost()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test Category',
+            'assigned_to_id' => 2,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/projects/5/issue_categories.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<issue_category>'),
+                    $this->stringEndsWith('</issue_category>' . PHP_EOL),
+                    $this->stringContains('<name>Test Category</name>'),
+                    $this->stringContains('<assigned_to_id>2</assigned_to_id>')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create(5, $parameters));
+    }
+
+    /**
+     * Test update()
+     *
+     * @covers ::put
+     * @covers ::update
+     * @test
+     *
+     * @return void
+     */
+    public function testUpdateCallsPut()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'name' => 'Test Category',
+            'assigned_to_id' => 2,
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                '/issue_categories/5.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<issue_category>'),
+                    $this->stringEndsWith('</issue_category>' . PHP_EOL),
+                    $this->stringContains('<name>Test Category</name>'),
+                    $this->stringContains('<assigned_to_id>2</assigned_to_id>')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->update(5, $parameters));
+    }
 }

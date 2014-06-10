@@ -230,6 +230,59 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test create()
+     *
+     * @covers ::create
+     * @covers ::buildXML
+     * @test
+     *
+     * @return void
+     */
+    public function testCreateBuildsXml()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'user_ids' => array(1, 2),
+            'user_id' => 10,
+            'role_ids' => array(5, 6),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/projects/5/memberships'),
+                    $this->stringEndsWith('.xml')
+                ),
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<membership>'),
+                    $this->stringEndsWith('</membership>' . PHP_EOL),
+                    $this->stringContains('<user_ids type="array">'),
+                    $this->stringContains('<user_id>1</user_id>'),
+                    $this->stringContains('<user_id>2</user_id>'),
+                    $this->stringContains('</user_ids>'),
+                    $this->stringContains('<role_ids type="array">'),
+                    $this->stringContains('<role_id>5</role_id>'),
+                    $this->stringContains('<role_id>6</role_id>'),
+                    $this->stringContains('</role_ids>'),
+                    $this->stringContains('<user_id>10</user_id>')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Membership($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create(5, $parameters));
+    }
+
+    /**
      * Test update()
      *
      * @covers ::update

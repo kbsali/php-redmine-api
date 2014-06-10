@@ -8,6 +8,7 @@ use Redmine\Exception\InvalidArgumentException;
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function shouldPassApiKeyToContructor()
@@ -18,6 +19,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function shouldPassUsernameAndPasswordToContructor()
@@ -28,6 +30,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      * @expectedException InvalidArgumentException
      */
@@ -38,6 +41,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetUrlReturnsValueFromConstructor()
@@ -48,6 +52,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorHttpUrl()
@@ -58,6 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlHttps()
@@ -68,6 +74,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlWithPort()
@@ -78,6 +85,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetPortReturnsSetPort()
@@ -89,6 +97,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetResponseCodeIsInitialNull()
@@ -99,6 +108,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testGetApikeyHeaderNameReturnsSetApikeyHeaderName()
@@ -120,6 +130,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testDecodeJsonWithValidJson()
@@ -152,6 +163,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testDecodeJsonWithEmptyJson()
@@ -168,6 +180,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      */
     public function testDecodeJsonWithSyntaxError()
@@ -187,6 +200,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Redmine\Client
      * @test
      * @dataProvider getApiClassesProvider
      */
