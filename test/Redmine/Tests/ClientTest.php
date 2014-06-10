@@ -104,7 +104,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertNull($client->getResponseCode());
+        $this->assertEquals(0, $client->getResponseCode());
     }
 
     /**
