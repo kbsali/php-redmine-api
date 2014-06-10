@@ -1,34 +1,15 @@
 <?php
-/**
- * TimeEntryActivity API test
- *
- * PHP version 5.4
- *
- * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-05-29
- */
 
 namespace Redmine\Tests\Api;
 
 use Redmine\Api\TimeEntryActivity;
 
 /**
- * TimeEntryActivity API test
- *
  * @coversDefaultClass Redmine\Api\TimeEntryActivity
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-05-29
  */
 class TimeEntryActivityTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test all()
      *

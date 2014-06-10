@@ -1,34 +1,15 @@
 <?php
-/**
- * User API test
- *
- * PHP version 5.4
- *
- * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-06-03
- */
 
 namespace Redmine\Tests\Api;
 
 use Redmine\Api\User;
 
 /**
- * User API test
- *
  * @coversDefaultClass Redmine\Api\User
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-06-03
  */
 class UserTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test getCurrentUser()
      *

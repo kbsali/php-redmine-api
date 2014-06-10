@@ -9,7 +9,7 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Follows PSR-0 conventions and coding standard: autoload friendly
 * API entry points implementation state :
  * OK Attachments
- * *NOK Groups - only partially implemented*
+ * OK Groups
  * OK Custom Fields
  * OK Issues
  * OK Issue Categories
@@ -18,7 +18,7 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
  * OK Issue Statuses
  * OK News
  * OK Projects
- * *NOK Project Memberships - only partially implemented*
+ * OK Project Memberships
  * OK Queries
  * OK Roles
  * OK Time Entries
@@ -26,24 +26,20 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
  * OK Trackers
  * OK Users
  * OK Versions
- * *NOK Wiki - only partially implemented*
+ * OK Wiki
 
 ## Todo
 
 * API entry points :
- * Finish implementing *Groups*
- * Finish implementing *Issue Relations*
- * Finish implementing *Project Memberships*
 * Check header's response code (especially for POST/PUT/DELETE requests)
  * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
-* Maybe use Buzz or Guzzle for handling http connections
- * https://github.com/kriswallsmith/Buzz
+* Maybe Guzzle for handling http connections
  * https://github.com/guzzle/guzzle
 
 ## Limitations
 
 Redmine is missing some APIs for a full remote management of the data :
-* List of activities : http://www.redmine.org/issues/11464
+* List of activities & roles : http://www.redmine.org/issues/11464
 * ...
 
 A possible solution to this would be to create an extra APIs implementing the missing entry points. See existing effort in doing so : https://github.com/rschobbert/redmine-miss-api
@@ -53,13 +49,14 @@ A possible solution to this would be to create an extra APIs implementing the mi
 * PHP >= 5.3.2 with [cURL](http://php.net/manual/en/book.curl.php) extension,
 * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
  * then obtain your *API access key* in your profile page : /my/account
+ * or use your *username & password*
 
 ## Install
 
 Through [composer](http://getcomposer.org/download/), simply run :
 
 ```bash
-$ php composer.phar require kbsali/redmine-api:1.*
+$ php composer.phar require kbsali/redmine-api:~1.0
 ```
 
 ## Basic usage of `php-redmine-api` client
@@ -77,15 +74,15 @@ $client = new Redmine\Client('http://redmine.example.com', 'username', 'password
 $client->api('user')->all();
 $client->api('user')->listing();
 
-$client->api('issue')->create(array(
+$client->api('issue')->create([
     'project_id'  => 'test',
     'subject'     => 'some subject',
     'description' => 'a long description blablabla',
     'assigned_to' => 'user1',
-));
-$client->api('issue')->all(array(
+]);
+$client->api('issue')->all([
     'limit' => 1000
-));
+]);
 ```
 
 see `example.php`
@@ -94,3 +91,4 @@ see `example.php`
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
 - Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
+- And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors) ! :)

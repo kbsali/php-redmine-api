@@ -1,34 +1,15 @@
 <?php
-/**
- * Group API test
- *
- * PHP version 5.4
- *
- * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-05-31
- */
 
 namespace Redmine\Tests\Api;
 
 use Redmine\Api\Group;
 
 /**
- * Group API test
- *
  * @coversDefaultClass Redmine\Api\Group
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
- * @copyright  2014 Malte Gerth
- * @license    MIT
- * @link       https://github.com/kbsali/php-redmine-api
- * @since      2014-05-31
  */
 class GroupTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test all()
      *
