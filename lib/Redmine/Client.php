@@ -305,14 +305,13 @@ class Client
         if (null !== $this->port) {
             return $this->port;
         }
-        $tmp = parse_url($this->getUrl());
 
+        $tmp = parse_url($this->getUrl());
         if (isset($tmp['port'])) {
             $this->setPort($tmp['port']);
-
-            return $this->port;
+        } elseif (isset($tmp['scheme'])) {
+            $this->setPort(self::$defaultPorts[$tmp['scheme']]);
         }
-        $this->setPort(self::$defaultPorts[$tmp['scheme']]);
 
         return $this->port;
     }
