@@ -298,7 +298,7 @@ class Client
      * if not set, it will try to guess the port
      * from the url of the client.
      *
-     * @return int    the port number
+     * @return int the port number
      */
     public function getPort()
     {

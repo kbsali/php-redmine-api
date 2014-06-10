@@ -412,7 +412,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
             ->method('post')
             ->with(
                 $this->logicalAnd(
-                    $this->stringStartsWith('/groups/5/user/users'),
+                    $this->stringStartsWith('/groups/5/users'),
                     $this->logicalXor(
                         $this->stringEndsWith('.json'),
                         $this->stringEndsWith('.xml')
