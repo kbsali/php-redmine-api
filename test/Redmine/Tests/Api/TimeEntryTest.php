@@ -253,8 +253,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/time_entries.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<time_entry>'),
-                    $this->stringEndsWith('</time_entry>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
+                    $this->stringEndsWith('</time_entry>' . "\n"),
                     $this->stringContains('<issue_id>15</issue_id>'),
                     $this->stringContains('<project_id>25</project_id>'),
                     $this->stringContains('<hours>5.25</hours>')
@@ -295,8 +295,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/time_entries/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<time_entry>'),
-                    $this->stringEndsWith('</time_entry>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
+                    $this->stringEndsWith('</time_entry>' . "\n"),
                     $this->stringContains('<hours>10.25</hours>')
                 )
             )

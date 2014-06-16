@@ -333,7 +333,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->method('post')
             ->with(
                 '/issues.xml',
-                '<?xml version="1.0"?>' . PHP_EOL . '<issue/>' . PHP_EOL
+                '<?xml version="1.0"?>' . "\n" . '<issue/>' . "\n"
             )
             ->willReturn($getResponse);
 
@@ -400,8 +400,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<issue>'),
-                    $this->stringEndsWith('</issue>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
                     $this->stringContains('<status_id>cleanedValue</status_id>'),
@@ -442,7 +442,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->method('put')
             ->with(
                 '/issues/5.xml',
-                '<?xml version="1.0"?>' . PHP_EOL . '<issue><id>5</id></issue>' . PHP_EOL
+                '<?xml version="1.0"?>' . "\n" . '<issue><id>5</id></issue>' . "\n"
             )
             ->willReturn($getResponse);
 
@@ -509,8 +509,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<issue>'),
-                    $this->stringEndsWith('</issue>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
                     $this->stringContains('<status_id>cleanedValue</status_id>'),

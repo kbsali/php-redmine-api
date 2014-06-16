@@ -250,7 +250,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->method('put')
             ->with(
                 '/projects/5/wiki/test.xml',
-                '<?xml version="1.0"?>' . PHP_EOL . '<wiki_page/>' . PHP_EOL
+                '<?xml version="1.0"?>' . "\n" . '<wiki_page/>' . "\n"
             )
             ->willReturn($getResponse);
 
@@ -289,8 +289,8 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<wiki_page>'),
-                    $this->stringEndsWith('</wiki_page>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<wiki_page>'),
+                    $this->stringEndsWith('</wiki_page>' . "\n"),
                     $this->stringContains('<title>Test Wikipage</title>'),
                     $this->stringContains('<comments>Initial Edit</comments>'),
                     $this->stringContains('<text>Some page text</text>')
@@ -327,7 +327,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->method('put')
             ->with(
                 '/projects/5/wiki/test.xml',
-                '<?xml version="1.0"?>' . PHP_EOL . '<wiki_page/>' . PHP_EOL
+                '<?xml version="1.0"?>' . "\n" . '<wiki_page/>' . "\n"
             )
             ->willReturn($getResponse);
 
@@ -366,8 +366,8 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<wiki_page>'),
-                    $this->stringEndsWith('</wiki_page>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<wiki_page>'),
+                    $this->stringEndsWith('</wiki_page>' . "\n"),
                     $this->stringContains('<title>Test Wikipage</title>'),
                     $this->stringContains('<comments>Initial Edit</comments>'),
                     $this->stringContains('<text>Some page text</text>')
