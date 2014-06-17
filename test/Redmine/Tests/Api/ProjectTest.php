@@ -406,8 +406,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<project>'),
-                    $this->stringEndsWith('</project>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
+                    $this->stringEndsWith('</project>' . "\n"),
                     $this->stringContains('<identifier>test-project</identifier>'),
                     $this->stringContains('<name>Test Project</name>')
                 )
@@ -449,8 +449,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . PHP_EOL . '<project>'),
-                    $this->stringEndsWith('</project>' . PHP_EOL),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
+                    $this->stringEndsWith('</project>' . "\n"),
                     $this->stringContains('<tracker_ids type="array">'),
                     $this->stringContains('<tracker>10</tracker>'),
                     $this->stringContains('<tracker>5</tracker>'),
