@@ -511,6 +511,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
                     $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<id>5</id>'),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
                     $this->stringContains('<status_id>cleanedValue</status_id>'),
@@ -526,5 +527,304 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         // Perform the tests
         $this->assertSame($getResponse, $api->update(5, $parameters));
+    }
+
+    /**
+     * Test setIssueStatus()
+     *
+     * @covers ::setIssueStatus
+     * @test
+     *
+     * @return void
+     */
+    public function testSetIssueStatus()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $issueStatusApi = $this->getMockBuilder('Redmine\Api\Project')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $issueStatusApi->expects($this->once())
+            ->method('getIdByName')
+            ->willReturn(123);
+
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('api')
+            ->with('issue_status')
+            ->willReturn($issueStatusApi);
+
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                '/issues/5.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<id>5</id>'),
+                    $this->stringContains('<status_id>123</status_id>')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->setIssueStatus(5, 'Status Name'));
+    }
+
+    /**
+     * Test addNoteToIssue()
+     *
+     * @covers ::addNoteToIssue
+     * @test
+     *
+     * @return void
+     */
+    public function testAddNoteToIssue()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                '/issues/5.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<id>5</id>'),
+                    $this->stringContains('<notes>Note content</notes>')
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->addNoteToIssue(5, 'Note content'));
+    }
+
+    /**
+     * Test buildXML()
+     *
+     * @covers ::buildXML
+     * @test
+     *
+     * @return void
+     */
+    public function testBuildXmlWithCustomFields()
+    {
+        // Test values
+        $parameters = array(
+            'custom_fields' => array(
+                array('id' => 225, 'value' => 'One Custom Field'),
+                array('id' => 25, 'value' => 'Second Custom Field'),
+            ),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<custom_fields type="array">'),
+                    $this->stringContains('</custom_fields>'),
+                    $this->stringContains('<custom_field id="225"><value>One Custom Field</value></custom_field>'),
+                    $this->stringContains('<custom_field id="25"><value>Second Custom Field</value></custom_field>')
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->create($parameters);
+    }
+
+    /**
+     * Test buildXML()
+     *
+     * @covers ::buildXML
+     * @test
+     *
+     * @return void
+     */
+    public function testBuildXmlWithWatchers()
+    {
+        // Test values
+        $parameters = array(
+            'watcher_user_ids' => array(5, 25),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<watcher_user_ids type="array">'),
+                    $this->stringContains('</watcher_user_ids>'),
+                    $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
+                    $this->stringContains('<watcher_user_id>25</watcher_user_id>')
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->create($parameters);
+    }
+
+    /**
+     * Test buildXML()
+     *
+     * @covers ::buildXML
+     * @test
+     *
+     * @return void
+     */
+    public function testBuildXmlWithUploads()
+    {
+        // Test values
+        $parameters = array(
+            'uploads' => array(
+                array(
+                    'token' => 'first-token',
+                    'filename' => 'SomeRandomFile.txt',
+                    'description' => 'Simple description',
+                    'content_type' => 'text/plain',
+                ),
+                array(
+                    'token' => 'second-token',
+                    'filename' => 'An-Other-File.css',
+                    'content_type' => 'text/css',
+                )
+            ),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<uploads type="array">'),
+                    $this->stringContains('</uploads>'),
+                    $this->stringContains(
+                        '<upload>'
+                        . '<token>first-token</token>'
+                        . '<filename>SomeRandomFile.txt</filename>'
+                        . '<description>Simple description</description>'
+                        . '<content_type>text/plain</content_type>'
+                        . '</upload>'
+                    ),
+                    $this->stringContains(
+                        '<upload>'
+                        . '<token>second-token</token>'
+                        . '<filename>An-Other-File.css</filename>'
+                        . '<content_type>text/css</content_type>'
+                        . '</upload>'
+                    )
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->create($parameters);
+    }
+
+    /**
+     * Test buildXML()
+     *
+     * @covers ::buildXML
+     * @test
+     *
+     * @return void
+     */
+    public function testBuildXmlWithWatcherAndUploadAndCustomFieldAndStandard()
+    {
+        // Test values
+        $parameters = array(
+            'watcher_user_ids' => array(5),
+            'subject' => 'Issue subject',
+            'uploads' => array(
+                array(
+                    'token' => 'first-token',
+                    'filename' => 'SomeRandomFile.txt',
+                    'description' => 'Simple description',
+                    'content_type' => 'text/plain',
+                ),
+            ),
+            'custom_fields' => array(
+                array('id' => 25, 'value' => 'Second Custom Field'),
+            ),
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<watcher_user_ids type="array">'),
+                    $this->stringContains('</watcher_user_ids>'),
+                    $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
+                    $this->stringContains(
+                        '<upload>'
+                        . '<token>first-token</token>'
+                        . '<filename>SomeRandomFile.txt</filename>'
+                        . '<description>Simple description</description>'
+                        . '<content_type>text/plain</content_type>'
+                        . '</upload>'
+                    ),
+                    $this->stringContains(
+                        '<custom_field id="25">'
+                        . '<value>Second Custom Field</value>'
+                        . '</custom_field>'
+                    ),
+                    $this->stringContains('<subject>Issue subject</subject>')
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->create($parameters);
     }
 }
