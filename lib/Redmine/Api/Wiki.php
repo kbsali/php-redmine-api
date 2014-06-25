@@ -39,8 +39,8 @@ class Wiki extends AbstractApi
     public function show($project, $page, $version = null)
     {
         $path = null === $version
-            ? '/projects/'.$project.'/wiki/'.$page.'.json'
-            : '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json';
+            ? '/projects/'.$project.'/wiki/'.$page.'.json?include=attachments'
+            : '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json?include=attachments';
 
         return $this->get($path);
     }
