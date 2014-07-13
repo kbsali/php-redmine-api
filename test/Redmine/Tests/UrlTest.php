@@ -292,10 +292,10 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res, array('path' => '/projects/testProject/wiki/index.json', 'method' => 'GET'));
 
         $res = $this->client->api('wiki')->show('testProject', 'about');
-        $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about.json', 'method' => 'GET'));
+        $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about.json?include=attachments', 'method' => 'GET'));
 
         $res = $this->client->api('wiki')->show('testProject', 'about', 'v1');
-        $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about/v1.json', 'method' => 'GET'));
+        $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about/v1.json?include=attachments', 'method' => 'GET'));
 
         $res = $this->client->api('wiki')->remove('testProject', 'about');
         $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about.xml', 'method' => 'DELETE'));

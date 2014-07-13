@@ -98,7 +98,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/projects/5/wiki/test.json')
+            ->with($this->stringStartsWith('/projects/5/wiki/test.json'))
             ->willReturn($getResponse);
 
         // Create the object under test
@@ -128,7 +128,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/projects/test/wiki/example.json')
+            ->with($this->stringStartsWith('/projects/test/wiki/example.json'))
             ->willReturn($getResponse);
 
         // Create the object under test
@@ -158,7 +158,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/projects/5/wiki/test/22.json')
+            ->with($this->stringStartsWith('/projects/5/wiki/test/22.json'))
             ->willReturn($getResponse);
 
         // Create the object under test
@@ -188,7 +188,7 @@ class WikiTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/projects/test/wiki/example/22.json')
+            ->with($this->stringStartsWith('/projects/test/wiki/example/22.json'))
             ->willReturn($getResponse);
 
         // Create the object under test
