@@ -16,6 +16,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
@@ -49,6 +50,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
@@ -83,6 +85,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
