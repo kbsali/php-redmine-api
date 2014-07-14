@@ -16,6 +16,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
@@ -49,6 +50,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
@@ -63,7 +65,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
+        $client->expects($this->once())
             ->method('get')
             ->with(
                 $this->stringContains('not-used')
@@ -83,6 +85,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
      * @covers ::all
      * @covers ::get
      * @covers ::retrieveAll
+     * @covers ::isNotNull
      * @test
      *
      * @return void
@@ -91,24 +94,73 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $allParameters = array('limit' => 250);
-        $getResponse = 'API Response';
+        $returnDataSet = array(
+            'limit' => '100',
+            'items' => array()
+        );
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->atLeastOnce())
+        $client->expects($this->exactly(3))
             ->method('get')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn($returnDataSet);
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame(array($getResponse), $api->all($allParameters));
+        $retrievedDataSet = $api->all($allParameters);
+        $this->assertTrue(is_array($retrievedDataSet));
+        $this->assertTrue(array_key_exists('limit', $retrievedDataSet));
+        $this->assertTrue(array_key_exists('items', $retrievedDataSet));
+    }
+
+    /**
+     * Test all()
+     *
+     * @covers ::all
+     * @covers ::get
+     * @covers ::retrieveAll
+     * @covers ::isNotNull
+     * @test
+     *
+     * @return void
+     */
+    public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()
+    {
+        // Test values
+        $allParameters = array('limit' => 250);
+        $returnDataSet = array(
+            'limit' => '100',
+            'offset' => '10',
+            'total_count' => '5',
+            'items' => array()
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->stringStartsWith('/custom_fields.json')
+            )
+            ->willReturn($returnDataSet);
+
+        // Create the object under test
+        $api = new CustomField($client);
+
+        // Perform the tests
+        $retrievedDataSet = $api->all($allParameters);
+        $this->assertTrue(is_array($retrievedDataSet));
+        $this->assertTrue(array_key_exists('limit', $retrievedDataSet));
+        $this->assertTrue(array_key_exists('items', $retrievedDataSet));
     }
 
     /**
