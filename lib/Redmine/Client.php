@@ -385,6 +385,7 @@ class Client
         }
         $response = curl_exec($curl);
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
         if (curl_errno($curl)) {
             $e = new \Exception(curl_error($curl), curl_errno($curl));
@@ -395,7 +396,7 @@ class Client
 
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
-            if ('<' === substr($response, 0, 1)) {
+            if ('application/xml' === substr($contentType, 0, strlen('application/xml'))) {
                 return new SimpleXMLElement($response);
             }
 
