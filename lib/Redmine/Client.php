@@ -82,6 +82,9 @@ class Client
         JSON_ERROR_SYNTAX    => 'Syntax error',
     );
 
+    /**
+     * @var string or null
+     */
     protected $impersonateUser;
 
     /**
