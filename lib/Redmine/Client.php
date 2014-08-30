@@ -83,6 +83,11 @@ class Client
     );
 
     /**
+     * @var string or null
+     */
+    protected $impersonateUser;
+
+    /**
      * Usage: apikeyOrUsername can be auth key or username.
      * Password needs to be set if username is given.
      *
@@ -317,6 +322,24 @@ class Client
     }
 
     /**
+     * @param mixed $impersonateUser
+     */
+    public function setImpersonateUser($impersonateUser)
+    {
+        $this->impersonateUser = $impersonateUser;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImpersonateUser()
+    {
+        return $this->impersonateUser;
+    }
+
+
+
+    /**
      * @param  string                        $path
      * @param  string                        $method
      * @param  string                        $data
@@ -355,6 +378,10 @@ class Client
             $httpHeader[] = 'Content-Type: application/octet-stream';
         } elseif ('json' === substr($tmp['path'], -4)) {
             $httpHeader[] = 'Content-Type: application/json';
+        }
+
+        if ($this->impersonateUser) {
+            $httpHeader[] = 'X-Redmine-Switch-User: ' . $this->impersonateUser;
         }
 
         if (!empty($httpHeader)) {

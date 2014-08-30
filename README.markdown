@@ -87,6 +87,28 @@ $client->api('issue')->all([
 
 see `example.php`
 
+## User Impersonation
+
+```php
+
+// ..
+
+// create a client
+$client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
+
+// impersonate user
+$client->setImpersonateUser('jsmith');
+
+// create a time entry for jsmith
+$client->api('time_entry')->create($data);
+
+// remove impersonation for further calls
+$client->setImpersonateUser(null);
+
+
+```
+
+
 ### Thanks!
 
 - Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
