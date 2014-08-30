@@ -55,10 +55,7 @@ class Client
     private $checkSslHost = false;
 
     /**
-     *
-     * Flag to determine authentication method
-     *
-     * @var boolean
+     * @var boolean Flag to determine authentication method
      */
     private $useHttpAuth = true;
 
@@ -66,6 +63,11 @@ class Client
      * @var array APIs
      */
     private $apis = array();
+
+    /**
+     * @var string|null username for impersonating API calls
+     */
+    protected $impersonateUser = null;
 
     /**
      * @var int|null Redmine response code, null if request is not still completed
@@ -81,11 +83,6 @@ class Client
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX    => 'Syntax error',
     );
-
-    /**
-     * @var string or null
-     */
-    protected $impersonateUser;
 
     /**
      * Usage: apikeyOrUsername can be auth key or username.
@@ -322,11 +319,16 @@ class Client
     }
 
     /**
-     * @param mixed $impersonateUser
+     * Sets to an existing username so api calls can be
+     * impersonated to this user
+     * @param  string $username
+     * @return Client
      */
-    public function setImpersonateUser($impersonateUser)
+    public function setImpersonateUser($username = null)
     {
-        $this->impersonateUser = $impersonateUser;
+        $this->impersonateUser = $username;
+
+        return $this;
     }
 
     /**
@@ -336,8 +338,6 @@ class Client
     {
         return $this->impersonateUser;
     }
-
-
 
     /**
      * @param  string                        $path

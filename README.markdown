@@ -89,11 +89,10 @@ see `example.php`
 
 ## User Impersonation
 
+As of Redmine V2.2 you can impersonate user through the REST API :
+
 ```php
 
-// ..
-
-// create a client
 $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 
 // impersonate user
@@ -104,13 +103,11 @@ $client->api('time_entry')->create($data);
 
 // remove impersonation for further calls
 $client->setImpersonateUser(null);
-
-
 ```
 
 
 ### Thanks!
 
-- Thanks to [Thomas Spycher](http://tspycher.com/2011/03/using-the-redmine-api-with-php/) for the 1st version of the class.
+- Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
 - Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
-- And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors) ! :)
+- And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors) and specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
