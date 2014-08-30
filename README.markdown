@@ -30,7 +30,6 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 ## Todo
 
-* API entry points :
 * Check header's response code (especially for POST/PUT/DELETE requests)
  * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
 * Maybe Guzzle for handling http connections
@@ -108,6 +107,7 @@ $client->setImpersonateUser(null);
 
 ### Thanks!
 
-- Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
-- Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
-- And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors) and specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
+* Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
+* Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
+* And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors)
+ * specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
