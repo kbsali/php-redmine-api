@@ -396,7 +396,7 @@ class Client
 
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
-            if ('application/xml' === substr($contentType, 0, strlen('application/xml'))) {
+            if (0 === strpos($contentType, 'application/xml')) {
                 return new SimpleXMLElement($response);
             }
 
