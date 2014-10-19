@@ -100,19 +100,8 @@ class Project extends AbstractApi
         ) {
             throw new \Exception('Missing mandatory parameters');
         }
-
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
-        foreach ($params as $k => $v) {
-            if ('tracker_ids' == $k && is_array($v)) {
-                $trackers = $xml->addChild('tracker_ids', '');
-                $trackers->addAttribute('type', 'array');
-                foreach ($v as $id) {
-                    $trackers->addChild('tracker', $id);
-                }
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
+		
+        $xml = $this->prepareParamsXml($params);
 
         return $this->post('/projects.xml', $xml->asXML());
     }
@@ -135,12 +124,30 @@ class Project extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
+        $xml = $this->prepareParamsXml($params);
 
         return $this->put('/projects/'.$id.'.xml', $xml->asXML());
+    }
+
+	/**
+	 * 
+	 * @param array $params
+	 * @return \Redmine\Api\SimpleXMLElement
+	 */
+    protected function prepareParamsXml($params) {
+    	$xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
+    	foreach ($params as $k => $v) {
+    		if ('tracker_ids' == $k && is_array($v)) {
+    			$trackers = $xml->addChild('tracker_ids', '');
+    			$trackers->addAttribute('type', 'array');
+    			foreach ($v as $id) {
+    				$trackers->addChild('tracker', $id);
+    			}
+    		} else {
+    			$xml->addChild($k, $v);
+    		}
+    	}
+    	return $xml;
     }
 
     /**
