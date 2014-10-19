@@ -135,16 +135,22 @@ class Project extends AbstractApi
 	 * @return \Redmine\Api\SimpleXMLElement
 	 */
     protected function prepareParamsXml($params) {
+    	$array_params = array(
+    		'tracker_ids', 'issue_custom_field_ids'
+    	);
+    	$array_params_elements = array(
+    		'tracker_ids' => 'tracker',
+    		'issue_custom_field_ids' => 'issue_custom_field'
+    	);
+    	
     	$xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
     	foreach ($params as $k => $v) {
-    		if ('tracker_ids' == $k && is_array($v)) {
-    			$trackers = $xml->addChild('tracker_ids', '');
-    			$trackers->addAttribute('type', 'array');
+    		if (in_array($k, $array_params) && is_array($v)) {
+    			$array = $xml->addChild($k, '');
+    			$array->addAttribute('type', 'array');
     			foreach ($v as $id) {
-    				$trackers->addChild('tracker', $id);
+    				$array->addChild($array_params_elements[$k], $id);
     			}
-    		} else {
-    			$xml->addChild($k, $v);
     		}
     	}
     	return $xml;
