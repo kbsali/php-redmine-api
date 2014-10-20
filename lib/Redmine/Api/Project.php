@@ -151,6 +151,8 @@ class Project extends AbstractApi
     			foreach ($v as $id) {
     				$array->addChild($array_params_elements[$k], $id);
     			}
+    		} else {
+    			$xml->addChild($k, $v);
     		}
     	}
     	return $xml;
