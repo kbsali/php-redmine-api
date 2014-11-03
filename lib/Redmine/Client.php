@@ -343,7 +343,7 @@ class Client
 
         $tmp = parse_url($this->url.$path);
         $httpHeader = array();
-        $httpHeaders[] = 'Expect: ';
+        $httpHeader[] = 'Expect: ';
 
         if ('xml' === substr($tmp['path'], -3)) {
             $httpHeader[] = 'Content-Type: text/xml';
