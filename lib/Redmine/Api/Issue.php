@@ -80,8 +80,12 @@ class Issue extends AbstractApi
                       $upload_item->addChild($upload_k, $upload_v);
                     }
                 }
-            } else {
-                $xml->addChild($k, $v);
+            } else {          
+                $node = $xml->addChild($k);
+                $domNode = dom_import_simplexml($node); 
+                $no = $domNode->ownerDocument; 
+                $domNode->appendChild($no->createCDATASection($v)); 
+                //$xml->addChild($k, $v);
             }
         }
 
