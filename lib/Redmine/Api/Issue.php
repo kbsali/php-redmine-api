@@ -164,6 +164,9 @@ class Issue extends AbstractApi
 
         $xml = $this->buildXML($params);
 
+        
+//         print_r($xml->asXML());
+        
         return $this->put('/issues/'.$id.'.xml', $xml->asXML());
     }
 
