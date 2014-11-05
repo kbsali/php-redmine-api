@@ -80,6 +80,12 @@ class Issue extends AbstractApi
                       $upload_item->addChild($upload_k, $upload_v);
                     }
                 }
+            } elseif ('description' === $k && strpos($v, '\n') !== false) {
+                // surround the description with CDATA if there is any '\n' in the description 
+                $node = $xml->addChild($k);
+                $domNode = dom_import_simplexml($node);
+                $no = $domNode->ownerDocument;
+                $domNode->appendChild($no->createCDATASection($v));
             } else {
                 $xml->addChild($k, $v);
             }
