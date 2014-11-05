@@ -97,6 +97,48 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
     }
 
+    public function testCreateComplexWithLineBreakInDescription()
+    {
+        $res = $this->client->api('issue')->create(array(
+            'project_id'     => 'test',
+            'subject'        => 'test api (xml) 3',
+            'description'    => 'line1\nline2',
+            'assigned_to_id' => 1,
+            'custom_fields'  => array(
+                array(
+                    'id'    => 2,
+                    'name'  => 'Issuer',
+                    'value' => 'asdf',
+                ),
+                array(
+                    'id'    => 5,
+                    'name'  => 'Phone',
+                    'value' => '9939494',
+                ),
+                array(
+                    'id'    => '8',
+                    'name'  => 'Email',
+                    'value' => 'asdf@asdf.com',
+                ),
+            ),
+            'watcher_user_ids' => array(),
+        ));
+
+        $xml = '<?xml version="1.0"?>
+<issue>
+    <subject>test api (xml) 3</subject>
+    <description><![CDATA[line1\nline2]]></description>
+    <project_id>test</project_id>
+    <assigned_to_id>1</assigned_to_id>
+    <custom_fields type="array">
+        <custom_field name="Issuer" id="2"><value>asdf</value></custom_field>
+        <custom_field name="Phone" id="5"><value>9939494</value></custom_field>
+        <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
+    </custom_fields>
+</issue>';
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+    }
+
     public function testUpdateIssue()
     {
         $res = $this->client->api('issue')->update(1, array(
