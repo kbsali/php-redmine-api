@@ -126,6 +126,6 @@ class Group extends AbstractApi
      */
     public function removeUser($id, $userId)
     {
-        return $this->delete('/groups/'.$id.'/user/'.$userId.'.xml');
+        return $this->delete('/groups/'.$id.'/users/'.$userId.'.xml');
     }
 }
