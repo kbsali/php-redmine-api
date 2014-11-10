@@ -163,7 +163,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5));
+        $this->assertSame($getResponse, $api->create(array('id' => 5)));
     }
 
     /**

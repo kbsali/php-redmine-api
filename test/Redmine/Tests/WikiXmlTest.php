@@ -13,15 +13,6 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
         $this->client = new TestClient('http://test.local', 'asdf');
     }
 
-    /**
-      * @expectedException Exception
-     */
-    public function testCreateBlank()
-    {
-        $this->assertInstanceOf('Redmine\Api\Wiki', $this->client->api('wiki'));
-        $res = $this->client->api('wiki')->create();
-    }
-
     public function testCreateComplex()
     {
         $res = $this->client->api('wiki')->create('testProject', 'about', array(

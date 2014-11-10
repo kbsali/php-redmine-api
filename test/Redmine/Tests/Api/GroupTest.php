@@ -432,7 +432,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
             ->method('delete')
             ->with(
                 $this->logicalAnd(
-                    $this->stringStartsWith('/groups/5/user/10'),
+                    $this->stringStartsWith('/groups/5/users/10'),
                     $this->logicalXor(
                         $this->stringEndsWith('.json'),
                         $this->stringEndsWith('.xml')

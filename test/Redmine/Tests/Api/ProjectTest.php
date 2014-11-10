@@ -318,7 +318,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5));
+        $this->assertSame($getResponse, $api->create(array('id' => 5)));
     }
 
     /**

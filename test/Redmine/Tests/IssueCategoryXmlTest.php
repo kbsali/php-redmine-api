@@ -22,7 +22,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 
         $xml = '<?xml version="1.0"?>
 <issue_category/>';
-        $res = $this->client->api('issue_category')->create();
+        $res = $this->client->api('issue_category')->create('aProject');
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
     }
 

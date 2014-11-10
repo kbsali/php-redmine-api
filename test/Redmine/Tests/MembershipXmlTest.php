@@ -22,7 +22,7 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 
         $xml = '<?xml version="1.0"?>
 <membership/>';
-        $res = $this->client->api('membership')->create();
+        $res = $this->client->api('membership')->create('aProject');
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
     }
 

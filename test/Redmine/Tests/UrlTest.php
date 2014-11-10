@@ -48,7 +48,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res, array('path' => '/groups/1/users.xml', 'method' => 'POST'));
 
         $res = $this->client->api('group')->removeUser(1, 1);
-        $this->assertEquals($res, array('path' => '/groups/1/user/1.xml', 'method' => 'DELETE'));
+        $this->assertEquals($res, array('path' => '/groups/1/users/1.xml', 'method' => 'DELETE'));
     }
 
     public function testIssue()
