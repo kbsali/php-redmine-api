@@ -52,7 +52,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'users' => array(
-                array('id' => 5, 'login' => 'User 5')
+                array('id' => 5, 'login' => 'User 5'),
             ),
         );
 
@@ -117,7 +117,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         // Test values
         $parameters = array(
             'offset' => 10,
-            'limit' => 2
+            'limit' => 2,
         );
         $getResponse = array('API Response');
 
@@ -270,7 +270,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                     'lastname' => 'Last Name',
                     'firstname' => 'Firstname',
                     'mail' => 'mail@example.com',
-                )
+                ),
             ),
             // Missing last name
             array(
@@ -279,7 +279,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                     'password' => 'secretPass',
                     'firstname' => 'Firstname',
                     'mail' => 'mail@example.com',
-                )
+                ),
             ),
             // Missing first name
             array(
@@ -288,7 +288,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                     'password' => 'secretPass',
                     'lastname' => 'Last Name',
                     'mail' => 'mail@example.com',
-                )
+                ),
             ),
             // Missing email
             array(
@@ -297,7 +297,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                     'password' => 'secretPass',
                     'lastname' => 'Last Name',
                     'firstname' => 'Firstname',
-                )
+                ),
             ),
         );
     }
@@ -332,8 +332,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
-                    $this->stringEndsWith('</user>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
+                    $this->stringEndsWith('</user>'."\n"),
                     $this->stringContains('<login>TestUser</login>'),
                     $this->stringContains('<password>secretPass</password>'),
                     $this->stringContains('<lastname>Last Name</lastname>'),
@@ -373,7 +373,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'custom_fields' => array(
                 array('id' => 5, 'value' => 'Value 5'),
                 array('id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'),
-            )
+            ),
         );
 
         // Create the used mock objects
@@ -385,8 +385,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
-                    $this->stringEndsWith('</user>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
+                    $this->stringEndsWith('</user>'."\n"),
                     $this->stringContains('<login>TestUser</login>'),
                     $this->stringContains('<password>secretPass</password>'),
                     $this->stringContains('<lastname>Last Name</lastname>'),
@@ -424,7 +424,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'mail' => 'user@example.com'
+            'mail' => 'user@example.com',
         );
 
         // Create the used mock objects
@@ -436,8 +436,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
-                    $this->stringEndsWith('</user>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
+                    $this->stringEndsWith('</user>'."\n"),
                     $this->stringContains('<mail>user@example.com</mail>')
                 )
             )
@@ -468,7 +468,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'custom_fields' => array(
                 array('id' => 5, 'value' => 'Value 5'),
                 array('id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'),
-            )
+            ),
         );
 
         // Create the used mock objects
@@ -480,8 +480,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
-                    $this->stringEndsWith('</user>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
+                    $this->stringEndsWith('</user>'."\n"),
                     $this->stringContains('<custom_fields type="array">'),
                     $this->stringContains('</custom_fields>'),
                     $this->stringContains('<custom_field name="CF Name" id="13">'),
@@ -514,7 +514,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'users' => array(
                 array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5')
+                array('id' => 5, 'login' => 'User 5'),
             ),
         );
         $expectedReturn = array(
@@ -554,7 +554,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'users' => array(
                 array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5')
+                array('id' => 5, 'login' => 'User 5'),
             ),
         );
         $expectedReturn = array(
@@ -595,7 +595,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'users' => array(
                 array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5')
+                array('id' => 5, 'login' => 'User 5'),
             ),
         );
         $expectedReturn = array(

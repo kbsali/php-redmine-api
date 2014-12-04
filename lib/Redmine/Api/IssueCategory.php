@@ -91,7 +91,7 @@ class IssueCategory extends AbstractApi
             'assigned_to_id' => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
+        if (
             !isset($params['name'])
         ) {
             throw new \Exception('Missing mandatory parameters');

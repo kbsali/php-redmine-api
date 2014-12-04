@@ -25,5 +25,4 @@ class News extends AbstractApi
 
         return $this->news;
     }
-
 }

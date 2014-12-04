@@ -115,9 +115,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $inputJson = '{"projects":[{"id":1,"name":"Redmine",'
-            . '"identifier":"redmine","status":1,'
-            . '"created_on":"2007-09-29T10:03:04Z"}],'
-            . '"total_count":1,"offset":0,"limit":25}';
+            .'"identifier":"redmine","status":1,'
+            .'"created_on":"2007-09-29T10:03:04Z"}],'
+            .'"total_count":1,"offset":0,"limit":25}';
         $expectedData = array(
             'projects' => array(
                 0 => array(
@@ -126,11 +126,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                     'identifier' => 'redmine',
                     'status' => 1,
                     'created_on' => '2007-09-29T10:03:04Z',
-                )
+                ),
             ),
             'total_count' => 1,
             'offset' => 0,
-            'limit' => 25
+            'limit' => 25,
         );
 
         // Create the object under test
@@ -165,9 +165,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $invalidJson = '"projects":[{"id":1,"name":"Redmine",'
-            . '"identifier":"redmine","status":1,'
-            . '"created_on":"2007-09-29T10:03:04Z"}],'
-            . '"total_count":1,"offset":0,"limit":25';
+            .'"identifier":"redmine","status":1,'
+            .'"created_on":"2007-09-29T10:03:04Z"}],'
+            .'"total_count":1,"offset":0,"limit":25';
         $expectedError = 'Syntax error';
 
         // Create the object under test

@@ -119,7 +119,7 @@ abstract class AbstractApi
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $newDataSet = (array) $this->get($endpoint . '?' . http_build_query($params));
+            $newDataSet = (array) $this->get($endpoint.'?'.http_build_query($params));
             $ret = array_merge_recursive($ret, $newDataSet);
 
             $offset += $_limit;
@@ -154,21 +154,22 @@ abstract class AbstractApi
                 $_field->addAttribute('name', $field['name']);
             }
             if (isset($field['field_format'])) {
-            	$_field->addAttribute('field_format', $field['field_format']);
+                $_field->addAttribute('field_format', $field['field_format']);
             }
-            
+
             $_field->addAttribute('id', $field['id']);
             if (is_array($field['value'])) {
-            	$_field->addAttribute('multiple','true');
-            	$_values = $_field->addChild('value');
-            	$_values->addAttribute('type', 'array');
-            	foreach ($field['value'] as $val) {
-            		$_value = $_values->addChild('value',$val);
-            	}
+                $_field->addAttribute('multiple', 'true');
+                $_values = $_field->addChild('value');
+                $_values->addAttribute('type', 'array');
+                foreach ($field['value'] as $val) {
+                    $_value = $_values->addChild('value', $val);
+                }
             } else {
-            	$_field->addChild('value', $field['value']);
+                $_field->addChild('value', $field['value']);
             }
         }
+
         return $xml;
     }
 }

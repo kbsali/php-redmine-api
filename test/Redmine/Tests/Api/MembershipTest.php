@@ -182,7 +182,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
         $parameters = array(
             'user_ids' => 1,
             'user_id' => 1,
-            'role_ids' => 1
+            'role_ids' => 1,
         );
 
         // Create the used mock objects
@@ -197,8 +197,8 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
                     $this->stringEndsWith('.xml')
                 ),
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<membership>'),
-                    $this->stringEndsWith('</membership>' . "\n")
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<membership>'),
+                    $this->stringEndsWith('</membership>'."\n")
                 )
             )
             ->willReturn($getResponse);
@@ -241,8 +241,8 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
                     $this->stringEndsWith('.xml')
                 ),
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<membership>'),
-                    $this->stringEndsWith('</membership>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<membership>'),
+                    $this->stringEndsWith('</membership>'."\n"),
                     $this->stringContains('<user_ids type="array">'),
                     $this->stringContains('<user_id>1</user_id>'),
                     $this->stringContains('<user_id>2</user_id>'),
@@ -303,7 +303,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'role_ids' => 1
+            'role_ids' => 1,
         );
 
         // Create the used mock objects

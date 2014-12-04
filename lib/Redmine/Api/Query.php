@@ -25,5 +25,4 @@ class Query extends AbstractApi
 
         return $this->query;
     }
-
 }

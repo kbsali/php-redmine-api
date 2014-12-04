@@ -96,7 +96,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $allParameters = array('limit' => 250);
         $returnDataSet = array(
             'limit' => '100',
-            'items' => array()
+            'items' => array(),
         );
 
         // Create the used mock objects
@@ -139,7 +139,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
             'limit' => '100',
             'offset' => '10',
             'total_count' => '5',
-            'items' => array()
+            'items' => array(),
         );
 
         // Create the used mock objects
@@ -177,7 +177,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'custom_fields' => array(
                 array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5')
+                array('id' => 5, 'name' => 'CustomField 5'),
             ),
         );
         $expectedReturn = array(
@@ -217,7 +217,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'custom_fields' => array(
                 array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5')
+                array('id' => 5, 'name' => 'CustomField 5'),
             ),
         );
         $expectedReturn = array(
@@ -258,7 +258,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'custom_fields' => array(
                 array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5')
+                array('id' => 5, 'name' => 'CustomField 5'),
             ),
         );
         $expectedReturn = array(
@@ -298,7 +298,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'custom_fields' => array(
-                array('id' => 5, 'name' => 'CustomField 5')
+                array('id' => 5, 'name' => 'CustomField 5'),
             ),
         );
 

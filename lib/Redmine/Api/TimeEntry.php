@@ -55,7 +55,7 @@ class TimeEntry extends AbstractApi
             'comments'    => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
+        if (
             (!isset($params['issue_id']) && !isset($params['project_id']))
          || !isset($params['hours'])
         ) {

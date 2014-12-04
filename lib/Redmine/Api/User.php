@@ -102,7 +102,7 @@ class User extends AbstractApi
             // 'auth_source_id' => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
+        if (
             !isset($params['login'])
          || !isset($params['lastname'])
          || !isset($params['firstname'])

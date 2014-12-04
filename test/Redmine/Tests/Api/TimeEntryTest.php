@@ -53,7 +53,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         $parameters = array(
             'project_id' => 5,
             'user_id' => 10,
-            'limit' => 2
+            'limit' => 2,
         );
         $getResponse = array('API Response');
 
@@ -180,7 +180,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'hours' => '5.25'
+            'hours' => '5.25',
         );
 
         // Create the used mock objects
@@ -241,7 +241,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         $parameters = array(
             'issue_id' => '15',
             'project_id' => '25',
-            'hours' => '5.25'
+            'hours' => '5.25',
         );
 
         // Create the used mock objects
@@ -253,8 +253,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/time_entries.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
-                    $this->stringEndsWith('</time_entry>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<time_entry>'),
+                    $this->stringEndsWith('</time_entry>'."\n"),
                     $this->stringContains('<issue_id>15</issue_id>'),
                     $this->stringContains('<project_id>25</project_id>'),
                     $this->stringContains('<hours>5.25</hours>')
@@ -283,7 +283,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'hours' => '10.25'
+            'hours' => '10.25',
         );
 
         // Create the used mock objects
@@ -295,8 +295,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/time_entries/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
-                    $this->stringEndsWith('</time_entry>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<time_entry>'),
+                    $this->stringEndsWith('</time_entry>'."\n"),
                     $this->stringContains('<hours>10.25</hours>')
                 )
             )
