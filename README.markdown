@@ -45,7 +45,10 @@ A possible solution to this would be to create an extra APIs implementing the mi
 
 ## Requirements
 
-* PHP >= 5.3.2 with [cURL](http://php.net/manual/en/book.curl.php) extension,
+* PHP >= 5.3.2
+* The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
+* The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
+* The PHP [JSON](http://php.net/manual/en/book.json.php) extension
 * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
  * then obtain your *API access key* in your profile page : /my/account
  * or use your *username & password*
