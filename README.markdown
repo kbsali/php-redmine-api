@@ -49,6 +49,7 @@ A possible solution to this would be to create an extra APIs implementing the mi
  * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
  * The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
  * The PHP [JSON](http://php.net/manual/en/book.json.php) extension
+ * [PHPUnit](https://phpunit.de/) >= 4.0 (optional) to run the test suite
  * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
  * then obtain your *API access key* in your profile page : /my/account
  * or use your *username & password*
@@ -101,6 +102,28 @@ example,
 // This file ships with php-redmine-api
 require 'vendor/php-redmine-api-1.5.1/lib/autoload.php';
 $client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
+```
+
+### Running the test suite
+
+If you have [PHPUnit](https://phpunit.de/) >= 4.0 installed, you can
+run the test suite to make sure that the library will function
+properly on your system. Simply run `phpunit` in the php-redmine-api
+directory. For example,
+
+```
+$ phpunit
+PHPUnit 4.3.1 by Sebastian Bergmann.
+
+Configuration read from ./phpunit.xml.dist
+
+...............................................................  63 / 276 ( 22%)
+............................................................... 126 / 276 ( 45%)
+............................................................... 189 / 276 ( 68%)
+............................................................... 252 / 276 ( 91%)
+........................
+
+Time: 591 ms, Memory: 10.50Mb
 ```
 
 ## Basic usage of `php-redmine-api` client
