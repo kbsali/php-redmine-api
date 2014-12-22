@@ -6,53 +6,53 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 ## Features
 
- * Follows PSR-0 conventions and coding standard: autoload friendly
- * API entry points implementation state :
- * OK Attachments
- * OK Groups
- * OK Custom Fields
- * OK Issues
- * OK Issue Categories
- * OK Issue Priorities
- * *NOK Issue Relations - only partially implemented*
- * OK Issue Statuses
- * OK News
- * OK Projects
- * OK Project Memberships
- * OK Queries
- * OK Roles
- * OK Time Entries
- * OK Time Entry Activities
- * OK Trackers
- * OK Users
- * OK Versions
- * OK Wiki
+* Follows PSR-0 conventions and coding standard: autoload friendly
+* API entry points implementation state :
+* OK Attachments
+* OK Groups
+* OK Custom Fields
+* OK Issues
+* OK Issue Categories
+* OK Issue Priorities
+* *NOK Issue Relations - only partially implemented*
+* OK Issue Statuses
+* OK News
+* OK Projects
+* OK Project Memberships
+* OK Queries
+* OK Roles
+* OK Time Entries
+* OK Time Entry Activities
+* OK Trackers
+* OK Users
+* OK Versions
+* OK Wiki
 
 ## Todo
 
- * Check header's response code (especially for POST/PUT/DELETE requests)
- * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
- * Maybe Guzzle for handling http connections
- * https://github.com/guzzle/guzzle
+* Check header's response code (especially for POST/PUT/DELETE requests)
+* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
+* Maybe Guzzle for handling http connections
+* https://github.com/guzzle/guzzle
 
 ## Limitations
 
 Redmine is missing some APIs for a full remote management of the data :
- * List of activities & roles : http://www.redmine.org/issues/11464
- * ...
+* List of activities & roles : http://www.redmine.org/issues/11464
+* ...
 
 A possible solution to this would be to create an extra APIs implementing the missing entry points. See existing effort in doing so : https://github.com/rschobbert/redmine-miss-api
 
 ## Requirements
 
- * PHP >= 5.4
- * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
- * The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
- * The PHP [JSON](http://php.net/manual/en/book.json.php) extension
- * [PHPUnit](https://phpunit.de/) >= 4.0 (optional) to run the test suite
- * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
- * then obtain your *API access key* in your profile page : /my/account
- * or use your *username & password*
+* PHP >= 5.4
+* The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
+* The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
+* The PHP [JSON](http://php.net/manual/en/book.json.php) extension
+* [PHPUnit](https://phpunit.de/) >= 4.0 (optional) to run the test suite
+* "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
+* then obtain your *API access key* in your profile page : /my/account
+* or use your *username & password*
 
 ## Install
 
@@ -178,7 +178,7 @@ $client->setImpersonateUser(null);
 
 ### Thanks!
 
- * Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
- * Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
- * And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors)
- * specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
+* Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
+* Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
+* And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors)
+* specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
