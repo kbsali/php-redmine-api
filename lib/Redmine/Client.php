@@ -159,9 +159,13 @@ class Client
     }
 
     /**
-     * Decodes json response
+     * Decodes json response.
+     * 
+     * Returns $json if no error occured during decoding but decoded value is
+     * null.
+     * 
      * @param  string $json
-     * @return array
+     * @return array|string
      */
     public function decode($json)
     {
@@ -312,11 +316,13 @@ class Client
     }
 
     /**
-     * @param  string                        $path
-     * @param  string                        $method
-     * @param  string                        $data
-     * @return false|SimpleXMLElement|string
-     * @throws \Exception                    If anything goes wrong on curl request
+     * @param  string $path
+     * @param  string $method
+     * @param  string $data
+     *
+     * @return boolean|SimpleXMLElement|string
+     *
+     * @throws \Exception If anything goes wrong on curl request
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {

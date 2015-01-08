@@ -60,7 +60,7 @@ class User extends AbstractApi
     /**
      * Get a user id given its username
      * @param  string $username
-     * @return int
+     * @return integer|boolean
      */
     public function getIdByUsername($username)
     {
