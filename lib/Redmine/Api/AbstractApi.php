@@ -38,7 +38,11 @@ abstract class AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * Perform the client get() method.
+     *
+     * @param string $path
+     *
+     * @return array
      */
     protected function get($path)
     {
@@ -46,7 +50,12 @@ abstract class AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * Perform the client post() method.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return string|false
      */
     protected function post($path, $data)
     {
@@ -54,7 +63,12 @@ abstract class AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * Perform the client put() method.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return string|false
      */
     protected function put($path, $data)
     {
@@ -62,7 +76,11 @@ abstract class AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * Perform the client delete() method.
+     *
+     * @param string $path
+     *
+     * @return array
      */
     protected function delete($path)
     {

@@ -308,7 +308,9 @@ class Client
     }
 
     /**
-     * @return mixed
+     * Get the impersonate user.
+     *
+     * @return string|null
      */
     public function getImpersonateUser()
     {
@@ -392,6 +394,7 @@ class Client
             default: // GET
                 break;
         }
+        /* @var $response boolean|string */
         $response = curl_exec($curl);
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);

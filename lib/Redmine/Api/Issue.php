@@ -196,7 +196,7 @@ class Issue extends AbstractApi
     /**
      * @param  int    $id
      * @param  string $status
-     * @return void
+     * @return SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
     {
@@ -210,7 +210,7 @@ class Issue extends AbstractApi
     /**
      * @param  int    $id
      * @param  string $note
-     * @return void
+     * @return SimpleXMLElement
      */
     public function addNoteToIssue($id, $note)
     {
