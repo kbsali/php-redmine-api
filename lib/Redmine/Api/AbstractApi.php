@@ -141,7 +141,7 @@ abstract class AbstractApi
      *
      * @param  SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param  array            $fields array of fields to attach, each field needs name, id and value set
-     * @return $xml             Element
+     * @return SimpleXMLElement $xml
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
     protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
