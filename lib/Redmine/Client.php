@@ -90,7 +90,7 @@ class Client
     public function __construct($url, $apikeyOrUsername, $pass = null)
     {
         $this->url = $url;
-        $this->getPort($url);
+        $this->getPort();
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
