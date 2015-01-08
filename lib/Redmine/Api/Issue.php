@@ -265,6 +265,7 @@ class Issue extends AbstractApi
      */
     public function attach($id, array $attachment)
     {
+        $request = array();
         $request['issue'] = array(
             'id' => $id,
             'uploads' => array(
