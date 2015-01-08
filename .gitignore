@@ -2,3 +2,5 @@ phpunit.xml
 composer.lock
 composer.phar
 vendor
+coverage.clover
+

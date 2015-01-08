@@ -3,9 +3,14 @@ language: php
 php:
   - 5.4
   - 5.5
+  - hhvm
 
 before_script:
   - composer install --dev --prefer-source
 
 script:
   - phpunit --coverage-text
+
+after_script:
+- wget https://scrutinizer-ci.com/ocular.phar
+- php ocular.phar code-coverage:upload --format=php-clover coverage.clover
