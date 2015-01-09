@@ -28,4 +28,9 @@
             <directory suffix=".php">./lib/Redmine/</directory>
         </whitelist>
     </filter>
+
+    <logging>
+        <log type="coverage-clover" target="coverage.clover"/>
+    </logging>
+
 </phpunit>
