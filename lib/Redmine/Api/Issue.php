@@ -196,7 +196,7 @@ class Issue extends AbstractApi
     /**
      * @param  int    $id
      * @param  string $status
-     * @return void
+     * @return SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
     {
@@ -210,7 +210,7 @@ class Issue extends AbstractApi
     /**
      * @param  int    $id
      * @param  string $note
-     * @return void
+     * @return SimpleXMLElement
      */
     public function addNoteToIssue($id, $note)
     {
@@ -265,6 +265,7 @@ class Issue extends AbstractApi
      */
     public function attach($id, array $attachment)
     {
+        $request = array();
         $request['issue'] = array(
             'id' => $id,
             'uploads' => array(

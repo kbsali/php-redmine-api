@@ -90,7 +90,7 @@ class Client
     public function __construct($url, $apikeyOrUsername, $pass = null)
     {
         $this->url = $url;
-        $this->getPort($url);
+        $this->getPort();
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
@@ -159,9 +159,13 @@ class Client
     }
 
     /**
-     * Decodes json response
+     * Decodes json response.
+     * 
+     * Returns $json if no error occured during decoding but decoded value is
+     * null.
+     * 
      * @param  string $json
-     * @return array
+     * @return array|string
      */
     public function decode($json)
     {
@@ -293,7 +297,7 @@ class Client
     /**
      * Sets to an existing username so api calls can be
      * impersonated to this user
-     * @param  string $username
+     * @param  string|null $username
      * @return Client
      */
     public function setImpersonateUser($username = null)
@@ -304,7 +308,9 @@ class Client
     }
 
     /**
-     * @return mixed
+     * Get the impersonate user.
+     *
+     * @return string|null
      */
     public function getImpersonateUser()
     {
@@ -312,11 +318,13 @@ class Client
     }
 
     /**
-     * @param  string                        $path
-     * @param  string                        $method
-     * @param  string                        $data
-     * @return false|SimpleXMLElement|string
-     * @throws \Exception                    If anything goes wrong on curl request
+     * @param  string $path
+     * @param  string $method
+     * @param  string $data
+     *
+     * @return boolean|SimpleXMLElement|string
+     *
+     * @throws \Exception If anything goes wrong on curl request
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {
@@ -386,6 +394,7 @@ class Client
             default: // GET
                 break;
         }
+        /* @var $response boolean|string */
         $response = curl_exec($curl);
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
