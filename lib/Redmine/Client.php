@@ -297,7 +297,7 @@ class Client
     /**
      * Sets to an existing username so api calls can be
      * impersonated to this user
-     * @param  string $username
+     * @param  string|null $username
      * @return Client
      */
     public function setImpersonateUser($username = null)
