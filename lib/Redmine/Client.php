@@ -395,7 +395,7 @@ class Client
                 break;
         }
         /* @var $response boolean|string */
-        $response = curl_exec($curl);
+        $response = trim(curl_exec($curl));
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
