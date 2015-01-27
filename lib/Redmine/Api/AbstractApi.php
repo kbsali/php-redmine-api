@@ -172,7 +172,17 @@ abstract class AbstractApi
                 $_field->addAttribute('name', $field['name']);
             }
             $_field->addAttribute('id', $field['id']);
-            $_field->addChild('value', $field['value']);
+            if(is_array($field['value']))
+            {
+                $_subfield = $_field->addChild('value');
+                $_subfield->addAttribute('type', 'array');
+                foreach($field['value'] as $value)
+                {
+                    $_subfield->addChild('value', $value);
+                }
+            }
+            else
+                $_field->addChild('value', $field['value']);
         }
 
         return $xml;
