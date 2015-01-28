@@ -148,7 +148,7 @@ class Version extends AbstractApi
             'closed',
         );
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
-            throw new \Exception('Possible values for status : '.join(', ', $arrStatus));
+            throw new \Exception('Possible values for status : '.implode(', ', $arrStatus));
         }
     }
 
@@ -162,7 +162,7 @@ class Version extends AbstractApi
             'system'      => 'With all projects',
         );
         if (isset($params['sharing']) && !isset($arrSharing[ $params['sharing'] ])) {
-            throw new \Exception('Possible values for sharing : '.join(', ', array_keys($arrSharing)));
+            throw new \Exception('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));
         }
     }
 

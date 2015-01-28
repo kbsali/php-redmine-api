@@ -18,7 +18,7 @@ spl_autoload_register(function ($class) {
      */
     $path = dirname(__FILE__).'/'.$class.'.php';
     if (file_exists($path)) {
-        require_once($path);
+        require_once $path;
     }
 
     /* If we didn't find what we're looking for already, maybe it's
@@ -26,6 +26,6 @@ spl_autoload_register(function ($class) {
      */
     $path = dirname(__FILE__).'/../test/'.$class.'.php';
     if (file_exists($path)) {
-        require_once($path);
+        require_once $path;
     }
 });

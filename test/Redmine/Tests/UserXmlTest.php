@@ -14,7 +14,7 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @expectedException Exception
+     * @expectedException Exception
      */
     public function testCreateBlank()
     {
@@ -48,7 +48,7 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $res = $this->client->api('user')->update(1, array(
-            'firstname' => 'Raul'
+            'firstname' => 'Raul',
         ));
 
         $xml = '<?xml version="1.0"?>

@@ -34,9 +34,9 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
                   'token'       => 'asdfasdfasdfasdf',
                   'filename'    => 'MyFile.pdf',
                   'description' => 'MyFile is better then YourFile...',
-                  'content_type'=> 'application/pdf'
-                )
-            )
+                  'content_type' => 'application/pdf',
+                ),
+            ),
         ));
 
         $xml = '<?xml version="1.0"?>

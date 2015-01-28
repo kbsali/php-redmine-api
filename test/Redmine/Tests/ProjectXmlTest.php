@@ -14,7 +14,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-      * @expectedException Exception
+     * @expectedException Exception
      */
     public function testCreateBlank()
     {
@@ -47,7 +47,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
             'name'        => 'some name',
             'identifier'  => 'the_identifier',
             'tracker_ids' => array(
-                1, 2, 3
+                1, 2, 3,
             ),
         ));
 

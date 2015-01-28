@@ -22,13 +22,13 @@ class Attachment extends AbstractApi
         return $this->get('/attachments/'.urlencode($id).'.json');
     }
 
-   /**
-    * Upload a file to redmine
-    * @link http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
-    *
-    * @param  string $attachment the attachment content
-    * @return array  information about the attachment
-    */
+    /**
+     * Upload a file to redmine
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
+     *
+     * @param  string $attachment the attachment content
+     * @return array  information about the attachment
+     */
     public function upload($attachment)
     {
         return $this->post('/uploads.json', $attachment);

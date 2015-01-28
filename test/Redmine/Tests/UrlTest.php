@@ -31,7 +31,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testGroup()
     {
         $res = $this->client->api('group')->create(array(
-            'name' => 'asdf'
+            'name' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/groups.xml', 'method' => 'POST'));
 
@@ -54,12 +54,12 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testIssue()
     {
         $res = $this->client->api('issue')->create(array(
-            'name' => 'asdf'
+            'name' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/issues.xml', 'method' => 'POST'));
 
         $res = $this->client->api('issue')->update(1, array(
-            'name' => 'asdf'
+            'name' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'PUT'));
 
@@ -85,12 +85,12 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testIssueCategory()
     {
         $res = $this->client->api('issue_category')->create('testProject', array(
-            'name' => 'asdf'
+            'name' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/projects/testProject/issue_categories.xml', 'method' => 'POST'));
 
         $res = $this->client->api('issue_category')->update(1, array(
-            'name' => 'asdf'
+            'name' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/issue_categories/1.xml', 'method' => 'PUT'));
 

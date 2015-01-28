@@ -48,7 +48,7 @@ class Project extends AbstractApi
 
     /**
      * Get a project id given its name
-     * @param  string $name
+     * @param  string          $name
      * @return integer|boolean
      */
     public function getIdByName($name)

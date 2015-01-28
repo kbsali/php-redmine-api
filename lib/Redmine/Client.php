@@ -160,11 +160,11 @@ class Client
 
     /**
      * Decodes json response.
-     * 
+     *
      * Returns $json if no error occured during decoding but decoded value is
      * null.
-     * 
-     * @param  string $json
+     *
+     * @param  string       $json
      * @return array|string
      */
     public function decode($json)
@@ -318,9 +318,9 @@ class Client
     }
 
     /**
-     * @param  string $path
-     * @param  string $method
-     * @param  string $data
+     * @param string $path
+     * @param string $method
+     * @param string $data
      *
      * @return boolean|SimpleXMLElement|string
      *
@@ -351,7 +351,7 @@ class Client
 
         $tmp = parse_url($this->url.$path);
         $httpHeader = array(
-            'Expect: '
+            'Expect: ',
         );
 
         if ('xml' === substr($tmp['path'], -3)) {

@@ -194,8 +194,8 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int    $id
-     * @param  string $status
+     * @param  int              $id
+     * @param  string           $status
      * @return SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
@@ -208,8 +208,8 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int    $id
-     * @param  string $note
+     * @param  int              $id
+     * @param  string           $note
      * @return SimpleXMLElement
      */
     public function addNoteToIssue($id, $note)
