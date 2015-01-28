@@ -164,7 +164,7 @@ coding_style:
                 multiplicative: true
                 shift: true
                 unary_additive: false
-                concatenation: true
+                concatenation: false
                 negation: false
             before_left_brace:
                 class: true

@@ -321,9 +321,7 @@ class Client
      * @param string $path
      * @param string $method
      * @param string $data
-     *
      * @return boolean|SimpleXMLElement|string
-     *
      * @throws \Exception If anything goes wrong on curl request
      */
     protected function runRequest($path, $method = 'GET', $data = '')
@@ -394,7 +392,6 @@ class Client
             default: // GET
                 break;
         }
-        /* @var $response boolean|string */
         $response = trim(curl_exec($curl));
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
