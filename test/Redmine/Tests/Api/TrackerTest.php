@@ -90,7 +90,7 @@ class TrackerTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'trackers' => array(
                 array('id' => 1, 'name' => 'Tracker 1'),
-                array('id' => 5, 'name' => 'Tracker 5')
+                array('id' => 5, 'name' => 'Tracker 5'),
             ),
         );
         $expectedReturn = array(
@@ -130,7 +130,7 @@ class TrackerTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'trackers' => array(
                 array('id' => 1, 'name' => 'Tracker 1'),
-                array('id' => 5, 'name' => 'Tracker 5')
+                array('id' => 5, 'name' => 'Tracker 5'),
             ),
         );
         $expectedReturn = array(
@@ -171,7 +171,7 @@ class TrackerTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'trackers' => array(
                 array('id' => 1, 'name' => 'Tracker 1'),
-                array('id' => 5, 'name' => 'Tracker 5')
+                array('id' => 5, 'name' => 'Tracker 5'),
             ),
         );
         $expectedReturn = array(
@@ -211,7 +211,7 @@ class TrackerTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'trackers' => array(
-                array('id' => 5, 'name' => 'Tracker 5')
+                array('id' => 5, 'name' => 'Tracker 5'),
             ),
         );
 

@@ -6,7 +6,6 @@ use Redmine\TestUrlClient;
 
 class TestUrlClientTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers Redmine\TestUrlClient
      * @test

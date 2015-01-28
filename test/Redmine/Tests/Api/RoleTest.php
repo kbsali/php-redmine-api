@@ -90,7 +90,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'roles' => array(
                 array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5')
+                array('id' => 5, 'name' => 'Role 5'),
             ),
         );
         $expectedReturn = array(
@@ -130,7 +130,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'roles' => array(
                 array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5')
+                array('id' => 5, 'name' => 'Role 5'),
             ),
         );
         $expectedReturn = array(
@@ -171,7 +171,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'roles' => array(
                 array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5')
+                array('id' => 5, 'name' => 'Role 5'),
             ),
         );
         $expectedReturn = array(

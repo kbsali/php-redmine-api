@@ -10,7 +10,6 @@ use Redmine\Api\SimpleXMLElement;
  */
 class SimpleXMLElementTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test addChild()
      *

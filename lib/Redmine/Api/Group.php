@@ -59,7 +59,7 @@ class Group extends AbstractApi
             'user_ids' => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
+        if (
             !isset($params['name'])
         ) {
             throw new \Exception('Missing mandatory parameters');

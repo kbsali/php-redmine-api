@@ -90,7 +90,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'groups' => array(
                 array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5')
+                array('id' => 5, 'name' => 'Group 5'),
             ),
         );
         $expectedReturn = array(
@@ -130,7 +130,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'groups' => array(
                 array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5')
+                array('id' => 5, 'name' => 'Group 5'),
             ),
         );
         $expectedReturn = array(
@@ -171,7 +171,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'groups' => array(
                 array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5')
+                array('id' => 5, 'name' => 'Group 5'),
             ),
         );
         $expectedReturn = array(

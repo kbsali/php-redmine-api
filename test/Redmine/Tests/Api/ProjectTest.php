@@ -96,7 +96,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with(
                 '/projects/5.json?include=trackers,issue_categories,'
-                . 'attachments,relations'
+                .'attachments,relations'
             )
             ->willReturn($getResponse);
 
@@ -151,7 +151,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'projects' => array(
                 array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5')
+                array('id' => 5, 'name' => 'Project 5'),
             ),
         );
         $expectedReturn = array(
@@ -191,7 +191,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'projects' => array(
                 array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5')
+                array('id' => 5, 'name' => 'Project 5'),
             ),
         );
         $expectedReturn = array(
@@ -232,7 +232,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'projects' => array(
                 array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5')
+                array('id' => 5, 'name' => 'Project 5'),
             ),
         );
         $expectedReturn = array(
@@ -272,7 +272,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'projects' => array(
-                array('id' => 5, 'name' => 'Project 5')
+                array('id' => 5, 'name' => 'Project 5'),
             ),
         );
 
@@ -335,7 +335,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'name' => 'Test Project'
+            'name' => 'Test Project',
         );
 
         // Create the used mock objects
@@ -364,7 +364,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'identifier' => 'test-project'
+            'identifier' => 'test-project',
         );
 
         // Create the used mock objects
@@ -394,7 +394,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
         $parameters = array(
             'identifier' => 'test-project',
-            'name' => 'Test Project'
+            'name' => 'Test Project',
         );
 
         // Create the used mock objects
@@ -406,8 +406,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
-                    $this->stringEndsWith('</project>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<project>'),
+                    $this->stringEndsWith('</project>'."\n"),
                     $this->stringContains('<identifier>test-project</identifier>'),
                     $this->stringContains('<name>Test Project</name>')
                 )
@@ -437,7 +437,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $parameters = array(
             'identifier' => 'test-project',
             'name' => 'Test Project',
-            'tracker_ids' => array(10, 5)
+            'tracker_ids' => array(10, 5),
         );
 
         // Create the used mock objects
@@ -449,8 +449,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
-                    $this->stringEndsWith('</project>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<project>'),
+                    $this->stringEndsWith('</project>'."\n"),
                     $this->stringContains('<tracker_ids type="array">'),
                     $this->stringContains('<tracker>10</tracker>'),
                     $this->stringContains('<tracker>5</tracker>'),
@@ -480,7 +480,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'name' => 'Test Project'
+            'name' => 'Test Project',
         );
 
         // Create the used mock objects

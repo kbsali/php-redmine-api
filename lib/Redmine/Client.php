@@ -141,7 +141,7 @@ class Client
      */
     public function getUrl()
     {
-       return $this->url;
+        return $this->url;
     }
 
     /**
@@ -333,9 +333,9 @@ class Client
         $curl = curl_init();
         if (isset($this->apikeyOrUsername) && $this->useHttpAuth) {
             if (null === $this->pass) {
-                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999) );
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999));
             } else {
-                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass );
+                curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass);
             }
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
@@ -343,7 +343,7 @@ class Client
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_PORT , $this->getPort());
+        curl_setopt($curl, CURLOPT_PORT, $this->getPort());
         if (80 !== $this->getPort()) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
@@ -365,7 +365,7 @@ class Client
 
         // Redmine specific headers
         if ($this->impersonateUser) {
-            $httpHeader[] = 'X-Redmine-Switch-User: ' . $this->impersonateUser;
+            $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
 
         if (!empty($httpHeader)) {

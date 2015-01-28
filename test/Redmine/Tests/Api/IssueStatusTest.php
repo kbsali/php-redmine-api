@@ -90,7 +90,7 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_statuses' => array(
                 array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5')
+                array('id' => 5, 'name' => 'IssueStatus 5'),
             ),
         );
         $expectedReturn = array(
@@ -130,7 +130,7 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_statuses' => array(
                 array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5')
+                array('id' => 5, 'name' => 'IssueStatus 5'),
             ),
         );
         $expectedReturn = array(
@@ -171,7 +171,7 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_statuses' => array(
                 array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5')
+                array('id' => 5, 'name' => 'IssueStatus 5'),
             ),
         );
         $expectedReturn = array(
@@ -211,7 +211,7 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'issue_statuses' => array(
-                array('id' => 5, 'name' => 'IssueStatus 5')
+                array('id' => 5, 'name' => 'IssueStatus 5'),
             ),
         );
 

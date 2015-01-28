@@ -52,7 +52,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         // Test values
         $parameters = array(
             'offset' => 10,
-            'limit' => 2
+            'limit' => 2,
         );
         $getResponse = array('API Response');
 
@@ -264,7 +264,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         // Test values
         $parameters = array(
             'description' => 'Test version description',
-            'status' => 'invalid'
+            'status' => 'invalid',
         );
 
         // Create the used mock objects
@@ -305,8 +305,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>')
                 )
             )
@@ -335,7 +335,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
         $parameters = array(
             'name' => 'Test version',
-            'status' => 'locked'
+            'status' => 'locked',
         );
 
         // Create the used mock objects
@@ -347,8 +347,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains('<status>locked</status>')
                 )
@@ -377,7 +377,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         // Test values
         $parameters = array(
             'description' => 'Test version description',
-            'status' => 'invalid'
+            'status' => 'invalid',
         );
 
         // Create the used mock objects
@@ -418,8 +418,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>')
                 )
             )
@@ -448,7 +448,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
         $parameters = array(
             'name' => 'Test version',
-            'status' => 'locked'
+            'status' => 'locked',
         );
 
         // Create the used mock objects
@@ -460,8 +460,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains('<status>locked</status>')
                 )
@@ -489,7 +489,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'versions' => array(
                 array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5')
+                array('id' => 5, 'name' => 'Version 5'),
             ),
         );
         $expectedReturn = array(
@@ -527,12 +527,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'versions' => array(
                 array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5')
+                array('id' => 5, 'name' => 'Version 5'),
             ),
         );
         $expectedReturn = array(
             1 => 'Version 1',
-            5 => 'Version 5'
+            5 => 'Version 5',
         );
 
         // Create the used mock objects
@@ -565,7 +565,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'versions' => array(
                 array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5')
+                array('id' => 5, 'name' => 'Version 5'),
             ),
         );
         $expectedReturn = array(
@@ -604,7 +604,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'versions' => array(
                 array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5')
+                array('id' => 5, 'name' => 'Version 5'),
             ),
         );
         $expectedReturn = array(
@@ -642,7 +642,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'versions' => array(
-                array('id' => 5, 'name' => 'Version 5')
+                array('id' => 5, 'name' => 'Version 5'),
             ),
         );
 
@@ -696,8 +696,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains($sharingXmlElement)
                 )
@@ -741,8 +741,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->logicalNot(
                         $this->stringContains('<sharing')
@@ -822,8 +822,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains($sharingXmlElement)
                 )
@@ -867,8 +867,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
+                    $this->stringEndsWith('</version>'."\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->logicalNot(
                         $this->stringContains('<sharing')

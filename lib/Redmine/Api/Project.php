@@ -94,25 +94,14 @@ class Project extends AbstractApi
             array($this, 'isNotNull')
         );
 
-        if(
+        if (
             !isset($params['name'])
          || !isset($params['identifier'])
         ) {
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
-        foreach ($params as $k => $v) {
-            if ('tracker_ids' == $k && is_array($v)) {
-                $trackers = $xml->addChild('tracker_ids', '');
-                $trackers->addAttribute('type', 'array');
-                foreach ($v as $id) {
-                    $trackers->addChild('tracker', $id);
-                }
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
+        $xml = $this->prepareParamsXml($params);
 
         return $this->post('/projects.xml', $xml->asXML());
     }
@@ -135,12 +124,40 @@ class Project extends AbstractApi
         );
         $params = array_filter(array_merge($defaults, $params));
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
+        $xml = $this->prepareParamsXml($params);
 
         return $this->put('/projects/'.$id.'.xml', $xml->asXML());
+    }
+
+    /**
+     *
+     * @param  array                         $params
+     * @return \Redmine\Api\SimpleXMLElement
+     */
+    protected function prepareParamsXml($params)
+    {
+        $array_params = array(
+            'tracker_ids', 'issue_custom_field_ids',
+        );
+        $array_params_elements = array(
+            'tracker_ids' => 'tracker',
+            'issue_custom_field_ids' => 'issue_custom_field',
+        );
+
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        foreach ($params as $k => $v) {
+            if (in_array($k, $array_params) && is_array($v)) {
+                $array = $xml->addChild($k, '');
+                $array->addAttribute('type', 'array');
+                foreach ($v as $id) {
+                    $array->addChild($array_params_elements[$k], $id);
+                }
+            } else {
+                $xml->addChild($k, $v);
+            }
+        }
+
+        return $xml;
     }
 
     /**

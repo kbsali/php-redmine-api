@@ -6,7 +6,6 @@ use Redmine\TestClient;
 
 class TestClientTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers Redmine\TestClient
      * @test

@@ -77,7 +77,7 @@ class Issue extends AbstractApi
                 foreach ($v as $upload) {
                     $upload_item = $uploads_item->addChild('upload', '');
                     foreach ($upload as $upload_k => $upload_v) {
-                      $upload_item->addChild($upload_k, $upload_v);
+                        $upload_item->addChild($upload_k, $upload_v);
                     }
                 }
             } elseif ('description' === $k && strpos($v, '\n') !== false) {
@@ -203,7 +203,7 @@ class Issue extends AbstractApi
         $statusId = $this->client->api('issue_status')->getIdByName($status);
 
         return $this->update($id, array(
-            'status_id' => $statusId
+            'status_id' => $statusId,
         ));
     }
 
@@ -215,7 +215,7 @@ class Issue extends AbstractApi
     public function addNoteToIssue($id, $note)
     {
         return $this->update($id, array(
-            'notes' => $note
+            'notes' => $note,
         ));
     }
 
@@ -269,8 +269,8 @@ class Issue extends AbstractApi
         $request['issue'] = array(
             'id' => $id,
             'uploads' => array(
-                'upload' => $attachment
-            )
+                'upload' => $attachment,
+            ),
         );
 
         return $this->put('/issues/'.$id.'.json', json_encode($request));

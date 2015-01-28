@@ -31,6 +31,6 @@ class Attachment extends AbstractApi
     */
     public function upload($attachment)
     {
-      return $this->post('/uploads.json', $attachment);
+        return $this->post('/uploads.json', $attachment);
     }
 }

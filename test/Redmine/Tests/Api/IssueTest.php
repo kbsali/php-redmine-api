@@ -211,15 +211,15 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $response = 'API Response';
         $attachment = array(
             'token' => 'sample-test-token',
-            'filename' => 'test.txt'
+            'filename' => 'test.txt',
         );
         $requestData = array(
             'issue' => array(
                 'id' => 5,
                 'uploads' => array(
-                    'upload' => $attachment
-                )
-            )
+                    'upload' => $attachment,
+                ),
+            ),
         );
 
         // Create the used mock objects
@@ -333,7 +333,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->method('post')
             ->with(
                 '/issues.xml',
-                '<?xml version="1.0"?>' . "\n" . '<issue/>' . "\n"
+                '<?xml version="1.0"?>'."\n".'<issue/>'."\n"
             )
             ->willReturn($getResponse);
 
@@ -400,8 +400,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
                     $this->stringContains('<status_id>cleanedValue</status_id>'),
@@ -442,7 +442,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->method('put')
             ->with(
                 '/issues/5.xml',
-                '<?xml version="1.0"?>' . "\n" . '<issue><id>5</id></issue>' . "\n"
+                '<?xml version="1.0"?>'."\n".'<issue><id>5</id></issue>'."\n"
             )
             ->willReturn($getResponse);
 
@@ -509,8 +509,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
@@ -563,8 +563,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<status_id>123</status_id>')
                 )
@@ -600,8 +600,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<notes>Note content</notes>')
                 )
@@ -642,8 +642,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<custom_fields type="array">'),
                     $this->stringContains('</custom_fields>'),
                     $this->stringContains('<custom_field id="225"><value>One Custom Field</value></custom_field>'),
@@ -682,8 +682,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<watcher_user_ids type="array">'),
                     $this->stringContains('</watcher_user_ids>'),
                     $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
@@ -721,7 +721,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
                     'token' => 'second-token',
                     'filename' => 'An-Other-File.css',
                     'content_type' => 'text/css',
-                )
+                ),
             ),
         );
 
@@ -734,24 +734,24 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<uploads type="array">'),
                     $this->stringContains('</uploads>'),
                     $this->stringContains(
                         '<upload>'
-                        . '<token>first-token</token>'
-                        . '<filename>SomeRandomFile.txt</filename>'
-                        . '<description>Simple description</description>'
-                        . '<content_type>text/plain</content_type>'
-                        . '</upload>'
+                        .'<token>first-token</token>'
+                        .'<filename>SomeRandomFile.txt</filename>'
+                        .'<description>Simple description</description>'
+                        .'<content_type>text/plain</content_type>'
+                        .'</upload>'
                     ),
                     $this->stringContains(
                         '<upload>'
-                        . '<token>second-token</token>'
-                        . '<filename>An-Other-File.css</filename>'
-                        . '<content_type>text/css</content_type>'
-                        . '</upload>'
+                        .'<token>second-token</token>'
+                        .'<filename>An-Other-File.css</filename>'
+                        .'<content_type>text/css</content_type>'
+                        .'</upload>'
                     )
                 )
             );
@@ -799,23 +799,23 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringEndsWith('</issue>'."\n"),
                     $this->stringContains('<watcher_user_ids type="array">'),
                     $this->stringContains('</watcher_user_ids>'),
                     $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
                     $this->stringContains(
                         '<upload>'
-                        . '<token>first-token</token>'
-                        . '<filename>SomeRandomFile.txt</filename>'
-                        . '<description>Simple description</description>'
-                        . '<content_type>text/plain</content_type>'
-                        . '</upload>'
+                        .'<token>first-token</token>'
+                        .'<filename>SomeRandomFile.txt</filename>'
+                        .'<description>Simple description</description>'
+                        .'<content_type>text/plain</content_type>'
+                        .'</upload>'
                     ),
                     $this->stringContains(
                         '<custom_field id="25">'
-                        . '<value>Second Custom Field</value>'
-                        . '</custom_field>'
+                        .'<value>Second Custom Field</value>'
+                        .'</custom_field>'
                     ),
                     $this->stringContains('<subject>Issue subject</subject>')
                 )

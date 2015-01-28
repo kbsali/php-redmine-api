@@ -89,7 +89,7 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $returnValue = array(
-            'child' => array(5, 2, 3)
+            'child' => array(5, 2, 3),
         );
 
         // Create the used mock objects

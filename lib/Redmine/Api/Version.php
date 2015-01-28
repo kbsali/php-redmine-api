@@ -95,7 +95,7 @@ class Version extends AbstractApi
             'due_date'    => null,
         );
         $params = array_filter(array_merge($defaults, $params));
-        if(
+        if (
             !isset($params['name'])
         ) {
             throw new \Exception('Missing mandatory parameters');
@@ -145,7 +145,7 @@ class Version extends AbstractApi
         $arrStatus = array(
             'open',
             'locked',
-            'closed'
+            'closed',
         );
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
             throw new \Exception('Possible values for status : '.join(', ', $arrStatus));

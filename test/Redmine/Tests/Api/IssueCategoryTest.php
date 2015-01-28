@@ -92,7 +92,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_categories' => array(
                 array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5')
+                array('id' => 5, 'name' => 'IssueCategory 5'),
             ),
         );
         $expectedReturn = array(
@@ -132,7 +132,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_categories' => array(
                 array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5')
+                array('id' => 5, 'name' => 'IssueCategory 5'),
             ),
         );
         $expectedReturn = array(
@@ -173,7 +173,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         $getResponse = array(
             'issue_categories' => array(
                 array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5')
+                array('id' => 5, 'name' => 'IssueCategory 5'),
             ),
         );
         $expectedReturn = array(
@@ -321,7 +321,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = array(
             'issue_categories' => array(
-                array('id' => 5, 'name' => 'IssueCategory 5')
+                array('id' => 5, 'name' => 'IssueCategory 5'),
             ),
         );
 
@@ -401,8 +401,8 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/projects/5/issue_categories.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue_category>'),
-                    $this->stringEndsWith('</issue_category>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue_category>'),
+                    $this->stringEndsWith('</issue_category>'."\n"),
                     $this->stringContains('<name>Test Category</name>'),
                     $this->stringContains('<assigned_to_id>2</assigned_to_id>')
                 )
@@ -443,8 +443,8 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
             ->with(
                 '/issue_categories/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue_category>'),
-                    $this->stringEndsWith('</issue_category>' . "\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue_category>'),
+                    $this->stringEndsWith('</issue_category>'."\n"),
                     $this->stringContains('<name>Test Category</name>'),
                     $this->stringContains('<assigned_to_id>2</assigned_to_id>')
                 )
