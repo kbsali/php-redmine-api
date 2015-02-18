@@ -90,7 +90,10 @@ class IssueCategory extends AbstractApi
             'name'           => null,
             'assigned_to_id' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
         if (
             !isset($params['name'])
         ) {
@@ -119,7 +122,10 @@ class IssueCategory extends AbstractApi
             'name'           => null,
             'assigned_to_id' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
         foreach ($params as $k => $v) {

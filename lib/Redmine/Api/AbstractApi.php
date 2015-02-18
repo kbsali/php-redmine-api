@@ -96,7 +96,7 @@ abstract class AbstractApi
      */
     protected function isNotNull($var)
     {
-        return !is_null($var);
+        return !(is_null($var) || $var === false || $var === "" || ((is_array($var) || is_object($var)) && empty($var)));
     }
 
     /**

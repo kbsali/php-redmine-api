@@ -122,7 +122,10 @@ class Project extends AbstractApi
             'identifier'  => null,
             'description' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
 
         $xml = $this->prepareParamsXml($params);
 
