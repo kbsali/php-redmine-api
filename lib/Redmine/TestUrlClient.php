@@ -4,7 +4,7 @@ namespace Redmine;
 
 class TestUrlClient extends Client
 {
-    public function get($path)
+    public function get($path, $decode = true)
     {
         return $this->runRequest($path, 'GET');
     }

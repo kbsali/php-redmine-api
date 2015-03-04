@@ -146,13 +146,18 @@ class Client
 
     /**
      * HTTP GETs a json $path and tries to decode it
-     * @param  string $path
+     * @param  string  $path
+     * @param  boolean $decode
      * @return array
      */
-    public function get($path)
+    public function get($path, $decode = true)
     {
         if (false === $json = $this->runRequest($path, 'GET')) {
             return false;
+        }
+
+        if (!$decode) {
+            return $json;
         }
 
         return $this->decode($json);
