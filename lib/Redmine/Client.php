@@ -157,7 +157,7 @@ class Client
         }
 
         if (!$decode) {
-          return $json;
+            return $json;
         }
 
         return $this->decode($json);
