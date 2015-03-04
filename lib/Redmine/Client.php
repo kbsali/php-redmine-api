@@ -149,10 +149,14 @@ class Client
      * @param  string $path
      * @return array
      */
-    public function get($path)
+    public function get($path, $decode = true)
     {
         if (false === $json = $this->runRequest($path, 'GET')) {
             return false;
+        }
+
+        if (!$decode) {
+          return $json;
         }
 
         return $this->decode($json);

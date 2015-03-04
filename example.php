@@ -213,6 +213,9 @@ $client->api('version')->remove($versionId);
 // Attachments
 $client->api('attachment')->show($attachmentId);
 
+$file_content = $client->api('attachment')->download($attachmentId);
+file_put_contents('example.png', $file_content);
+
 // ----------------------------
 // News
 $client->api('news')->all('test');

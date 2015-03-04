@@ -44,9 +44,9 @@ abstract class AbstractApi
      *
      * @return array
      */
-    protected function get($path)
+    protected function get($path, $decode = true)
     {
-        return $this->client->get($path);
+        return $this->client->get($path, $decode);
     }
 
     /**
