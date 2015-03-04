@@ -146,7 +146,8 @@ class Client
 
     /**
      * HTTP GETs a json $path and tries to decode it
-     * @param  string $path
+     * @param  string  $path
+     * @param  boolean $decode
      * @return array
      */
     public function get($path, $decode = true)
