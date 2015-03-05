@@ -54,10 +54,8 @@ class TimeEntry extends AbstractApi
             'activity_id' => null,
             'comments'    => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if (
             (!isset($params['issue_id']) && !isset($params['project_id']))
          || !isset($params['hours'])
@@ -92,10 +90,7 @@ class TimeEntry extends AbstractApi
             'activity_id' => null,
             'comments'    => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {

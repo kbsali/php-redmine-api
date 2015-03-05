@@ -42,10 +42,8 @@ class Membership extends AbstractApi
             'user_ids' => null,
             'role_ids' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if ((!isset($params['user_ids']) && !isset($params['user_id']))
          || !isset($params['role_ids'])
         ) {
@@ -70,10 +68,8 @@ class Membership extends AbstractApi
         $defaults = array(
             'role_ids' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if (!isset($params['role_ids'])) {
             throw new \Exception('Missing mandatory parameters');
         }

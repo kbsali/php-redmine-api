@@ -58,10 +58,8 @@ class Group extends AbstractApi
             'name'     => null,
             'user_ids' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if (
             !isset($params['name'])
         ) {

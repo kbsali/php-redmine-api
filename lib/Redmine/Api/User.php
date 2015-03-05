@@ -101,10 +101,8 @@ class User extends AbstractApi
             'mail'      => null,
             // 'auth_source_id' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if (
             !isset($params['login'])
          || !isset($params['lastname'])
@@ -144,10 +142,7 @@ class User extends AbstractApi
             'mail'      => null,
             // 'auth_source_id' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {

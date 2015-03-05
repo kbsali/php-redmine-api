@@ -127,10 +127,7 @@ class Issue extends AbstractApi
             'watcher_user_ids' => null,
         );
         $params = $this->cleanParams($params);
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = $this->buildXML($params);
 
@@ -169,10 +166,7 @@ class Issue extends AbstractApi
             'due_date'       => null,
         );
         $params = $this->cleanParams($params);
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = $this->buildXML($params);
 

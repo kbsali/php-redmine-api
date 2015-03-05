@@ -60,10 +60,7 @@ class Wiki extends AbstractApi
             'comments' => null,
             'version'  => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {

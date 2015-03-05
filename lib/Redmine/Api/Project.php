@@ -88,11 +88,7 @@ class Project extends AbstractApi
             'identifier'  => null,
             'description' => null,
         );
-
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         if (
             !isset($params['name'])
@@ -122,10 +118,7 @@ class Project extends AbstractApi
             'identifier'  => null,
             'description' => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $xml = $this->prepareParamsXml($params);
 

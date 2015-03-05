@@ -96,12 +96,26 @@ abstract class AbstractApi
      */
     protected function isNotNull($var)
     {
-        return false !== $var &&
+        return
+            false !== $var &&
             null !== $var &&
             '' !== $var &&
             !( (is_array($var) || is_object($var)) && empty($var) );
     }
 
+    /**
+     * @param  array $defaults
+     * @param  array $params
+     *
+     * @return array
+     */
+    protected function sanitizeParams(array $defaults, array $params)
+    {
+        return array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
+    }
     /**
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100)
@@ -119,10 +133,7 @@ abstract class AbstractApi
             'limit'  => 25,
             'offset' => 0,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $ret = array();
 

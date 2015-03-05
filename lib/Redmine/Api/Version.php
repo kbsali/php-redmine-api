@@ -94,10 +94,8 @@ class Version extends AbstractApi
             'sharing'     => null,
             'due_date'    => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
+
         if (
             !isset($params['name'])
         ) {
@@ -131,10 +129,7 @@ class Version extends AbstractApi
             'sharing'     => null,
             'due_date'    => null,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
         $this->validateStatus($params);
         $this->validateSharing($params);
 
