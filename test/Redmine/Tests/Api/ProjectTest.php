@@ -6,17 +6,16 @@ use Redmine\Api\Project;
 
 /**
  * @coversDefaultClass Redmine\Api\Project
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -40,12 +39,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -75,13 +72,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowReturnsClientGetResponse()
     {
@@ -108,13 +103,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveCallsDelete()
     {
@@ -138,12 +131,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingReturnsNameIdArray()
     {
@@ -178,12 +169,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -219,12 +208,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -260,12 +247,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getIdByName()
+     * Test getIdByName().
      *
      * @covers ::getIdByName
      * @test
-     *
-     * @return void
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -296,13 +281,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
@@ -322,13 +305,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionIfIdentifierIsMissingInParameters()
     {
@@ -351,13 +332,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionIfNameIsMissingInParameters()
     {
@@ -380,13 +359,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPost()
     {
@@ -422,13 +399,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPostWithTrackers()
     {
@@ -467,13 +442,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::put
      * @covers ::update
      * @test
-     *
-     * @return void
      */
     public function testUpdateCallsPut()
     {

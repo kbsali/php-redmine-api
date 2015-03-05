@@ -6,7 +6,7 @@ class SimpleXMLElement extends \SimpleXMLElement
 {
     /**
      * Makes sure string is properly escaped
-     * http://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda)
+     * http://stackoverflow.com/questions/552957/rationale-behind-simplexmlelements-handling-of-text-values-in-addchild-and-adda).
      */
     public function addChild($name, $value = null, $ns = null)
     {

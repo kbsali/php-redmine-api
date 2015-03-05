@@ -6,17 +6,16 @@ use Redmine\Api\IssuePriority;
 
 /**
  * @coversDefaultClass Redmine\Api\IssuePriority
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class IssuePriorityTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -42,12 +41,10 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {

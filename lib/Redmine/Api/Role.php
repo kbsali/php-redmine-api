@@ -3,9 +3,10 @@
 namespace Redmine\Api;
 
 /**
- * Listing roles
+ * Listing roles.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Roles
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Role extends AbstractApi
@@ -13,10 +14,12 @@ class Role extends AbstractApi
     private $roles = array();
 
     /**
-     * List roles
+     * List roles.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *
-     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
      * @return array list of roles found
      */
     public function all(array $params = array())
@@ -27,10 +30,11 @@ class Role extends AbstractApi
     }
 
     /**
-     * Returns an array of roles with name/id pairs
+     * Returns an array of roles with name/id pairs.
      *
-     * @param  boolean $forceUpdate to force the update of the roles var
-     * @return array   list of roles (id => name)
+     * @param boolean $forceUpdate to force the update of the roles var
+     *
+     * @return array list of roles (id => name)
      */
     public function listing($forceUpdate = false)
     {
@@ -46,10 +50,12 @@ class Role extends AbstractApi
     }
 
     /**
-     * Returns the list of permissions for a given role (Redmine v2.2.0)
+     * Returns the list of permissions for a given role (Redmine v2.2.0).
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET-2
      *
-     * @param  int   $id the role id
+     * @param int $id the role id
+     *
      * @return array
      */
     public function show($id)

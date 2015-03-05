@@ -6,17 +6,16 @@ use Redmine\Api\SimpleXMLElement;
 
 /**
  * @coversDefaultClass Redmine\Api\SimpleXMLElement
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class SimpleXMLElementTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test addChild()
+     * Test addChild().
      *
      * @covers ::addChild
      * @test
-     *
-     * @return void
      */
     public function testAddChildWithUnescapedString()
     {
@@ -32,12 +31,10 @@ class SimpleXMLElementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addChild()
+     * Test addChild().
      *
      * @covers ::addChild
      * @test
-     *
-     * @return void
      */
     public function testAddChildWithNameParameter()
     {
@@ -51,12 +48,10 @@ class SimpleXMLElementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addChild()
+     * Test addChild().
      *
      * @covers ::addChild
      * @test
-     *
-     * @return void
      */
     public function testAddChildWithIntegerValue()
     {

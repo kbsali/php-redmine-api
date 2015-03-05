@@ -6,17 +6,16 @@ use Redmine\Api\News;
 
 /**
  * @coversDefaultClass Redmine\Api\News
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class NewsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -42,12 +41,10 @@ class NewsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithProject()
     {
@@ -74,12 +71,10 @@ class NewsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {

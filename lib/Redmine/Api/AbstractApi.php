@@ -5,14 +5,14 @@ namespace Redmine\Api;
 use Redmine\Client;
 
 /**
- * Abstract class for Api classes
+ * Abstract class for Api classes.
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 abstract class AbstractApi
 {
     /**
-     * The client
+     * The client.
      *
      * @var Client
      */
@@ -28,6 +28,7 @@ abstract class AbstractApi
 
     /**
      * Returns whether or not the last api call failed.
+     *
      * @return bool
      */
     public function lastCallFailed()
@@ -88,7 +89,7 @@ abstract class AbstractApi
     }
 
     /**
-     * Checks if the variable passed is not null
+     * Checks if the variable passed is not null.
      *
      * @param mixed $var Variable to be checked
      *
@@ -96,19 +97,34 @@ abstract class AbstractApi
      */
     protected function isNotNull($var)
     {
-        return false !== $var &&
+        return
+            false !== $var &&
             null !== $var &&
             '' !== $var &&
-            !( (is_array($var) || is_object($var)) && empty($var) );
+            !((is_array($var) || is_object($var)) && empty($var));
     }
 
     /**
-     * Retrieves all the elements of a given endpoint (even if the
-     * total number of elements is greater than 100)
+     * @param array $defaults
+     * @param array $params
      *
-     * @param  string $endpoint API end point
-     * @param  array  $params   optional parameters to be passed to the api (offset, limit, ...)
-     * @return array  elements found
+     * @return array
+     */
+    protected function sanitizeParams(array $defaults, array $params)
+    {
+        return array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
+    }
+    /**
+     * Retrieves all the elements of a given endpoint (even if the
+     * total number of elements is greater than 100).
+     *
+     * @param string $endpoint API end point
+     * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array elements found
      */
     protected function retrieveAll($endpoint, array $params = array())
     {
@@ -119,10 +135,7 @@ abstract class AbstractApi
             'limit'  => 25,
             'offset' => 0,
         );
-        $params = array_filter(
-            array_merge($defaults, $params),
-            array($this, 'isNotNull')
-        );
+        $params = $this->sanitizeParams($defaults, $params);
 
         $ret = array();
 
@@ -158,11 +171,13 @@ abstract class AbstractApi
     }
 
     /**
-     * Attaches Custom Fields to a create/update query
+     * Attaches Custom Fields to a create/update query.
      *
-     * @param  SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param  array            $fields array of fields to attach, each field needs name, id and value set
+     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
+     * @param array            $fields array of fields to attach, each field needs name, id and value set
+     *
      * @return SimpleXMLElement $xml
+     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
     protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)

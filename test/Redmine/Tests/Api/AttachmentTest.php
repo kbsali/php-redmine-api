@@ -6,19 +6,18 @@ use Redmine\Api\Attachment;
 
 /**
  * @coversDefaultClass Redmine\Api\Attachment
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class AttachmentTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test lastCallFailed()
+     * Test lastCallFailed().
      *
      * @covers       ::__construct
      * @covers       ::lastCallFailed
      * @dataProvider responseCodeProvider
      * @test
-     *
-     * @return void
      */
     public function testLastCallFailedTrue($responseCode, $hasFailed)
     {
@@ -38,7 +37,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for response code and expected state
+     * Data provider for response code and expected state.
      *
      * @return array[]
      */
@@ -57,13 +56,11 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowReturnsClientGetResponse()
     {
@@ -87,13 +84,11 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test upload()
+     * Test upload().
      *
      * @covers ::post
      * @covers ::upload
      * @test
-     *
-     * @return void
      */
     public function testUploadReturnsClientPostResponse()
     {

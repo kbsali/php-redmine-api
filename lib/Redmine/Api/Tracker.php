@@ -3,9 +3,10 @@
 namespace Redmine\Api;
 
 /**
- * Listing trackers
+ * Listing trackers.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Trackers
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Tracker extends AbstractApi
@@ -13,10 +14,12 @@ class Tracker extends AbstractApi
     private $trackers = array();
 
     /**
-     * List trackers
+     * List trackers.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
      *
-     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
      * @return array list of trackers found
      */
     public function all(array $params = array())
@@ -27,10 +30,11 @@ class Tracker extends AbstractApi
     }
 
     /**
-     * Returns an array of trackers with name/id pairs
+     * Returns an array of trackers with name/id pairs.
      *
-     * @param  boolean $forceUpdate to force the update of the trackers var
-     * @return array   list of trackers (id => name)
+     * @param boolean $forceUpdate to force the update of the trackers var
+     *
+     * @return array list of trackers (id => name)
      */
     public function listing($forceUpdate = false)
     {
@@ -46,9 +50,10 @@ class Tracker extends AbstractApi
     }
 
     /**
-     * Get a tracket id given its name
+     * Get a tracket id given its name.
      *
-     * @param  string|int $name tracker name
+     * @param string|int $name tracker name
+     *
      * @return int|false
      */
     public function getIdByName($name)

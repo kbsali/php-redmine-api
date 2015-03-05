@@ -3,9 +3,10 @@
 namespace Redmine\Api;
 
 /**
- * Listing custom fields
+ * Listing custom fields.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class CustomField extends AbstractApi
@@ -13,10 +14,12 @@ class CustomField extends AbstractApi
     private $customFields = array();
 
     /**
-     * List custom fields
+     * List custom fields.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *
-     * @param  array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
      * @return array list of custom fields found
      */
     public function all(array $params = array())
@@ -27,10 +30,11 @@ class CustomField extends AbstractApi
     }
 
     /**
-     * Returns an array of custom fields with name/id pairs
+     * Returns an array of custom fields with name/id pairs.
      *
-     * @param  boolean $forceUpdate to force the update of the custom fields var
-     * @return array   list of custom fields (id => name)
+     * @param boolean $forceUpdate to force the update of the custom fields var
+     *
+     * @return array list of custom fields (id => name)
      */
     public function listing($forceUpdate = false)
     {
@@ -46,9 +50,10 @@ class CustomField extends AbstractApi
     }
 
     /**
-     * Get a tracket id given its name
+     * Get a tracket id given its name.
      *
-     * @param  string|int $name customer field name
+     * @param string|int $name customer field name
+     *
      * @return int|false
      */
     public function getIdByName($name)

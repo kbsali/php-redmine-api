@@ -58,7 +58,7 @@ $client->api('issue_status')->getIdByName('New');
 // Project
 $client->api('project')->all();
 $client->api('project')->all(array(
-    'limit' => 10
+    'limit' => 10,
 ));
 $client->api('project')->listing();
 $client->api('project')->listing();
@@ -82,7 +82,7 @@ $client->api('user')->getCurrentUser();
 $client->api('user')->getIdByUsername('kbsali');
 $client->api('user')->show($userId);
 $client->api('user')->update($userId, array(
-    'firstname' => 'Raul'
+    'firstname' => 'Raul',
 ));
 $client->api('user')->remove($userId);
 $client->api('user')->create(array(
@@ -96,7 +96,7 @@ $client->api('user')->create(array(
 // Issues
 $client->api('issue')->show($issueId);
 $client->api('issue')->all(array(
-    'limit' => 100
+    'limit' => 100,
 ));
 $client->api('issue')->all(array('category_id'    => $categoryId));
 $client->api('issue')->all(array('tracker_id'     => $trackerId));
@@ -154,16 +154,16 @@ $client->api('issue')->addNoteToIssue($issueId, 'some comment');
 $client->api('issue')->remove($issueId);
 
 // To upload a file + attach it to an existing issue with $issueId
-$upload = json_decode( $client->api('attachment')->upload($filecontent) );
+$upload = json_decode($client->api('attachment')->upload($filecontent));
 $client->api('issue')->attach($issueId, array(
     'token'        => $upload->upload->token,
     'filename'     => 'MyFile.pdf',
     'description'  => 'MyFile is better then YourFile...',
-    'content_type' => 'application/pdf'
+    'content_type' => 'application/pdf',
 ));
 
 // Or, create a new issue with the file attached in one step
-$upload = json_decode( $client->api('attachment')->upload($filecontent) );
+$upload = json_decode($client->api('attachment')->upload($filecontent));
 $client->api('issue')->create(array(
     'project_id'  => 'myproject',
     'subject'     => 'A test issue',
@@ -173,9 +173,9 @@ $client->api('issue')->create(array(
           'token'       => $upload->upload->token,
           'filename'    => 'MyFile.pdf',
           'description' => 'MyFile is better then YourFile...',
-          'content_type'=> 'application/pdf'
-        )
-    )
+          'content_type' => 'application/pdf',
+        ),
+    ),
 ));
 
 // ----------------------------
@@ -192,7 +192,7 @@ $client->api('issue_category')->update($categoryId, array(
 ));
 $client->api('issue_category')->remove($categoryId);
 $client->api('issue_category')->remove($categoryId, array(
-    'reassign_to_id' => $userId
+    'reassign_to_id' => $userId,
 ));
 
 // ----------------------------
@@ -301,7 +301,6 @@ $client->api('wiki')->update('testProject', 'about', array(
     'version'  => null,
 ));
 $client->api('wiki')->remove('testProject', 'about');
-
 
 // ----------------------------
 // Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
