@@ -6,16 +6,15 @@ use Redmine\Api\Issue;
 
 /**
  * @coversDefaultClass Redmine\Api\Issue
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class IssueTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the constants
+     * Test the constants.
      *
      * @test
-     *
-     * @return void
      */
     public function testPriorityConstants()
     {
@@ -27,12 +26,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -58,12 +55,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -93,13 +88,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowReturnsClientGetResponse()
     {
@@ -123,13 +116,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowCallsGetUrlWithParameters()
     {
@@ -159,13 +150,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveCallsDelete()
     {
@@ -197,13 +186,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test attach()
+     * Test attach().
      *
      * @covers ::attach
      * @covers ::put
      * @test
-     *
-     * @return void
      */
     public function testAttachCallsPut()
     {
@@ -248,12 +235,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addWatcher()
+     * Test addWatcher().
      *
      * @covers ::addWatcher
      * @test
-     *
-     * @return void
      */
     public function testAddWatcherCallsPost()
     {
@@ -280,12 +265,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeWatcher()
+     * Test removeWatcher().
      *
      * @covers ::removeWatcher
      * @test
-     *
-     * @return void
      */
     public function testRemoveWatcherCallsPost()
     {
@@ -311,13 +294,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPost()
     {
@@ -345,13 +326,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test cleanParams()
+     * Test cleanParams().
      *
      * @covers ::create
      * @covers ::cleanParams
      * @test
-     *
-     * @return void
      */
     public function testCreateCleansParameters()
     {
@@ -420,13 +399,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::update
      * @covers ::put
      * @test
-     *
-     * @return void
      */
     public function testUpdateCallsPut()
     {
@@ -454,13 +431,11 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::update
      * @covers ::cleanParams
      * @test
-     *
-     * @return void
      */
     public function testUpdateCleansParameters()
     {
@@ -530,12 +505,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setIssueStatus()
+     * Test setIssueStatus().
      *
      * @covers ::setIssueStatus
      * @test
-     *
-     * @return void
      */
     public function testSetIssueStatus()
     {
@@ -579,12 +552,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addNoteToIssue()
+     * Test addNoteToIssue().
      *
      * @covers ::addNoteToIssue
      * @test
-     *
-     * @return void
      */
     public function testAddNoteToIssue()
     {
@@ -616,12 +587,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test buildXML()
+     * Test buildXML().
      *
      * @covers ::buildXML
      * @test
-     *
-     * @return void
      */
     public function testBuildXmlWithCustomFields()
     {
@@ -659,12 +628,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test buildXML()
+     * Test buildXML().
      *
      * @covers ::buildXML
      * @test
-     *
-     * @return void
      */
     public function testBuildXmlWithWatchers()
     {
@@ -699,12 +666,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test buildXML()
+     * Test buildXML().
      *
      * @covers ::buildXML
      * @test
-     *
-     * @return void
      */
     public function testBuildXmlWithUploads()
     {
@@ -764,12 +729,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test buildXML()
+     * Test buildXML().
      *
      * @covers ::buildXML
      * @test
-     *
-     * @return void
      */
     public function testBuildXmlWithWatcherAndUploadAndCustomFieldAndStandard()
     {

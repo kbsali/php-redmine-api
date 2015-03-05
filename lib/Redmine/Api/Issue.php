@@ -6,6 +6,7 @@ namespace Redmine\Api;
  * Listing issues, searching, editing and closing your projects issues.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Issue extends AbstractApi
@@ -17,7 +18,8 @@ class Issue extends AbstractApi
     const PRIO_IMMEDIATE = 5;
 
     /**
-     * List issues
+     * List issues.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues
      * available $params :
      * - offset: skip this number of issues in response (optional)
@@ -30,7 +32,8 @@ class Issue extends AbstractApi
      * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
      * - query_id : id of the previously saved query
      *
-     * @param  array $params the additional parameters (cf avaiable $params above)
+     * @param array $params the additional parameters (cf avaiable $params above)
+     *
      * @return array list of issues found
      */
     public function all(array $params = array())
@@ -39,14 +42,16 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Get extended information about an issue gitven its id
+     * Get extended information about an issue gitven its id.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON
      * available $params :
      * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
-     * @param  string $id     the issue id
-     * @param  array  $params extra associated data
-     * @return array  information about the issue
+     * @param string $id     the issue id
+     * @param array  $params extra associated data
+     *
+     * @return array information about the issue
      */
     public function show($id, array $params = array())
     {
@@ -54,8 +59,10 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Build the XML for an issue
-     * @param  array            $params for the new/updated issue data
+     * Build the XML for an issue.
+     *
+     * @param array $params for the new/updated issue data
+     *
      * @return SimpleXMLElement
      */
     private function buildXML(array $params = array())
@@ -97,9 +104,11 @@ class Issue extends AbstractApi
     /**
      * Create a new issue given an array of $params
      * The issue is assigned to the authenticated user.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param  array            $params the new issue data
+     * @param array $params the new issue data
+     *
      * @return SimpleXMLElement
      */
     public function create(array $params = array())
@@ -138,10 +147,12 @@ class Issue extends AbstractApi
 
     /**
      * Update issue information's by username, repo and issue number. Requires authentication.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param  string           $id     the issue number
-     * @param  array            $params
+     * @param string $id     the issue number
+     * @param array  $params
+     *
      * @return SimpleXMLElement
      */
     public function update($id, array $params)
@@ -174,9 +185,8 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int    $id
-     * @param  string $watcher_user_id
-     * @return void
+     * @param int    $id
+     * @param string $watcher_user_id
      */
     public function addWatcher($id, $watcher_user_id)
     {
@@ -184,9 +194,8 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int    $id
-     * @param  string $watcher_user_id
-     * @return void
+     * @param int    $id
+     * @param string $watcher_user_id
      */
     public function removeWatcher($id, $watcher_user_id)
     {
@@ -194,8 +203,9 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int              $id
-     * @param  string           $status
+     * @param int    $id
+     * @param string $status
+     *
      * @return SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
@@ -208,8 +218,9 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param  int              $id
-     * @param  string           $note
+     * @param int    $id
+     * @param string $note
+     *
      * @return SimpleXMLElement
      */
     public function addNoteToIssue($id, $note)
@@ -220,8 +231,10 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Transforms literal identifiers to integer ids
-     * @param  array $params
+     * Transforms literal identifiers to integer ids.
+     *
+     * @param array $params
+     *
      * @return array
      */
     private function cleanParams(array $params = array())
@@ -257,10 +270,12 @@ class Issue extends AbstractApi
 
     /**
      * Attach a file to an issue issue number. Requires authentication.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param  string      $id         the issue number
-     * @param  array       $attachment
+     * @param string $id         the issue number
+     * @param array  $attachment
+     *
      * @return bool|string
      */
     public function attach($id, array $attachment)
@@ -277,7 +292,7 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Remove a issue by issue number
+     * Remove a issue by issue number.
      *
      * @param string $id the issue number
      */

@@ -6,17 +6,16 @@ use Redmine\Api\Query;
 
 /**
  * @coversDefaultClass Redmine\Api\Query
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class QueryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -42,12 +41,10 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {

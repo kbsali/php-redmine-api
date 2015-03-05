@@ -6,17 +6,16 @@ use Redmine\Api\Group;
 
 /**
  * @coversDefaultClass Redmine\Api\Group
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class GroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -42,12 +41,10 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -77,12 +74,10 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingReturnsNameIdArray()
     {
@@ -117,12 +112,10 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -158,12 +151,10 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -199,13 +190,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowReturnsClientGetResponse()
     {
@@ -229,13 +218,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowCallsGetUrlWithParameters()
     {
@@ -265,13 +252,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveCallsDelete()
     {
@@ -303,13 +288,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPost()
     {
@@ -345,14 +328,12 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionIsNameIsMissing()
     {
@@ -372,13 +353,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeUser()
+     * Test removeUser().
      *
      * @covers ::addUser
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testAddUserCallsPost()
     {
@@ -411,13 +390,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeUser()
+     * Test removeUser().
      *
      * @covers ::delete
      * @covers ::removeUser
      * @test
-     *
-     * @return void
      */
     public function testRemoveUserCallsDelete()
     {

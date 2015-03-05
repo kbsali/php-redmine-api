@@ -6,17 +6,16 @@ use Redmine\Api\TimeEntryActivity;
 
 /**
  * @coversDefaultClass Redmine\Api\TimeEntryActivity
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class TimeEntryActivityTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -42,12 +41,10 @@ class TimeEntryActivityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {

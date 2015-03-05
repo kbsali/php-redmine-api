@@ -6,17 +6,16 @@ use Redmine\Api\User;
 
 /**
  * @coversDefaultClass Redmine\Api\User
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class UserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test getCurrentUser()
+     * Test getCurrentUser().
      *
      * @covers ::getCurrentUser
      * @test
-     *
-     * @return void
      */
     public function testGetCurrentUserReturnsClientGetResponse()
     {
@@ -40,12 +39,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getIdByUsername()
+     * Test getIdByUsername().
      *
      * @covers ::getIdByUsername
      * @test
-     *
-     * @return void
      */
     public function testGetIdByUsernameMakesGetRequest()
     {
@@ -76,12 +73,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -105,12 +100,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -144,13 +137,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowReturnsClientGetResponse()
     {
@@ -174,13 +165,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveCallsDelete()
     {
@@ -204,13 +193,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
@@ -230,7 +217,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers            ::create
      * @dataProvider      incompleteCreateParameterProvider
@@ -238,8 +225,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @param array $parameters Parameters for create()
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters)
     {
@@ -256,7 +241,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provider for incomplete create parameters
+     * Provider for incomplete create parameters.
      *
      * @return array[]
      */
@@ -303,13 +288,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPost()
     {
@@ -351,14 +334,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @covers ::attachCustomFieldXML
      * @test
-     *
-     * @return void
      */
     public function testCreateWithCustomField()
     {
@@ -411,13 +392,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::put
      * @covers ::update
      * @test
-     *
-     * @return void
      */
     public function testUpdateCallsPut()
     {
@@ -451,14 +430,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::put
      * @covers ::update
      * @covers ::attachCustomFieldXML
      * @test
-     *
-     * @return void
      */
     public function testUpdateWithCustomField()
     {
@@ -501,12 +478,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingReturnsNameIdArray()
     {
@@ -541,12 +516,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -582,12 +555,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {

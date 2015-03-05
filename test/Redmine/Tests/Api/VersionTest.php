@@ -6,17 +6,16 @@ use Redmine\Api\Version;
 
 /**
  * @coversDefaultClass Redmine\Api\Version
+ *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 class VersionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponse()
     {
@@ -40,12 +39,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test all()
+     * Test all().
      *
      * @covers ::all
      * @test
-     *
-     * @return void
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -79,13 +76,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowWithNumericIdReturnsClientGetResponse()
     {
@@ -109,13 +104,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test show()
+     * Test show().
      *
      * @covers ::get
      * @covers ::show
      * @test
-     *
-     * @return void
      */
     public function testShowWithStringReturnsClientGetResponse()
     {
@@ -139,13 +132,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveWithNumericIdCallsDelete()
     {
@@ -169,13 +160,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove().
      *
      * @covers ::delete
      * @covers ::remove
      * @test
-     *
-     * @return void
      */
     public function testRemoveWithStringCallsDelete()
     {
@@ -199,13 +188,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
@@ -222,13 +209,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithMissingNameInParameters()
     {
@@ -250,14 +235,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::validateStatus
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithInvalidStatus()
     {
@@ -280,13 +263,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @test
-     *
-     * @return void
      */
     public function testCreateCallsPost()
     {
@@ -320,14 +301,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create()
+     * Test create().
      *
      * @covers ::create
      * @covers ::post
      * @covers ::validateStatus
      * @test
-     *
-     * @return void
      */
     public function testCreateWithValidStatusCallsPost()
     {
@@ -363,14 +342,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::update
      * @covers ::validateStatus
      * @expectedException Exception
      * @test
-     *
-     * @return void
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
@@ -393,13 +370,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::put
      * @covers ::update
      * @test
-     *
-     * @return void
      */
     public function testUpdateCallsPut()
     {
@@ -433,14 +408,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test update()
+     * Test update().
      *
      * @covers ::update
      * @covers ::put
      * @covers ::validateStatus
      * @test
-     *
-     * @return void
      */
     public function testUpdateWithValidStatusCallsPut()
     {
@@ -476,12 +449,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingReturnsNameIdArray()
     {
@@ -514,12 +485,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingReturnsIdNameIfReverseIsFalseArray()
     {
@@ -552,12 +521,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -591,12 +558,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test listing()
+     * Test listing().
      *
      * @covers ::listing
      * @test
-     *
-     * @return void
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -630,12 +595,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getIdByName()
+     * Test getIdByName().
      *
      * @covers ::getIdByName
      * @test
-     *
-     * @return void
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -666,7 +629,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers       ::create
      * @covers       ::validateSharing
@@ -675,8 +638,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $sharingValue
      * @param string $sharingXmlElement
-     *
-     * @return void
      */
     public function testCreateWithValidSharing($sharingValue, $sharingXmlElement)
     {
@@ -712,7 +673,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers       ::create
      * @covers       ::validateSharing
@@ -720,8 +681,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @param string $sharingValue
-     *
-     * @return void
      */
     public function testCreateWithValidEmptySharing($sharingValue)
     {
@@ -759,7 +718,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers            ::create
      * @covers            ::validateSharing
@@ -768,8 +727,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @param string $sharingValue
-     *
-     * @return void
      */
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
@@ -792,7 +749,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers       ::update
      * @covers       ::validateSharing
@@ -801,8 +758,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $sharingValue
      * @param string $sharingXmlElement
-     *
-     * @return void
      */
     public function testUpdateWithValidSharing($sharingValue, $sharingXmlElement)
     {
@@ -838,7 +793,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers       ::update
      * @covers       ::validateSharing
@@ -846,8 +801,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @param string $sharingValue
-     *
-     * @return void
      */
     public function testUpdateWithValidEmptySharing($sharingValue)
     {
@@ -885,7 +838,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test validateSharing()
+     * Test validateSharing().
      *
      * @covers            ::update
      * @covers            ::validateSharing
@@ -894,8 +847,6 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @param string $sharingValue
-     *
-     * @return void
      */
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
@@ -918,7 +869,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for valid sharing values
+     * Data provider for valid sharing values.
      *
      * @return array[]
      */
@@ -934,7 +885,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for valid empty sharing values
+     * Data provider for valid empty sharing values.
      *
      * @return array[]
      */
@@ -948,7 +899,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for invalid sharing values
+     * Data provider for invalid sharing values.
      *
      * @return array[]
      */

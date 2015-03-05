@@ -3,9 +3,10 @@
 namespace Redmine\Api;
 
 /**
- * Listing users, creating, editing
+ * Listing users, creating, editing.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Users
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class User extends AbstractApi
@@ -13,10 +14,12 @@ class User extends AbstractApi
     private $users = array();
 
     /**
-     * List users
+     * List users.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
-     * @param  array $params to allow offset/limit (and more) to be passed
+     * @param array $params to allow offset/limit (and more) to be passed
+     *
      * @return array list of users found
      */
     public function all(array $params = array())
@@ -27,10 +30,11 @@ class User extends AbstractApi
     }
 
     /**
-     * Returns an array of users with login/id pairs
+     * Returns an array of users with login/id pairs.
      *
-     * @param  boolean $forceUpdate to force the update of the users var
-     * @return array   list of users (id => username)
+     * @param boolean $forceUpdate to force the update of the users var
+     *
+     * @return array list of users (id => username)
      */
     public function listing($forceUpdate = false)
     {
@@ -48,7 +52,7 @@ class User extends AbstractApi
     }
 
     /**
-     * Return the current user data
+     * Return the current user data.
      *
      * @return array current user data
      */
@@ -58,8 +62,10 @@ class User extends AbstractApi
     }
 
     /**
-     * Get a user id given its username
-     * @param  string          $username
+     * Get a user id given its username.
+     *
+     * @param string $username
+     *
      * @return integer|boolean
      */
     public function getIdByUsername($username)
@@ -73,11 +79,13 @@ class User extends AbstractApi
     }
 
     /**
-     * Get extended information about a user (including memberships + groups)
+     * Get extended information about a user (including memberships + groups).
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET-2
      *
-     * @param  string $id the user id
-     * @return array  information about the user
+     * @param string $id the user id
+     *
+     * @return array information about the user
      */
     public function show($id)
     {
@@ -85,10 +93,12 @@ class User extends AbstractApi
     }
 
     /**
-     * Create a new user given an array of $params
+     * Create a new user given an array of $params.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
-     * @param  array            $params the new user data
+     * @param array $params the new user data
+     *
      * @return SimpleXMLElement
      */
     public function create(array $params = array())
@@ -124,11 +134,13 @@ class User extends AbstractApi
     }
 
     /**
-     * Update user's information
+     * Update user's information.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param  string           $id     the user id
-     * @param  array            $params
+     * @param string $id     the user id
+     * @param array  $params
+     *
      * @return SimpleXMLElement
      */
     public function update($id, array $params)
@@ -157,11 +169,11 @@ class User extends AbstractApi
     }
 
     /**
-     * Delete a user
+     * Delete a user.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#DELETE
      *
-     * @param  int  $id id of the user
-     * @return void
+     * @param int $id id of the user
      */
     public function remove($id)
     {

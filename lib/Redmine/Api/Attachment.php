@@ -3,19 +3,22 @@
 namespace Redmine\Api;
 
 /**
- * Attachment details
+ * Attachment details.
  *
  * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
+ *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Attachment extends AbstractApi
 {
     /**
-     * Get extended information about an attachment
+     * Get extended information about an attachment.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
      *
-     * @param  string $id the attachment number
-     * @return array  information about the attachment
+     * @param string $id the attachment number
+     *
+     * @return array information about the attachment
      */
     public function show($id)
     {
@@ -23,9 +26,10 @@ class Attachment extends AbstractApi
     }
 
     /**
-     * Get attachment content as a binary file
+     * Get attachment content as a binary file.
      *
-     * @param  string $id the attachment number
+     * @param string $id the attachment number
+     *
      * @return string the attachment content
      */
     public function download($id)
@@ -34,11 +38,13 @@ class Attachment extends AbstractApi
     }
 
     /**
-     * Upload a file to redmine
+     * Upload a file to redmine.
+     *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
      *
-     * @param  string $attachment the attachment content
-     * @return array  information about the attachment
+     * @param string $attachment the attachment content
+     *
+     * @return array information about the attachment
      */
     public function upload($attachment)
     {
