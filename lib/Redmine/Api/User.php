@@ -101,7 +101,10 @@ class User extends AbstractApi
             'mail'      => null,
             // 'auth_source_id' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
         if (
             !isset($params['login'])
          || !isset($params['lastname'])
@@ -110,7 +113,6 @@ class User extends AbstractApi
         ) {
             throw new \Exception('Missing mandatory parameters');
         }
-
         $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k) {
@@ -142,7 +144,10 @@ class User extends AbstractApi
             'mail'      => null,
             // 'auth_source_id' => null,
         );
-        $params = array_filter(array_merge($defaults, $params));
+        $params = array_filter(
+            array_merge($defaults, $params),
+            array($this, 'isNotNull')
+        );
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {
