@@ -36,10 +36,10 @@ class User extends AbstractApi
      *
      * @return array list of users (id => username)
      */
-    public function listing($forceUpdate = false)
+    public function listing($forceUpdate = false, array $params = array())
     {
         if (empty($this->users) || $forceUpdate) {
-            $this->all();
+            $this->all($params);
         }
         $ret = array();
         if (is_array($this->users) && isset($this->users['users'])) {
@@ -68,9 +68,9 @@ class User extends AbstractApi
      *
      * @return integer|boolean
      */
-    public function getIdByUsername($username)
+    public function getIdByUsername($username, array $params = array())
     {
-        $arr = $this->listing();
+        $arr = $this->listing(false, $params);
         if (!isset($arr[$username])) {
             return false;
         }
