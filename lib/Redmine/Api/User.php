@@ -33,6 +33,7 @@ class User extends AbstractApi
      * Returns an array of users with login/id pairs.
      *
      * @param boolean $forceUpdate to force the update of the users var
+     * @param array $params to allow offset/limit (and more) to be passed
      *
      * @return array list of users (id => username)
      */
@@ -65,6 +66,7 @@ class User extends AbstractApi
      * Get a user id given its username.
      *
      * @param string $username
+     * @param array $params to allow offset/limit (and more) to be passed
      *
      * @return integer|boolean
      */
