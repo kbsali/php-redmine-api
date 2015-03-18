@@ -33,13 +33,14 @@ class User extends AbstractApi
      * Returns an array of users with login/id pairs.
      *
      * @param boolean $forceUpdate to force the update of the users var
+     * @param array $params to allow offset/limit (and more) to be passed
      *
      * @return array list of users (id => username)
      */
-    public function listing($forceUpdate = false)
+    public function listing($forceUpdate = false, array $params = array())
     {
         if (empty($this->users) || $forceUpdate) {
-            $this->all();
+            $this->all($params);
         }
         $ret = array();
         if (is_array($this->users) && isset($this->users['users'])) {
@@ -65,12 +66,13 @@ class User extends AbstractApi
      * Get a user id given its username.
      *
      * @param string $username
+     * @param array $params to allow offset/limit (and more) to be passed
      *
      * @return integer|boolean
      */
-    public function getIdByUsername($username)
+    public function getIdByUsername($username, array $params = array())
     {
-        $arr = $this->listing();
+        $arr = $this->listing(false, $params);
         if (!isset($arr[$username])) {
             return false;
         }
