@@ -56,7 +56,7 @@ class CustomField extends AbstractApi
      *
      * @return int|false
      */
-    public function getIdByName($name)
+    public function getIdByName($name, $params = array())
     {
         $arr = $this->listing();
         if (!isset($arr[$name])) {

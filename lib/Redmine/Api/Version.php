@@ -36,13 +36,14 @@ class Version extends AbstractApi
      * @param string|int $project     project id or literal identifier
      * @param boolean    $forceUpdate to force the update of the projects var
      * @param boolean    $reverse     to return an array indexed by name rather than id
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of projects (id => project name)
      */
-    public function listing($project, $forceUpdate = false, $reverse = true)
+    public function listing($project, $forceUpdate = false, $reverse = true, array $params = array())
     {
         if (true === $forceUpdate || empty($this->versions)) {
-            $this->all($project);
+            $this->all($project, $params);
         }
         $ret = array();
         foreach ($this->versions['versions'] as $e) {
@@ -57,12 +58,13 @@ class Version extends AbstractApi
      *
      * @param string|int $project project id or literal identifier
      * @param string     $name
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
      */
-    public function getIdByName($project, $name)
+    public function getIdByName($project, $name, array $params = array())
     {
-        $arr = $this->listing($project);
+        $arr = $this->listing($project, false, true, $params);
         if (!isset($arr[$name])) {
             return false;
         }
