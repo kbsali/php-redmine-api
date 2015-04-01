@@ -33,13 +33,14 @@ class CustomField extends AbstractApi
      * Returns an array of custom fields with name/id pairs.
      *
      * @param boolean $forceUpdate to force the update of the custom fields var
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of custom fields (id => name)
      */
-    public function listing($forceUpdate = false)
+    public function listing($forceUpdate = false, array $params = array())
     {
         if (empty($this->customFields) || $forceUpdate) {
-            $this->all();
+            $this->all($params);
         }
         $ret = array();
         foreach ($this->customFields['custom_fields'] as $e) {
@@ -53,12 +54,13 @@ class CustomField extends AbstractApi
      * Get a tracket id given its name.
      *
      * @param string|int $name customer field name
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
      */
-    public function getIdByName($name, $params = array())
+    public function getIdByName($name, array $params = array())
     {
-        $arr = $this->listing();
+        $arr = $this->listing(false, $params);
         if (!isset($arr[$name])) {
             return false;
         }
