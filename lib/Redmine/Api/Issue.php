@@ -55,6 +55,10 @@ class Issue extends AbstractApi
      */
     public function show($id, array $params = array())
     {
+        if (isset($params['include'])) {
+            $params['include'] = implode(',', $params['include']);
+        }
+
         return $this->get('/issues/'.urlencode($id).'.json?'.http_build_query($params));
     }
 
