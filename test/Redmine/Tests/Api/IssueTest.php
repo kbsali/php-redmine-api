@@ -150,6 +150,39 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test show().
+     *
+     * @covers ::show
+     * @test
+     */
+    public function testShowImplodesIncludeParametersCorrectly()
+    {
+        // Test values
+        $parameters = array('include' => array('parameter1', 'parameter2'));
+        $getResponse = array('API Response');
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/issues/5.json'),
+                    $this->stringContains(urlencode('parameter1,parameter2'))
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->show(5, $parameters));
+    }
+
+    /**
      * Test remove().
      *
      * @covers ::delete
