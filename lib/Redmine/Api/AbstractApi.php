@@ -186,13 +186,13 @@ abstract class AbstractApi
         $_fields->addAttribute('type', 'array');
         foreach ($fields as $field) {
             $_field = $_fields->addChild('custom_field');
+
             if (isset($field['name'])) {
                 $_field->addAttribute('name', $field['name']);
             }
             if (isset($field['field_format'])) {
                 $_field->addAttribute('field_format', $field['field_format']);
             }
-
             $_field->addAttribute('id', $field['id']);
             if (is_array($field['value'])) {
                 $_field->addAttribute('multiple', 'true');

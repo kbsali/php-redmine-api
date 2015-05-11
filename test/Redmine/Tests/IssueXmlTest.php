@@ -55,6 +55,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 </issue>';
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
     }
+
     public function testCreateComplex()
     {
         $res = $this->client->api('issue')->create(array(
@@ -150,7 +151,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
             'due_date' => '2014-05-13',
 
             // not testable because this will trigger a status name to id resolving
-            // 'status'         => 'Resolved',
+            // 'status' => 'Resolved',
         ));
         $xml = '<?xml version="1.0"?>
 <issue>

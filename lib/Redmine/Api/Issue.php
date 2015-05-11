@@ -77,16 +77,16 @@ class Issue extends AbstractApi
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
             } elseif ('watcher_user_ids' === $k && is_array($v)) {
-                $watcher_user_ids = $xml->addChild('watcher_user_ids', '');
-                $watcher_user_ids->addAttribute('type', 'array');
+                $watcherUserIds = $xml->addChild('watcher_user_ids', '');
+                $watcherUserIds->addAttribute('type', 'array');
                 foreach ($v as $watcher) {
-                    $watcher_user_ids->addChild('watcher_user_id', (int) $watcher);
+                    $watcherUserIds->addChild('watcher_user_id', (int) $watcher);
                 }
             } elseif ('uploads' === $k && is_array($v)) {
-                $uploads_item = $xml->addChild('uploads', '');
-                $uploads_item->addAttribute('type', 'array');
+                $uploadsItem = $xml->addChild('uploads', '');
+                $uploadsItem->addAttribute('type', 'array');
                 foreach ($v as $upload) {
-                    $upload_item = $uploads_item->addChild('upload', '');
+                    $upload_item = $uploadsItem->addChild('upload', '');
                     foreach ($upload as $upload_k => $upload_v) {
                         $upload_item->addChild($upload_k, $upload_v);
                     }
@@ -121,12 +121,12 @@ class Issue extends AbstractApi
             'subject' => null,
             'description' => null,
 
-            // 'project'          => null,
-            // 'category'         => null,
-            // 'status'           => null,
-            // 'tracker'          => null,
-            // 'assigned_to'      => null,
-            // 'author'           => null,
+            // 'project' => null,
+            // 'category' => null,
+            // 'status' => null,
+            // 'tracker' => null,
+            // 'assigned_to' => null,
+            // 'author' => null,
 
             'project_id' => null,
             'category_id' => null,
@@ -166,12 +166,12 @@ class Issue extends AbstractApi
             'subject' => null,
             'notes' => null,
 
-            // 'project'     => null,
-            // 'category'    => null,
-            // 'status'      => null,
-            // 'tracker'     => null,
+            // 'project' => null,
+            // 'category' => null,
+            // 'status' => null,
+            // 'tracker' => null,
             // 'assigned_to' => null,
-            // 'author'      => null,
+            // 'author' => null,
 
             'category_id' => null,
             'priority_id' => null,

@@ -13,17 +13,17 @@ require_once 'vendor/autoload.php';
 
 // ----------------------------
 // Random values used for the examples
-$attachmentId    = 12;
-$categoryId      = 2;
-$groupId         = 5;
-$issueId         = 5;
+$attachmentId = 12;
+$categoryId = 2;
+$groupId = 5;
+$issueId = 5;
 $issueRelationId = 5;
-$membershipId    = 123;
-$projectId       = 1;
-$timeEntryId     = 14;
-$trackerId       = 2;
-$userId          = 3;
-$versionId       = 2;
+$membershipId = 123;
+$projectId = 1;
+$timeEntryId = 14;
+$trackerId = 2;
+$userId = 3;
+$versionId = 2;
 
 // ----------------------------
 // Instanciate a redmine client
@@ -65,8 +65,8 @@ $client->api('project')->listing();
 $client->api('project')->show($projectId);
 $client->api('project')->getIdByName('Elvis');
 $client->api('project')->create(array(
-    'name'        => 'some name',
-    'identifier'  => 'the_identifier',
+    'name' => 'some name',
+    'identifier' => 'the_identifier',
     'tracker_ids' => array(),
 ));
 $client->api('project')->update($projectId, array(
@@ -78,18 +78,32 @@ $client->api('project')->remove($projectId);
 // Users
 $client->api('user')->all();
 $client->api('user')->listing();
-$client->api('user')->getCurrentUser();
+$client->api('user')->getCurrentUser(array(
+    'include' => array(
+        'memberships',
+        'groups',
+        'api_key',
+        'status',
+    )
+));
 $client->api('user')->getIdByUsername('kbsali');
-$client->api('user')->show($userId);
+$client->api('user')->show($userId, array(
+    'include' => array(
+        'memberships',
+        'groups',
+        'api_key',
+        'status',
+    )
+));
 $client->api('user')->update($userId, array(
     'firstname' => 'Raul',
 ));
 $client->api('user')->remove($userId);
 $client->api('user')->create(array(
-    'login'     => 'test',
+    'login' => 'test',
     'firstname' => 'test',
-    'lastname'  => 'test',
-    'mail'      => 'test@example.com',
+    'lastname' => 'test',
+    'mail' => 'test@example.com',
 ));
 
 // ----------------------------
@@ -98,43 +112,43 @@ $client->api('issue')->show($issueId);
 $client->api('issue')->all(array(
     'limit' => 100,
 ));
-$client->api('issue')->all(array('category_id'    => $categoryId));
-$client->api('issue')->all(array('tracker_id'     => $trackerId));
-$client->api('issue')->all(array('status_id'      => 'closed'));
+$client->api('issue')->all(array('category_id' => $categoryId));
+$client->api('issue')->all(array('tracker_id' => $trackerId));
+$client->api('issue')->all(array('status_id' => 'closed'));
 $client->api('issue')->all(array('assigned_to_id' => $userId));
-$client->api('issue')->all(array('project_id'     => 'test'));
+$client->api('issue')->all(array('project_id' => 'test'));
 $client->api('issue')->all(array(
-    'offset'         => 100,
-    'limit'          => 100,
-    'sort'           => 'id',
-    'project_id'     => 'test',
-    'tracker_id'     => $trackerId,
-    'status_id'      => 'open',
+    'offset' => 100,
+    'limit' => 100,
+    'sort' => 'id',
+    'project_id' => 'test',
+    'tracker_id' => $trackerId,
+    'status_id' => 'open',
     'assigned_to_id' => $userId,
     // 'cf_x'        => ,
-    'query_id'       => 3,
-    'cf_1'           => 'some value of this custom field', // where 1 = id of the customer field
+    'query_id' => 3,
+    'cf_1' => 'some value of this custom field', // where 1 = id of the customer field
     //  cf_SOME_CUSTOM_FIELD_ID => 'value'
 ));
 $client->api('issue')->create(array(
-    'project_id'     => 'test',
-    'subject'        => 'test api (xml) 3',
-    'description'    => 'test api',
+    'project_id' => 'test',
+    'subject' => 'test api (xml) 3',
+    'description' => 'test api',
     'assigned_to_id' => $userId,
-    'custom_fields'  => array(
+    'custom_fields' => array(
         array(
-            'id'    => 2,
-            'name'  => 'Issuer',
+            'id' => 2,
+            'name' => 'Issuer',
             'value' => $_POST['ISSUER'],
         ),
         array(
-            'id'    => 5,
-            'name'  => 'Phone',
+            'id' => 5,
+            'name' => 'Phone',
             'value' => $_POST['PHONE'],
         ),
         array(
-            'id'    => '8',
-            'name'  => 'Email',
+            'id' => '8',
+            'name' => 'Email',
             'value' => $_POST['EMAIL'],
         ),
     ),
@@ -145,9 +159,9 @@ $client->api('issue')->update($issueId, array(
     // 'notes'          => 'test note api',
     // 'assigned_to_id' => $userId,
     // 'status_id'      => 2,
-    'status'            => 'Resolved',
-    'priority_id'       => 5,
-    'due_date'          => date('Y-m-d'),
+    'status' => 'Resolved',
+    'priority_id' => 5,
+    'due_date' => date('Y-m-d'),
 ));
 $client->api('issue')->setIssueStatus($issueId, 'Resolved');
 $client->api('issue')->addNoteToIssue($issueId, 'some comment');
@@ -156,22 +170,22 @@ $client->api('issue')->remove($issueId);
 // To upload a file + attach it to an existing issue with $issueId
 $upload = json_decode($client->api('attachment')->upload($filecontent));
 $client->api('issue')->attach($issueId, array(
-    'token'        => $upload->upload->token,
-    'filename'     => 'MyFile.pdf',
-    'description'  => 'MyFile is better then YourFile...',
+    'token' => $upload->upload->token,
+    'filename' => 'MyFile.pdf',
+    'description' => 'MyFile is better then YourFile...',
     'content_type' => 'application/pdf',
 ));
 
 // Or, create a new issue with the file attached in one step
 $upload = json_decode($client->api('attachment')->upload($filecontent));
 $client->api('issue')->create(array(
-    'project_id'  => 'myproject',
-    'subject'     => 'A test issue',
+    'project_id' => 'myproject',
+    'subject' => 'A test issue',
     'description' => 'Here goes the issue description',
-    'uploads'     => array(
+    'uploads' => array(
         array(
-          'token'       => $upload->upload->token,
-          'filename'    => 'MyFile.pdf',
+          'token' => $upload->upload->token,
+          'filename' => 'MyFile.pdf',
           'description' => 'MyFile is better then YourFile...',
           'content_type' => 'application/pdf',
         ),
@@ -236,19 +250,33 @@ $client->api('query')->all();
 $client->api('time_entry')->all();
 $client->api('time_entry')->show($timeEntryId);
 $client->api('time_entry')->create(array(
-    'project_id'  => $projectId,
+    'project_id' => $projectId,
     // 'issue_id' => 140,
     // 'spent_on' => null,
-    'hours'       => 12,
+    'hours' => 12,
     'activity_id' => 8,
-    'comments'    => 'BOUH!',
+    'comments' => 'BOUH!',
+    'custom_fields' => array(
+        array(
+            'id' => 1,
+            'name' => 'Affected version',
+            'value' => '1.0.1',
+        ),
+    ),
 ));
 $client->api('time_entry')->update($timeEntryId, array(
-    'issue_id'    => $issueId,
+    'issue_id' => $issueId,
     // 'spent_on' => null,
-    'hours'       => 8,
+    'hours' => 8,
     'activity_id' => 9,
-    'comments'    => 'blablabla!',
+    'comments' => 'blablabla!',
+    'custom_fields' => array(
+        array(
+            'id' => 2,
+            'name' => 'Resolution',
+            'value' => 'Fixed',
+        ),
+    ),
 ));
 $client->api('time_entry')->remove($timeEntryId);
 
@@ -275,7 +303,7 @@ $client->api('group')->removeUser($groupId, $userId);
 // Project memberships
 $client->api('membership')->all($projectId);
 $client->api('membership')->create($projectId, array(
-    'user_id'  => null,
+    'user_id' => null,
     'user_ids' => array(),
     'role_ids' => array(),
 ));
@@ -291,35 +319,35 @@ $client->api('wiki')->all('testProject');
 $client->api('wiki')->show('testProject', 'about');
 $client->api('wiki')->show('testProject', 'about', $version);
 $client->api('wiki')->create('testProject', 'about', array(
-    'text'     => null,
+    'text' => null,
     'comments' => null,
-    'version'  => null,
+    'version' => null,
 ));
 $client->api('wiki')->update('testProject', 'about', array(
-    'text'     => null,
+    'text' => null,
     'comments' => null,
-    'version'  => null,
+    'version' => null,
 ));
 $client->api('wiki')->remove('testProject', 'about');
 
 // ----------------------------
 // Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
 $issues['all'] = $client->api('issue')->all([
-    'limit'      => 1,
+    'limit' => 1,
     'tracker_id' => 1,
-    'status_id'  => '*',
+    'status_id' => '*',
 ])['total_count'];
 
 $issues['opened'] = $client->api('issue')->all([
-    'limit'      => 1,
+    'limit' => 1,
     'tracker_id' => 1,
-    'status_id'  => 'open',
+    'status_id' => 'open',
 ])['total_count'];
 
 $issues['closed'] = $client->api('issue')->all([
-    'limit'      => 1,
+    'limit' => 1,
     'tracker_id' => 1,
-    'status_id'  => 'closed',
+    'status_id' => 'closed',
 ])['total_count'];
 
 print_r($issues);

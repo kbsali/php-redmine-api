@@ -227,6 +227,18 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
             'issue_id' => '15',
             'project_id' => '25',
             'hours' => '5.25',
+            'custom_fields' => array(
+                 array(
+                    'id' => 1,
+                    'name' => 'Affected version',
+                    'value' => '1.0.1',
+                ),
+                 array(
+                    'id' => 2,
+                    'name' => 'Resolution',
+                    'value' => 'Fixed',
+                ),
+            ),
         );
 
         // Create the used mock objects
@@ -242,7 +254,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
                     $this->stringEndsWith('</time_entry>'."\n"),
                     $this->stringContains('<issue_id>15</issue_id>'),
                     $this->stringContains('<project_id>25</project_id>'),
-                    $this->stringContains('<hours>5.25</hours>')
+                    $this->stringContains('<hours>5.25</hours>'),
+                    $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )
             )
             ->willReturn($getResponse);
@@ -267,6 +280,18 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
         $parameters = array(
             'hours' => '10.25',
+            'custom_fields' => array(
+                 array(
+                    'id' => 1,
+                    'name' => 'Affected version',
+                    'value' => '1.0.1',
+                ),
+                 array(
+                    'id' => 2,
+                    'name' => 'Resolution',
+                    'value' => 'Fixed',
+                ),
+            ),
         );
 
         // Create the used mock objects
@@ -280,7 +305,8 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<time_entry>'),
                     $this->stringEndsWith('</time_entry>'."\n"),
-                    $this->stringContains('<hours>10.25</hours>')
+                    $this->stringContains('<hours>10.25</hours>'),
+                    $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )
             )
             ->willReturn($getResponse);
