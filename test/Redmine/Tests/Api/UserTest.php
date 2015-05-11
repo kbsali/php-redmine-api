@@ -299,11 +299,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'login'     => 'TestUser',
-            'password'  => 'secretPass',
-            'lastname'  => 'Last Name',
+            'login' => 'TestUser',
+            'password' => 'secretPass',
+            'lastname' => 'Last Name',
             'firstname' => 'Firstname',
-            'mail'      => 'mail@example.com',
+            'mail' => 'mail@example.com',
         );
 
         // Create the used mock objects
@@ -346,11 +346,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'login'     => 'TestUser',
-            'password'  => 'secretPass',
-            'lastname'  => 'Last Name',
+            'login' => 'TestUser',
+            'password' => 'secretPass',
+            'lastname' => 'Last Name',
             'firstname' => 'Firstname',
-            'mail'      => 'mail@example.com',
+            'mail' => 'mail@example.com',
             'custom_fields' => array(
                 array('id' => 5, 'value' => 'Value 5'),
                 array('id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'),

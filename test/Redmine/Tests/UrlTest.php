@@ -275,16 +275,16 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testWiki()
     {
         $res = $this->client->api('wiki')->create('testProject', 'about', array(
-            'text'     => 'asdf',
+            'text' => 'asdf',
             'comments' => 'asdf',
-            'version'  => 'asdf',
+            'version' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about.xml', 'method' => 'PUT'));
 
         $res = $this->client->api('wiki')->update('testProject', 'about', array(
-            'text'     => 'asdf',
+            'text' => 'asdf',
             'comments' => 'asdf',
-            'version'  => 'asdf',
+            'version' => 'asdf',
         ));
         $this->assertEquals($res, array('path' => '/projects/testProject/wiki/about.xml', 'method' => 'PUT'));
 

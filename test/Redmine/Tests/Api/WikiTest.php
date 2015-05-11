@@ -258,9 +258,9 @@ class WikiTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'title'     => 'Test Wikipage',
-            'comments'  => 'Initial Edit',
-            'text'  => 'Some page text',
+            'title' => 'Test Wikipage',
+            'comments' => 'Initial Edit',
+            'text' => 'Some page text',
         );
 
         // Create the used mock objects
@@ -331,9 +331,9 @@ class WikiTest extends \PHPUnit_Framework_TestCase
         // Test values
         $getResponse = 'API Response';
         $parameters = array(
-            'title'     => 'Test Wikipage',
-            'comments'  => 'Initial Edit',
-            'text'  => 'Some page text',
+            'title' => 'Test Wikipage',
+            'comments' => 'Initial Edit',
+            'text' => 'Some page text',
         );
 
         // Create the used mock objects

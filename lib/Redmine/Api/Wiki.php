@@ -62,9 +62,9 @@ class Wiki extends AbstractApi
     public function create($project, $page, array $params = array())
     {
         $defaults = array(
-            'text'     => null,
+            'text' => null,
             'comments' => null,
-            'version'  => null,
+            'version' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 

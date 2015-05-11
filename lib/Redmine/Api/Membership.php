@@ -43,7 +43,7 @@ class Membership extends AbstractApi
     public function create($project, array $params = array())
     {
         $defaults = array(
-            'user_id'  => null,
+            'user_id' => null,
             'user_ids' => null,
             'role_ids' => null,
         );

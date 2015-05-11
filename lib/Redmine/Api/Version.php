@@ -34,9 +34,9 @@ class Version extends AbstractApi
      * Returns an array of name/id pairs (or id/name if not $reverse) of issue versions for $project.
      *
      * @param string|int $project     project id or literal identifier
-     * @param boolean    $forceUpdate to force the update of the projects var
-     * @param boolean    $reverse     to return an array indexed by name rather than id
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param bool       $forceUpdate to force the update of the projects var
+     * @param bool       $reverse     to return an array indexed by name rather than id
+     * @param array      $params      optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of projects (id => project name)
      */
@@ -47,7 +47,7 @@ class Version extends AbstractApi
         }
         $ret = array();
         foreach ($this->versions['versions'] as $e) {
-            $ret[(int) $e['id']] =  $e['name'];
+            $ret[(int) $e['id']] = $e['name'];
         }
 
         return $reverse ? array_flip($ret) : $ret;
@@ -99,11 +99,11 @@ class Version extends AbstractApi
     public function create($project, array $params = array())
     {
         $defaults = array(
-            'name'        => null,
+            'name' => null,
             'description' => null,
-            'status'      => null,
-            'sharing'     => null,
-            'due_date'    => null,
+            'status' => null,
+            'sharing' => null,
+            'due_date' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -136,11 +136,11 @@ class Version extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'name'        => null,
+            'name' => null,
             'description' => null,
-            'status'      => null,
-            'sharing'     => null,
-            'due_date'    => null,
+            'status' => null,
+            'sharing' => null,
+            'due_date' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
         $this->validateStatus($params);
@@ -169,11 +169,11 @@ class Version extends AbstractApi
     private function validateSharing(array $params = array())
     {
         $arrSharing = array(
-            'none'        => 'Not shared',
+            'none' => 'Not shared',
             'descendants' => 'With subprojects',
-            'hierarchy'   => 'With project hierarchy',
-            'tree'        => 'With project tree',
-            'system'      => 'With all projects',
+            'hierarchy' => 'With project hierarchy',
+            'tree' => 'With project tree',
+            'system' => 'With all projects',
         );
         if (isset($params['sharing']) && !isset($arrSharing[ $params['sharing'] ])) {
             throw new \Exception('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));

@@ -32,8 +32,8 @@ class Project extends AbstractApi
     /**
      * Returns an array of projects with name/id pairs (or id/name if $reserse is false).
      *
-     * @param boolean $forceUpdate to force the update of the projects var
-     * @param boolean $reverse     to return an array indexed by name rather than id
+     * @param bool $forceUpdate to force the update of the projects var
+     * @param bool $reverse     to return an array indexed by name rather than id
      *
      * @return array list of projects (id => project name)
      */
@@ -44,7 +44,7 @@ class Project extends AbstractApi
         }
         $ret = array();
         foreach ($this->projects['projects'] as $e) {
-            $ret[(int) $e['id']] =  $e['name'];
+            $ret[(int) $e['id']] = $e['name'];
         }
 
         return $reverse ? array_flip($ret) : $ret;
@@ -55,7 +55,7 @@ class Project extends AbstractApi
      *
      * @param string $name
      *
-     * @return integer|boolean
+     * @return int|bool
      */
     public function getIdByName($name)
     {
@@ -95,8 +95,8 @@ class Project extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'name'        => null,
-            'identifier'  => null,
+            'name' => null,
+            'identifier' => null,
             'description' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
@@ -126,9 +126,9 @@ class Project extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'id'          => $id,
-            'name'        => null,
-            'identifier'  => null,
+            'id' => $id,
+            'name' => null,
+            'identifier' => null,
             'description' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);

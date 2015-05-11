@@ -29,10 +29,10 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $res = $this->client->api('user')->create(array(
-            'login'     => 'test',
+            'login' => 'test',
             'firstname' => 'test',
-            'lastname'  => 'test',
-            'mail'      => 'test@example.com',
+            'lastname' => 'test',
+            'mail' => 'test@example.com',
         ));
 
         $xml = '<?xml version="1.0"?>

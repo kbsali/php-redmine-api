@@ -32,7 +32,7 @@ class Group extends AbstractApi
     /**
      * Returns an array of groups with name/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the groups var
+     * @param bool $forceUpdate to force the update of the groups var
      *
      * @return array list of groups (id => name)
      */
@@ -61,7 +61,7 @@ class Group extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'name'     => null,
+            'name' => null,
             'user_ids' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);

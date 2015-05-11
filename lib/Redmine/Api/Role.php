@@ -32,7 +32,7 @@ class Role extends AbstractApi
     /**
      * Returns an array of roles with name/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the roles var
+     * @param bool $forceUpdate to force the update of the roles var
      *
      * @return array list of roles (id => name)
      */

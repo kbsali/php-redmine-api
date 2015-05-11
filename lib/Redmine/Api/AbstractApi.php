@@ -132,7 +132,7 @@ abstract class AbstractApi
             return $this->get($endpoint);
         }
         $defaults = array(
-            'limit'  => 25,
+            'limit' => 25,
             'offset' => 0,
         );
         $params = $this->sanitizeParams($defaults, $params);

@@ -32,7 +32,7 @@ class IssueStatus extends AbstractApi
     /**
      * Returns an array of issue statuses with name/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the statuses var
+     * @param bool $forceUpdate to force the update of the statuses var
      *
      * @return array list of issue statuses (id => name)
      */

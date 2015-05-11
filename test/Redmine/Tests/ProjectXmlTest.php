@@ -29,8 +29,8 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $res = $this->client->api('project')->create(array(
-            'name'        => 'some name',
-            'identifier'  => 'the_identifier',
+            'name' => 'some name',
+            'identifier' => 'the_identifier',
         ));
 
         $xml = '<?xml version="1.0"?>
@@ -44,8 +44,8 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplexWithTrackerIds()
     {
         $res = $this->client->api('project')->create(array(
-            'name'        => 'some name',
-            'identifier'  => 'the_identifier',
+            'name' => 'some name',
+            'identifier' => 'the_identifier',
             'tracker_ids' => array(
                 1, 2, 3,
             ),

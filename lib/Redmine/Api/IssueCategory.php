@@ -34,7 +34,7 @@ class IssueCategory extends AbstractApi
      * Returns an array of categories with name/id pairs.
      *
      * @param string|int $project     project id or literal identifier
-     * @param boolean    $forceUpdate to force the update of the projects var
+     * @param bool       $forceUpdate to force the update of the projects var
      *
      * @return array list of projects (id => project name)
      */
@@ -96,7 +96,7 @@ class IssueCategory extends AbstractApi
     public function create($project, array $params = array())
     {
         $defaults = array(
-            'name'           => null,
+            'name' => null,
             'assigned_to_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
@@ -128,7 +128,7 @@ class IssueCategory extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'name'           => null,
+            'name' => null,
             'assigned_to_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);

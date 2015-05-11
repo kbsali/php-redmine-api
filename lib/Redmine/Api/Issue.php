@@ -11,10 +11,10 @@ namespace Redmine\Api;
  */
 class Issue extends AbstractApi
 {
-    const PRIO_LOW       = 1;
-    const PRIO_NORMAL    = 2;
-    const PRIO_HIGH      = 3;
-    const PRIO_URGENT    = 4;
+    const PRIO_LOW = 1;
+    const PRIO_NORMAL = 2;
+    const PRIO_HIGH = 3;
+    const PRIO_URGENT = 4;
     const PRIO_IMMEDIATE = 5;
 
     /**
@@ -118,8 +118,8 @@ class Issue extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'subject'          => null,
-            'description'      => null,
+            'subject' => null,
+            'description' => null,
 
             // 'project'          => null,
             // 'category'         => null,
@@ -128,15 +128,15 @@ class Issue extends AbstractApi
             // 'assigned_to'      => null,
             // 'author'           => null,
 
-            'project_id'       => null,
-            'category_id'      => null,
-            'priority_id'      => null,
-            'status_id'        => null,
-            'tracker_id'       => null,
-            'assigned_to_id'   => null,
-            'author_id'        => null,
-            'due_date'         => null,
-            'start_date'       => null,
+            'project_id' => null,
+            'category_id' => null,
+            'priority_id' => null,
+            'status_id' => null,
+            'tracker_id' => null,
+            'assigned_to_id' => null,
+            'author_id' => null,
+            'due_date' => null,
+            'start_date' => null,
             'watcher_user_ids' => null,
         );
         $params = $this->cleanParams($params);
@@ -162,9 +162,9 @@ class Issue extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'id'             => $id,
-            'subject'        => null,
-            'notes'          => null,
+            'id' => $id,
+            'subject' => null,
+            'notes' => null,
 
             // 'project'     => null,
             // 'category'    => null,
@@ -173,12 +173,12 @@ class Issue extends AbstractApi
             // 'assigned_to' => null,
             // 'author'      => null,
 
-            'category_id'    => null,
-            'priority_id'    => null,
-            'status_id'      => null,
-            'tracker_id'     => null,
+            'category_id' => null,
+            'priority_id' => null,
+            'status_id' => null,
+            'tracker_id' => null,
             'assigned_to_id' => null,
-            'due_date'       => null,
+            'due_date' => null,
         );
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);

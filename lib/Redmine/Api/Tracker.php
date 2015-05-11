@@ -32,7 +32,7 @@ class Tracker extends AbstractApi
     /**
      * Returns an array of trackers with name/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the trackers var
+     * @param bool $forceUpdate to force the update of the trackers var
      *
      * @return array list of trackers (id => name)
      */

@@ -16,7 +16,7 @@ class Client
      * @var array
      */
     private static $defaultPorts = array(
-        'http'  => 80,
+        'http' => 80,
         'https' => 443,
     );
 
@@ -41,17 +41,17 @@ class Client
     private $pass;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $checkSslCertificate = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $checkSslHost = false;
 
     /**
-     * @var boolean Flag to determine authentication method
+     * @var bool Flag to determine authentication method
      */
     private $useHttpAuth = true;
 
@@ -74,10 +74,10 @@ class Client
      * Error strings if json is invalid.
      */
     private static $json_errors = array(
-        JSON_ERROR_NONE      => 'No error has occurred',
-        JSON_ERROR_DEPTH     => 'The maximum stack depth has been exceeded',
+        JSON_ERROR_NONE => 'No error has occurred',
+        JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-        JSON_ERROR_SYNTAX    => 'Syntax error',
+        JSON_ERROR_SYNTAX => 'Syntax error',
     );
 
     /**
@@ -106,25 +106,25 @@ class Client
     public function api($name)
     {
         $classes = array(
-            'attachment'          => 'Attachment',
-            'group'               => 'Group',
-            'custom_fields'       => 'CustomField',
-            'issue'               => 'Issue',
-            'issue_category'      => 'IssueCategory',
-            'issue_priority'      => 'IssuePriority',
-            'issue_relation'      => 'IssueRelation',
-            'issue_status'        => 'IssueStatus',
-            'membership'          => 'Membership',
-            'news'                => 'News',
-            'project'             => 'Project',
-            'query'               => 'Query',
-            'role'                => 'Role',
-            'time_entry'          => 'TimeEntry',
+            'attachment' => 'Attachment',
+            'group' => 'Group',
+            'custom_fields' => 'CustomField',
+            'issue' => 'Issue',
+            'issue_category' => 'IssueCategory',
+            'issue_priority' => 'IssuePriority',
+            'issue_relation' => 'IssueRelation',
+            'issue_status' => 'IssueStatus',
+            'membership' => 'Membership',
+            'news' => 'News',
+            'project' => 'Project',
+            'query' => 'Query',
+            'role' => 'Role',
+            'time_entry' => 'TimeEntry',
             'time_entry_activity' => 'TimeEntryActivity',
-            'tracker'             => 'Tracker',
-            'user'                => 'User',
-            'version'             => 'Version',
-            'wiki'                => 'Wiki',
+            'tracker' => 'Tracker',
+            'user' => 'User',
+            'version' => 'Version',
+            'wiki' => 'Wiki',
         );
         if (!isset($classes[$name])) {
             throw new \InvalidArgumentException();
@@ -151,8 +151,8 @@ class Client
     /**
      * HTTP GETs a json $path and tries to decode it.
      *
-     * @param string  $path
-     * @param boolean $decode
+     * @param string $path
+     * @param bool   $decode
      *
      * @return array
      */
@@ -233,7 +233,7 @@ class Client
     /**
      * Turns on/off ssl certificate check.
      *
-     * @param boolean $check
+     * @param bool $check
      *
      * @return Client
      */
@@ -247,7 +247,7 @@ class Client
     /**
      * Turns on/off ssl host certificate check.
      *
-     * @param boolean $check
+     * @param bool $check
      *
      * @return Client
      */
@@ -351,7 +351,7 @@ class Client
      * @param string $method
      * @param string $data
      *
-     * @return boolean|SimpleXMLElement|string
+     * @return bool|SimpleXMLElement|string
      *
      * @throws \Exception If anything goes wrong on curl request
      */

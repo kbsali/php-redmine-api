@@ -55,12 +55,12 @@ class TimeEntry extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'issue_id'    => null,
-            'project_id'  => null,
-            'spent_on'    => null,
-            'hours'       => null,
+            'issue_id' => null,
+            'project_id' => null,
+            'spent_on' => null,
+            'hours' => null,
             'activity_id' => null,
-            'comments'    => null,
+            'comments' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -75,7 +75,7 @@ class TimeEntry extends AbstractApi
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
-            }else{
+            } else {
                 $xml->addChild($k, $v);
             }
         }
@@ -96,13 +96,13 @@ class TimeEntry extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'id'          => $id,
-            'issue_id'    => null,
-            'project_id'  => null,
-            'spent_on'    => null,
-            'hours'       => null,
+            'id' => $id,
+            'issue_id' => null,
+            'project_id' => null,
+            'spent_on' => null,
+            'hours' => null,
             'activity_id' => null,
-            'comments'    => null,
+            'comments' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -110,7 +110,7 @@ class TimeEntry extends AbstractApi
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
-            }else{
+            } else {
                 $xml->addChild($k, $v);
             }
         }

@@ -13,12 +13,12 @@ class SimpleXMLElement extends \SimpleXMLElement
         $args = func_get_args();
         if (count($args) > 1 && is_string($args[1])) {
             // use the property assignment to set the text correctly
-            $text       = $args[1];
+            $text = $args[1];
             // we need to clear "$value" argument value cause it will product Unterminated entity reference for "&"
-            $args[1]    = '';
-            $node       = call_user_func_array(array('parent', 'addChild'), $args);
+            $args[1] = '';
+            $node = call_user_func_array(array('parent', 'addChild'), $args);
             // next, all characters like "&", "<", ">" will be properly escaped
-            $node->{0}  = $text;
+            $node->{0} = $text;
         } else {
             $node = call_user_func_array(array('parent', 'addChild'), $args);
         }

@@ -32,8 +32,8 @@ class CustomField extends AbstractApi
     /**
      * Returns an array of custom fields with name/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the custom fields var
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param bool  $forceUpdate to force the update of the custom fields var
+     * @param array $params      optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of custom fields (id => name)
      */
@@ -53,8 +53,8 @@ class CustomField extends AbstractApi
     /**
      * Get a tracket id given its name.
      *
-     * @param string|int $name customer field name
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int $name   customer field name
+     * @param array      $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
      */

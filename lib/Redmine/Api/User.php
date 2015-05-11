@@ -32,8 +32,8 @@ class User extends AbstractApi
     /**
      * Returns an array of users with login/id pairs.
      *
-     * @param boolean $forceUpdate to force the update of the users var
-     * @param array $params to allow offset/limit (and more) to be passed
+     * @param bool  $forceUpdate to force the update of the users var
+     * @param array $params      to allow offset/limit (and more) to be passed
      *
      * @return array list of users (id => username)
      */
@@ -66,9 +66,9 @@ class User extends AbstractApi
      * Get a user id given its username.
      *
      * @param string $username
-     * @param array $params to allow offset/limit (and more) to be passed
+     * @param array  $params   to allow offset/limit (and more) to be passed
      *
-     * @return integer|boolean
+     * @return int|bool
      */
     public function getIdByUsername($username, array $params = array())
     {
@@ -106,11 +106,11 @@ class User extends AbstractApi
     public function create(array $params = array())
     {
         $defaults = array(
-            'login'     => null,
-            'password'  => null,
-            'lastname'  => null,
+            'login' => null,
+            'password' => null,
+            'lastname' => null,
             'firstname' => null,
-            'mail'      => null,
+            'mail' => null,
             // 'auth_source_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
@@ -148,12 +148,12 @@ class User extends AbstractApi
     public function update($id, array $params)
     {
         $defaults = array(
-            'id'        => $id,
-            'login'     => null,
-            'password'  => null,
-            'lastname'  => null,
+            'id' => $id,
+            'login' => null,
+            'password' => null,
+            'lastname' => null,
             'firstname' => null,
-            'mail'      => null,
+            'mail' => null,
             // 'auth_source_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
