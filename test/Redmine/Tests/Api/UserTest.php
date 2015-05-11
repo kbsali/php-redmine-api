@@ -28,7 +28,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/users/current.json')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/users/current.json'),
+                    $this->stringContains(urlencode('memberships,groups'))
+                )
+            )
             ->willReturn($getResponse);
 
         // Create the object under test
@@ -154,7 +159,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with('/users/5.json?include=memberships,groups')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/users/5.json'),
+                    $this->stringContains(urlencode('memberships,groups'))
+                )
+            )
             ->willReturn($getResponse);
 
         // Create the object under test
@@ -162,6 +172,40 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         // Perform the tests
         $this->assertSame($getResponse, $api->show(5));
+    }
+
+    /**
+     * Test show().
+     *
+     * @covers ::get
+     * @covers ::show
+     * @test
+     */
+    public function testShowReturnsClientGetResponseWithUniqueParameters()
+    {
+        // Test values
+        $parameters = array('include' => array('parameter1', 'parameter2', 'memberships'));
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/users/5.json'),
+                    $this->stringContains(urlencode('parameter1,parameter2,memberships,groups'))
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new User($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->show(5, $parameters));
     }
 
     /**
