@@ -55,10 +55,20 @@ class User extends AbstractApi
     /**
      * Return the current user data.
      *
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
+     * available $params :
+     * include: fetch associated data (optional). Possible values:
+     *  - memberships: adds extra information about user's memberships and roles on the projects
+     *  - groups (added in 2.1): adds extra information about user's groups
+     *  - api_key: the API key of the user, visible for admins and for yourself (added in 2.3.0)
+     *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0).
+     *
+     * @param array  $params extra associated data
      * @return array current user data
      */
-    public function getCurrentUser()
+    public function getCurrentUser(array $params = array())
     {
+        return $this->show('current', $params);
         return $this->get('/users/current.json');
     }
 
@@ -85,13 +95,38 @@ class User extends AbstractApi
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET-2
      *
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
+     * available $params :
+     * include: fetch associated data (optional). Possible values:
+     *  - memberships: adds extra information about user's memberships and roles on the projects
+     *  - groups (added in 2.1): adds extra information about user's groups
+     *  - api_key: the API key of the user, visible for admins and for yourself (added in 2.3.0)
+     *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0).
+     *
      * @param string $id the user id
+     * @param array  $params extra associated data
      *
      * @return array information about the user
      */
-    public function show($id)
+    public function show($id, array $params = array())
     {
-        return $this->get('/users/'.urlencode($id).'.json?include=memberships,groups');
+        // set default ones
+        $params['include'] = array_unique(
+            array_merge(
+                isset($params['include']) ? $params['include'] : array(),
+                array(
+                    'memberships',
+                    'groups',
+                )
+            )
+        );
+        $params['include'] = implode(',', $params['include']);
+
+        return $this->get(sprintf(
+            '/users/%s.json?%s',
+            urlencode($id),
+            http_build_query($params)
+        ));
     }
 
     /**

@@ -246,7 +246,16 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res, array('path' => '/users.json', 'method' => 'GET'));
 
         $res = $this->client->api('user')->show(1);
-        $this->assertEquals($res, array('path' => '/users/1.json?include=memberships,groups', 'method' => 'GET'));
+        $this->assertEquals($res, array('path' => '/users/1.json?include=' . urlencode('memberships,groups'), 'method' => 'GET'));
+
+        $res = $this->client->api('user')->show(1, array('include' => array('memberships', 'groups')));
+        $this->assertEquals($res, array('path' => '/users/1.json?include=' . urlencode('memberships,groups'), 'method' => 'GET'));
+
+        $res = $this->client->api('user')->show(1, array('include' => array('memberships', 'groups', 'parameter1')));
+        $this->assertEquals($res, array('path' => '/users/1.json?include=' . urlencode('memberships,groups,parameter1'), 'method' => 'GET'));
+
+        $res = $this->client->api('user')->show(1, array('include' => array('parameter1', 'memberships', 'groups')));
+        $this->assertEquals($res, array('path' => '/users/1.json?include=' . urlencode('parameter1,memberships,groups'), 'method' => 'GET'));
 
         $res = $this->client->api('user')->remove(1);
         $this->assertEquals($res, array('path' => '/users/1.xml', 'method' => 'DELETE'));
