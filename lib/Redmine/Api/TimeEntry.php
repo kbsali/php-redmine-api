@@ -73,7 +73,11 @@ class TimeEntry extends AbstractApi
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k && is_array($v)) {
+                $this->attachCustomFieldXML($xml, $v);
+            }else{
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/time_entries.xml', $xml->asXML());
@@ -104,7 +108,11 @@ class TimeEntry extends AbstractApi
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k && is_array($v)) {
+                $this->attachCustomFieldXML($xml, $v);
+            }else{
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->put('/time_entries/'.$id.'.xml', $xml->asXML());
