@@ -2,7 +2,7 @@
 
 namespace Redmine\Tests;
 
-use Redmine\TestClient;
+use Redmine\Fixtures\MockClient as TestClient;
 
 class WikiXmlTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +27,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
     <comments>asdf</comments>
     <version>asdf</version>
 </wiki_page>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testUpdate()
@@ -44,7 +44,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
     <comments>asdf</comments>
     <version>asdf</version>
 </wiki_page>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     private function formatXml($xml)

@@ -2,7 +2,7 @@
 
 namespace Redmine\Tests;
 
-use Redmine\TestClient;
+use Redmine\Fixtures\MockClient as TestClient;
 
 class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
         $xml = '<?xml version="1.0"?>
 <membership/>';
         $res = $this->client->api('membership')->create('aProject');
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplex()
@@ -41,7 +41,7 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
         <role_id>2</role_id>
     </role_ids>
 </membership>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplexMultipleUsers()
@@ -62,7 +62,7 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
         <role_id>2</role_id>
     </role_ids>
 </membership>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testUpdate()
@@ -78,7 +78,7 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
         <role_id>2</role_id>
     </role_ids>
 </membership>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     private function formatXml($xml)
