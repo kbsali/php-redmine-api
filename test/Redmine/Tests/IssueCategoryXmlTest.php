@@ -2,7 +2,7 @@
 
 namespace Redmine\Tests;
 
-use Redmine\TestClient;
+use Redmine\Fixtures\MockClient as TestClient;
 
 class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
         $xml = '<?xml version="1.0"?>
 <issue_category/>';
         $res = $this->client->api('issue_category')->create('aProject');
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplex()
@@ -36,7 +36,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 <issue_category>
     <name>test category</name>
 </issue_category>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testUpdate()
@@ -49,7 +49,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 <issue_category>
     <name>new category name</name>
 </issue_category>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     private function formatXml($xml)

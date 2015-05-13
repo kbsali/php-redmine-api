@@ -2,7 +2,7 @@
 
 namespace Redmine\Tests;
 
-use Redmine\TestClient;
+use Redmine\Fixtures\MockClient as TestClient;
 
 class IssueXmlTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $xml = '<?xml version="1.0"?>
 <issue/>';
         $res = $this->client->api('issue')->create();
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplexWithUpload()
@@ -53,7 +53,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
       </upload>
     </uploads>
 </issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplex()
@@ -95,7 +95,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
     </custom_fields>
 </issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplexWithLineBreakInDescription()
@@ -137,7 +137,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
     </custom_fields>
 </issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testUpdateIssue()
@@ -163,7 +163,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
     <assigned_to_id>1</assigned_to_id>
     <due_date>2014-05-13</due_date>
 </issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testAddNoteToIssue()
@@ -174,7 +174,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
     <id>1</id>
     <notes>some comment</notes>
 </issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res));
+        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     private function formatXml($xml)

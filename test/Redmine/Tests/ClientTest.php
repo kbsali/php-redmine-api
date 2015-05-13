@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests;
 
+use Redmine\Fixtures\MockClient;
 use Redmine\Client;
 use Redmine\Exception\InvalidArgumentException;
 
@@ -105,6 +106,52 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('http://test.local', 'asdf');
 
         $this->assertEquals(0, $client->getResponseCode());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetReturnsFalseIfRunRequestReturnsFalse()
+    {
+        // Create the object under test
+        $client = new MockClient('http://test.local', null);
+        $client->useOriginalGetMethod = true;
+        $client->runRequestReturnValue = false;
+
+        // Perform the tests
+        $this->assertSame(false, $client->get('path'));
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetRawJsonFromRunRequest()
+    {
+        // Create the object under test
+        $client = new MockClient('http://test.local', null);
+        $client->useOriginalGetMethod = true;
+        $client->runRequestReturnValue = '{"foo_bar": 12345}';
+
+        // Perform the tests
+        $this->assertSame('{"foo_bar": 12345}', $client->get('path', false));
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetDecodedJsonFromRunRequestByDefault()
+    {
+        // Create the object under test
+        $client = new MockClient('http://test.local', null);
+        $client->useOriginalGetMethod = true;
+        $client->runRequestReturnValue = '{"foo_bar": 12345}';
+
+        // Perform the tests
+        $response = $client->get('path');
+        $this->assertSame(12345, $response['foo_bar']);
     }
 
     /**
