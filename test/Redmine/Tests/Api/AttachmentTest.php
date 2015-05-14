@@ -84,6 +84,34 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test download().
+     *
+     * @covers ::get
+     * @covers ::download
+     * @test
+     */
+    public function testDownloadReturnsUndecodedClientGetResponse()
+    {
+        // Test values
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('/attachments/5'), false)
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Attachment($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->download(5));
+    }
+
+    /**
      * Test upload().
      *
      * @covers ::post
