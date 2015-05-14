@@ -112,6 +112,69 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @covers Redmine\Client
      * @test
      */
+    public function testGetAndSetCheckSslCertificate()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate());
+        $this->assertFalse($client->getCheckSslCertificate());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(true));
+        $this->assertTrue($client->getCheckSslCertificate());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(false));
+        $this->assertFalse($client->getCheckSslCertificate());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetAndSetCheckSslHost()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost());
+        $this->assertFalse($client->getCheckSslHost());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(true));
+        $this->assertTrue($client->getCheckSslHost());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(false));
+        $this->assertFalse($client->getCheckSslHost());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetAndSetUseHttpAuth()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth());
+        $this->assertTrue($client->getUseHttpAuth());
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(true));
+        $this->assertTrue($client->getUseHttpAuth());
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(false));
+        $this->assertFalse($client->getUseHttpAuth());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
+    public function testGetAndSetImpersonateUser()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertNull($client->getImpersonateUser());
+        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser('Mike'));
+        $this->assertSame('Mike', $client->getImpersonateUser());
+        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser());
+        $this->assertNull($client->getImpersonateUser());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
     public function testGetReturnsFalseIfRunRequestReturnsFalse()
     {
         // Create the object under test

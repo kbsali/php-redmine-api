@@ -245,6 +245,16 @@ class Client
     }
 
     /**
+     * Get the on/off flag for ssl certificate check.
+     *
+     * @return bool
+     */
+    public function getCheckSslCertificate()
+    {
+        return $this->checkSslCertificate;
+    }
+
+    /**
      * Turns on/off ssl host certificate check.
      *
      * @param bool $check
@@ -259,6 +269,16 @@ class Client
     }
 
     /**
+     * Get the on/off flag for ssl host certificate check.
+     *
+     * @return bool
+     */
+    public function getCheckSslHost()
+    {
+        return $this->checkSslHost;
+    }
+
+    /**
      * Turns on/off http auth.
      *
      * @param bool $use
@@ -270,6 +290,16 @@ class Client
         $this->useHttpAuth = $use;
 
         return $this;
+    }
+
+    /**
+     * Get the on/off flag for http auth.
+     *
+     * @return bool
+     */
+    public function getUseHttpAuth()
+    {
+        return $this->useHttpAuth;
     }
 
     /**
