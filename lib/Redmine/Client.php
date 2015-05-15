@@ -12,6 +12,14 @@ use Redmine\Api\SimpleXMLElement;
  */
 class Client
 {
+    
+    /**
+     * Value for CURLOPT_SSL_VERIFYHOST
+     * 
+     * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
+     */
+    const SSL_VERIFYHOST = 2;
+
     /**
      * @var array
      */
@@ -271,7 +279,7 @@ class Client
         // Make sure verify value is set to "2" for boolean argument
         // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
         if (true === $check) {
-            $check = 2;
+            $check = self::SSL_VERIFYHOST;
         }
         $this->checkSslHost = $check;
 
