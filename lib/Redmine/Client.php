@@ -425,8 +425,14 @@ class Client
         $this->responseCode = null;
         $this->curlOptions = array();
         $curl = curl_init();
+        
+        // General cURL options
+        $this->setCurlOption(CURLOPT_VERBOSE, 0);
+        $this->setCurlOption(CURLOPT_HEADER, 0);
+        $this->setCurlOption(CURLOPT_RETURNTRANSFER, 1);
 
-        if (isset($this->apikeyOrUsername) && $this->useHttpAuth) {
+        // HTTP Basic Authentication
+        if ($this->apikeyOrUsername && $this->useHttpAuth) {
             if (null === $this->pass) {
                 $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999));
             } else {
@@ -434,41 +440,40 @@ class Client
             }
             $this->setCurlOption(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
+
+        // Host and request options
         $this->setCurlOption(CURLOPT_URL, $this->url.$path);
-        $this->setCurlOption(CURLOPT_VERBOSE, 0);
-        $this->setCurlOption(CURLOPT_HEADER, 0);
-        $this->setCurlOption(CURLOPT_RETURNTRANSFER, 1);
         $this->setCurlOption(CURLOPT_PORT, $this->getPort());
         if (80 !== $this->getPort()) {
             $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
             $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
         }
 
-        $tmp = parse_url($this->url.$path);
+        // Additional request headers
         $httpHeader = array(
             'Expect: ',
         );
 
-        if ('xml' === substr($tmp['path'], -3)) {
-            $httpHeader[] = 'Content-Type: text/xml';
-        }
+        // Content type headers
+        $tmp = parse_url($this->url.$path);
         if ('/uploads.json' === $path || '/uploads.xml' === $path) {
             $httpHeader[] = 'Content-Type: application/octet-stream';
         } elseif ('json' === substr($tmp['path'], -4)) {
             $httpHeader[] = 'Content-Type: application/json';
+        } elseif ('xml' === substr($tmp['path'], -3)) {
+            $httpHeader[] = 'Content-Type: text/xml';
         }
 
         // Redmine specific headers
         if ($this->impersonateUser) {
             $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
-
-        if (!empty($httpHeader)) {
-            if (null === $this->pass) {
-                $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
-            }
-            $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
+        if (null === $this->pass) {
+            $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
         }
+
+        // Set the HTTP request headers
+        $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
 
         switch ($method) {
             case 'POST':
@@ -490,6 +495,7 @@ class Client
                 break;
         }
 
+        // Set all cURL options to the current cURL resource
         curl_setopt_array($curl, $this->getCurlOptions());
 
         return $curl;
