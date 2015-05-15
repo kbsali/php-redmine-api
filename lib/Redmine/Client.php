@@ -389,8 +389,8 @@ class Client
     /**
      * Set a cURL option.
      * 
-     * @param int   The CURLOPT_XXX option to set
-     * @param mixed The value to be set on option
+     * @param int   $option The CURLOPT_XXX option to set
+     * @param mixed $value The value to be set on option
      *
      * @return Client
      */
