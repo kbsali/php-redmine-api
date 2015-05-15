@@ -432,6 +432,60 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test create() and buildXML().
+     *
+     * @covers ::create
+     * @covers ::buildXML
+     * @covers ::attachCustomFieldXML
+     * @test
+     */
+    public function testCreateBuildsXmlForCustomFields()
+    {
+        // Test values
+        $getResponse = 'API Response';
+        $parameters = array(
+            'custom_fields' => array(
+                array(
+                    'id' => 123,
+                    'name' => 'cf_name',
+                    'field_format' => 'string',
+                    'value' => array(1, 2, 3),
+                )
+            )
+        );
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>'),
+                    $this->stringContains('<issue>'),
+                    $this->stringContains('<custom_fields type="array">'),
+                    $this->stringContains('<custom_field name="cf_name" field_format="string" id="123" multiple="true">'),
+                    $this->stringContains('<value>1</value>'),
+                    $this->stringContains('<value>2</value>'),
+                    $this->stringContains('<value>3</value>'),
+                    $this->stringContains('</custom_field>'),
+                    $this->stringContains('</custom_fields>'),
+                    $this->stringEndsWith('</issue>'."\n")
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->create($parameters));
+    }
+
+    /**
      * Test update().
      *
      * @covers ::update
