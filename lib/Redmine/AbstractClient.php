@@ -10,20 +10,12 @@ use Redmine\Api\SimpleXMLElement;
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
  */
-class Client
+abstract class AbstractClient
 {
-    
-    /**
-     * Value for CURLOPT_SSL_VERIFYHOST
-     * 
-     * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-     */
-    const SSL_VERIFYHOST = 2;
-
     /**
      * @var array
      */
-    private static $defaultPorts = array(
+    protected static $defaultPorts = array(
         'http' => 80,
         'https' => 443,
     );
@@ -31,42 +23,42 @@ class Client
     /**
      * @var int
      */
-    private $port;
+    protected $port;
 
     /**
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * @var string
      */
-    private $apikeyOrUsername;
+    protected $apikeyOrUsername;
 
     /**
      * @var string or null
      */
-    private $pass;
+    protected $pass;
 
     /**
      * @var bool
      */
-    private $checkSslCertificate = false;
+    protected $checkSslCertificate = false;
 
     /**
      * @var bool
      */
-    private $checkSslHost = false;
+    protected $checkSslHost = false;
 
     /**
      * @var bool Flag to determine authentication method
      */
-    private $useHttpAuth = true;
+    protected $useHttpAuth = true;
 
     /**
      * @var array APIs
      */
-    private $apis = array();
+    protected $apis = array();
 
     /**
      * @var string|null username for impersonating API calls
@@ -76,22 +68,22 @@ class Client
     /**
      * @var int|null Redmine response code, null if request is not still completed
      */
-    private $responseCode = null;
-
-    /**
-     * @var array cURL options
-     */
-    private $curlOptions = array();
+    protected $responseCode = null;
 
     /**
      * Error strings if json is invalid.
      */
-    private static $json_errors = array(
+    protected static $json_errors = array(
         JSON_ERROR_NONE => 'No error has occurred',
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
     );
+
+    /**
+     * @var array options
+     */
+    private $options = array();
 
     /**
      * Usage: apikeyOrUsername can be auth key or username.
@@ -276,12 +268,7 @@ class Client
      */
     public function setCheckSslHost($check = false)
     {
-        // Make sure verify value is set to "2" for boolean argument
-        // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-        if (true === $check) {
-            $check = self::SSL_VERIFYHOST;
-        }
-        $this->checkSslHost = $check;
+        $this->checkSslCertificate = $check;
 
         return $this;
     }
@@ -395,69 +382,15 @@ class Client
     }
 
     /**
-     * Set a cURL option.
-     * 
-     * @param int   $option The CURLOPT_XXX option to set
-     * @param mixed $value The value to be set on option
+     * Generates a set of content type and redmine
+     * specific headers to be send with the request.
      *
-     * @return Client
-     */
-    public function setCurlOption($option, $value)
-    {
-        $this->curlOptions[$option] = $value;
-        
-        return $this;
-    }
-
-    /**
-     * Get all set cURL options.
+     * @param string $path
      *
      * @return array
      */
-    public function getCurlOptions()
+    protected function generateHttpHeader($path)
     {
-        return $this->curlOptions;
-    }
-
-    /**
-     * Prepare the request by setting the cURL options.
-     *
-     * @param string $path
-     * @param string $method
-     * @param string $data
-     *
-     * @return resource a cURL handle on success, <b>FALSE</b> on errors.
-     */
-    public function prepareRequest($path, $method = 'GET', $data = '')
-    {
-        $this->responseCode = null;
-        $this->curlOptions = array();
-        $curl = curl_init();
-        
-        // General cURL options
-        $this->setCurlOption(CURLOPT_VERBOSE, 0);
-        $this->setCurlOption(CURLOPT_HEADER, 0);
-        $this->setCurlOption(CURLOPT_RETURNTRANSFER, 1);
-
-        // HTTP Basic Authentication
-        if ($this->apikeyOrUsername && $this->useHttpAuth) {
-            if (null === $this->pass) {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999));
-            } else {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass);
-            }
-            $this->setCurlOption(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        }
-
-        // Host and request options
-        $this->setCurlOption(CURLOPT_URL, $this->url.$path);
-        $this->setCurlOption(CURLOPT_PORT, $this->getPort());
-        if (80 !== $this->getPort()) {
-            $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
-            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
-        }
-
-        // Additional request headers
         $httpHeader = array(
             'Expect: ',
         );
@@ -480,46 +413,20 @@ class Client
             $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
         }
 
-        // Set the HTTP request headers
-        $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
-
-        switch ($method) {
-            case 'POST':
-                $this->setCurlOption(CURLOPT_POST, 1);
-                if (isset($data)) {
-                    $this->setCurlOption(CURLOPT_POSTFIELDS, $data);
-                }
-                break;
-            case 'PUT':
-                $this->setCurlOption(CURLOPT_CUSTOMREQUEST, 'PUT');
-                if (isset($data)) {
-                    $this->setCurlOption(CURLOPT_POSTFIELDS, $data);
-                }
-                break;
-            case 'DELETE':
-                $this->setCurlOption(CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
-            default: // GET
-                break;
-        }
-
-        // Set all cURL options to the current cURL resource
-        curl_setopt_array($curl, $this->getCurlOptions());
-
-        return $curl;
+        return $httpHeader;
     }
 
     /**
-     * Process the cURL response.
+     * Process the response.
      *
      * @param string $response
      * @param string $contentType
      *
      * @return bool|SimpleXMLElement|string
      *
-     * @throws \Exception If anything goes wrong on curl request
+     * @throws \Exception If anything goes wrong on request
      */
-    public function processCurlResponse($response, $contentType)
+    public function processResponse($response, $contentType)
     {
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
@@ -534,31 +441,13 @@ class Client
     }
 
     /**
-     * @codeCoverageIgnore Ignore due to untestable curl_* function calls.
-     * 
      * @param string $path
      * @param string $method
      * @param string $data
      *
      * @return bool|SimpleXMLElement|string
      *
-     * @throws \Exception If anything goes wrong on curl request
+     * @throws \Exception If anything goes wrong on request
      */
-    protected function runRequest($path, $method = 'GET', $data = '')
-    {
-        $curl = $this->prepareRequest($path, $method, $data);
-
-        $response = trim(curl_exec($curl));
-        $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
-
-        if (curl_errno($curl)) {
-            $e = new \Exception(curl_error($curl), curl_errno($curl));
-            curl_close($curl);
-            throw $e;
-        }
-        curl_close($curl);
-
-        return $this->processCurlResponse($response, $contentType);
-    }
+    protected abstract function runRequest($path, $method = 'GET', $data = '');
 }

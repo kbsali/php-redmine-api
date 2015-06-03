@@ -2,7 +2,7 @@
 
 namespace Redmine\Api;
 
-use Redmine\Client;
+use Redmine\AbstractClient as Client;
 
 /**
  * Abstract class for Api classes.
@@ -42,6 +42,7 @@ abstract class AbstractApi
      * Perform the client get() method.
      *
      * @param string $path
+     * @param bool   $decode
      *
      * @return array
      */

@@ -2,7 +2,7 @@
 
 namespace Redmine\Fixtures;
 
-use Redmine\Client;
+use Redmine\AbstractClient;
 
 /**
  * Mock client class
@@ -10,7 +10,7 @@ use Redmine\Client;
  * The runRequest method of this client class just returns the value of
  * the path, method and data or the $runRequestReturnValue value if set.
  */
-class MockClient extends Client
+class MockClient extends AbstractClient
 {
 
     /**
@@ -30,8 +30,8 @@ class MockClient extends Client
     /**
      * Just return the data from runRequest().
      *
-     * @param type $path
-     * @param type $decode
+     * @param string $path
+     * @param bool   $decode
      *
      * @return array
      */
