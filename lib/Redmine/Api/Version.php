@@ -95,6 +95,8 @@ class Version extends AbstractApi
      * @param array      $params  the new issue category data
      *
      * @return SimpleXMLElement
+     *
+     * @throws \Exception
      */
     public function create($project, array $params = array())
     {
@@ -175,7 +177,7 @@ class Version extends AbstractApi
             'tree' => 'With project tree',
             'system' => 'With all projects',
         );
-        if (isset($params['sharing']) && !isset($arrSharing[ $params['sharing'] ])) {
+        if (isset($params['sharing']) && !isset($arrSharing[$params['sharing']])) {
             throw new \Exception('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));
         }
     }

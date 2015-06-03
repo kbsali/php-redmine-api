@@ -81,11 +81,6 @@ abstract class AbstractClient
     );
 
     /**
-     * @var array options
-     */
-    private $options = array();
-
-    /**
      * Usage: apikeyOrUsername can be auth key or username.
      * Password needs to be set if username is given.
      *
@@ -240,7 +235,7 @@ abstract class AbstractClient
      *
      * @param bool $check
      *
-     * @return Client
+     * @return AbstractClient
      */
     public function setCheckSslCertificate($check = false)
     {
@@ -264,7 +259,7 @@ abstract class AbstractClient
      *
      * @param bool $check
      *
-     * @return Client
+     * @return AbstractClient
      */
     public function setCheckSslHost($check = false)
     {
@@ -288,7 +283,7 @@ abstract class AbstractClient
      *
      * @param bool $use
      *
-     * @return Client
+     * @return AbstractClient
      */
     public function setUseHttpAuth($use = true)
     {
@@ -312,7 +307,7 @@ abstract class AbstractClient
      *
      * @param int $port
      *
-     * @return Client
+     * @return AbstractClient
      */
     public function setPort($port = null)
     {
@@ -362,7 +357,7 @@ abstract class AbstractClient
      *
      * @param string|null $username
      *
-     * @return Client
+     * @return AbstractClient
      */
     public function setImpersonateUser($username = null)
     {

@@ -23,6 +23,8 @@ class GuzzleClient extends AbstractClient
     }
 
     /**
+     * @codeCoverageIgnore Ignore due to untestable guzzle function calls.
+     *
      * @param string $path
      * @param string $method
      * @param string $data
@@ -39,9 +41,9 @@ class GuzzleClient extends AbstractClient
         // HTTP Basic Authentication
         if ($this->apikeyOrUsername && $this->useHttpAuth) {
             if (null === $this->pass) {
-                $options['auth'] =  [$this->apikeyOrUsername, rand(100000, 199999)];
+                $options['auth'] = [$this->apikeyOrUsername, rand(100000, 199999)];
             } else {
-                $options['auth'] =  [$this->apikeyOrUsername, $this->pass];
+                $options['auth'] = [$this->apikeyOrUsername, $this->pass];
             }
         }
 
