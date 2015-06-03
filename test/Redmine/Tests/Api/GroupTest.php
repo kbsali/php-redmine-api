@@ -23,7 +23,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -53,7 +53,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = array('API Response');
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())
@@ -94,7 +94,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->atLeastOnce())
@@ -132,7 +132,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -171,7 +171,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
@@ -202,7 +202,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -231,7 +231,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $allParameters = array('not-used');
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -264,7 +264,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -303,7 +303,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -341,7 +341,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $postParameter = array();
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -365,7 +365,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -402,7 +402,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())

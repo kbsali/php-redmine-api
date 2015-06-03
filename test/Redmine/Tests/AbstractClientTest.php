@@ -3,37 +3,36 @@
 namespace Redmine\Tests;
 
 use Redmine\Fixtures\MockClient;
-use Redmine\Client;
-use Redmine\Exception\InvalidArgumentException;
+use Redmine\CurlClient as Client;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class AbstractClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function shouldPassApiKeyToContructor()
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\Client', $client);
+        $this->assertInstanceOf('Redmine\CurlClient', $client);
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function shouldPassUsernameAndPasswordToContructor()
     {
         $client = new Client('http://test.local', 'username', 'pwd');
 
-        $this->assertInstanceOf('Redmine\Client', $client);
+        $this->assertInstanceOf('Redmine\CurlClient', $client);
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function shouldNotGetApiInstance()
     {
@@ -42,7 +41,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetUrlReturnsValueFromConstructor()
@@ -53,7 +52,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetPortReturnsPortFromConstructorHttpUrl()
@@ -64,7 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlHttps()
@@ -75,7 +74,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlWithPort()
@@ -86,7 +85,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetPortReturnsSetPort()
@@ -98,7 +97,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetResponseCodeIsInitialNull()
@@ -109,55 +108,55 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetAndSetCheckSslCertificate()
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate());
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate());
         $this->assertFalse($client->getCheckSslCertificate());
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(true));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate(true));
         $this->assertTrue($client->getCheckSslCertificate());
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(false));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate(false));
         $this->assertFalse($client->getCheckSslCertificate());
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetAndSetCheckSslHost()
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost());
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost());
         $this->assertFalse($client->getCheckSslHost());
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(true));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost(true));
         $this->assertSame(2, $client->getCheckSslHost());
-        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(false));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost(false));
         $this->assertFalse($client->getCheckSslHost());
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetAndSetUseHttpAuth()
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth());
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth());
         $this->assertTrue($client->getUseHttpAuth());
-        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(true));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth(true));
         $this->assertTrue($client->getUseHttpAuth());
-        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(false));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth(false));
         $this->assertFalse($client->getUseHttpAuth());
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetAndSetImpersonateUser()
@@ -165,14 +164,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('http://test.local', 'asdf');
 
         $this->assertNull($client->getImpersonateUser());
-        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser('Mike'));
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setImpersonateUser('Mike'));
         $this->assertSame('Mike', $client->getImpersonateUser());
-        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser());
+        $this->assertInstanceOf('Redmine\CurlClient', $client->setImpersonateUser());
         $this->assertNull($client->getImpersonateUser());
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetReturnsFalseIfRunRequestReturnsFalse()
@@ -187,7 +186,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetRawJsonFromRunRequest()
@@ -202,7 +201,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testGetDecodedJsonFromRunRequestByDefault()
@@ -218,7 +217,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testDecodeJsonWithValidJson()
@@ -251,7 +250,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testDecodeJsonWithEmptyJson()
@@ -268,7 +267,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testDecodeJsonWithSyntaxError()
@@ -288,23 +287,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
-     * @test
-     */
-    public function testGetAndSetCurlOptions()
-    {
-        $client = new Client('http://test.local', 'asdf');
-
-        $this->assertSame(array(), $client->getCurlOptions());
-        $this->assertInstanceOf(
-            'Redmine\Client',
-            $client->setCurlOption(15, 'value')
-        );
-        $this->assertSame(array(15 => 'value'), $client->getCurlOptions());
-    }
-
-    /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testPrepareJsonPostRequestWithHttpUsername()
@@ -338,7 +321,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testPrepareXmlPutRequestWithHttpUsernameAndPassword()
@@ -375,7 +358,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testPrepareDeleteUploadRequestWithSslAndImpersonateUser()
@@ -417,7 +400,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
     public function testPrepareGetIssuesRequest()
@@ -438,10 +421,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
-    public function testProcessCurlResponse()
+    public function testProcessResponse()
     {
         // Create the object under test
         $client = new Client('http://test.local', 'asdf');
@@ -449,31 +432,31 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         // failed request
         $this->assertFalse(
-            $client->processCurlResponse(false, 'application/xml')
+            $client->processResponse(false, 'application/xml')
         );
         // successfull request
         $this->assertTrue(
-            $client->processCurlResponse(true, 'text/html')
+            $client->processResponse(true, 'text/html')
         );
         // Text response
         $this->assertSame(
             'response content',
-            $client->processCurlResponse('response content', 'text/plain')
+            $client->processResponse('response content', 'text/plain')
         );
         // JSON response
         $this->assertSame(
             '{"api": "redmine"}',
-            $client->processCurlResponse('{"api": "redmine"}', 'application/json')
+            $client->processResponse('{"api": "redmine"}', 'application/json')
         );
         // XML response
-        /* @var $xmlResponse SimpleXMLElement */
-        $xmlResponse = $client->processCurlResponse('<issue/>', 'application/xml');
+        /* @var $xmlResponse \SimpleXMLElement */
+        $xmlResponse = $client->processResponse('<issue/>', 'application/xml');
         $this->assertInstanceOf('SimpleXMLElement', $xmlResponse);
         $this->assertSame('issue', $xmlResponse->getName());
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      * @dataProvider getApiClassesProvider
      */

@@ -26,7 +26,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -59,7 +59,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -95,7 +95,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(3))
@@ -136,7 +136,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -177,7 +177,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->atLeastOnce())
@@ -215,7 +215,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -254,7 +254,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
@@ -288,7 +288,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())

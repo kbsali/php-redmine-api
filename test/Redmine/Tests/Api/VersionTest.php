@@ -23,7 +23,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -54,7 +54,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = array('API Response');
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())
@@ -88,7 +88,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -116,7 +116,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -144,7 +144,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -172,7 +172,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -197,7 +197,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -223,7 +223,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -251,7 +251,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -278,7 +278,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -318,7 +318,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -358,7 +358,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -385,7 +385,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -425,7 +425,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -469,7 +469,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -505,7 +505,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -541,7 +541,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -578,7 +578,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
@@ -610,7 +610,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -649,7 +649,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -692,7 +692,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -737,7 +737,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -769,7 +769,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -812,7 +812,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -857,7 +857,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder('Redmine\CurlClient')
             ->disableOriginalConstructor()
             ->getMock();
 
