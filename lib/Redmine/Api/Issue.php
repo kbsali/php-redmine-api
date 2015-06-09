@@ -55,7 +55,7 @@ class Issue extends AbstractApi
      */
     public function show($id, array $params = array())
     {
-        if (isset($params['include'])) {
+        if (isset($params['include']) && is_array($params['include'])) {
             $params['include'] = implode(',', $params['include']);
         }
 
