@@ -84,6 +84,16 @@ class Client
     private $curlOptions = array();
 
     /**
+     * @var string username for HTTP authentication
+     */
+    private $httpAuthUsername = null;
+
+    /**
+     * @var string password for HTTP authentication
+     */
+    private $httpAuthPassword = null;
+
+    /**
      * Error strings if json is invalid.
      */
     private static $json_errors = array(
@@ -300,12 +310,18 @@ class Client
      * Turns on/off http auth.
      *
      * @param bool $use
-     *
+     * @param string|null $username A custom username for http authentication
+     * @param string|null $password A custom password for http authentication
      * @return Client
      */
-    public function setUseHttpAuth($use = true)
+    public function setUseHttpAuth($use = true, $username = null, $password = null)
     {
         $this->useHttpAuth = $use;
+        
+        if ($use) {
+            $this->httpAuthUsername = $username;
+            $this->httpAuthPassword = $password;
+        }
 
         return $this;
     }
@@ -440,11 +456,15 @@ class Client
         $this->setCurlOption(CURLOPT_RETURNTRANSFER, 1);
 
         // HTTP Basic Authentication
-        if ($this->apikeyOrUsername && $this->useHttpAuth) {
-            if (null === $this->pass) {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999));
+        if ($this->useHttpAuth) {
+            if ($this->httpAuthUsername && $this->httpAuthPassword) {
+                $this->setCurlOption(CURLOPT_USERPWD, $this->httpAuthUsername.':'.$this->httpAuthPassword);
             } else {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass);
+                if (null === $this->pass) {
+                    $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999));
+                } else {
+                    $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->pass);
+                }
             }
             $this->setCurlOption(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }

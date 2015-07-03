@@ -341,6 +341,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @covers Redmine\Client
      * @test
      */
+    public function testPrepareWithHttpAuthUsernameAndHttpAuthPassword()
+    {
+        $client = new Client('http://test.local', 'USER_API-KEY159');
+        $client->setUseHttpAuth(true, 'username', 'password');
+
+        $client->prepareRequest('/anything.json', 'POST', []);
+        
+        $curlOptions = $client->getCurlOptions();
+        $this->assertEquals('username:password', $curlOptions[CURLOPT_USERPWD]);
+        $this->assertSame(CURLAUTH_BASIC, $curlOptions[CURLOPT_HTTPAUTH]);
+    }
+ 
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
     public function testPrepareXmlPutRequestWithHttpUsernameAndPassword()
     {
         // Create the object under test
