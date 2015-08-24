@@ -3,7 +3,7 @@
 namespace Redmine\Tests;
 
 use Redmine\Fixtures\MockClient;
-use Redmine\CurlClient as Client;
+use Redmine\Client as Client;
 
 class AbstractClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\CurlClient', $client);
+        $this->assertInstanceOf('Redmine\Client', $client);
     }
 
     /**
@@ -26,7 +26,7 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'username', 'pwd');
 
-        $this->assertInstanceOf('Redmine\CurlClient', $client);
+        $this->assertInstanceOf('Redmine\Client', $client);
     }
 
     /**
@@ -115,11 +115,11 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate());
         $this->assertFalse($client->getCheckSslCertificate());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate(true));
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(true));
         $this->assertTrue($client->getCheckSslCertificate());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslCertificate(false));
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslCertificate(false));
         $this->assertFalse($client->getCheckSslCertificate());
     }
 
@@ -131,11 +131,11 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost());
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost());
         $this->assertFalse($client->getCheckSslHost());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost(true));
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(true));
         $this->assertSame(2, $client->getCheckSslHost());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setCheckSslHost(false));
+        $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(false));
         $this->assertFalse($client->getCheckSslHost());
     }
 
@@ -147,11 +147,11 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth());
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth());
         $this->assertTrue($client->getUseHttpAuth());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth(true));
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(true));
         $this->assertTrue($client->getUseHttpAuth());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setUseHttpAuth(false));
+        $this->assertInstanceOf('Redmine\Client', $client->setUseHttpAuth(false));
         $this->assertFalse($client->getUseHttpAuth());
     }
 
@@ -164,9 +164,9 @@ class AbstractClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('http://test.local', 'asdf');
 
         $this->assertNull($client->getImpersonateUser());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setImpersonateUser('Mike'));
+        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser('Mike'));
         $this->assertSame('Mike', $client->getImpersonateUser());
-        $this->assertInstanceOf('Redmine\CurlClient', $client->setImpersonateUser());
+        $this->assertInstanceOf('Redmine\Client', $client->setImpersonateUser());
         $this->assertNull($client->getImpersonateUser());
     }
 

@@ -2,12 +2,12 @@
 
 namespace Redmine\Tests;
 
-use Redmine\CurlClient as Client;
+use Redmine\Client;
 
-class CurlClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Redmine\CurlClient
+     * @covers Redmine\Client
      * @test
      */
     public function testGetAndSetCurlOptions()
@@ -16,7 +16,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(), $client->getCurlOptions());
         $this->assertInstanceOf(
-            'Redmine\CurlClient',
+            'Redmine\Client',
             $client->setCurlOption(15, 'value')
         );
         $this->assertSame(array(15 => 'value'), $client->getCurlOptions());
@@ -24,7 +24,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Redmine\CurlClient
+     * @covers Redmine\Client
      * @test
      */
     public function testPrepareJsonPostRequestWithHttpUsername()
@@ -58,7 +58,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\CurlClient
+     * @covers Redmine\Client
      * @test
      */
     public function testPrepareXmlPutRequestWithHttpUsernameAndPassword()
@@ -95,7 +95,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\CurlClient
+     * @covers Redmine\Client
      * @test
      */
     public function testPrepareDeleteUploadRequestWithSslAndImpersonateUser()
@@ -137,7 +137,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\CurlClient
+     * @covers Redmine\Client
      * @test
      */
     public function testPrepareGetIssuesRequest()

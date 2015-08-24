@@ -23,7 +23,7 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\CurlClient')
+        $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
@@ -53,7 +53,7 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
         $getResponse = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\CurlClient')
+        $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())

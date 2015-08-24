@@ -10,7 +10,7 @@ use Redmine\Api\SimpleXMLElement;
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
  */
-class CurlClient extends AbstractClient
+class Client extends AbstractClient
 {
 
     /**
@@ -46,7 +46,7 @@ class CurlClient extends AbstractClient
      * @param int   $option The CURLOPT_XXX option to set
      * @param mixed $value The value to be set on option
      *
-     * @return CurlClient
+     * @return Client
      */
     public function setCurlOption($option, $value)
     {
