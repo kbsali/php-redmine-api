@@ -249,6 +249,13 @@ $client->api('query')->all();
 // Time entries
 $client->api('time_entry')->all();
 $client->api('time_entry')->show($timeEntryId);
+$client->api('time_entry')->show(array(
+    'issue_id' => 1234,
+    'project_id' => 1234,
+    'spent_on' => '2015-04-13',
+    'user_id' => 168,
+    'activity_id' => 13
+));
 $client->api('time_entry')->create(array(
     'project_id' => $projectId,
     // 'issue_id' => 140,
