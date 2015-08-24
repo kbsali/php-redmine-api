@@ -144,6 +144,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @covers Redmine\Client
      * @test
      */
+    public function testGetAndSetSSlVersion()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertInstanceOf('Redmine\Client', $client->setSslVersion());
+        $this->assertSame(0, $client->getSslVersion());
+        $this->assertInstanceOf('Redmine\Client', $client->setSslVersion(6));
+        $this->assertSame(6, $client->getSslVersion());
+    }
+
+    /**
+     * @covers Redmine\Client
+     * @test
+     */
     public function testGetAndSetUseHttpAuth()
     {
         $client = new Client('http://test.local', 'asdf');
