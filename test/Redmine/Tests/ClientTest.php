@@ -452,10 +452,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers Redmine\AbstractClient
      * @test
      */
-    public function testProcessCurlResponse()
+    public function testProcessResponse()
     {
         // Create the object under test
         $client = new Client('http://test.local', 'asdf');
@@ -463,25 +463,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         // failed request
         $this->assertFalse(
-            $client->processCurlResponse(false, 'application/xml')
+            $client->processResponse(false, 'application/xml')
         );
         // successfull request
         $this->assertTrue(
-            $client->processCurlResponse(true, 'text/html')
+            $client->processResponse(true, 'text/html')
         );
         // Text response
         $this->assertSame(
             'response content',
-            $client->processCurlResponse('response content', 'text/plain')
+            $client->processResponse('response content', 'text/plain')
         );
         // JSON response
         $this->assertSame(
             '{"api": "redmine"}',
-            $client->processCurlResponse('{"api": "redmine"}', 'application/json')
+            $client->processResponse('{"api": "redmine"}', 'application/json')
         );
         // XML response
         /* @var $xmlResponse SimpleXMLElement */
-        $xmlResponse = $client->processCurlResponse('<issue/>', 'application/xml');
+        $xmlResponse = $client->processResponse('<issue/>', 'application/xml');
         $this->assertInstanceOf('SimpleXMLElement', $xmlResponse);
         $this->assertSame('issue', $xmlResponse->getName());
     }
