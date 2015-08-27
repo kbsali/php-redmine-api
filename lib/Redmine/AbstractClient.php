@@ -51,6 +51,11 @@ abstract class AbstractClient
     protected $checkSslHost = false;
 
     /**
+     * @var int
+     */
+    protected $sslVersion = 0;
+
+    /**
      * @var bool Flag to determine authentication method
      */
     protected $useHttpAuth = true;
@@ -276,6 +281,31 @@ abstract class AbstractClient
     public function getCheckSslHost()
     {
         return $this->checkSslHost;
+    }
+
+    /**
+     * Forces the SSL/TLS version to use.
+     * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html
+     *
+     * @param int $sslVersion
+     *
+     * @return AbstractClient
+     */
+    public function setSslVersion($sslVersion = 0)
+    {
+        $this->sslVersion = $sslVersion;
+
+        return $this;
+    }
+
+    /**
+     * Returns the SSL Version used.
+     *
+     * @return int
+     */
+    public function getSslVersion()
+    {
+        return $this->sslVersion;
     }
 
     /**

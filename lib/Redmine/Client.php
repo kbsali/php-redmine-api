@@ -101,6 +101,7 @@ class Client extends AbstractClient
         if (80 !== $this->getPort()) {
             $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
             $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
+            $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 
         // Set the HTTP request headers
