@@ -184,10 +184,10 @@ $client->api('issue')->create(array(
     'description' => 'Here goes the issue description',
     'uploads' => array(
         array(
-          'token' => $upload->upload->token,
-          'filename' => 'MyFile.pdf',
-          'description' => 'MyFile is better then YourFile...',
-          'content_type' => 'application/pdf',
+            'token' => $upload->upload->token,
+            'filename' => 'MyFile.pdf',
+            'description' => 'MyFile is better then YourFile...',
+            'content_type' => 'application/pdf',
         ),
     ),
 ));

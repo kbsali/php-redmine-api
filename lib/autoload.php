@@ -5,7 +5,7 @@
  * classes.
  */
 
-spl_autoload_register(function ($class) {
+spl_autoload_register(function($class) {
     /* All of the classes have names like "Redmine\Foo", so we need to
      * replace the backslashes with frontslashes if we want the name
      * to map directly to a location in the filesystem.
