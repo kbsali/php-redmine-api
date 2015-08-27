@@ -138,6 +138,7 @@ class Issue extends AbstractApi
             'due_date' => null,
             'start_date' => null,
             'watcher_user_ids' => null,
+            'fixed_version_id' => null,
         );
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
