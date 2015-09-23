@@ -156,6 +156,12 @@ class Client
         $this->pass = $pass;
     }
     
+    /**
+     * PHP setter magic method.
+     * 
+     * @param string $name
+     * @return mixed property value
+     */
     public function __get($name)
     {
         if(isset($this->classes[$name])){
