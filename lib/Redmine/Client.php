@@ -9,6 +9,26 @@ use Redmine\Api\SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
+ * 
+ * @property Api\Attachment $attachment
+ * @property Api\Group $group
+ * @property Api\CustomField $custom_fields
+ * @property Api\Issue $issue
+ * @property Api\IssueCategory $issue_category
+ * @property Api\IssuePriority $issue_priority
+ * @property Api\IssueRelation $issue_relation
+ * @property Api\IssueStatus $issue_status
+ * @property Api\Membership $membership
+ * @property Api\News $news
+ * @property Api\Project $project
+ * @property Api\Query $query
+ * @property Api\Role $role
+ * @property Api\TimeEntry $time_entry
+ * @property Api\TimeEntryActivity $time_entry_activity
+ * @property Api\Tracker $tracker
+ * @property Api\User $user
+ * @property Api\Version $version
+ * @property Api\Wiki $wiki
  */
 class Client
 {
@@ -97,33 +117,8 @@ class Client
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
     );
-
-    /**
-     * Usage: apikeyOrUsername can be auth key or username.
-     * Password needs to be set if username is given.
-     *
-     * @param string $url
-     * @param string $apikeyOrUsername
-     * @param string $pass             (string or null)
-     */
-    public function __construct($url, $apikeyOrUsername, $pass = null)
-    {
-        $this->url = $url;
-        $this->getPort();
-        $this->apikeyOrUsername = $apikeyOrUsername;
-        $this->pass = $pass;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return Api\AbstractApi
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function api($name)
-    {
-        $classes = array(
+    
+    private $classes = array(
             'attachment' => 'Attachment',
             'group' => 'Group',
             'custom_fields' => 'CustomField',
@@ -144,13 +139,46 @@ class Client
             'version' => 'Version',
             'wiki' => 'Wiki',
         );
-        if (!isset($classes[$name])) {
+
+    /**
+     * Usage: apikeyOrUsername can be auth key or username.
+     * Password needs to be set if username is given.
+     *
+     * @param string $url
+     * @param string $apikeyOrUsername
+     * @param string $pass             (string or null)
+     */
+    public function __construct($url, $apikeyOrUsername, $pass = null)
+    {
+        $this->url = $url;
+        $this->getPort();
+        $this->apikeyOrUsername = $apikeyOrUsername;
+        $this->pass = $pass;
+    }
+    
+    public function __get($name)
+    {
+        if(isset($this->classes[$name])){
+            return $this->api($name);
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Api\AbstractApi
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function api($name)
+    {
+        if (!isset($this->classes[$name])) {
             throw new \InvalidArgumentException();
         }
         if (isset($this->apis[$name])) {
             return $this->apis[$name];
         }
-        $c = 'Redmine\Api\\'.$classes[$name];
+        $c = 'Redmine\Api\\'.$this->classes[$name];
         $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];
