@@ -157,7 +157,7 @@ class Client
     }
     
     /**
-     * PHP setter magic method.
+     * PHP getter magic method.
      * 
      * @param string $name
      * @return mixed property value
