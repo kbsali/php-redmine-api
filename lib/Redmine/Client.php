@@ -119,26 +119,26 @@ class Client
     );
     
     private $classes = array(
-            'attachment' => 'Attachment',
-            'group' => 'Group',
-            'custom_fields' => 'CustomField',
-            'issue' => 'Issue',
-            'issue_category' => 'IssueCategory',
-            'issue_priority' => 'IssuePriority',
-            'issue_relation' => 'IssueRelation',
-            'issue_status' => 'IssueStatus',
-            'membership' => 'Membership',
-            'news' => 'News',
-            'project' => 'Project',
-            'query' => 'Query',
-            'role' => 'Role',
-            'time_entry' => 'TimeEntry',
-            'time_entry_activity' => 'TimeEntryActivity',
-            'tracker' => 'Tracker',
-            'user' => 'User',
-            'version' => 'Version',
-            'wiki' => 'Wiki',
-        );
+        'attachment' => 'Attachment',
+        'group' => 'Group',
+        'custom_fields' => 'CustomField',
+        'issue' => 'Issue',
+        'issue_category' => 'IssueCategory',
+        'issue_priority' => 'IssuePriority',
+        'issue_relation' => 'IssueRelation',
+        'issue_status' => 'IssueStatus',
+        'membership' => 'Membership',
+        'news' => 'News',
+        'project' => 'Project',
+        'query' => 'Query',
+        'role' => 'Role',
+        'time_entry' => 'TimeEntry',
+        'time_entry_activity' => 'TimeEntryActivity',
+        'tracker' => 'Tracker',
+        'user' => 'User',
+        'version' => 'Version',
+        'wiki' => 'Wiki',
+    );
 
     /**
      * Usage: apikeyOrUsername can be auth key or username.
@@ -160,13 +160,14 @@ class Client
      * PHP getter magic method.
      * 
      * @param string $name
-     * @return mixed property value
+     * 
+     * @return Api\AbstractApi
+     *
+     * @throws \InvalidArgumentException
      */
     public function __get($name)
     {
-        if(isset($this->classes[$name])){
-            return $this->api($name);
-        }
+        return $this->api($name);
     }
 
     /**
