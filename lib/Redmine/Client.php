@@ -9,6 +9,26 @@ use Redmine\Api\SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
+ * 
+ * @property Api\Attachment $attachment
+ * @property Api\Group $group
+ * @property Api\CustomField $custom_fields
+ * @property Api\Issue $issue
+ * @property Api\IssueCategory $issue_category
+ * @property Api\IssuePriority $issue_priority
+ * @property Api\IssueRelation $issue_relation
+ * @property Api\IssueStatus $issue_status
+ * @property Api\Membership $membership
+ * @property Api\News $news
+ * @property Api\Project $project
+ * @property Api\Query $query
+ * @property Api\Role $role
+ * @property Api\TimeEntry $time_entry
+ * @property Api\TimeEntryActivity $time_entry_activity
+ * @property Api\Tracker $tracker
+ * @property Api\User $user
+ * @property Api\Version $version
+ * @property Api\Wiki $wiki
  */
 class Client
 {
@@ -97,6 +117,28 @@ class Client
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
     );
+    
+    private $classes = array(
+        'attachment' => 'Attachment',
+        'group' => 'Group',
+        'custom_fields' => 'CustomField',
+        'issue' => 'Issue',
+        'issue_category' => 'IssueCategory',
+        'issue_priority' => 'IssuePriority',
+        'issue_relation' => 'IssueRelation',
+        'issue_status' => 'IssueStatus',
+        'membership' => 'Membership',
+        'news' => 'News',
+        'project' => 'Project',
+        'query' => 'Query',
+        'role' => 'Role',
+        'time_entry' => 'TimeEntry',
+        'time_entry_activity' => 'TimeEntryActivity',
+        'tracker' => 'Tracker',
+        'user' => 'User',
+        'version' => 'Version',
+        'wiki' => 'Wiki',
+    );
 
     /**
      * Usage: apikeyOrUsername can be auth key or username.
@@ -113,6 +155,20 @@ class Client
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
+    
+    /**
+     * PHP getter magic method.
+     * 
+     * @param string $name
+     * 
+     * @return Api\AbstractApi
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __get($name)
+    {
+        return $this->api($name);
+    }
 
     /**
      * @param string $name
@@ -123,34 +179,13 @@ class Client
      */
     public function api($name)
     {
-        $classes = array(
-            'attachment' => 'Attachment',
-            'group' => 'Group',
-            'custom_fields' => 'CustomField',
-            'issue' => 'Issue',
-            'issue_category' => 'IssueCategory',
-            'issue_priority' => 'IssuePriority',
-            'issue_relation' => 'IssueRelation',
-            'issue_status' => 'IssueStatus',
-            'membership' => 'Membership',
-            'news' => 'News',
-            'project' => 'Project',
-            'query' => 'Query',
-            'role' => 'Role',
-            'time_entry' => 'TimeEntry',
-            'time_entry_activity' => 'TimeEntryActivity',
-            'tracker' => 'Tracker',
-            'user' => 'User',
-            'version' => 'Version',
-            'wiki' => 'Wiki',
-        );
-        if (!isset($classes[$name])) {
+        if (!isset($this->classes[$name])) {
             throw new \InvalidArgumentException();
         }
         if (isset($this->apis[$name])) {
             return $this->apis[$name];
         }
-        $c = 'Redmine\Api\\'.$classes[$name];
+        $c = 'Redmine\Api\\'.$this->classes[$name];
         $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];

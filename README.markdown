@@ -141,16 +141,16 @@ $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 //-- OR --
 $client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 
-$client->api('user')->all();
-$client->api('user')->listing();
+$client->user->all();
+$client->user->listing();
 
-$client->api('issue')->create([
+$client->issue->create([
     'project_id'  => 'test',
     'subject'     => 'some subject',
     'description' => 'a long description blablabla',
     'assigned_to' => 'user1',
 ]);
-$client->api('issue')->all([
+$client->issue->all([
     'limit' => 1000
 ]);
 ```
@@ -169,7 +169,7 @@ $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 $client->setImpersonateUser('jsmith');
 
 // create a time entry for jsmith
-$client->api('time_entry')->create($data);
+$client->time_entry->create($data);
 
 // remove impersonation for further calls
 $client->setImpersonateUser(null);
