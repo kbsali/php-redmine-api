@@ -226,14 +226,15 @@ class Issue extends AbstractApi
     /**
      * @param int    $id
      * @param string $note
+     * @param bool   $privateNote
      *
      * @return SimpleXMLElement
      */
-    public function addNoteToIssue($id, $note, $private_note = false)
+    public function addNoteToIssue($id, $note, $privateNote = false)
     {
         return $this->update($id, array(
             'notes' => $note,
-            'private_notes' => $private_note,
+            'private_notes' => $privateNote,
         ));
     }
 
