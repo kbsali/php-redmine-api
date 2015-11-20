@@ -72,15 +72,25 @@ class Group extends AbstractApi
             throw new \Exception('Missing mandatory parameters');
         }
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><group></group>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
+        $xml = $this->buildXML($params);
 
         return $this->post('/groups.xml', $xml->asXML());
     }
 
-    // public function update(array $params = array()) {}
+    /**
+     * NOT DOCUMENTED in Redmine's wiki.
+     *
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
+     *
+     * @param  int    $id
+     * @param  array  $params
+     *
+     * @throws Exception
+     */
+    public function update($id, array $params = array())
+    {
+        throw new \Exception('Not implemented');
+    }
 
     /**
      * Returns details of a group.
@@ -142,5 +152,30 @@ class Group extends AbstractApi
     public function removeUser($id, $userId)
     {
         return $this->delete('/groups/'.$id.'/users/'.$userId.'.xml');
+    }
+
+    /**
+     * Build the XML for a group.
+     *
+     * @param array $params for the new/updated group data
+     *
+     * @return SimpleXMLElement
+     */
+    private function buildXML(array $params = array())
+    {
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><group></group>');
+
+        foreach ($params as $k => $v) {
+            if ('user_ids' === $k && is_array($v)) {
+                $item = $xml->addChild($k);
+                foreach ($v as $role) {
+                    $item->addChild('user_id', $role);
+                }
+            } else {
+                $xml->addChild($k, $v);
+            }
+        }
+
+        return $xml;
     }
 }
