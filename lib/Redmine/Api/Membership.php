@@ -44,14 +44,11 @@ class Membership extends AbstractApi
     {
         $defaults = array(
             'user_id' => null,
-            'user_ids' => null,
             'role_ids' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 
-        if ((!isset($params['user_ids']) && !isset($params['user_id']))
-         || !isset($params['role_ids'])
-        ) {
+        if (!isset($params['user_id']) || !isset($params['role_ids'])) {
             throw new \Exception('Missing mandatory parameters');
         }
 
@@ -110,13 +107,7 @@ class Membership extends AbstractApi
         $xml = new SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
 
         foreach ($params as $k => $v) {
-            if ('user_ids' === $k && is_array($v)) {
-                $item = $xml->addChild($k);
-                $item->addAttribute('type', 'array');
-                foreach ($v as $userId) {
-                    $item->addChild('user_id', $userId);
-                }
-            } elseif ('role_ids' === $k && is_array($v)) {
+            if ('role_ids' === $k && is_array($v)) {
                 $item = $xml->addChild($k);
                 $item->addAttribute('type', 'array');
                 foreach ($v as $role) {
