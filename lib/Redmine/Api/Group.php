@@ -82,8 +82,8 @@ class Group extends AbstractApi
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
      *
-     * @param  int    $id
-     * @param  array  $params
+     * @param int   $id
+     * @param array $params
      *
      * @throws Exception
      */

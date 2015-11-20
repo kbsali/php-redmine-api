@@ -56,6 +56,7 @@ class User extends AbstractApi
      * Return the current user data.
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
+     *
      * @param array $params extra associated data
      *
      * @return array current user data

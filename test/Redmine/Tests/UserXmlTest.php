@@ -20,10 +20,7 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Redmine\Api\User', $this->client->api('user'));
 
-        $xml = '<?xml version="1.0"?>
-<user/>';
         $res = $this->client->api('user')->create();
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplex()

@@ -5,14 +5,13 @@ namespace Redmine\Fixtures;
 use Redmine\Client;
 
 /**
- * Mock client class
+ * Mock client class.
  * 
  * The runRequest method of this client class just returns the value of
  * the path, method and data or the $runRequestReturnValue value if set.
  */
 class MockClient extends Client
 {
-
     /**
      * Return value the mocked runRequest method should return.
      *
@@ -40,6 +39,7 @@ class MockClient extends Client
         if ($this->useOriginalGetMethod) {
             return parent::get($path, $decode);
         }
+
         return $this->runRequest($path, 'GET');
     }
 
@@ -57,6 +57,7 @@ class MockClient extends Client
         if (null !== $this->runRequestReturnValue) {
             return $this->runRequestReturnValue;
         }
+
         return array(
             'path' => $path,
             'method' => $method,

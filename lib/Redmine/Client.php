@@ -32,9 +32,8 @@ use Redmine\Api\SimpleXMLElement;
  */
 class Client
 {
-    
     /**
-     * Value for CURLOPT_SSL_VERIFYHOST
+     * Value for CURLOPT_SSL_VERIFYHOST.
      * 
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
      */
@@ -117,7 +116,7 @@ class Client
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
     );
-    
+
     private $classes = array(
         'attachment' => 'Attachment',
         'group' => 'Group',
@@ -155,7 +154,7 @@ class Client
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
     }
-    
+
     /**
      * PHP getter magic method.
      * 
@@ -338,6 +337,7 @@ class Client
 
     /**
      * Forces the SSL/TLS version to use.
+     *
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html
      *
      * @param int $sslVersion
@@ -463,14 +463,14 @@ class Client
      * Set a cURL option.
      * 
      * @param int   $option The CURLOPT_XXX option to set
-     * @param mixed $value The value to be set on option
+     * @param mixed $value  The value to be set on option
      *
      * @return Client
      */
     public function setCurlOption($option, $value)
     {
         $this->curlOptions[$option] = $value;
-        
+
         return $this;
     }
 
@@ -498,7 +498,7 @@ class Client
         $this->responseCode = null;
         $this->curlOptions = array();
         $curl = curl_init();
-        
+
         // General cURL options
         $this->setCurlOption(CURLOPT_VERBOSE, 0);
         $this->setCurlOption(CURLOPT_HEADER, 0);

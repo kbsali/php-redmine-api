@@ -305,13 +305,16 @@ $client->api('group')->show($groupId, array('include' => 'users,memberships'));
 $client->api('group')->remove($groupId);
 $client->api('group')->addUser($groupId, $userId);
 $client->api('group')->removeUser($groupId, $userId);
+$client->api('group')->create(array(
+    'name' => 'asdf',
+    'user_ids' => array(1, 2)
+));
 
 // ----------------------------
 // Project memberships
 $client->api('membership')->all($projectId);
 $client->api('membership')->create($projectId, array(
     'user_id' => null,
-    'user_ids' => array(),
     'role_ids' => array(),
 ));
 $client->api('membership')->remove($membershipId);

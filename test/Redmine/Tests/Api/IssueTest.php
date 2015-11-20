@@ -450,8 +450,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
                     'name' => 'cf_name',
                     'field_format' => 'string',
                     'value' => array(1, 2, 3),
-                )
-            )
+                ),
+            ),
         );
 
         // Create the used mock objects

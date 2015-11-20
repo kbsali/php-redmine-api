@@ -20,10 +20,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Redmine\Api\Project', $this->client->api('project'));
 
-        $xml = '<?xml version="1.0"?>
-<project/>';
         $res = $this->client->api('project')->create();
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplex()
