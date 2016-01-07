@@ -249,7 +249,7 @@ $client->api('query')->all();
 // Time entries
 $client->api('time_entry')->all();
 $client->api('time_entry')->show($timeEntryId);
-$client->api('time_entry')->show(array(
+$client->api('time_entry')->all(array(
     'issue_id' => 1234,
     'project_id' => 1234,
     'spent_on' => '2015-04-13',
