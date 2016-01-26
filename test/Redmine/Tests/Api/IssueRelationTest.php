@@ -163,4 +163,41 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->remove(5));
     }
+
+    /**
+     * Test create().
+     *
+     * @covers ::create
+     * @covers ::post
+     * @test
+     */
+    public function testCreateCallsPost()
+    {
+        // Test values
+        $responseArray = ['test' => 'response'];
+        $postResponse = json_encode($responseArray);
+        $parameters = array();
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+                       ->disableOriginalConstructor()
+                       ->getMock();
+        $client->expects($this->once())
+               ->method('post')
+               ->with(
+                   '/issues/1/relations.json',
+                   array(
+                       'relation' => array(
+                           'relation_type' => 'relates'
+                       )
+                   )
+               )
+               ->willReturn($postResponse);
+
+        // Create the object under test
+        $api = new IssueRelation($client);
+
+        // Perform the tests
+        $this->assertSame($responseArray, $api->create(1, $parameters));
+    }
 }

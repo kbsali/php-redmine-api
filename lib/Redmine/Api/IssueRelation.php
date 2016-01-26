@@ -62,4 +62,29 @@ class IssueRelation extends AbstractApi
     {
         return $this->delete('/relations/'.$id.'.xml');
     }
+
+    /**
+     * Create a new issue relation
+     *
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#POST
+     *
+     * @param int   $issueId the ID of the issue we are creating the relation on
+     * @param array $params  the new issue relation data
+     *
+     * @return array
+     */
+    public function create($issueId, array $params = array())
+    {
+        $defaults = array(
+            'relation_type' => 'relates',
+            'issue_to_id' => null,
+            'delay' => null,
+        );
+
+        $params = $this->sanitizeParams($defaults, $params);
+
+        $params = array('relation' => $params);
+
+        return json_decode($this->post('/issues/'.urlencode($issueId).'/relations.json', $params), true);
+    }
 }
