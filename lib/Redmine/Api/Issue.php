@@ -277,27 +277,46 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Attach a file to an issue issue number. Requires authentication.
+     * Attach a file to an issue. Requires authentication.
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
      * @param string $id         the issue number
      * @param array  $attachment
+     * [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_, 'filename' => _FILE_NAME_, "content_type" => _MIME_TYPE_OF_FILE_]
      *
      * @return bool|string
      */
     public function attach($id, array $attachment)
     {
+        return $this->attachMany($id, array($attachment));
+    }
+
+    /**
+     * Attach files to an issue. Requires authentication.
+     *
+     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
+     *
+     * @param string $id         the issue number
+     * @param array  $attachments
+     * [
+     *     [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_1_, 'filename' => _FILE_NAME_1_, "content_type" => _MIME_TYPE_OF_FILE_1_],
+     *     [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_2_, 'filename' => _FILE_NAME_2_, "content_type" => _MIME_TYPE_OF_FILE_2_]
+     * ]
+     *
+     * @return bool|string
+     */
+    public function attachMany($id, array $attachments)
+    {
         $request = array();
         $request['issue'] = array(
             'id' => $id,
-            'uploads' => array(
-                'upload' => $attachment,
-            ),
+            'uploads' => $attachments,
         );
 
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }
+
 
     /**
      * Remove a issue by issue number.
