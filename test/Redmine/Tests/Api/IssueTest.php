@@ -236,9 +236,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $requestData = array(
             'issue' => array(
                 'id' => 5,
-                'uploads' => array(
-                    'upload' => $attachment,
-                ),
+                'uploads' => array($attachment),
             ),
         );
 
