@@ -282,8 +282,7 @@ class Issue extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
      * @param string $id         the issue number
-     * @param array  $attachment
-     * [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_, 'filename' => _FILE_NAME_, "content_type" => _MIME_TYPE_OF_FILE_]
+     * @param array  $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
      *
      * @return bool|string
      */
@@ -297,12 +296,11 @@ class Issue extends AbstractApi
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param string $id         the issue number
-     * @param array  $attachments
-     * [
-     *     [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_1_, 'filename' => _FILE_NAME_1_, "content_type" => _MIME_TYPE_OF_FILE_1_],
-     *     [ 'token' => _TOKEN_RECEIVED_FROM_UPLOADING_THE_FILE_2_, 'filename' => _FILE_NAME_2_, "content_type" => _MIME_TYPE_OF_FILE_2_]
-     * ]
+     * @param string $id          the issue number
+     * @param array  $attachments [
+     *                                ['token' => '...', 'filename' => '...', 'content_type' => '...'],
+     *                                ['token' => '...', 'filename' => '...', 'content_type' => '...']
+     *                            ]
      *
      * @return bool|string
      */
@@ -316,7 +314,6 @@ class Issue extends AbstractApi
 
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }
-
 
     /**
      * Remove a issue by issue number.

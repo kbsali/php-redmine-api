@@ -1,10 +1,5 @@
 <?php
 
-/* An autoloader for Redmine\Foo classes. This should be require()d by
- * the user before attempting to instantiate any of the Redmine
- * classes.
- */
-
 spl_autoload_register(function ($class) {
     /* All of the classes have names like "Redmine\Foo", so we need to
      * replace the backslashes with frontslashes if we want the name

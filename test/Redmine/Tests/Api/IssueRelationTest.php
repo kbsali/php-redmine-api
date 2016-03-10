@@ -174,7 +174,7 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $responseArray = ['test' => 'response'];
+        $responseArray = array('test' => 'response');
         $postResponse = json_encode($responseArray);
         $parameters = array();
 
@@ -188,8 +188,8 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
                    '/issues/1/relations.json',
                    array(
                        'relation' => array(
-                           'relation_type' => 'relates'
-                       )
+                           'relation_type' => 'relates',
+                       ),
                    )
                )
                ->willReturn($postResponse);

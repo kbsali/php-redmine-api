@@ -160,9 +160,9 @@ class Client
      * 
      * @param string $name
      * 
-     * @return Api\AbstractApi
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return Api\AbstractApi
      */
     public function __get($name)
     {
@@ -172,9 +172,9 @@ class Client
     /**
      * @param string $name
      *
-     * @return Api\AbstractApi
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return Api\AbstractApi
      */
     public function api($name)
     {
@@ -581,9 +581,9 @@ class Client
      * @param string $response
      * @param string $contentType
      *
-     * @return bool|SimpleXMLElement|string
-     *
      * @throws \Exception If anything goes wrong on curl request
+     *
+     * @return bool|SimpleXMLElement|string
      */
     public function processCurlResponse($response, $contentType)
     {
@@ -606,9 +606,9 @@ class Client
      * @param string $method
      * @param string $data
      *
-     * @return bool|SimpleXMLElement|string
-     *
      * @throws \Exception If anything goes wrong on curl request
+     *
+     * @return bool|SimpleXMLElement|string
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {

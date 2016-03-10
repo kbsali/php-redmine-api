@@ -157,14 +157,14 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     {
         $res = $this->client->api('membership')->create('testProject', array(
             'user_id' => 1,
-            'role_ids' => [1],
+            'role_ids' => array(1),
         ));
         $this->assertEquals($res['path'], '/projects/testProject/memberships.xml');
         $this->assertEquals($res['method'], 'POST');
 
         $res = $this->client->api('membership')->update(1, array(
             'user_id' => 1,
-            'role_ids' => [1],
+            'role_ids' => array(1),
         ));
         $this->assertEquals($res['path'], '/memberships/1.xml');
         $this->assertEquals($res['method'], 'PUT');

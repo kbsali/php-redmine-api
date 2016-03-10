@@ -1,6 +1,6 @@
-phpunit.xml
+.php_cs.cache
 composer.lock
 composer.phar
-vendor
 coverage.clover
-
+phpunit.xml
+vendor

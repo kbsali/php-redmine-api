@@ -2,9 +2,9 @@
 
 namespace Redmine\Tests;
 
-use Redmine\Fixtures\MockClient;
 use Redmine\Client;
 use Redmine\Exception\InvalidArgumentException;
+use Redmine\Fixtures\MockClient;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {

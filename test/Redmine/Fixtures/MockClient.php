@@ -48,9 +48,9 @@ class MockClient extends Client
      * @param string $method
      * @param string $data
      *
-     * @return string
-     *
      * @throws \Exception If anything goes wrong on curl request
+     *
+     * @return string
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {
