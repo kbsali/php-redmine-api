@@ -9,7 +9,7 @@ use Redmine\Api\SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
- * 
+ *
  * @property Api\Attachment $attachment
  * @property Api\Group $group
  * @property Api\CustomField $custom_fields
@@ -34,7 +34,7 @@ class Client
 {
     /**
      * Value for CURLOPT_SSL_VERIFYHOST.
-     * 
+     *
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
      */
     const SSL_VERIFYHOST = 2;
@@ -63,7 +63,7 @@ class Client
     private $apikeyOrUsername;
 
     /**
-     * @var string or null
+     * @var string|null
      */
     private $pass;
 
@@ -110,7 +110,7 @@ class Client
     /**
      * Error strings if json is invalid.
      */
-    private static $json_errors = array(
+    private static $jsonErrors = array(
         JSON_ERROR_NONE => 'No error has occurred',
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
@@ -145,7 +145,7 @@ class Client
      *
      * @param string $url
      * @param string $apikeyOrUsername
-     * @param string $pass             (string or null)
+     * @param string|null $pass
      */
     public function __construct($url, $apikeyOrUsername, $pass = null)
     {
@@ -157,9 +157,9 @@ class Client
 
     /**
      * PHP getter magic method.
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @throws \InvalidArgumentException
      *
      * @return Api\AbstractApi
@@ -184,8 +184,8 @@ class Client
         if (isset($this->apis[$name])) {
             return $this->apis[$name];
         }
-        $c = 'Redmine\Api\\'.$this->classes[$name];
-        $this->apis[$name] = new $c($this);
+        $class = 'Redmine\Api\\'.$this->classes[$name];
+        $this->apis[$name] = new $class($this);
 
         return $this->apis[$name];
     }
@@ -241,7 +241,7 @@ class Client
             return $json;
         }
 
-        return self::$json_errors[json_last_error()];
+        return self::$jsonErrors[json_last_error()];
     }
 
     /**
@@ -461,7 +461,7 @@ class Client
 
     /**
      * Set a cURL option.
-     * 
+     *
      * @param int   $option The CURLOPT_XXX option to set
      * @param mixed $value  The value to be set on option
      *
@@ -539,7 +539,7 @@ class Client
         }
 
         // Redmine specific headers
-        if ($this->impersonateUser) {
+        if ($this->impersonateUser !== null) {
             $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
         if (null === $this->pass) {
@@ -601,7 +601,7 @@ class Client
 
     /**
      * @codeCoverageIgnore Ignore due to untestable curl_* function calls.
-     * 
+     *
      * @param string $path
      * @param string $method
      * @param string $data

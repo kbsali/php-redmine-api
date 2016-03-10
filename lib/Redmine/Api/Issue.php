@@ -120,14 +120,6 @@ class Issue extends AbstractApi
         $defaults = array(
             'subject' => null,
             'description' => null,
-
-            // 'project' => null,
-            // 'category' => null,
-            // 'status' => null,
-            // 'tracker' => null,
-            // 'assigned_to' => null,
-            // 'author' => null,
-
             'project_id' => null,
             'category_id' => null,
             'priority_id' => null,
@@ -146,8 +138,6 @@ class Issue extends AbstractApi
         $xml = $this->buildXML($params);
 
         return $this->post('/issues.xml', $xml->asXML());
-        // $json = json_encode(array('issue' => $params));
-        // return $this->post('/issues.json', $json);
     }
 
     /**
@@ -167,14 +157,6 @@ class Issue extends AbstractApi
             'subject' => null,
             'notes' => null,
             'private_notes' => false,
-
-            // 'project' => null,
-            // 'category' => null,
-            // 'status' => null,
-            // 'tracker' => null,
-            // 'assigned_to' => null,
-            // 'author' => null,
-
             'category_id' => null,
             'priority_id' => null,
             'status_id' => null,

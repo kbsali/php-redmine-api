@@ -139,7 +139,6 @@ class User extends AbstractApi
             'lastname' => null,
             'firstname' => null,
             'mail' => null,
-            // 'auth_source_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -182,7 +181,6 @@ class User extends AbstractApi
             'lastname' => null,
             'firstname' => null,
             'mail' => null,
-            // 'auth_source_id' => null,
         );
         $params = $this->sanitizeParams($defaults, $params);
 

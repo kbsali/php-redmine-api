@@ -93,7 +93,7 @@ checks:
             minimum: '3'
         no_short_open_tag: true
         no_short_method_names:
-            minimum: '5'
+            minimum: '3'
         no_long_variable_names:
             maximum: '25'
         no_goto: true
