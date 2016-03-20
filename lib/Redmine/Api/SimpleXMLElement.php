@@ -18,7 +18,7 @@ class SimpleXMLElement extends \SimpleXMLElement
             $args[1] = '';
             $node = call_user_func_array(array('parent', 'addChild'), $args);
             // next, all characters like "&", "<", ">" will be properly escaped
-            $node->{0} = $text;
+            $node->{intval(0)} = $text;
         } else {
             $node = call_user_func_array(array('parent', 'addChild'), $args);
         }
