@@ -4,3 +4,5 @@ composer.phar
 vendor
 coverage.clover
 
+/nbproject/private/
+/nbproject

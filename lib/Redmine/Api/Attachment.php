@@ -34,7 +34,7 @@ class Attachment extends AbstractApi
      */
     public function download($id)
     {
-        return $this->get('/attachments/'.urlencode($id), false);
+        return $this->get('/attachments/download/'.urlencode($id), false);
     }
 
     /**
