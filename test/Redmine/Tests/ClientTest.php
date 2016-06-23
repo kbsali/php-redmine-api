@@ -480,9 +480,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $client->processCurlResponse('{"api": "redmine"}', 'application/json')
         );
         // XML response
-        /* @var $xmlResponse SimpleXMLElement */
+        /* @var $xmlResponse \SimpleXMLElement */
         $xmlResponse = $client->processCurlResponse('<issue/>', 'application/xml');
-        $this->assertInstanceOf('SimpleXMLElement', $xmlResponse);
+        $this->assertInstanceOf('\SimpleXMLElement', $xmlResponse);
         $this->assertSame('issue', $xmlResponse->getName());
     }
 

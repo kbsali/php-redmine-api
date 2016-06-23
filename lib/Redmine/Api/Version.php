@@ -94,7 +94,7 @@ class Version extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new issue category data
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function create($project, array $params = array())
     {
@@ -115,7 +115,7 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><version></version>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -131,7 +131,7 @@ class Version extends AbstractApi
      * @param string $id     the issue category id
      * @param array  $params
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -146,7 +146,7 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><version></version>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
