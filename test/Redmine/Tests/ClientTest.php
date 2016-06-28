@@ -412,7 +412,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, $curlOptions[CURLOPT_HEADER]);
         $this->assertSame(1, $curlOptions[CURLOPT_RETURNTRANSFER]);
         $this->assertSame(443, $curlOptions[CURLOPT_PORT]);
-        $this->assertSame(true, $curlOptions[CURLOPT_SSL_VERIFYPEER]);
+        $this->assertSame(1, $curlOptions[CURLOPT_SSL_VERIFYPEER]);
         $this->assertSame(2, $curlOptions[CURLOPT_SSL_VERIFYHOST]);
         $this->assertContains('Expect: ', $curlOptions[CURLOPT_HTTPHEADER]);
         $this->assertContains(
