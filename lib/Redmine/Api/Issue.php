@@ -280,8 +280,8 @@ class Issue extends AbstractApi
      *
      * @param string $id          the issue number
      * @param array  $attachments [
-     *                                ['token' => '...', 'filename' => '...', 'content_type' => '...'],
-     *                                ['token' => '...', 'filename' => '...', 'content_type' => '...']
+     *                            ['token' => '...', 'filename' => '...', 'content_type' => '...'],
+     *                            ['token' => '...', 'filename' => '...', 'content_type' => '...']
      *                            ]
      *
      * @return bool|string
