@@ -101,7 +101,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $client->expects($this->once())
             ->method('get')
-            ->with($this->equalTo('/attachments/5'), false)
+            ->with($this->equalTo('/attachments/download/5'), false)
             ->willReturn($getResponse);
 
         // Create the object under test

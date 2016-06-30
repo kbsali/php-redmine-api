@@ -141,8 +141,8 @@ class Client
      * Usage: apikeyOrUsername can be auth key or username.
      * Password needs to be set if username is given.
      *
-     * @param string $url
-     * @param string $apikeyOrUsername
+     * @param string      $url
+     * @param string      $apikeyOrUsername
      * @param string|null $pass
      */
     public function __construct($url, $apikeyOrUsername, $pass = null)
@@ -231,6 +231,9 @@ class Client
      */
     public function decode($json)
     {
+        if (empty($json)) {
+            return '';
+        }
         $decoded = json_decode($json, true);
         if (null !== $decoded) {
             return $decoded;
@@ -516,8 +519,8 @@ class Client
         $this->setCurlOption(CURLOPT_URL, $this->url.$path);
         $this->setCurlOption(CURLOPT_PORT, $this->getPort());
         if (80 !== $this->getPort()) {
-            $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, $this->checkSslCertificate);
-            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
+            $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, (int) $this->checkSslCertificate);
+            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, (int) $this->checkSslHost);
             $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 
