@@ -67,11 +67,11 @@ class Issue extends AbstractApi
      *
      * @param array $params for the new/updated issue data
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     private function buildXML(array $params = array())
     {
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
 
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
@@ -113,7 +113,7 @@ class Issue extends AbstractApi
      *
      * @param array $params the new issue data
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -148,7 +148,7 @@ class Issue extends AbstractApi
      * @param string $id     the issue number
      * @param array  $params
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -194,7 +194,7 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $status
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
     {
@@ -210,7 +210,7 @@ class Issue extends AbstractApi
      * @param string $note
      * @param bool   $privateNote
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function addNoteToIssue($id, $note, $privateNote = false)
     {

@@ -90,7 +90,7 @@ class Project extends AbstractApi
      *
      * @throws \Exception
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function create(array $params = array())
     {
@@ -121,7 +121,7 @@ class Project extends AbstractApi
      * @param string $id     the project id
      * @param array  $params
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -141,7 +141,7 @@ class Project extends AbstractApi
     /**
      * @param array $params
      *
-     * @return \Redmine\Api\SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     protected function prepareParamsXml($params)
     {
@@ -151,7 +151,7 @@ class Project extends AbstractApi
             'enabled_module_names' => 'enabled_module_names',
         );
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><project></project>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
             if (isset($_params[$k]) && is_array($v)) {
                 $array = $xml->addChild($k, '');

@@ -174,14 +174,14 @@ abstract class AbstractApi
     /**
      * Attaches Custom Fields to a create/update query.
      *
-     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
+     * @param \SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param array            $fields array of fields to attach, each field needs name, id and value set
      *
-     * @return SimpleXMLElement $xml
+     * @return \SimpleXMLElement $xml
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
-    protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
+    protected function attachCustomFieldXML(\SimpleXMLElement $xml, array $fields)
     {
         $_fields = $xml->addChild('custom_fields');
         $_fields->addAttribute('type', 'array');

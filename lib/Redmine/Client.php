@@ -2,8 +2,6 @@
 
 namespace Redmine;
 
-use Redmine\Api\SimpleXMLElement;
-
 /**
  * Simple PHP Redmine client.
  *
@@ -586,14 +584,14 @@ class Client
      *
      * @throws \Exception If anything goes wrong on curl request
      *
-     * @return bool|SimpleXMLElement|string
+     * @return bool|\SimpleXMLElement|string
      */
     public function processCurlResponse($response, $contentType)
     {
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
             if (0 === strpos($contentType, 'application/xml')) {
-                return new SimpleXMLElement($response);
+                return new \SimpleXMLElement($response);
             }
 
             return $response;
@@ -611,7 +609,7 @@ class Client
      *
      * @throws \Exception If anything goes wrong on curl request
      *
-     * @return bool|SimpleXMLElement|string
+     * @return bool|\SimpleXMLElement|string
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {

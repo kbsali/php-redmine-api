@@ -57,7 +57,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param array      $params  the new wiki page data
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function create($project, $page, array $params = array())
     {
@@ -68,7 +68,7 @@ class Wiki extends AbstractApi
         );
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {
             $xml->addChild($k, $v);
         }
@@ -83,7 +83,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param array      $params  the new wiki page data
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function update($project, $page, array $params = array())
     {
