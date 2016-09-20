@@ -492,12 +492,11 @@ class Client
      * @param string $method
      * @param string $data
      *
-     * @return resource a cURL handle on success, <b>FALSE</b> on errors.
+     * @return resource a cURL handle on success, <b>FALSE</b> on errors
      */
     public function prepareRequest($path, $method = 'GET', $data = '')
     {
         $this->responseCode = null;
-        $this->curlOptions = array();
         $curl = curl_init();
 
         // General cURL options

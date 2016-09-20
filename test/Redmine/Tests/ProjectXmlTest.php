@@ -28,12 +28,29 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
         $res = $this->client->api('project')->create(array(
             'name' => 'some name',
             'identifier' => 'the_identifier',
+            'custom_fields' => array(
+                array(
+                    'id' => 123,
+                    'name' => 'cf_name',
+                    'field_format' => 'string',
+                    'value' => array(1, 2, 3),
+                ),
+            ),
         ));
 
         $xml = '<?xml version="1.0"?>
 <project>
     <name>some name</name>
     <identifier>the_identifier</identifier>
+    <custom_fields type="array">
+        <custom_field name="cf_name" field_format="string" id="123" multiple="true">
+            <value type="array">
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </value>
+        </custom_field>
+    </custom_fields>
 </project>';
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }

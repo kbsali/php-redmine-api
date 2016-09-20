@@ -6,7 +6,7 @@ use Redmine\Client;
 
 /**
  * Mock client class.
- * 
+ *
  * The runRequest method of this client class just returns the value of
  * the path, method and data or the $runRequestReturnValue value if set.
  */

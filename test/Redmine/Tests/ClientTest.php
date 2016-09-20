@@ -362,9 +362,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         // Perform the tests
         $data = array(1 => 'post_1', '25' => 'post_25');
+        $client->setCurlOption(CURLOPT_PROXY, 'PROXYURL:PORT');
         $client->prepareRequest('/issues.xml', 'PUT', $data);
+
         $curlOptions = $client->getCurlOptions();
+
         $this->assertRegExp('/username\:secret/m', $curlOptions[CURLOPT_USERPWD]);
+        $this->assertSame('PROXYURL:PORT', $curlOptions[CURLOPT_PROXY]);
         $this->assertSame(CURLAUTH_BASIC, $curlOptions[CURLOPT_HTTPAUTH]);
         $this->assertSame('http://test.local/issues.xml', $curlOptions[CURLOPT_URL]);
         $this->assertSame(0, $curlOptions[CURLOPT_VERBOSE]);
