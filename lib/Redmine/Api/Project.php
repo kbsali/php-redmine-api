@@ -153,7 +153,9 @@ class Project extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
-            if (isset($_params[$k]) && is_array($v)) {
+            if ('custom_fields' === $k && is_array($v)) {
+                $this->attachCustomFieldXML($xml, $v);
+            } elseif (isset($_params[$k]) && is_array($v)) {
                 $array = $xml->addChild($k, '');
                 $array->addAttribute('type', 'array');
                 foreach ($v as $id) {
