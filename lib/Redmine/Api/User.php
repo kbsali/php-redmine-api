@@ -94,7 +94,7 @@ class User extends AbstractApi
      *  - memberships: adds extra information about user's memberships and roles on the projects
      *  - groups (added in 2.1): adds extra information about user's groups
      *  - api_key: the API key of the user, visible for admins and for yourself (added in 2.3.0)
-     *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0).
+     *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0)
      *
      * @param string $id     the user id
      * @param array  $params extra associated data

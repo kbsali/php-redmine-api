@@ -175,7 +175,7 @@ abstract class AbstractApi
      * Attaches Custom Fields to a create/update query.
      *
      * @param \SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param array            $fields array of fields to attach, each field needs name, id and value set
+     * @param array             $fields array of fields to attach, each field needs name, id and value set
      *
      * @return \SimpleXMLElement $xml
      *
