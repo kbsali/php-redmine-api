@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class UserXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -14,18 +17,22 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\User', $this->client->api('user'));
+        /** @var \Redmine\Api\User $api */
+        $api = $this->client->api('user');
+        $this->assertInstanceOf('Redmine\Api\User', $api);
 
-        $res = $this->client->api('user')->create();
+        $api->create();
     }
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('user')->create(array(
+        /** @var \Redmine\Api\User $api */
+        $api = $this->client->api('user');
+        $res = $api->create(array(
             'login' => 'test',
             'firstname' => 'test',
             'lastname' => 'test',
@@ -44,7 +51,9 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('user')->update(1, array(
+        /** @var \Redmine\Api\User $api */
+        $api = $this->client->api('user');
+        $res = $api->update(1, array(
             'firstname' => 'Raul',
         ));
 

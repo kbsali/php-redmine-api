@@ -148,7 +148,7 @@ class Issue extends AbstractApi
      * @param string $id     the issue number
      * @param array  $params
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($id, array $params)
     {
@@ -175,6 +175,7 @@ class Issue extends AbstractApi
     /**
      * @param int    $id
      * @param string $watcher_user_id
+     * @return false|string
      */
     public function addWatcher($id, $watcher_user_id)
     {
@@ -184,6 +185,8 @@ class Issue extends AbstractApi
     /**
      * @param int    $id
      * @param string $watcher_user_id
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function removeWatcher($id, $watcher_user_id)
     {
@@ -194,11 +197,13 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $status
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function setIssueStatus($id, $status)
     {
-        $statusId = $this->client->api('issue_status')->getIdByName($status);
+        /** @var \Redmine\Api\IssueStatus $api */
+        $api = $this->client->api('issue_status');
+        $statusId = $api->getIdByName($status);
 
         return $this->update($id, array(
             'status_id' => $statusId,
@@ -210,7 +215,7 @@ class Issue extends AbstractApi
      * @param string $note
      * @param bool   $privateNote
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function addNoteToIssue($id, $note, $privateNote = false)
     {
@@ -230,28 +235,40 @@ class Issue extends AbstractApi
     private function cleanParams(array $params = array())
     {
         if (isset($params['project'])) {
-            $params['project_id'] = $this->client->api('project')->getIdByName($params['project']);
+            /** @var \Redmine\Api\Project $apiProject */
+            $apiProject = $this->client->api('project');
+            $params['project_id'] = $apiProject->getIdByName($params['project']);
             unset($params['project']);
 
             if (isset($params['category'])) {
-                $params['category_id'] = $this->client->api('issue_category')->getIdByName($params['project_id'], $params['category']);
+                /** @var \Redmine\Api\IssueCategory $apiIssueCategory */
+                $apiIssueCategory = $this->client->api('issue_category');
+                $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
                 unset($params['category']);
             }
         }
         if (isset($params['status'])) {
-            $params['status_id'] = $this->client->api('issue_status')->getIdByName($params['status']);
+            /** @var \Redmine\Api\IssueStatus $apiIssueStatus */
+            $apiIssueStatus = $this->client->api('issue_status');
+            $params['status_id'] = $apiIssueStatus->getIdByName($params['status']);
             unset($params['status']);
         }
         if (isset($params['tracker'])) {
-            $params['tracker_id'] = $this->client->api('tracker')->getIdByName($params['tracker']);
+            /** @var \Redmine\Api\Tracker $apiTracker */
+            $apiTracker = $this->client->api('tracker');
+            $params['tracker_id'] = $apiTracker->getIdByName($params['tracker']);
             unset($params['tracker']);
         }
         if (isset($params['assigned_to'])) {
-            $params['assigned_to_id'] = $this->client->api('user')->getIdByUsername($params['assigned_to']);
+            /** @var \Redmine\Api\User $apiUser */
+            $apiUser = $this->client->api('user');
+            $params['assigned_to_id'] = $apiUser->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
         if (isset($params['author'])) {
-            $params['author_id'] = $this->client->api('user')->getIdByUsername($params['author']);
+            /** @var \Redmine\Api\User $apiUser */
+            $apiUser = $this->client->api('user');
+            $params['author_id'] = $apiUser->getIdByUsername($params['author']);
             unset($params['author']);
         }
 
@@ -301,6 +318,8 @@ class Issue extends AbstractApi
      * Remove a issue by issue number.
      *
      * @param string $id the issue number
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {

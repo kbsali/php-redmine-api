@@ -284,7 +284,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
@@ -308,7 +308,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfIdentifierIsMissingInParameters()
@@ -335,7 +335,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfNameIsMissingInParameters()

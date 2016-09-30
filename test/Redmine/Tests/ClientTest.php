@@ -3,13 +3,12 @@
 namespace Redmine\Tests;
 
 use Redmine\Client;
-use Redmine\Exception\InvalidArgumentException;
 use Redmine\Fixtures\MockClient;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function shouldPassApiKeyToContructor()
@@ -20,7 +19,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function shouldPassUsernameAndPasswordToContructor()
@@ -31,9 +30,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function shouldNotGetApiInstance()
     {
@@ -42,7 +41,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetUrlReturnsValueFromConstructor()
@@ -53,7 +52,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorHttpUrl()
@@ -64,7 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlHttps()
@@ -75,7 +74,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetPortReturnsPortFromConstructorUrlWithPort()
@@ -86,7 +85,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetPortReturnsSetPort()
@@ -98,7 +97,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetResponseCodeIsInitialNull()
@@ -109,7 +108,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetCheckSslCertificate()
@@ -125,7 +124,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetCheckSslHost()
@@ -141,7 +140,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetSSlVersion()
@@ -155,7 +154,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetUseHttpAuth()
@@ -171,7 +170,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetImpersonateUser()
@@ -186,7 +185,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetReturnsFalseIfRunRequestReturnsFalse()
@@ -201,7 +200,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetRawJsonFromRunRequest()
@@ -216,7 +215,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetDecodedJsonFromRunRequestByDefault()
@@ -232,7 +231,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testDecodeJsonWithValidJson()
@@ -265,7 +264,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testDecodeJsonWithEmptyJson()
@@ -282,7 +281,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testDecodeJsonWithSyntaxError()
@@ -302,7 +301,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testGetAndSetCurlOptions()
@@ -318,7 +317,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testPrepareJsonPostRequestWithHttpUsername()
@@ -352,7 +351,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testPrepareXmlPutRequestWithHttpUsernameAndPassword()
@@ -393,7 +392,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testPrepareDeleteUploadRequestWithSslAndImpersonateUser()
@@ -435,7 +434,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testPrepareGetIssuesRequest()
@@ -456,7 +455,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
      */
     public function testProcessCurlResponse()
@@ -491,8 +490,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Redmine\Client
+     * @covers \Redmine\Client
      * @test
+     * @param string $apiName
+     * @param string $class
      * @dataProvider getApiClassesProvider
      */
     public function shouldGetApiInstance($apiName, $class)

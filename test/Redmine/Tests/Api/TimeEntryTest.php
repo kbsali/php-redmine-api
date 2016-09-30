@@ -137,7 +137,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
@@ -161,7 +161,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfIssueIdAndProjectIdAreMissingInParameters()
@@ -188,7 +188,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfHoursAreMissingInParameters()

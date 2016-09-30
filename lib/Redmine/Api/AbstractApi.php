@@ -42,6 +42,7 @@ abstract class AbstractApi
      * Perform the client get() method.
      *
      * @param string $path
+     * @param bool $decode
      *
      * @return array
      */
@@ -81,7 +82,7 @@ abstract class AbstractApi
      *
      * @param string $path
      *
-     * @return array
+     * @return false|\SimpleXMLElement|string
      */
     protected function delete($path)
     {

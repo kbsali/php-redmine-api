@@ -29,8 +29,8 @@ class MockClient extends Client
     /**
      * Just return the data from runRequest().
      *
-     * @param type $path
-     * @param type $decode
+     * @param string $path
+     * @param bool   $decode
      *
      * @return array
      */

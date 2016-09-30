@@ -91,7 +91,9 @@ class IssueCategory extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new issue category data
      *
-     * @return \SimpleXMLElement
+     * @throws \Exception Missing mandatory parameters
+     *
+     * @return string|false
      */
     public function create($project, array $params = array())
     {
@@ -123,7 +125,7 @@ class IssueCategory extends AbstractApi
      * @param string $id     the issue category id
      * @param array  $params
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($id, array $params)
     {

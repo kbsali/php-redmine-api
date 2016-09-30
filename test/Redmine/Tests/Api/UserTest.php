@@ -240,7 +240,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
@@ -265,7 +265,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      *
      * @covers            ::create
      * @dataProvider      incompleteCreateParameterProvider
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      *
      * @param array $parameters Parameters for create()

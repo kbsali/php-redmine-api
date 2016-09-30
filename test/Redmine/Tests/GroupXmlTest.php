@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class GroupXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -14,18 +17,22 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\group', $this->client->api('group'));
+        /** @var \Redmine\Api\Group $api */
+        $api = $this->client->api('group');
+        $this->assertInstanceOf('Redmine\Api\Group', $api);
 
-        $res = $this->client->api('group')->create();
+        $api->create();
     }
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('group')->create(array(
+        /** @var \Redmine\Api\Group $api */
+        $api = $this->client->api('group');
+        $res = $api->create(array(
             'name' => 'Developers',
             'user_ids' => array(3, 5),
         ));
@@ -43,13 +50,15 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testUpdateNotImplemented()
     {
-        $this->assertInstanceOf('Redmine\Api\group', $this->client->api('group'));
+        /** @var \Redmine\Api\Group $api */
+        $api = $this->client->api('group');
+        $this->assertInstanceOf('Redmine\Api\Group', $api);
 
-        $res = $this->client->api('group')->update(1);
+        $api->update(1);
     }
 
     private function formatXml($xml)

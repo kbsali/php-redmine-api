@@ -113,7 +113,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
@@ -137,7 +137,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfRoleIdsAreMissingInParameters()
@@ -248,7 +248,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
      * Test update().
      *
      * @covers ::update
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testUpdateThrowsExceptionIfRoleIdsAreMissingInParameters()

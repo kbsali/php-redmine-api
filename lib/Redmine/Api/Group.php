@@ -56,6 +56,8 @@ class Group extends AbstractApi
      *
      * @param array $params the new group data
      *
+     * @throws \Exception Missing mandatory parameters
+     *
      * @return \SimpleXMLElement
      */
     public function create(array $params = array())
@@ -85,7 +87,7 @@ class Group extends AbstractApi
      * @param int   $id
      * @param array $params
      *
-     * @throws Exception
+     * @throws \Exception Not implemented
      */
     public function update($id, array $params = array())
     {
@@ -99,7 +101,8 @@ class Group extends AbstractApi
      * available $params :
      * - include: a coma separated list of associations to include in the response: users,memberships
      *
-     * @param int $id the group id
+     * @param int   $id     the group id
+     * @param array $params params to pass to url
      *
      * @return array
      */

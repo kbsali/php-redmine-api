@@ -129,7 +129,9 @@ class User extends AbstractApi
      *
      * @param array $params the new user data
      *
-     * @return \SimpleXMLElement
+     * @throws \Exception Missing mandatory parameters
+     *
+     * @return string|false
      */
     public function create(array $params = array())
     {
@@ -170,7 +172,7 @@ class User extends AbstractApi
      * @param string $id     the user id
      * @param array  $params
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($id, array $params)
     {
@@ -202,6 +204,8 @@ class User extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#DELETE
      *
      * @param int $id id of the user
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {
