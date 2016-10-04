@@ -15,7 +15,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('wiki')->create('testProject', 'about', array(
+        $res = $this->client->wiki->create('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
@@ -32,7 +32,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('wiki')->update('testProject', 'about', array(
+        $res = $this->client->wiki->update('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',

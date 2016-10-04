@@ -38,7 +38,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function shouldNotGetApiInstance()
     {
         $client = new Client('http://test.local', 'asdf');
-        $client->api('do_not_exist');
+        $client->do_not_exist;
     }
 
     /**
