@@ -332,7 +332,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::post
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIfNameIsMissing()

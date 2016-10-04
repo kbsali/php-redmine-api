@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -14,18 +17,20 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\IssueCategory', $this->client->api('issue_category'));
+        $api = $this->client->api('issue_category');
+        $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
 
-        $res = $this->client->api('issue_category')->create('aProject');
+        $api->create('aProject');
     }
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('issue_category')->create('otherProject', array(
+        $api = $this->client->api('issue_category');
+        $res = $api->create('otherProject', array(
             'name' => 'test category',
         ));
 
@@ -38,7 +43,8 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('issue_category')->update(1, array(
+        $api = $this->client->api('issue_category');
+        $res = $api->update(1, array(
             'name' => 'new category name',
         ));
 

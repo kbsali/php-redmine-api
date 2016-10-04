@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class IssueXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -15,17 +18,19 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\Issue', $this->client->api('issue'));
+        $api = $this->client->api('issue');
+        $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
         $xml = '<?xml version="1.0"?>
 <issue/>';
-        $res = $this->client->api('issue')->create();
+        $res = $api->create();
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplexWithUpload()
     {
-        $res = $this->client->api('issue')->create(array(
+        $api = $this->client->api('issue');
+        $res = $api->create(array(
             'project_id' => 'myproject',
             'subject' => 'A test issue',
             'description' => 'Here goes the issue description',
@@ -58,7 +63,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('issue')->create(array(
+        $api = $this->client->api('issue');
+        $res = $api->create(array(
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
             'description' => 'test api',
@@ -100,7 +106,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplexWithLineBreakInDescription()
     {
-        $res = $this->client->api('issue')->create(array(
+        $api = $this->client->api('issue');
+        $res = $api->create(array(
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
             'description' => 'line1\nline2',
@@ -142,7 +149,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateIssue()
     {
-        $res = $this->client->api('issue')->update(1, array(
+        $api = $this->client->api('issue');
+        $res = $api->update(1, array(
             'subject' => 'test note (xml) 1',
             'notes' => 'test note api',
             'assigned_to_id' => 1,
@@ -168,7 +176,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNoteToIssue()
     {
-        $res = $this->client->api('issue')->addNoteToIssue(1, 'some comment');
+        $api = $this->client->api('issue');
+        $res = $api->addNoteToIssue(1, 'some comment');
         $xml = '<?xml version="1.0"?>
 <issue>
     <id>1</id>

@@ -38,7 +38,9 @@ class Membership extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new membership data
      *
-     * @return \SimpleXMLElement
+     * @throws \Exception Missing mandatory parameters
+     *
+     * @return string|false
      */
     public function create($project, array $params = array())
     {
@@ -65,7 +67,9 @@ class Membership extends AbstractApi
      * @param int   $id     id of the membership
      * @param array $params the new membership data
      *
-     * @return \SimpleXMLElement
+     * @throws \Exception Missing mandatory parameters
+     *
+     * @return string|false
      */
     public function update($id, array $params = array())
     {
@@ -89,6 +93,8 @@ class Membership extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
      *
      * @param int $id id of the membership
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {

@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -14,18 +17,20 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\Membership', $this->client->api('membership'));
+        $api = $this->client->api('membership');
+        $this->assertInstanceOf('Redmine\Api\Membership', $api);
 
-        $res = $this->client->api('membership')->create('aProject');
+        $api->create('aProject');
     }
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('membership')->create('otherProject', array(
+        $api = $this->client->api('membership');
+        $res = $api->create('otherProject', array(
             'user_id' => 1,
             'role_ids' => array(1, 2),
         ));
@@ -43,7 +48,8 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('membership')->update(1, array(
+        $api = $this->client->api('membership');
+        $res = $api->update(1, array(
             'role_ids' => array(1, 2),
         ));
 

@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class WikiXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -15,7 +18,8 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('wiki')->create('testProject', 'about', array(
+        $api = $this->client->api('wiki');
+        $res = $api->create('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
@@ -32,7 +36,8 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('wiki')->update('testProject', 'about', array(
+        $api = $this->client->api('wiki');
+        $res = $api->update('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',

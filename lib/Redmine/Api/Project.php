@@ -121,7 +121,7 @@ class Project extends AbstractApi
      * @param string $id     the project id
      * @param array  $params
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($id, array $params)
     {
@@ -175,6 +175,8 @@ class Project extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param int $id id of the project
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {

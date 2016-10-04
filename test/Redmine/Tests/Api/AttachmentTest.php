@@ -17,6 +17,8 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
      * @covers       ::__construct
      * @covers       ::lastCallFailed
      * @dataProvider responseCodeProvider
+     * @param int $responseCode
+     * @param bool $hasFailed
      * @test
      */
     public function testLastCallFailedTrue($responseCode, $hasFailed)

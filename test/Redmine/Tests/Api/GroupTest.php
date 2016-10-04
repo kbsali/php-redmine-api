@@ -332,7 +332,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::create
      * @covers ::post
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionIsNameIsMissing()

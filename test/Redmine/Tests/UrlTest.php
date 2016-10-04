@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestUrlClient;
 
 class UrlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestUrlClient
+     */
     private $client;
 
     public function setup()
@@ -15,269 +18,286 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachment()
     {
-        $res = $this->client->api('attachment')->show(1);
+        $api = $this->client->api('attachment');
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/attachments/1.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('attachment')->upload('asdf');
+        $res = $api->upload('asdf');
         $this->assertEquals($res['path'], '/uploads.json');
         $this->assertEquals($res['method'], 'POST');
     }
 
     public function testCustomFields()
     {
-        $res = $this->client->api('custom_fields')->all();
+        $api = $this->client->api('custom_fields');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/custom_fields.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testGroup()
     {
-        $res = $this->client->api('group')->create(array(
+        $api = $this->client->api('group');
+        $res = $api->create(array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/groups.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('group')->all();
+        $res = $api->all();
         $this->assertEquals($res['path'], '/groups.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('group')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/groups/1.json?');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('group')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/groups/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
 
-        $res = $this->client->api('group')->addUser(1, 1);
+        $res = $api->addUser(1, 1);
         $this->assertEquals($res['path'], '/groups/1/users.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('group')->removeUser(1, 1);
+        $res = $api->removeUser(1, 1);
         $this->assertEquals($res['path'], '/groups/1/users/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testIssue()
     {
-        $res = $this->client->api('issue')->create(array(
+        $api = $this->client->api('issue');
+        $res = $api->create(array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/issues.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('issue')->update(1, array(
+        $res = $api->update(1, array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/issues/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('issue')->all();
+        $res = $api->all();
         $this->assertEquals($res['path'], '/issues.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('issue')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/issues/1.json?');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('issue')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/issues/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
 
-        // $res = $this->client->api('issue')->setIssueStatus(1, 'asdf');
+        // $res = $api->setIssueStatus(1, 'asdf');
         // $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'DELETE'));
 
-        $res = $this->client->api('issue')->addNoteToIssue(1, 'asdf');
+        $res = $api->addNoteToIssue(1, 'asdf');
         $this->assertEquals($res['path'], '/issues/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('issue')->attach(1, array('asdf'));
+        $res = $api->attach(1, array('asdf'));
         $this->assertEquals($res['path'], '/issues/1.json');
         $this->assertEquals($res['method'], 'PUT');
     }
 
     public function testIssueCategory()
     {
-        $res = $this->client->api('issue_category')->create('testProject', array(
+         $api = $this->client->api('issue_category');
+        $res = $api->create('testProject', array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/projects/testProject/issue_categories.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('issue_category')->update(1, array(
+        $res = $api->update(1, array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/issue_categories/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('issue_category')->all('testProject');
+        $res = $api->all('testProject');
         $this->assertEquals($res['path'], '/projects/testProject/issue_categories.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('issue_category')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/issue_categories/1.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('issue_category')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/issue_categories/1.xml?');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testIssuePriority()
     {
-        $res = $this->client->api('issue_priority')->all();
+        $api = $this->client->api('issue_priority');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/issue_priorities.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testIssueRelation()
     {
-        $res = $this->client->api('issue_relation')->all(1);
+        $api = $this->client->api('issue_relation');
+        $res = $api->all(1);
         $this->assertEquals($res['path'], '/issues/1/relations.json');
         $this->assertEquals($res['method'], 'GET');
 
-        // $res = $this->client->api('issue_relation')->show(1);
+        // $res = $api->show(1);
         // $this->assertEquals($res, array('path' => '/relations/1.json', 'method' => 'GET'));
 
-        $res = $this->client->api('issue_relation')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/relations/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testIssueStatus()
     {
-        $res = $this->client->api('issue_status')->all();
+        $api = $this->client->api('issue_status');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/issue_statuses.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testMembership()
     {
-        $res = $this->client->api('membership')->create('testProject', array(
+        $api = $this->client->api('membership');
+        $res = $api->create('testProject', array(
             'user_id' => 1,
             'role_ids' => array(1),
         ));
         $this->assertEquals($res['path'], '/projects/testProject/memberships.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('membership')->update(1, array(
+        $res = $api->update(1, array(
             'user_id' => 1,
             'role_ids' => array(1),
         ));
         $this->assertEquals($res['path'], '/memberships/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('membership')->all('testProject');
+        $res = $api->all('testProject');
         $this->assertEquals($res['path'], '/projects/testProject/memberships.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('membership')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/memberships/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testNews()
     {
-        $res = $this->client->api('news')->all();
+        $api = $this->client->api('news');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/news.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('news')->all('testProject');
+        $res = $api->all('testProject');
         $this->assertEquals($res['path'], '/projects/testProject/news.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testProject()
     {
-        $res = $this->client->api('project')->create(array(
+        $api = $this->client->api('project');
+        $res = $api->create(array(
             'name' => 'asdf',
             'identifier' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/projects.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('project')->update(1, array(
+        $res = $api->update(1, array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/projects/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('project')->all();
+        $res = $api->all();
         $this->assertEquals($res['path'], '/projects.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('project')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/projects/1.json?include=trackers,issue_categories,attachments,relations');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('project')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/projects/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testQuery()
     {
-        $res = $this->client->api('query')->all();
+        $api = $this->client->api('query');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/queries.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testRole()
     {
-        $res = $this->client->api('role')->all();
+        $api = $this->client->api('role');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/roles.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('role')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/roles/1.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testTimeEntry()
     {
-        $res = $this->client->api('time_entry')->create(array(
+        $api = $this->client->api('time_entry');
+        $res = $api->create(array(
             'issue_id' => 1,
             'hours' => 12,
         ));
         $this->assertEquals($res['path'], '/time_entries.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('time_entry')->update(1, array());
+        $res = $api->update(1, array());
         $this->assertEquals($res['path'], '/time_entries/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('time_entry')->all();
+        $res = $api->all();
         $this->assertEquals($res['path'], '/time_entries.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('time_entry')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/time_entries/1.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('time_entry')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/time_entries/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testTimeEntryActivity()
     {
-        $res = $this->client->api('time_entry_activity')->all();
+        $api = $this->client->api('time_entry_activity');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/time_entry_activities.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testTracker()
     {
-        $res = $this->client->api('tracker')->all();
+        $api = $this->client->api('tracker');
+        $res = $api->all();
         $this->assertEquals($res['path'], '/trackers.json');
         $this->assertEquals($res['method'], 'GET');
     }
 
     public function testUser()
     {
-        $res = $this->client->api('user')->create(array(
+        $api = $this->client->api('user');
+        $res = $api->create(array(
             'login' => 'asdf',
             'lastname' => 'asdf',
             'firstname' => 'asdf',
@@ -286,63 +306,65 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['path'], '/users.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('user')->update(1, array());
+        $res = $api->update(1, array());
         $this->assertEquals($res['path'], '/users/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('user')->all();
+        $res = $api->all();
         $this->assertEquals($res['path'], '/users.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('user')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('user')->show(1, array('include' => array('memberships', 'groups')));
+        $res = $api->show(1, array('include' => array('memberships', 'groups')));
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('user')->show(1, array('include' => array('memberships', 'groups', 'parameter1')));
+        $res = $api->show(1, array('include' => array('memberships', 'groups', 'parameter1')));
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups,parameter1'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('user')->show(1, array('include' => array('parameter1', 'memberships', 'groups')));
+        $res = $api->show(1, array('include' => array('parameter1', 'memberships', 'groups')));
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('parameter1,memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('user')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/users/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testVersion()
     {
-        $res = $this->client->api('version')->create('testProject', array(
+        $api = $this->client->api('version');
+        $res = $api->create('testProject', array(
             'name' => 'asdf',
         ));
         $this->assertEquals($res['path'], '/projects/testProject/versions.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $this->client->api('version')->update(1, array());
+        $res = $api->update(1, array());
         $this->assertEquals($res['path'], '/versions/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('version')->all('testProject');
+        $res = $api->all('testProject');
         $this->assertEquals($res['path'], '/projects/testProject/versions.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('version')->show(1);
+        $res = $api->show(1);
         $this->assertEquals($res['path'], '/versions/1.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('version')->remove(1);
+        $res = $api->remove(1);
         $this->assertEquals($res['path'], '/versions/1.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }
 
     public function testWiki()
     {
-        $res = $this->client->api('wiki')->create('testProject', 'about', array(
+        $api = $this->client->api('wiki');
+        $res = $api->create('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
@@ -350,7 +372,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('wiki')->update('testProject', 'about', array(
+        $res = $api->update('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
@@ -358,19 +380,19 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $this->client->api('wiki')->all('testProject');
+        $res = $api->all('testProject');
         $this->assertEquals($res['path'], '/projects/testProject/wiki/index.json');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('wiki')->show('testProject', 'about');
+        $res = $api->show('testProject', 'about');
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.json?include=attachments');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('wiki')->show('testProject', 'about', 'v1');
+        $res = $api->show('testProject', 'about', 'v1');
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about/v1.json?include=attachments');
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $this->client->api('wiki')->remove('testProject', 'about');
+        $res = $api->remove('testProject', 'about');
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.xml');
         $this->assertEquals($res['method'], 'DELETE');
     }

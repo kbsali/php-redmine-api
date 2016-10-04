@@ -50,7 +50,9 @@ class TimeEntry extends AbstractApi
      *
      * @param array $params the new time entry data
      *
-     * @return \SimpleXMLElement
+     * @throws \Exception Missing mandatory parameters
+     *
+     * @return string|false
      */
     public function create(array $params = array())
     {
@@ -88,10 +90,10 @@ class TimeEntry extends AbstractApi
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param id    $id
+     * @param int   $id
      * @param array $params
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($id, array $params)
     {
@@ -124,6 +126,8 @@ class TimeEntry extends AbstractApi
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param int $id id of the time entry
+     *
+     * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {

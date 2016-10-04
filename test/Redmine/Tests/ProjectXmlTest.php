@@ -6,6 +6,9 @@ use Redmine\Fixtures\MockClient as TestClient;
 
 class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestClient
+     */
     private $client;
 
     public function setup()
@@ -14,18 +17,20 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      */
     public function testCreateBlank()
     {
-        $this->assertInstanceOf('Redmine\Api\Project', $this->client->api('project'));
+        $api = $this->client->api('project');
+        $this->assertInstanceOf('Redmine\Api\Project', $api);
 
-        $res = $this->client->api('project')->create();
+        $api->create();
     }
 
     public function testCreateComplex()
     {
-        $res = $this->client->api('project')->create(array(
+        $api = $this->client->api('project');
+        $res = $api->create(array(
             'name' => 'some name',
             'identifier' => 'the_identifier',
             'custom_fields' => array(
@@ -57,7 +62,8 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplexWithTrackerIds()
     {
-        $res = $this->client->api('project')->create(array(
+        $api = $this->client->api('project');
+        $res = $api->create(array(
             'name' => 'some name',
             'identifier' => 'the_identifier',
             'tracker_ids' => array(
@@ -80,7 +86,8 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $res = $this->client->api('project')->update(1, array(
+        $api = $this->client->api('project');
+        $res = $api->update(1, array(
             'name' => 'different name',
         ));
 

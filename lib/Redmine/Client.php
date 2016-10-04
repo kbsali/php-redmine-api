@@ -204,7 +204,7 @@ class Client
      * @param string $path
      * @param bool   $decode
      *
-     * @return array
+     * @return array|string|false
      */
     public function get($path, $decode = true)
     {
@@ -276,7 +276,7 @@ class Client
      *
      * @param string $path
      *
-     * @return array
+     * @return false|\SimpleXMLElement|string
      */
     public function delete($path)
     {
@@ -583,7 +583,7 @@ class Client
      *
      * @throws \Exception If anything goes wrong on curl request
      *
-     * @return bool|\SimpleXMLElement|string
+     * @return false|\SimpleXMLElement|string
      */
     public function processCurlResponse($response, $contentType)
     {
@@ -608,7 +608,7 @@ class Client
      *
      * @throws \Exception If anything goes wrong on curl request
      *
-     * @return bool|\SimpleXMLElement|string
+     * @return false|\SimpleXMLElement|string
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {

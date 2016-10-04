@@ -18,7 +18,8 @@ class Wiki extends AbstractApi
      *
      * @link http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param int|string $project project name
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of wiki pages found for the given project
      */
@@ -57,7 +58,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param array      $params  the new wiki page data
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function create($project, $page, array $params = array())
     {
@@ -83,7 +84,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param array      $params  the new wiki page data
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function update($project, $page, array $params = array())
     {

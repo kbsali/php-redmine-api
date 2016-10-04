@@ -191,7 +191,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
@@ -212,7 +212,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithMissingNameInParameters()
@@ -239,7 +239,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::create
      * @covers ::validateStatus
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testCreateThrowsExceptionWithInvalidStatus()
@@ -346,7 +346,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::update
      * @covers ::validateStatus
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
@@ -723,7 +723,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @covers            ::create
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      *
      * @param string $sharingValue
@@ -843,7 +843,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      * @covers            ::update
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
-     * @expectedException Exception
+     * @expectedException \Exception
      * @test
      *
      * @param string $sharingValue
