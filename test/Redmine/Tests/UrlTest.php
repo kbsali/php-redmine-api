@@ -18,7 +18,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachment()
     {
-        /** @var \Redmine\Api\Attachment $api */
         $api = $this->client->api('attachment');
         $res = $api->show(1);
         $this->assertEquals($res['path'], '/attachments/1.json');
@@ -31,7 +30,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testCustomFields()
     {
-        /** @var \Redmine\Api\CustomField $api */
         $api = $this->client->api('custom_fields');
         $res = $api->all();
         $this->assertEquals($res['path'], '/custom_fields.json');
@@ -40,7 +38,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testGroup()
     {
-        /** @var \Redmine\Api\Group $api */
         $api = $this->client->api('group');
         $res = $api->create(array(
             'name' => 'asdf',
@@ -71,7 +68,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssue()
     {
-        /** @var \Redmine\Api\Issue $api */
         $api = $this->client->api('issue');
         $res = $api->create(array(
             'name' => 'asdf',
@@ -111,8 +107,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueCategory()
     {
-        /** @var \Redmine\Api\IssueCategory $api */
-        $api = $this->client->api('issue_category');
+         $api = $this->client->api('issue_category');
         $res = $api->create('testProject', array(
             'name' => 'asdf',
         ));
@@ -140,7 +135,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssuePriority()
     {
-        /** @var \Redmine\Api\IssuePriority $api */
         $api = $this->client->api('issue_priority');
         $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/issue_priorities.json');
@@ -149,7 +143,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueRelation()
     {
-        /** @var \Redmine\Api\IssueRelation $api */
         $api = $this->client->api('issue_relation');
         $res = $api->all(1);
         $this->assertEquals($res['path'], '/issues/1/relations.json');
@@ -165,7 +158,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueStatus()
     {
-        /** @var \Redmine\Api\IssueStatus $api */
         $api = $this->client->api('issue_status');
         $res = $api->all();
         $this->assertEquals($res['path'], '/issue_statuses.json');
@@ -174,7 +166,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testMembership()
     {
-        /** @var \Redmine\Api\Membership $api */
         $api = $this->client->api('membership');
         $res = $api->create('testProject', array(
             'user_id' => 1,
@@ -201,7 +192,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testNews()
     {
-        /** @var \Redmine\Api\News $api */
         $api = $this->client->api('news');
         $res = $api->all();
         $this->assertEquals($res['path'], '/news.json');
@@ -214,7 +204,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testProject()
     {
-        /** @var \Redmine\Api\Project $api */
         $api = $this->client->api('project');
         $res = $api->create(array(
             'name' => 'asdf',
@@ -244,7 +233,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testQuery()
     {
-        /** @var \Redmine\Api\Query $api */
         $api = $this->client->api('query');
         $res = $api->all();
         $this->assertEquals($res['path'], '/queries.json');
@@ -253,7 +241,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testRole()
     {
-        /** @var \Redmine\Api\Role $api */
         $api = $this->client->api('role');
         $res = $api->all();
         $this->assertEquals($res['path'], '/roles.json');
@@ -266,7 +253,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTimeEntry()
     {
-        /** @var \Redmine\Api\TimeEntry $api */
         $api = $this->client->api('time_entry');
         $res = $api->create(array(
             'issue_id' => 1,
@@ -294,7 +280,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTimeEntryActivity()
     {
-        /** @var \Redmine\Api\TimeEntryActivity $api */
         $api = $this->client->api('time_entry_activity');
         $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/time_entry_activities.json');
@@ -303,7 +288,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTracker()
     {
-        /** @var \Redmine\Api\Tracker $api */
         $api = $this->client->api('tracker');
         $res = $api->all();
         $this->assertEquals($res['path'], '/trackers.json');
@@ -312,7 +296,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testUser()
     {
-        /** @var \Redmine\Api\User $api */
         $api = $this->client->api('user');
         $res = $api->create(array(
             'login' => 'asdf',
@@ -354,7 +337,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testVersion()
     {
-        /** @var \Redmine\Api\Version $api */
         $api = $this->client->api('version');
         $res = $api->create('testProject', array(
             'name' => 'asdf',
@@ -381,7 +363,6 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testWiki()
     {
-        /** @var \Redmine\Api\Wiki $api */
         $api = $this->client->api('wiki');
         $res = $api->create('testProject', 'about', array(
             'text' => 'asdf',

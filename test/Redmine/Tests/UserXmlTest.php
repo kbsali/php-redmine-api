@@ -21,7 +21,6 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBlank()
     {
-        /** @var \Redmine\Api\User $api */
         $api = $this->client->api('user');
         $this->assertInstanceOf('Redmine\Api\User', $api);
 
@@ -30,7 +29,6 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        /** @var \Redmine\Api\User $api */
         $api = $this->client->api('user');
         $res = $api->create(array(
             'login' => 'test',
@@ -51,7 +49,6 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        /** @var \Redmine\Api\User $api */
         $api = $this->client->api('user');
         $res = $api->update(1, array(
             'firstname' => 'Raul',

@@ -21,7 +21,6 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBlank()
     {
-        /** @var \Redmine\Api\Membership $api */
         $api = $this->client->api('membership');
         $this->assertInstanceOf('Redmine\Api\Membership', $api);
 
@@ -30,7 +29,6 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        /** @var \Redmine\Api\Membership $api */
         $api = $this->client->api('membership');
         $res = $api->create('otherProject', array(
             'user_id' => 1,
@@ -50,7 +48,6 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        /** @var \Redmine\Api\Membership $api */
         $api = $this->client->api('membership');
         $res = $api->update(1, array(
             'role_ids' => array(1, 2),

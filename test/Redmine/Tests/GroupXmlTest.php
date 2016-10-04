@@ -21,7 +21,6 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBlank()
     {
-        /** @var \Redmine\Api\Group $api */
         $api = $this->client->api('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
@@ -30,7 +29,6 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        /** @var \Redmine\Api\Group $api */
         $api = $this->client->api('group');
         $res = $api->create(array(
             'name' => 'Developers',
@@ -54,7 +52,6 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdateNotImplemented()
     {
-        /** @var \Redmine\Api\Group $api */
         $api = $this->client->api('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
