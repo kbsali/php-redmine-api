@@ -18,7 +18,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBlank()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
         $xml = '<?xml version="1.0"?>
@@ -29,7 +29,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplexWithUpload()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->create(array(
             'project_id' => 'myproject',
             'subject' => 'A test issue',
@@ -63,7 +63,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->create(array(
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -106,7 +106,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplexWithLineBreakInDescription()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->create(array(
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -149,7 +149,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateIssue()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->update(1, array(
             'subject' => 'test note (xml) 1',
             'notes' => 'test note api',
@@ -176,7 +176,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNoteToIssue()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->addNoteToIssue(1, 'some comment');
         $xml = '<?xml version="1.0"?>
 <issue>

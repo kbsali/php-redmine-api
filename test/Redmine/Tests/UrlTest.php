@@ -18,7 +18,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testAttachment()
     {
-        $api = $this->client->api('attachment');
+        $api = $this->client->attachment;
         $res = $api->show(1);
         $this->assertEquals($res['path'], '/attachments/1.json');
         $this->assertEquals($res['method'], 'GET');
@@ -30,7 +30,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testCustomFields()
     {
-        $api = $this->client->api('custom_fields');
+        $api = $this->client->custom_fields;
         $res = $api->all();
         $this->assertEquals($res['path'], '/custom_fields.json');
         $this->assertEquals($res['method'], 'GET');
@@ -38,7 +38,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testGroup()
     {
-        $api = $this->client->api('group');
+        $api = $this->client->group;
         $res = $api->create(array(
             'name' => 'asdf',
         ));
@@ -68,7 +68,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssue()
     {
-        $api = $this->client->api('issue');
+        $api = $this->client->issue;
         $res = $api->create(array(
             'name' => 'asdf',
         ));
@@ -107,7 +107,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueCategory()
     {
-         $api = $this->client->api('issue_category');
+        $api = $this->client->issue_category;
         $res = $api->create('testProject', array(
             'name' => 'asdf',
         ));
@@ -135,7 +135,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssuePriority()
     {
-        $api = $this->client->api('issue_priority');
+        $api = $this->client->issue_priority;
         $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/issue_priorities.json');
         $this->assertEquals($res['method'], 'GET');
@@ -143,7 +143,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueRelation()
     {
-        $api = $this->client->api('issue_relation');
+        $api = $this->client->issue_relation;
         $res = $api->all(1);
         $this->assertEquals($res['path'], '/issues/1/relations.json');
         $this->assertEquals($res['method'], 'GET');
@@ -158,7 +158,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testIssueStatus()
     {
-        $api = $this->client->api('issue_status');
+        $api = $this->client->issue_status;
         $res = $api->all();
         $this->assertEquals($res['path'], '/issue_statuses.json');
         $this->assertEquals($res['method'], 'GET');
@@ -166,7 +166,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testMembership()
     {
-        $api = $this->client->api('membership');
+        $api = $this->client->membership;
         $res = $api->create('testProject', array(
             'user_id' => 1,
             'role_ids' => array(1),
@@ -192,7 +192,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testNews()
     {
-        $api = $this->client->api('news');
+        $api = $this->client->news;
         $res = $api->all();
         $this->assertEquals($res['path'], '/news.json');
         $this->assertEquals($res['method'], 'GET');
@@ -204,7 +204,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testProject()
     {
-        $api = $this->client->api('project');
+        $api = $this->client->project;
         $res = $api->create(array(
             'name' => 'asdf',
             'identifier' => 'asdf',
@@ -233,7 +233,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testQuery()
     {
-        $api = $this->client->api('query');
+        $api = $this->client->query;
         $res = $api->all();
         $this->assertEquals($res['path'], '/queries.json');
         $this->assertEquals($res['method'], 'GET');
@@ -241,7 +241,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testRole()
     {
-        $api = $this->client->api('role');
+        $api = $this->client->role;
         $res = $api->all();
         $this->assertEquals($res['path'], '/roles.json');
         $this->assertEquals($res['method'], 'GET');
@@ -253,7 +253,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTimeEntry()
     {
-        $api = $this->client->api('time_entry');
+        $api = $this->client->time_entry;
         $res = $api->create(array(
             'issue_id' => 1,
             'hours' => 12,
@@ -280,7 +280,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTimeEntryActivity()
     {
-        $api = $this->client->api('time_entry_activity');
+        $api = $this->client->time_entry_activity;
         $res = $api->all();
         $this->assertEquals($res['path'], '/enumerations/time_entry_activities.json');
         $this->assertEquals($res['method'], 'GET');
@@ -288,7 +288,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testTracker()
     {
-        $api = $this->client->api('tracker');
+        $api = $this->client->tracker;
         $res = $api->all();
         $this->assertEquals($res['path'], '/trackers.json');
         $this->assertEquals($res['method'], 'GET');
@@ -296,7 +296,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testUser()
     {
-        $api = $this->client->api('user');
+        $api = $this->client->user;
         $res = $api->create(array(
             'login' => 'asdf',
             'lastname' => 'asdf',
@@ -337,7 +337,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testVersion()
     {
-        $api = $this->client->api('version');
+        $api = $this->client->version;
         $res = $api->create('testProject', array(
             'name' => 'asdf',
         ));
@@ -363,7 +363,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
     public function testWiki()
     {
-        $api = $this->client->api('wiki');
+        $api = $this->client->wiki;
         $res = $api->create('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',

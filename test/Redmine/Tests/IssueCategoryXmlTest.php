@@ -21,7 +21,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBlank()
     {
-        $api = $this->client->api('issue_category');
+        $api = $this->client->issue_category;
         $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
 
         $api->create('aProject');
@@ -29,7 +29,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->api('issue_category');
+        $api = $this->client->issue_category;
         $res = $api->create('otherProject', array(
             'name' => 'test category',
         ));
@@ -43,7 +43,7 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->api('issue_category');
+        $api = $this->client->issue_category;
         $res = $api->update(1, array(
             'name' => 'new category name',
         ));
