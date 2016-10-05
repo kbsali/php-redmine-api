@@ -42,7 +42,7 @@ abstract class AbstractApi
      * Perform the client get() method.
      *
      * @param string $path
-     * @param bool $decode
+     * @param bool   $decode
      *
      * @return array
      */

@@ -492,6 +492,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Redmine\Client
      * @test
+     *
      * @param string $apiName
      * @param string $class
      * @dataProvider getApiClassesProvider

@@ -175,6 +175,7 @@ class Issue extends AbstractApi
     /**
      * @param int    $id
      * @param string $watcher_user_id
+     *
      * @return false|string
      */
     public function addWatcher($id, $watcher_user_id)
