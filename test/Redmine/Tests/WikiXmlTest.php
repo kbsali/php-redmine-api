@@ -18,7 +18,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->api('wiki');
+        $api = $this->client->wiki;
         $res = $api->create('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',
@@ -36,7 +36,7 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->api('wiki');
+        $api = $this->client->wiki;
         $res = $api->update('testProject', 'about', array(
             'text' => 'asdf',
             'comments' => 'asdf',

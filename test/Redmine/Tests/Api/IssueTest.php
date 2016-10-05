@@ -392,6 +392,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
+            ->setMethods(array('api', 'post'))
             ->getMock();
         $client->expects($this->exactly(6))
             ->method('api')
@@ -551,6 +552,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
+            ->setMethods(array('api', 'put'))
             ->getMock();
         $client->expects($this->exactly(6))
             ->method('api')
@@ -610,6 +612,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
+            ->setMethods(array('api', 'put'))
             ->getMock();
         $client->expects($this->once())
             ->method('api')

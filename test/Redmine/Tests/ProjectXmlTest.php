@@ -21,7 +21,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateBlank()
     {
-        $api = $this->client->api('project');
+        $api = $this->client->project;
         $this->assertInstanceOf('Redmine\Api\Project', $api);
 
         $api->create();
@@ -29,7 +29,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->api('project');
+        $api = $this->client->project;
         $res = $api->create(array(
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -62,7 +62,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplexWithTrackerIds()
     {
-        $api = $this->client->api('project');
+        $api = $this->client->project;
         $res = $api->create(array(
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -86,7 +86,7 @@ class ProjectXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->api('project');
+        $api = $this->client->project;
         $res = $api->update(1, array(
             'name' => 'different name',
         ));
