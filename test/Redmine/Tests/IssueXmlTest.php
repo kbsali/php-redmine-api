@@ -110,7 +110,7 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $res = $api->create(array(
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
-            'description' => 'line1\nline2',
+            'description' => "line1\nline2",
             'assigned_to_id' => 1,
             'custom_fields' => array(
                 array(
@@ -135,7 +135,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $xml = '<?xml version="1.0"?>
 <issue>
     <subject>test api (xml) 3</subject>
-    <description><![CDATA[line1\nline2]]></description>
+    <description><![CDATA[line1
+line2]]></description>
     <project_id>test</project_id>
     <assigned_to_id>1</assigned_to_id>
     <custom_fields type="array">
