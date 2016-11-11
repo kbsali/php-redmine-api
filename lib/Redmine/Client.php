@@ -476,6 +476,20 @@ class Client
     }
 
     /**
+      * Unset a cURL option.
+      *
+      * @param int   $option The CURLOPT_XXX option to unset
+      *
+      * @return Client
+      */
+     public function unsetCurlOption($option)
+     {
+         unset($this->curlOptions[$option]);
+ 
+         return $this;
+     }
+
+    /**
      * Get all set cURL options.
      *
      * @return array
@@ -549,6 +563,9 @@ class Client
         // Set the HTTP request headers
         $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
 
+        $this->unsetCurlOption(CURLOPT_CUSTOMREQUEST);
+        $this->unsetCurlOption(CURLOPT_POST);
+        $this->unsetCurlOption(CURLOPT_POSTFIELDS);
         switch ($method) {
             case 'POST':
                 $this->setCurlOption(CURLOPT_POST, 1);
