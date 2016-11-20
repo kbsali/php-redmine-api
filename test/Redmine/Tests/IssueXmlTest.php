@@ -135,8 +135,8 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
         $xml = '<?xml version="1.0"?>
 <issue>
     <subject>test api (xml) 3</subject>
-    <description><![CDATA[line1
-line2]]></description>
+    <description>line1
+line2</description>
     <project_id>test</project_id>
     <assigned_to_id>1</assigned_to_id>
     <custom_fields type="array">
