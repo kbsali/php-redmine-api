@@ -91,14 +91,10 @@ class Issue extends AbstractApi
                         $upload_item->addChild($upload_k, $upload_v);
                     }
                 }
-            } elseif ('description' === $k && (strpos($v, "\n") !== false || strpos($v, PHP_EOL) !== false)) {
-                // surround the description with CDATA if there is any '\n' in the description
-                $node = $xml->addChild($k);
-                $domNode = dom_import_simplexml($node);
-                $no = $domNode->ownerDocument;
-                $domNode->appendChild($no->createCDATASection($v));
             } else {
-                $xml->addChild($k, $v);
+                // "addChild" does not escape text for XML value, but the setter does.
+                // http://stackoverflow.com/a/555039/99904
+                $xml->$k = $v;
             }
         }
 
