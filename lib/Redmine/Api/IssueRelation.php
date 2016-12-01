@@ -83,7 +83,7 @@ class IssueRelation extends AbstractApi
 
         $params = $this->sanitizeParams($defaults, $params);
 
-        $params = array('relation' => $params);
+        $params = json_encode(array('relation' => $params));
 
         return json_decode($this->post('/issues/'.urlencode($issueId).'/relations.json', $params), true);
     }
