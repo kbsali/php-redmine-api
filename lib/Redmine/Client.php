@@ -96,6 +96,11 @@ class Client
     protected $impersonateUser = null;
 
     /**
+     * @var string|null customHost
+     */
+    protected $customHost = null;
+
+    /**
      * @var int|null Redmine response code, null if request is not still completed
      */
     private $responseCode = null;
@@ -461,6 +466,26 @@ class Client
     }
 
     /**
+     * @param string|null $customHost
+     *
+     * @return Client
+     */
+    public function setCustomHost($customHost = null)
+    {
+        $this->customHost = $customHost;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomHost()
+    {
+        return $this->customHost;
+    }
+
+    /**
      * Set a cURL option.
      *
      * @param int   $option The CURLOPT_XXX option to set
@@ -485,7 +510,7 @@ class Client
      public function unsetCurlOption($option)
      {
          unset($this->curlOptions[$option]);
- 
+
          return $this;
      }
 
@@ -537,30 +562,9 @@ class Client
             $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 
-        // Additional request headers
-        $httpHeader = array(
-            'Expect: ',
-        );
-
-        // Content type headers
-        $tmp = parse_url($this->url.$path);
-        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
-            $httpHeader[] = 'Content-Type: application/octet-stream';
-        } elseif ('json' === substr($tmp['path'], -4)) {
-            $httpHeader[] = 'Content-Type: application/json';
-        } elseif ('xml' === substr($tmp['path'], -3)) {
-            $httpHeader[] = 'Content-Type: text/xml';
-        }
-
-        // Redmine specific headers
-        if ($this->impersonateUser !== null) {
-            $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
-        }
-        if (null === $this->pass) {
-            $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
-        }
 
         // Set the HTTP request headers
+        $httpHeader = $this->setHttpHeader($path);
         $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
 
         $this->unsetCurlOption(CURLOPT_CUSTOMREQUEST);
@@ -590,6 +594,37 @@ class Client
         curl_setopt_array($curl, $this->getCurlOptions());
 
         return $curl;
+    }
+
+    private function setHttpHeader($path)
+    {
+        // Additional request headers
+        $httpHeader = array(
+            'Expect: ',
+        );
+
+        // Content type headers
+        $tmp = parse_url($this->url.$path);
+        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
+            $httpHeader[] = 'Content-Type: application/octet-stream';
+        } elseif ('json' === substr($tmp['path'], -4)) {
+            $httpHeader[] = 'Content-Type: application/json';
+        } elseif ('xml' === substr($tmp['path'], -3)) {
+            $httpHeader[] = 'Content-Type: text/xml';
+        }
+
+        if ($this->customHost !== null) {
+            $httpHeader[] = 'Host: '.$this->customHost;
+        }
+
+        // Redmine specific headers
+        if ($this->impersonateUser !== null) {
+            $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
+        }
+        if (null === $this->pass) {
+            $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
+        }
+        return $httpHeader;
     }
 
     /**

@@ -362,6 +362,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // Perform the tests
         $data = array(1 => 'post_1', '25' => 'post_25');
         $client->setCurlOption(CURLOPT_PROXY, 'PROXYURL:PORT');
+        $client->setCustomHost('https://test.com');
         $client->prepareRequest('/issues.xml', 'PUT', $data);
 
         $curlOptions = $client->getCurlOptions();
@@ -377,6 +378,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Expect: ', $curlOptions[CURLOPT_HTTPHEADER]);
         $this->assertContains(
             'Content-Type: text/xml',
+            $curlOptions[CURLOPT_HTTPHEADER]
+        );
+        $this->assertContains(
+            'Host: https://test.com',
             $curlOptions[CURLOPT_HTTPHEADER]
         );
         $this->assertNotContains(
