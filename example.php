@@ -28,7 +28,7 @@ $versionId = 2;
 // ----------------------------
 // Instanciate a redmine client
 // --> with ApiKey
-$client = new Redmine\Client('http://redmine.example.com', '1234567890abcdfgh');
+$client = new Redmine\Client('http://localhost', '1234567890abcdfgh');
 
 // --> with Username/Password
 $client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
@@ -42,6 +42,10 @@ $client->setCheckSslCertificate(true);
 // [OPTIONAL] set the port
 // (it will try to guess it from the url)
 $client->setPort(8080);
+
+// ----------------------------
+// [OPTIONAL] set a custom host
+$client->setCustomHost('http://redmine.example.com');
 
 // ----------------------------
 // Trackers

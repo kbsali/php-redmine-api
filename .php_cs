@@ -15,7 +15,6 @@ return PhpCsFixer\Config::create()
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'phpdoc_order' => true,
-        'phpdoc_add_missing_param_annotation' => true,
     ])
     ->setFinder($finder)
 ;
