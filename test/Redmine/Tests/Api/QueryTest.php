@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Query;
 
 /**
- * @coversDefaultClass Redmine\Api\Query
+ * @coversDefaultClass \Redmine\Api\Query
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

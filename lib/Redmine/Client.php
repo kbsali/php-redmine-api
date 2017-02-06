@@ -40,10 +40,10 @@ class Client
     /**
      * @var array
      */
-    private static $defaultPorts = array(
+    private static $defaultPorts = [
         'http' => 80,
         'https' => 443,
-    );
+    ];
 
     /**
      * @var int
@@ -88,7 +88,7 @@ class Client
     /**
      * @var array APIs
      */
-    private $apis = array();
+    private $apis = [];
 
     /**
      * @var string|null username for impersonating API calls
@@ -108,19 +108,19 @@ class Client
     /**
      * @var array cURL options
      */
-    private $curlOptions = array();
+    private $curlOptions = [];
 
     /**
      * Error strings if json is invalid.
      */
-    private static $jsonErrors = array(
+    private static $jsonErrors = [
         JSON_ERROR_NONE => 'No error has occurred',
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
-    );
+    ];
 
-    private $classes = array(
+    private $classes = [
         'attachment' => 'Attachment',
         'group' => 'Group',
         'custom_fields' => 'CustomField',
@@ -140,7 +140,7 @@ class Client
         'user' => 'User',
         'version' => 'Version',
         'wiki' => 'Wiki',
-    );
+    ];
 
     /**
      * Usage: apikeyOrUsername can be auth key or username.
@@ -500,7 +500,7 @@ class Client
         return $this;
     }
 
-    /**
+     /**
       * Unset a cURL option.
       *
       * @param int   $option The CURLOPT_XXX option to unset
@@ -562,7 +562,6 @@ class Client
             $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 
-
         // Set the HTTP request headers
         $httpHeader = $this->setHttpHeader($path);
         $this->setCurlOption(CURLOPT_HTTPHEADER, $httpHeader);
@@ -599,9 +598,9 @@ class Client
     private function setHttpHeader($path)
     {
         // Additional request headers
-        $httpHeader = array(
+        $httpHeader = [
             'Expect: ',
-        );
+        ];
 
         // Content type headers
         $tmp = parse_url($this->url.$path);
@@ -624,6 +623,7 @@ class Client
         if (null === $this->pass) {
             $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
         }
+
         return $httpHeader;
     }
 

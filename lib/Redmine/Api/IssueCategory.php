@@ -5,25 +5,25 @@ namespace Redmine\Api;
 /**
  * Listing issue categories, creating, editing.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class IssueCategory extends AbstractApi
 {
-    private $issueCategories = array();
+    private $issueCategories = [];
 
     /**
      * List issue categories.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
      * @param string|int $project project id or literal identifier
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of issue categories found
      */
-    public function all($project, array $params = array())
+    public function all($project, array $params = [])
     {
         $this->issueCategories = $this->retrieveAll('/projects/'.$project.'/issue_categories.json', $params);
 
@@ -43,7 +43,7 @@ class IssueCategory extends AbstractApi
         if (true === $forceUpdate || empty($this->issueCategories)) {
             $this->all($project);
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->issueCategories['issue_categories'] as $e) {
             $ret[$e['name']] = (int) $e['id'];
         }
@@ -72,7 +72,7 @@ class IssueCategory extends AbstractApi
     /**
      * Get extended information about an issue category.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET-2
      *
      * @param string $id the issue category id
      *
@@ -86,7 +86,7 @@ class IssueCategory extends AbstractApi
     /**
      * Create a new issue category of $project given an array of $params.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#POST
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#POST
      *
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new issue category data
@@ -95,12 +95,12 @@ class IssueCategory extends AbstractApi
      *
      * @return string|false
      */
-    public function create($project, array $params = array())
+    public function create($project, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'name' => null,
             'assigned_to_id' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (
@@ -120,7 +120,7 @@ class IssueCategory extends AbstractApi
     /**
      * Update issue category's information.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
      * @param string $id     the issue category id
      * @param array  $params
@@ -129,10 +129,10 @@ class IssueCategory extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = array(
+        $defaults = [
             'name' => null,
             'assigned_to_id' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
@@ -146,7 +146,7 @@ class IssueCategory extends AbstractApi
     /**
      * Delete an issue category.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#DELETE
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#DELETE
      * available $params :
      * - reassign_to_id : when there are issues assigned to the category you are deleting, this parameter lets you reassign these issues to the category with this id
      *
@@ -155,7 +155,7 @@ class IssueCategory extends AbstractApi
      *
      * @return string
      */
-    public function remove($id, array $params = array())
+    public function remove($id, array $params = [])
     {
         return $this->delete('/issue_categories/'.$id.'.xml?'.http_build_query($params));
     }

@@ -57,67 +57,67 @@ $client->issue_status->getIdByName('New');
 // ----------------------------
 // Project
 $client->project->all();
-$client->project->all(array(
+$client->project->all([
     'limit' => 10,
-));
+]);
 $client->project->listing();
 $client->project->listing();
 $client->project->show($projectId);
 $client->project->getIdByName('Elvis');
-$client->project->create(array(
+$client->project->create([
     'name' => 'some name',
     'identifier' => 'the_identifier',
-    'tracker_ids' => array(),
-));
-$client->project->update($projectId, array(
+    'tracker_ids' => [],
+]);
+$client->project->update($projectId, [
     'name' => 'different name',
-));
+]);
 $client->project->remove($projectId);
 
 // ----------------------------
 // Users
 $client->user->all();
 $client->user->listing();
-$client->user->getCurrentUser(array(
-    'include' => array(
+$client->user->getCurrentUser([
+    'include' => [
         'memberships',
         'groups',
         'api_key',
         'status',
-    )
-));
+    ],
+]);
 $client->user->getIdByUsername('kbsali');
-$client->user->show($userId, array(
-    'include' => array(
+$client->user->show($userId, [
+    'include' => [
         'memberships',
         'groups',
         'api_key',
         'status',
-    )
-));
-$client->user->update($userId, array(
+    ],
+]);
+$client->user->update($userId, [
     'firstname' => 'Raul',
-));
+]);
 $client->user->remove($userId);
-$client->user->create(array(
+$client->user->create([
     'login' => 'test',
     'firstname' => 'test',
     'lastname' => 'test',
     'mail' => 'test@example.com',
-));
+]);
 
 // ----------------------------
 // Issues
 $client->issue->show($issueId);
-$client->issue->all(array(
+$client->issue->all([
     'limit' => 100,
-));
-$client->issue->all(array('category_id' => $categoryId));
-$client->issue->all(array('tracker_id' => $trackerId));
-$client->issue->all(array('status_id' => 'closed'));
-$client->issue->all(array('assigned_to_id' => $userId));
-$client->issue->all(array('project_id' => 'test'));
-$client->issue->all(array(
+]);
+$client->issue->all(['category_id' => $categoryId]);
+$client->issue->all(['tracker_id' => $trackerId]);
+$client->issue->all(['status_id' => 'closed']);
+$client->issue->all(['assigned_to_id' => $userId]);
+$client->issue->all(['project_id' => 'test']);
+$client->issue->all([
     'offset' => 100,
     'limit' => 100,
     'sort' => 'id',
@@ -129,32 +129,32 @@ $client->issue->all(array(
     'query_id' => 3,
     'cf_1' => 'some value of this custom field', // where 1 = id of the customer field
     //  cf_SOME_CUSTOM_FIELD_ID => 'value'
-));
-$client->issue->create(array(
+]);
+$client->issue->create([
     'project_id' => 'test',
     'subject' => 'test api (xml) 3',
     'description' => 'test api',
     'assigned_to_id' => $userId,
-    'custom_fields' => array(
-        array(
+    'custom_fields' => [
+        [
             'id' => 2,
             'name' => 'Issuer',
             'value' => $_POST['ISSUER'],
-        ),
-        array(
+        ],
+        [
             'id' => 5,
             'name' => 'Phone',
             'value' => $_POST['PHONE'],
-        ),
-        array(
+        ],
+        [
             'id' => '8',
             'name' => 'Email',
             'value' => $_POST['EMAIL'],
-        ),
-    ),
-    'watcher_user_ids' => array(),
-));
-$client->issue->update($issueId, array(
+        ],
+    ],
+    'watcher_user_ids' => [],
+]);
+$client->issue->update($issueId, [
     // 'subject'        => 'test note (xml) 1',
     // 'notes'          => 'test note api',
     // 'assigned_to_id' => $userId,
@@ -162,35 +162,35 @@ $client->issue->update($issueId, array(
     'status' => 'Resolved',
     'priority_id' => 5,
     'due_date' => date('Y-m-d'),
-));
+]);
 $client->issue->setIssueStatus($issueId, 'Resolved');
 $client->issue->addNoteToIssue($issueId, 'some comment');
 $client->issue->remove($issueId);
 
 // To upload a file + attach it to an existing issue with $issueId
 $upload = json_decode($client->attachment->upload($filecontent));
-$client->issue->attach($issueId, array(
+$client->issue->attach($issueId, [
     'token' => $upload->upload->token,
     'filename' => 'MyFile.pdf',
     'description' => 'MyFile is better then YourFile...',
     'content_type' => 'application/pdf',
-));
+]);
 
 // Or, create a new issue with the file attached in one step
 $upload = json_decode($client->attachment->upload($filecontent));
-$client->issue->create(array(
+$client->issue->create([
     'project_id' => 'myproject',
     'subject' => 'A test issue',
     'description' => 'Here goes the issue description',
-    'uploads' => array(
-        array(
+    'uploads' => [
+        [
           'token' => $upload->upload->token,
           'filename' => 'MyFile.pdf',
           'description' => 'MyFile is better then YourFile...',
           'content_type' => 'application/pdf',
-        ),
-    ),
-));
+        ],
+    ],
+]);
 
 // ----------------------------
 // Issue categories
@@ -198,16 +198,16 @@ $client->issue_category->all('project1');
 $client->issue_category->listing($projectId);
 $client->issue_category->show($categoryId);
 $client->issue_category->getIdByName($projectId, 'Administration');
-$client->issue_category->create('otherProject', array(
+$client->issue_category->create('otherProject', [
     'name' => 'test category',
-));
-$client->issue_category->update($categoryId, array(
+]);
+$client->issue_category->update($categoryId, [
     'name' => 'new category name',
-));
+]);
 $client->issue_category->remove($categoryId);
-$client->issue_category->remove($categoryId, array(
+$client->issue_category->remove($categoryId, [
     'reassign_to_id' => $userId,
-));
+]);
 
 // ----------------------------
 // Versions
@@ -215,12 +215,12 @@ $client->version->all('test');
 $client->version->listing('test');
 $client->version->show($versionId);
 $client->version->getIdByName('test', 'v2');
-$client->version->create('test', array(
+$client->version->create('test', [
     'name' => 'v3432',
-));
-$client->version->update($versionId, array(
+]);
+$client->version->update($versionId, [
     'name' => 'v1121',
-));
+]);
 $client->version->remove($versionId);
 
 // ----------------------------
@@ -249,42 +249,42 @@ $client->query->all();
 // Time entries
 $client->time_entry->all();
 $client->time_entry->show($timeEntryId);
-$client->time_entry->all(array(
+$client->time_entry->all([
     'issue_id' => 1234,
     'project_id' => 1234,
     'spent_on' => '2015-04-13',
     'user_id' => 168,
-    'activity_id' => 13
-));
-$client->time_entry->create(array(
+    'activity_id' => 13,
+]);
+$client->time_entry->create([
     'project_id' => $projectId,
     // 'issue_id' => 140,
     // 'spent_on' => null,
     'hours' => 12,
     'activity_id' => 8,
     'comments' => 'BOUH!',
-    'custom_fields' => array(
-        array(
+    'custom_fields' => [
+        [
             'id' => 1,
             'name' => 'Affected version',
             'value' => '1.0.1',
-        ),
-    ),
-));
-$client->time_entry->update($timeEntryId, array(
+        ],
+    ],
+]);
+$client->time_entry->update($timeEntryId, [
     'issue_id' => $issueId,
     // 'spent_on' => null,
     'hours' => 8,
     'activity_id' => 9,
     'comments' => 'blablabla!',
-    'custom_fields' => array(
-        array(
+    'custom_fields' => [
+        [
             'id' => 2,
             'name' => 'Resolution',
             'value' => 'Fixed',
-        ),
-    ),
-));
+        ],
+    ],
+]);
 $client->time_entry->remove($timeEntryId);
 
 // ----------------------------
@@ -301,22 +301,22 @@ $client->issue_relation->remove($issueRelationId);
 // Group (of members)
 $client->group->all();
 $client->group->listing();
-$client->group->show($groupId, array('include' => 'users,memberships'));
+$client->group->show($groupId, ['include' => 'users,memberships']);
 $client->group->remove($groupId);
 $client->group->addUser($groupId, $userId);
 $client->group->removeUser($groupId, $userId);
-$client->group->create(array(
+$client->group->create([
     'name' => 'asdf',
-    'user_ids' => array(1, 2)
-));
+    'user_ids' => [1, 2],
+]);
 
 // ----------------------------
 // Project memberships
 $client->membership->all($projectId);
-$client->membership->create($projectId, array(
+$client->membership->create($projectId, [
     'user_id' => null,
-    'role_ids' => array(),
-));
+    'role_ids' => [],
+]);
 $client->membership->remove($membershipId);
 
 // ----------------------------
@@ -328,16 +328,16 @@ $client->issue_priority->all();
 $client->wiki->all('testProject');
 $client->wiki->show('testProject', 'about');
 $client->wiki->show('testProject', 'about', $version);
-$client->wiki->create('testProject', 'about', array(
+$client->wiki->create('testProject', 'about', [
     'text' => null,
     'comments' => null,
     'version' => null,
-));
-$client->wiki->update('testProject', 'about', array(
+]);
+$client->wiki->update('testProject', 'about', [
     'text' => null,
     'comments' => null,
     'version' => null,
-));
+]);
 $client->wiki->remove('testProject', 'about');
 
 // ----------------------------

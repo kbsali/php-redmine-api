@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing custom fields.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class CustomField extends AbstractApi
 {
-    private $customFields = array();
+    private $customFields = [];
 
     /**
      * List custom fields.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of custom fields found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->customFields = $this->retrieveAll('/custom_fields.json', $params);
 
@@ -37,12 +37,12 @@ class CustomField extends AbstractApi
      *
      * @return array list of custom fields (id => name)
      */
-    public function listing($forceUpdate = false, array $params = array())
+    public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->customFields) || $forceUpdate) {
             $this->all($params);
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->customFields['custom_fields'] as $e) {
             $ret[$e['name']] = (int) $e['id'];
         }
@@ -58,7 +58,7 @@ class CustomField extends AbstractApi
      *
      * @return int|false
      */
-    public function getIdByName($name, array $params = array())
+    public function getIdByName($name, array $params = [])
     {
         $arr = $this->listing(false, $params);
         if (!isset($arr[$name])) {

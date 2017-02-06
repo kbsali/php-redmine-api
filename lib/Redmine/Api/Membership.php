@@ -5,25 +5,25 @@ namespace Redmine\Api;
 /**
  * Handling project memberships.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Memberships
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Memberships
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Membership extends AbstractApi
 {
-    private $memberships = array();
+    private $memberships = [];
 
     /**
      * List memberships for a given $project.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
      * @param string|int $project project id or literal identifier
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of memberships found
      */
-    public function all($project, array $params = array())
+    public function all($project, array $params = [])
     {
         $this->memberships = $this->retrieveAll('/projects/'.$project.'/memberships.json', $params);
 
@@ -33,7 +33,7 @@ class Membership extends AbstractApi
     /**
      * Create a new membership for $project given an array of $params.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#POST
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#POST
      *
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new membership data
@@ -42,12 +42,12 @@ class Membership extends AbstractApi
      *
      * @return string|false
      */
-    public function create($project, array $params = array())
+    public function create($project, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'user_id' => null,
             'role_ids' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (!isset($params['user_id']) || !isset($params['role_ids'])) {
@@ -62,7 +62,7 @@ class Membership extends AbstractApi
     /**
      * Update membership information's by id.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
      *
      * @param int   $id     id of the membership
      * @param array $params the new membership data
@@ -71,11 +71,11 @@ class Membership extends AbstractApi
      *
      * @return string|false
      */
-    public function update($id, array $params = array())
+    public function update($id, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'role_ids' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (!isset($params['role_ids'])) {
@@ -90,7 +90,7 @@ class Membership extends AbstractApi
     /**
      * Delete a membership.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
      *
      * @param int $id id of the membership
      *
@@ -108,7 +108,7 @@ class Membership extends AbstractApi
      *
      * @return \SimpleXMLElement
      */
-    private function buildXML(array $params = array())
+    private function buildXML(array $params = [])
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
 

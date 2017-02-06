@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\IssuePriority;
 
 /**
- * @coversDefaultClass Redmine\Api\IssuePriority
+ * @coversDefaultClass \Redmine\Api\IssuePriority
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,7 +49,7 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $allParameters = array('not-used');
+        $allParameters = ['not-used'];
         $getResponse = 'API Response';
 
         // Create the used mock objects
@@ -67,6 +67,6 @@ class IssuePriorityTest extends \PHPUnit_Framework_TestCase
         $api = new IssuePriority($client);
 
         // Perform the tests
-        $this->assertSame(array($getResponse), $api->all($allParameters));
+        $this->assertSame([$getResponse], $api->all($allParameters));
     }
 }

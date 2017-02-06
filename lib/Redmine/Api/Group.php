@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Handling of groups.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Groups
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Groups
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Group extends AbstractApi
 {
-    private $groups = array();
+    private $groups = [];
 
     /**
      * List groups.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of groups found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->groups = $this->retrieveAll('/groups.json', $params);
 
@@ -41,7 +41,7 @@ class Group extends AbstractApi
         if (empty($this->groups) || $forceUpdate) {
             $this->all();
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->groups['groups'] as $e) {
             $ret[$e['name']] = (int) $e['id'];
         }
@@ -52,7 +52,7 @@ class Group extends AbstractApi
     /**
      * Create a new group with a group of users assigned.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
      *
      * @param array $params the new group data
      *
@@ -60,12 +60,12 @@ class Group extends AbstractApi
      *
      * @return \SimpleXMLElement
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'name' => null,
             'user_ids' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (
@@ -82,14 +82,14 @@ class Group extends AbstractApi
     /**
      * NOT DOCUMENTED in Redmine's wiki.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
      *
      * @param int   $id
      * @param array $params
      *
      * @throws \Exception Not implemented
      */
-    public function update($id, array $params = array())
+    public function update($id, array $params = [])
     {
         throw new \Exception('Not implemented');
     }
@@ -97,7 +97,7 @@ class Group extends AbstractApi
     /**
      * Returns details of a group.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET-2
      * available $params :
      * - include: a coma separated list of associations to include in the response: users,memberships
      *
@@ -106,7 +106,7 @@ class Group extends AbstractApi
      *
      * @return array
      */
-    public function show($id, array $params = array())
+    public function show($id, array $params = [])
     {
         return $this->get('/groups/'.urlencode($id).'.json?'.http_build_query($params));
     }
@@ -114,7 +114,7 @@ class Group extends AbstractApi
     /**
      * Delete a group.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE
      *
      * @param int $id id of the group
      *
@@ -128,7 +128,7 @@ class Group extends AbstractApi
     /**
      * Adds an existing user to a group.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST-2
      *
      * @param int $id     id of the group
      * @param int $userId id of the user
@@ -145,7 +145,7 @@ class Group extends AbstractApi
     /**
      * Removes a user from a group.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#DELETE-2
      *
      * @param int $id     id of the group
      * @param int $userId id of the user
@@ -164,7 +164,7 @@ class Group extends AbstractApi
      *
      * @return \SimpleXMLElement
      */
-    private function buildXML(array $params = array())
+    private function buildXML(array $params = [])
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><group></group>');
 

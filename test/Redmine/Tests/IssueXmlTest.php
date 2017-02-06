@@ -30,19 +30,19 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplexWithUpload()
     {
         $api = $this->client->issue;
-        $res = $api->create(array(
+        $res = $api->create([
             'project_id' => 'myproject',
             'subject' => 'A test issue',
             'description' => 'Here goes the issue description',
-            'uploads' => array(
-                array(
+            'uploads' => [
+                [
                   'token' => 'asdfasdfasdfasdf',
                   'filename' => 'MyFile.pdf',
                   'description' => 'MyFile is better then YourFile...',
                   'content_type' => 'application/pdf',
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -64,30 +64,30 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $api = $this->client->issue;
-        $res = $api->create(array(
+        $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
             'description' => 'test api',
             'assigned_to_id' => 1,
-            'custom_fields' => array(
-                array(
+            'custom_fields' => [
+                [
                     'id' => 2,
                     'name' => 'Issuer',
                     'value' => 'asdf',
-                ),
-                array(
+                ],
+                [
                     'id' => 5,
                     'name' => 'Phone',
                     'value' => '9939494',
-                ),
-                array(
+                ],
+                [
                     'id' => '8',
                     'name' => 'Email',
                     'value' => 'asdf@asdf.com',
-                ),
-            ),
-            'watcher_user_ids' => array(),
-        ));
+                ],
+            ],
+            'watcher_user_ids' => [],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -107,30 +107,30 @@ class IssueXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplexWithLineBreakInDescription()
     {
         $api = $this->client->issue;
-        $res = $api->create(array(
+        $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
             'description' => "line1\nline2",
             'assigned_to_id' => 1,
-            'custom_fields' => array(
-                array(
+            'custom_fields' => [
+                [
                     'id' => 2,
                     'name' => 'Issuer',
                     'value' => 'asdf',
-                ),
-                array(
+                ],
+                [
                     'id' => 5,
                     'name' => 'Phone',
                     'value' => '9939494',
-                ),
-                array(
+                ],
+                [
                     'id' => '8',
                     'name' => 'Email',
                     'value' => 'asdf@asdf.com',
-                ),
-            ),
-            'watcher_user_ids' => array(),
-        ));
+                ],
+            ],
+            'watcher_user_ids' => [],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -151,7 +151,7 @@ line2</description>
     public function testUpdateIssue()
     {
         $api = $this->client->issue;
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'subject' => 'test note (xml) 1',
             'notes' => 'test note api',
             'assigned_to_id' => 1,
@@ -161,7 +161,7 @@ line2</description>
 
             // not testable because this will trigger a status name to id resolving
             // 'status' => 'Resolved',
-        ));
+        ]);
         $xml = '<?xml version="1.0"?>
 <issue>
     <id>1</id>

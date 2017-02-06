@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing trackers.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Trackers
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Trackers
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Tracker extends AbstractApi
 {
-    private $trackers = array();
+    private $trackers = [];
 
     /**
      * List trackers.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of trackers found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->trackers = $this->retrieveAll('/trackers.json', $params);
 
@@ -41,7 +41,7 @@ class Tracker extends AbstractApi
         if (empty($this->trackers) || $forceUpdate) {
             $this->all();
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->trackers['trackers'] as $e) {
             $ret[$e['name']] = (int) $e['id'];
         }

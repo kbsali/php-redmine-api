@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\IssueStatus;
 
 /**
- * @coversDefaultClass Redmine\Api\IssueStatus
+ * @coversDefaultClass \Redmine\Api\IssueStatus
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -82,16 +82,16 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'issue_statuses' => array(
-                array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_statuses' => [
+                ['id' => 1, 'name' => 'IssueStatus 1'],
+                ['id' => 5, 'name' => 'IssueStatus 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueStatus 1' => 1,
             'IssueStatus 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -120,16 +120,16 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'issue_statuses' => array(
-                array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_statuses' => [
+                ['id' => 1, 'name' => 'IssueStatus 1'],
+                ['id' => 5, 'name' => 'IssueStatus 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueStatus 1' => 1,
             'IssueStatus 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -159,16 +159,16 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'issue_statuses' => array(
-                array('id' => 1, 'name' => 'IssueStatus 1'),
-                array('id' => 5, 'name' => 'IssueStatus 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_statuses' => [
+                ['id' => 1, 'name' => 'IssueStatus 1'],
+                ['id' => 5, 'name' => 'IssueStatus 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueStatus 1' => 1,
             'IssueStatus 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -198,11 +198,11 @@ class IssueStatusTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'issue_statuses' => array(
-                array('id' => 5, 'name' => 'IssueStatus 5'),
-            ),
-        );
+        $getResponse = [
+            'issue_statuses' => [
+                ['id' => 5, 'name' => 'IssueStatus 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

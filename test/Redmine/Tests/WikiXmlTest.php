@@ -19,11 +19,11 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $api = $this->client->wiki;
-        $res = $api->create('testProject', 'about', array(
+        $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <wiki_page>
@@ -37,11 +37,11 @@ class WikiXmlTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $api = $this->client->wiki;
-        $res = $api->update('testProject', 'about', array(
+        $res = $api->update('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <wiki_page>

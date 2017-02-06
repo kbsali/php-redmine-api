@@ -115,7 +115,7 @@ abstract class AbstractApi
     {
         return array_filter(
             array_merge($defaults, $params),
-            array($this, 'isNotNull')
+            [$this, 'isNotNull']
         );
     }
 
@@ -128,18 +128,18 @@ abstract class AbstractApi
      *
      * @return array elements found
      */
-    protected function retrieveAll($endpoint, array $params = array())
+    protected function retrieveAll($endpoint, array $params = [])
     {
         if (empty($params)) {
             return $this->get($endpoint);
         }
-        $defaults = array(
+        $defaults = [
             'limit' => 25,
             'offset' => 0,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $ret = array();
+        $ret = [];
 
         $limit = $params['limit'];
         $offset = $params['offset'];

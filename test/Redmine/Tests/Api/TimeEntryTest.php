@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\TimeEntry;
 
 /**
- * @coversDefaultClass Redmine\Api\TimeEntry
+ * @coversDefaultClass \Redmine\Api\TimeEntry
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -47,12 +47,12 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'project_id' => 5,
             'user_id' => 10,
             'limit' => 2,
-        );
-        $getResponse = array('API Response');
+        ];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -154,7 +154,7 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(array('id' => 5)));
+        $this->assertSame($getResponse, $api->create(['id' => 5]));
     }
 
     /**
@@ -168,9 +168,9 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'hours' => '5.25',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -195,10 +195,10 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'issue_id' => '15',
             'project_id' => '25',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -223,23 +223,23 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'issue_id' => '15',
             'project_id' => '25',
             'hours' => '5.25',
-            'custom_fields' => array(
-                 array(
+            'custom_fields' => [
+                 [
                     'id' => 1,
                     'name' => 'Affected version',
                     'value' => '1.0.1',
-                ),
-                 array(
+                ],
+                 [
                     'id' => 2,
                     'name' => 'Resolution',
                     'value' => 'Fixed',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -278,21 +278,21 @@ class TimeEntryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'hours' => '10.25',
-            'custom_fields' => array(
-                 array(
+            'custom_fields' => [
+                 [
                     'id' => 1,
                     'name' => 'Affected version',
                     'value' => '1.0.1',
-                ),
-                 array(
+                ],
+                 [
                     'id' => 2,
                     'name' => 'Resolution',
                     'value' => 'Fixed',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
