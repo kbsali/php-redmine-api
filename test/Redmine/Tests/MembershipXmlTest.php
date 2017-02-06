@@ -30,10 +30,10 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $api = $this->client->membership;
-        $res = $api->create('otherProject', array(
+        $res = $api->create('otherProject', [
             'user_id' => 1,
-            'role_ids' => array(1, 2),
-        ));
+            'role_ids' => [1, 2],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <membership>
@@ -49,9 +49,9 @@ class MembershipXmlTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $api = $this->client->membership;
-        $res = $api->update(1, array(
-            'role_ids' => array(1, 2),
-        ));
+        $res = $api->update(1, [
+            'role_ids' => [1, 2],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <membership>

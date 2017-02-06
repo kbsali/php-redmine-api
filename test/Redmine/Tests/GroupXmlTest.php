@@ -29,10 +29,10 @@ class GroupXmlTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->group->create(array(
+        $res = $this->client->group->create([
             'name' => 'Developers',
-            'user_ids' => array(3, 5),
-        ));
+            'user_ids' => [3, 5],
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <group>

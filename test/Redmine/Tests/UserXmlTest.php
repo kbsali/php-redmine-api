@@ -30,12 +30,12 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $api = $this->client->user;
-        $res = $api->create(array(
+        $res = $api->create([
             'login' => 'test',
             'firstname' => 'test',
             'lastname' => 'test',
             'mail' => 'test@example.com',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <user>
@@ -50,9 +50,9 @@ class UserXmlTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $api = $this->client->user;
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'firstname' => 'Raul',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <user>

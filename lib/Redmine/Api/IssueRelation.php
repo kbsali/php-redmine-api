@@ -5,25 +5,25 @@ namespace Redmine\Api;
 /**
  * Handling issue relations.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class IssueRelation extends AbstractApi
 {
-    private $relations = array();
+    private $relations = [];
 
     /**
      * List relations of the given $issueId.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
      * @param int   $issueId the issue id
      * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of relations found
      */
-    public function all($issueId, array $params = array())
+    public function all($issueId, array $params = [])
     {
         $this->relations = $this->retrieveAll('/issues/'.urlencode($issueId).'/relations.json', $params);
 
@@ -33,7 +33,7 @@ class IssueRelation extends AbstractApi
     /**
      * Get extended information about the given relation $id.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET-2
      *
      * @param int $id the relation id
      *
@@ -43,7 +43,7 @@ class IssueRelation extends AbstractApi
     {
         $ret = $this->get('/relations/'.urlencode($id).'.json');
         if (null === $ret) {
-            return array();
+            return [];
         }
 
         return $ret['relation'];
@@ -52,7 +52,7 @@ class IssueRelation extends AbstractApi
     /**
      * Delete a relation.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#DELETE
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#DELETE
      *
      * @param int $id the relation id
      *
@@ -64,26 +64,26 @@ class IssueRelation extends AbstractApi
     }
 
     /**
-     * Create a new issue relation
+     * Create a new issue relation.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#POST
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#POST
      *
      * @param int   $issueId the ID of the issue we are creating the relation on
      * @param array $params  the new issue relation data
      *
      * @return array
      */
-    public function create($issueId, array $params = array())
+    public function create($issueId, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'relation_type' => 'relates',
             'issue_to_id' => null,
             'delay' => null,
-        );
+        ];
 
         $params = $this->sanitizeParams($defaults, $params);
 
-        $params = array('relation' => $params);
+        $params = ['relation' => $params];
 
         return json_decode($this->post('/issues/'.urlencode($issueId).'/relations.json', $params), true);
     }

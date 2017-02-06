@@ -241,20 +241,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             .'"identifier":"redmine","status":1,'
             .'"created_on":"2007-09-29T10:03:04Z"}],'
             .'"total_count":1,"offset":0,"limit":25}';
-        $expectedData = array(
-            'projects' => array(
-                0 => array(
+        $expectedData = [
+            'projects' => [
+                0 => [
                     'id' => 1,
                     'name' => 'Redmine',
                     'identifier' => 'redmine',
                     'status' => 1,
                     'created_on' => '2007-09-29T10:03:04Z',
-                ),
-            ),
+                ],
+            ],
             'total_count' => 1,
             'offset' => 0,
             'limit' => 25,
-        );
+        ];
 
         // Create the object under test
         $client = new Client('http://test.local', 'asdf');
@@ -308,12 +308,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://test.local', 'asdf');
 
-        $this->assertSame(array(), $client->getCurlOptions());
+        $this->assertSame([], $client->getCurlOptions());
         $this->assertInstanceOf(
             'Redmine\Client',
             $client->setCurlOption(15, 'value')
         );
-        $this->assertSame(array(15 => 'value'), $client->getCurlOptions());
+        $this->assertSame([15 => 'value'], $client->getCurlOptions());
     }
 
     /**
@@ -327,7 +327,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setPort(8080);
 
         // Perform the tests
-        $data = array(1 => 'post_1', '25' => 'post_25');
+        $data = [1 => 'post_1', '25' => 'post_25'];
         $client->prepareRequest('/issues.json', 'POST', $data);
         $curlOptions = $client->getCurlOptions();
         $this->assertRegExp('/USER_API-KEY159\:[0-9]*/', $curlOptions[CURLOPT_USERPWD]);
@@ -360,8 +360,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('http://test.local', 'username', 'secret');
 
         // Perform the tests
-        $data = array(1 => 'post_1', '25' => 'post_25');
+        $data = [1 => 'post_1', '25' => 'post_25'];
         $client->setCurlOption(CURLOPT_PROXY, 'PROXYURL:PORT');
+        $client->setCustomHost('https://test.com');
         $client->prepareRequest('/issues.xml', 'PUT', $data);
 
         $curlOptions = $client->getCurlOptions();
@@ -377,6 +378,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Expect: ', $curlOptions[CURLOPT_HTTPHEADER]);
         $this->assertContains(
             'Content-Type: text/xml',
+            $curlOptions[CURLOPT_HTTPHEADER]
+        );
+        $this->assertContains(
+            'Host: https://test.com',
             $curlOptions[CURLOPT_HTTPHEADER]
         );
         $this->assertNotContains(
@@ -405,7 +410,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setCheckSslHost(true);
 
         // Perform the tests
-        $data = array(1 => 'post_1', '25' => 'post_25');
+        $data = [1 => 'post_1', '25' => 'post_25'];
         $client->prepareRequest('/uploads.xml', 'DELETE', $data);
         $curlOptions = $client->getCurlOptions();
         $this->assertArrayNotHasKey(CURLOPT_USERPWD, $curlOptions);
@@ -505,26 +510,26 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function getApiClassesProvider()
     {
-        return array(
-            array('attachment', 'Redmine\Api\Attachment'),
-            array('group', 'Redmine\Api\Group'),
-            array('custom_fields', 'Redmine\Api\CustomField'),
-            array('issue', 'Redmine\Api\Issue'),
-            array('issue_category', 'Redmine\Api\IssueCategory'),
-            array('issue_priority', 'Redmine\Api\IssuePriority'),
-            array('issue_relation', 'Redmine\Api\IssueRelation'),
-            array('issue_status', 'Redmine\Api\IssueStatus'),
-            array('membership', 'Redmine\Api\Membership'),
-            array('news', 'Redmine\Api\News'),
-            array('project', 'Redmine\Api\Project'),
-            array('query', 'Redmine\Api\Query'),
-            array('role', 'Redmine\Api\Role'),
-            array('time_entry', 'Redmine\Api\TimeEntry'),
-            array('time_entry_activity', 'Redmine\Api\TimeEntryActivity'),
-            array('tracker', 'Redmine\Api\Tracker'),
-            array('user', 'Redmine\Api\User'),
-            array('version', 'Redmine\Api\Version'),
-            array('wiki', 'Redmine\Api\Wiki'),
-        );
+        return [
+            ['attachment', 'Redmine\Api\Attachment'],
+            ['group', 'Redmine\Api\Group'],
+            ['custom_fields', 'Redmine\Api\CustomField'],
+            ['issue', 'Redmine\Api\Issue'],
+            ['issue_category', 'Redmine\Api\IssueCategory'],
+            ['issue_priority', 'Redmine\Api\IssuePriority'],
+            ['issue_relation', 'Redmine\Api\IssueRelation'],
+            ['issue_status', 'Redmine\Api\IssueStatus'],
+            ['membership', 'Redmine\Api\Membership'],
+            ['news', 'Redmine\Api\News'],
+            ['project', 'Redmine\Api\Project'],
+            ['query', 'Redmine\Api\Query'],
+            ['role', 'Redmine\Api\Role'],
+            ['time_entry', 'Redmine\Api\TimeEntry'],
+            ['time_entry_activity', 'Redmine\Api\TimeEntryActivity'],
+            ['tracker', 'Redmine\Api\Tracker'],
+            ['user', 'Redmine\Api\User'],
+            ['version', 'Redmine\Api\Version'],
+            ['wiki', 'Redmine\Api\Wiki'],
+        ];
     }
 }

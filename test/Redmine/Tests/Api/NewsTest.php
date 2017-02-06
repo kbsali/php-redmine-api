@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\News;
 
 /**
- * @coversDefaultClass Redmine\Api\News
+ * @coversDefaultClass \Redmine\Api\News
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -80,8 +80,8 @@ class NewsTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $projectId = 5;
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

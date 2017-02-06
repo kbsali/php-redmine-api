@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Membership;
 
 /**
- * @coversDefaultClass Redmine\Api\Membership
+ * @coversDefaultClass \Redmine\Api\Membership
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -154,7 +154,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, array('user_id' => 4)));
+        $this->assertSame($getResponse, $api->create(5, ['user_id' => 4]));
     }
 
     /**
@@ -168,10 +168,10 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'user_id' => 1,
             'role_ids' => 1,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -209,10 +209,10 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'user_id' => 10,
-            'role_ids' => array(5, 6),
-        );
+            'role_ids' => [5, 6],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -265,7 +265,7 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, array('user_id' => 4)));
+        $this->assertSame($getResponse, $api->update(5, ['user_id' => 4]));
     }
 
     /**
@@ -279,9 +279,9 @@ class MembershipTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'role_ids' => 1,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

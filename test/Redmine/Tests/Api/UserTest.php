@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\User;
 
 /**
- * @coversDefaultClass Redmine\Api\User
+ * @coversDefaultClass \Redmine\Api\User
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -52,11 +52,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByUsernameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'users' => array(
-                array('id' => 5, 'login' => 'User 5'),
-            ),
-        );
+        $getResponse = [
+            'users' => [
+                ['id' => 5, 'login' => 'User 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -113,11 +113,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'offset' => 10,
             'limit' => 2,
-        );
-        $getResponse = array('API Response');
+        ];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -184,7 +184,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testShowReturnsClientGetResponseWithUniqueParameters()
     {
         // Test values
-        $parameters = array('include' => array('parameter1', 'parameter2', 'memberships'));
+        $parameters = ['include' => ['parameter1', 'parameter2', 'memberships']];
         $getResponse = 'API Response';
 
         // Create the used mock objects
@@ -291,44 +291,44 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function incompleteCreateParameterProvider()
     {
-        return array(
+        return [
             // Missing Login
-            array(
-                array(
+            [
+                [
                     'password' => 'secretPass',
                     'lastname' => 'Last Name',
                     'firstname' => 'Firstname',
                     'mail' => 'mail@example.com',
-                ),
-            ),
+                ],
+            ],
             // Missing last name
-            array(
-                array(
+            [
+                [
                     'login' => 'TestUser',
                     'password' => 'secretPass',
                     'firstname' => 'Firstname',
                     'mail' => 'mail@example.com',
-                ),
-            ),
+                ],
+            ],
             // Missing first name
-            array(
-                array(
+            [
+                [
                     'login' => 'TestUser',
                     'password' => 'secretPass',
                     'lastname' => 'Last Name',
                     'mail' => 'mail@example.com',
-                ),
-            ),
+                ],
+            ],
             // Missing email
-            array(
-                array(
+            [
+                [
                     'login' => 'TestUser',
                     'password' => 'secretPass',
                     'lastname' => 'Last Name',
                     'firstname' => 'Firstname',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -342,13 +342,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'login' => 'TestUser',
             'password' => 'secretPass',
             'lastname' => 'Last Name',
             'firstname' => 'Firstname',
             'mail' => 'mail@example.com',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -389,17 +389,17 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'login' => 'TestUser',
             'password' => 'secretPass',
             'lastname' => 'Last Name',
             'firstname' => 'Firstname',
             'mail' => 'mail@example.com',
-            'custom_fields' => array(
-                array('id' => 5, 'value' => 'Value 5'),
-                array('id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'),
-            ),
-        );
+            'custom_fields' => [
+                ['id' => 5, 'value' => 'Value 5'],
+                ['id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -446,9 +446,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'mail' => 'user@example.com',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -485,12 +485,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
-            'custom_fields' => array(
-                array('id' => 5, 'value' => 'Value 5'),
-                array('id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'),
-            ),
-        );
+        $parameters = [
+            'custom_fields' => [
+                ['id' => 5, 'value' => 'Value 5'],
+                ['id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -530,16 +530,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'users' => array(
-                array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'users' => [
+                ['id' => 1, 'login' => 'User 1'],
+                ['id' => 5, 'login' => 'User 5'],
+            ],
+        ];
+        $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -568,16 +568,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'users' => array(
-                array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'users' => [
+                ['id' => 1, 'login' => 'User 1'],
+                ['id' => 5, 'login' => 'User 5'],
+            ],
+        ];
+        $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -607,16 +607,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'users' => array(
-                array('id' => 1, 'login' => 'User 1'),
-                array('id' => 5, 'login' => 'User 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'users' => [
+                ['id' => 1, 'login' => 'User 1'],
+                ['id' => 5, 'login' => 'User 5'],
+            ],
+        ];
+        $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

@@ -1,24 +1,20 @@
 <?php
-$finder = (new \Symfony\Component\Finder\Finder())
-    ->files()
-    ->ignoreVCS(true)
-    ->name('*.php')
-    ->in(__DIR__ . '/lib/')
-    ->in(__DIR__ . '/test/')
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude([
+        'vendor',
+    ])
 ;
 
-return Symfony\CS\Config\Config::create()
-    ->setUsingCache(true)
-    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
-    ->fixers([
-        '-phpdoc_short_description',
-        '-psr0',
-        'header_comment',
-        'long_array_syntax',
-        'newline_after_open_tag',
-        'no_useless_return',
-        'ordered_use',
-        'phpdoc_order',
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+
+        'array_syntax' => ['syntax' => 'short'],
+        'linebreak_after_opening_tag' => true,
+        'ordered_imports' => true,
+        'phpdoc_order' => true,
     ])
-    ->finder($finder)
+    ->setFinder($finder)
 ;

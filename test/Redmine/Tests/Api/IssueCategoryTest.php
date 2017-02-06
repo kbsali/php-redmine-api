@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\IssueCategory;
 
 /**
- * @coversDefaultClass Redmine\Api\IssueCategory
+ * @coversDefaultClass \Redmine\Api\IssueCategory
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -51,8 +51,8 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $projectId = 5;
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -84,16 +84,16 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'issue_categories' => array(
-                array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_categories' => [
+                ['id' => 1, 'name' => 'IssueCategory 1'],
+                ['id' => 5, 'name' => 'IssueCategory 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueCategory 1' => 1,
             'IssueCategory 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -122,16 +122,16 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'issue_categories' => array(
-                array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_categories' => [
+                ['id' => 1, 'name' => 'IssueCategory 1'],
+                ['id' => 5, 'name' => 'IssueCategory 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueCategory 1' => 1,
             'IssueCategory 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -161,16 +161,16 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'issue_categories' => array(
-                array('id' => 1, 'name' => 'IssueCategory 1'),
-                array('id' => 5, 'name' => 'IssueCategory 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'issue_categories' => [
+                ['id' => 1, 'name' => 'IssueCategory 1'],
+                ['id' => 5, 'name' => 'IssueCategory 5'],
+            ],
+        ];
+        $expectedReturn = [
             'IssueCategory 1' => 1,
             'IssueCategory 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -266,7 +266,7 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array('not-used');
+        $parameters = ['not-used'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -302,11 +302,11 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'issue_categories' => array(
-                array('id' => 5, 'name' => 'IssueCategory 5'),
-            ),
-        );
+        $getResponse = [
+            'issue_categories' => [
+                ['id' => 5, 'name' => 'IssueCategory 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -338,10 +338,10 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionIfNameIsMissing()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'name' => null,
             'assigned_to_id' => 2,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -366,10 +366,10 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test Category',
             'assigned_to_id' => 2,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -406,10 +406,10 @@ class IssueCategoryTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test Category',
             'assigned_to_id' => 2,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

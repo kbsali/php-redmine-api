@@ -30,9 +30,9 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
     public function testCreateComplex()
     {
         $api = $this->client->issue_category;
-        $res = $api->create('otherProject', array(
+        $res = $api->create('otherProject', [
             'name' => 'test category',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <issue_category>
@@ -44,9 +44,9 @@ class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $api = $this->client->issue_category;
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'name' => 'new category name',
-        ));
+        ]);
 
         $xml = '<?xml version="1.0"?>
 <issue_category>

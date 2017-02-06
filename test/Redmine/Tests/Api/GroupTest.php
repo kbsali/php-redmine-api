@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Group;
 
 /**
- * @coversDefaultClass Redmine\Api\Group
+ * @coversDefaultClass \Redmine\Api\Group
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -82,16 +82,16 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'groups' => array(
-                array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'groups' => [
+                ['id' => 1, 'name' => 'Group 1'],
+                ['id' => 5, 'name' => 'Group 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -120,16 +120,16 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'groups' => array(
-                array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'groups' => [
+                ['id' => 1, 'name' => 'Group 1'],
+                ['id' => 5, 'name' => 'Group 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -159,16 +159,16 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'groups' => array(
-                array('id' => 1, 'name' => 'Group 1'),
-                array('id' => 5, 'name' => 'Group 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'groups' => [
+                ['id' => 1, 'name' => 'Group 1'],
+                ['id' => 5, 'name' => 'Group 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -228,7 +228,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $allParameters = array('not-used');
+        $allParameters = ['not-used'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -298,9 +298,9 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $postParameter = array(
+        $postParameter = [
             'name' => 'Group Name',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -338,7 +338,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionIsNameIsMissing()
     {
         // Test values
-        $postParameter = array();
+        $postParameter = [];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

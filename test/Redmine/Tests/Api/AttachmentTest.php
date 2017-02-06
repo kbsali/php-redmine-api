@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Attachment;
 
 /**
- * @coversDefaultClass Redmine\Api\Attachment
+ * @coversDefaultClass \Redmine\Api\Attachment
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -46,16 +46,16 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
      */
     public function responseCodeProvider()
     {
-        return array(
-            array(199, true),
-            array(200, false),
-            array(201, false),
-            array(202, true),
-            array(400, true),
-            array(403, true),
-            array(404, true),
-            array(500, true),
-        );
+        return [
+            [199, true],
+            [200, false],
+            [201, false],
+            [202, true],
+            [400, true],
+            [403, true],
+            [404, true],
+            [500, true],
+        ];
     }
 
     /**

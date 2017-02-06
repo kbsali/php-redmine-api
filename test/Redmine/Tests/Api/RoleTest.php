@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Role;
 
 /**
- * @coversDefaultClass Redmine\Api\Role
+ * @coversDefaultClass \Redmine\Api\Role
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -82,16 +82,16 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'roles' => array(
-                array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'roles' => [
+                ['id' => 1, 'name' => 'Role 1'],
+                ['id' => 5, 'name' => 'Role 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Role 1' => 1,
             'Role 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -120,16 +120,16 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'roles' => array(
-                array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'roles' => [
+                ['id' => 1, 'name' => 'Role 1'],
+                ['id' => 5, 'name' => 'Role 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Role 1' => 1,
             'Role 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -159,16 +159,16 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'roles' => array(
-                array('id' => 1, 'name' => 'Role 1'),
-                array('id' => 5, 'name' => 'Role 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'roles' => [
+                ['id' => 1, 'name' => 'Role 1'],
+                ['id' => 5, 'name' => 'Role 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Role 1' => 1,
             'Role 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

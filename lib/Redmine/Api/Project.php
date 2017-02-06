@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing projects, creating, editing.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Projects
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Project extends AbstractApi
 {
-    private $projects = array();
+    private $projects = [];
 
     /**
      * List projects.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of projects found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->projects = $this->retrieveAll('/projects.json', $params);
 
@@ -42,7 +42,7 @@ class Project extends AbstractApi
         if (true === $forceUpdate || empty($this->projects)) {
             $this->all();
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->projects['projects'] as $e) {
             $ret[(int) $e['id']] = $e['name'];
         }
@@ -70,7 +70,7 @@ class Project extends AbstractApi
     /**
      * Get extended information about a project (including memberships + groups).
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param string $id the project id
      *
@@ -84,7 +84,7 @@ class Project extends AbstractApi
     /**
      * Create a new project given an array of $params.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param array $params the new project data
      *
@@ -92,13 +92,13 @@ class Project extends AbstractApi
      *
      * @return \SimpleXMLElement
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'name' => null,
             'identifier' => null,
             'description' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (
@@ -116,7 +116,7 @@ class Project extends AbstractApi
     /**
      * Update project's information.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param string $id     the project id
      * @param array  $params
@@ -125,12 +125,12 @@ class Project extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = array(
+        $defaults = [
             'id' => $id,
             'name' => null,
             'identifier' => null,
             'description' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         $xml = $this->prepareParamsXml($params);
@@ -145,11 +145,11 @@ class Project extends AbstractApi
      */
     protected function prepareParamsXml($params)
     {
-        $_params = array(
+        $_params = [
             'tracker_ids' => 'tracker',
             'issue_custom_field_ids' => 'issue_custom_field',
             'enabled_module_names' => 'enabled_module_names',
-        );
+        ];
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
         foreach ($params as $k => $v) {
@@ -172,7 +172,7 @@ class Project extends AbstractApi
     /**
      * Delete a project.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param int $id id of the project
      *

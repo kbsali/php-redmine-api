@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Project;
 
 /**
- * @coversDefaultClass Redmine\Api\Project
+ * @coversDefaultClass \Redmine\Api\Project
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -47,8 +47,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -139,16 +139,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'projects' => array(
-                array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'projects' => [
+                ['id' => 1, 'name' => 'Project 1'],
+                ['id' => 5, 'name' => 'Project 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -177,16 +177,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'projects' => array(
-                array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'projects' => [
+                ['id' => 1, 'name' => 'Project 1'],
+                ['id' => 5, 'name' => 'Project 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -216,16 +216,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'projects' => array(
-                array('id' => 1, 'name' => 'Project 1'),
-                array('id' => 5, 'name' => 'Project 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'projects' => [
+                ['id' => 1, 'name' => 'Project 1'],
+                ['id' => 5, 'name' => 'Project 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -255,11 +255,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'projects' => array(
-                array('id' => 5, 'name' => 'Project 5'),
-            ),
-        );
+        $getResponse = [
+            'projects' => [
+                ['id' => 5, 'name' => 'Project 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -301,7 +301,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(array('id' => 5)));
+        $this->assertSame($getResponse, $api->create(['id' => 5]));
     }
 
     /**
@@ -315,9 +315,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test Project',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -342,9 +342,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'identifier' => 'test-project',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -369,10 +369,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'identifier' => 'test-project',
             'name' => 'Test Project',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -409,11 +409,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'identifier' => 'test-project',
             'name' => 'Test Project',
-            'tracker_ids' => array(10, 5),
-        );
+            'tracker_ids' => [10, 5],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -452,9 +452,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test Project',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

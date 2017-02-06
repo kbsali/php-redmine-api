@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing time entries, creating, editing.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class TimeEntry extends AbstractApi
 {
-    private $timeEntries = array();
+    private $timeEntries = [];
 
     /**
      * List time entries.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of time entries found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->timeEntries = $this->retrieveAll('/time_entries.json', $params);
 
@@ -32,7 +32,7 @@ class TimeEntry extends AbstractApi
     /**
      * Get extended information about a time entry (including memberships + groups).
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param string $id the time entry id
      *
@@ -46,7 +46,7 @@ class TimeEntry extends AbstractApi
     /**
      * Create a new time entry given an array of $params.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param array $params the new time entry data
      *
@@ -54,16 +54,16 @@ class TimeEntry extends AbstractApi
      *
      * @return string|false
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'issue_id' => null,
             'project_id' => null,
             'spent_on' => null,
             'hours' => null,
             'activity_id' => null,
             'comments' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (
@@ -88,7 +88,7 @@ class TimeEntry extends AbstractApi
     /**
      * Update time entry's informations.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param int   $id
      * @param array $params
@@ -97,7 +97,7 @@ class TimeEntry extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = array(
+        $defaults = [
             'id' => $id,
             'issue_id' => null,
             'project_id' => null,
@@ -105,7 +105,7 @@ class TimeEntry extends AbstractApi
             'hours' => null,
             'activity_id' => null,
             'comments' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
@@ -123,7 +123,7 @@ class TimeEntry extends AbstractApi
     /**
      * Delete a time entry.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param int $id id of the time entry
      *

@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing roles.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Roles
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Roles
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class Role extends AbstractApi
 {
-    private $roles = array();
+    private $roles = [];
 
     /**
      * List roles.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of roles found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->roles = $this->retrieveAll('/roles.json', $params);
 
@@ -41,7 +41,7 @@ class Role extends AbstractApi
         if (empty($this->roles) || $forceUpdate) {
             $this->all();
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->roles['roles'] as $e) {
             $ret[$e['name']] = (int) $e['id'];
         }
@@ -52,7 +52,7 @@ class Role extends AbstractApi
     /**
      * Returns the list of permissions for a given role (Redmine v2.2.0).
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET-2
      *
      * @param int $id the role id
      *

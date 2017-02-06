@@ -5,24 +5,24 @@ namespace Redmine\Api;
 /**
  * Listing users, creating, editing.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Users
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Users
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
 class User extends AbstractApi
 {
-    private $users = array();
+    private $users = [];
 
     /**
      * List users.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
      * @param array $params to allow offset/limit (and more) to be passed
      *
      * @return array list of users found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         $this->users = $this->retrieveAll('/users.json', $params);
 
@@ -37,12 +37,12 @@ class User extends AbstractApi
      *
      * @return array list of users (id => username)
      */
-    public function listing($forceUpdate = false, array $params = array())
+    public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->users) || $forceUpdate) {
             $this->all($params);
         }
-        $ret = array();
+        $ret = [];
         if (is_array($this->users) && isset($this->users['users'])) {
             foreach ($this->users['users'] as $e) {
                 $ret[$e['login']] = (int) $e['id'];
@@ -55,13 +55,13 @@ class User extends AbstractApi
     /**
      * Return the current user data.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
      *
      * @param array $params extra associated data
      *
      * @return array current user data
      */
-    public function getCurrentUser(array $params = array())
+    public function getCurrentUser(array $params = [])
     {
         return $this->show('current', $params);
     }
@@ -74,7 +74,7 @@ class User extends AbstractApi
      *
      * @return int|bool
      */
-    public function getIdByUsername($username, array $params = array())
+    public function getIdByUsername($username, array $params = [])
     {
         $arr = $this->listing(false, $params);
         if (!isset($arr[$username])) {
@@ -87,8 +87,8 @@ class User extends AbstractApi
     /**
      * Get extended information about a user (including memberships + groups).
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET-2
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET-2
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
      * available $params :
      * include: fetch associated data (optional). Possible values:
      *  - memberships: adds extra information about user's memberships and roles on the projects
@@ -101,16 +101,16 @@ class User extends AbstractApi
      *
      * @return array information about the user
      */
-    public function show($id, array $params = array())
+    public function show($id, array $params = [])
     {
         // set default ones
         $params['include'] = array_unique(
             array_merge(
-                isset($params['include']) ? $params['include'] : array(),
-                array(
+                isset($params['include']) ? $params['include'] : [],
+                [
                     'memberships',
                     'groups',
-                )
+                ]
             )
         );
         $params['include'] = implode(',', $params['include']);
@@ -125,7 +125,7 @@ class User extends AbstractApi
     /**
      * Create a new user given an array of $params.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
      * @param array $params the new user data
      *
@@ -133,15 +133,15 @@ class User extends AbstractApi
      *
      * @return string|false
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'login' => null,
             'password' => null,
             'lastname' => null,
             'firstname' => null,
             'mail' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         if (
@@ -167,7 +167,7 @@ class User extends AbstractApi
     /**
      * Update user's information.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
      * @param string $id     the user id
      * @param array  $params
@@ -176,14 +176,14 @@ class User extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = array(
+        $defaults = [
             'id' => $id,
             'login' => null,
             'password' => null,
             'lastname' => null,
             'firstname' => null,
             'mail' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
@@ -201,7 +201,7 @@ class User extends AbstractApi
     /**
      * Delete a user.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Users#DELETE
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#DELETE
      *
      * @param int $id id of the user
      *

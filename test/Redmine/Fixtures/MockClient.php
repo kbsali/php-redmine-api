@@ -58,10 +58,10 @@ class MockClient extends Client
             return $this->runRequestReturnValue;
         }
 
-        return array(
+        return [
             'path' => $path,
             'method' => $method,
             'data' => $data,
-        );
+        ];
     }
 }

@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Issue;
 
 /**
- * @coversDefaultClass Redmine\Api\Issue
+ * @coversDefaultClass \Redmine\Api\Issue
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -63,8 +63,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -126,7 +126,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $allParameters = array('not-used');
+        $allParameters = ['not-used'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -158,8 +158,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testShowImplodesIncludeParametersCorrectly()
     {
         // Test values
-        $parameters = array('include' => array('parameter1', 'parameter2'));
-        $getResponse = array('API Response');
+        $parameters = ['include' => ['parameter1', 'parameter2']];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -229,16 +229,16 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $response = 'API Response';
-        $attachment = array(
+        $attachment = [
             'token' => 'sample-test-token',
             'filename' => 'test.txt',
-        );
-        $requestData = array(
-            'issue' => array(
+        ];
+        $requestData = [
+            'issue' => [
                 'id' => 5,
-                'uploads' => array($attachment),
-            ),
-        );
+                'uploads' => [$attachment],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -335,7 +335,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array();
+        $parameters = [];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -367,14 +367,14 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'project' => 'Project Name',
             'category' => 'Category Name',
             'status' => 'Status Name',
             'tracker' => 'Tracker Name',
             'assigned_to' => 'Assigned to User Name',
             'author' => 'Author Name',
-        );
+        ];
 
         // Create the used mock objects
         $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
@@ -392,18 +392,18 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(array('api', 'post'))
+            ->setMethods(['api', 'post'])
             ->getMock();
         $client->expects($this->exactly(6))
             ->method('api')
             ->willReturnMap(
-                array(
-                    array('project', $getIdByNameApi),
-                    array('issue_category', $getIdByNameApi),
-                    array('issue_status', $getIdByNameApi),
-                    array('tracker', $getIdByNameApi),
-                    array('user', $getIdByUsernameApi),
-                )
+                [
+                    ['project', $getIdByNameApi],
+                    ['issue_category', $getIdByNameApi],
+                    ['issue_status', $getIdByNameApi],
+                    ['tracker', $getIdByNameApi],
+                    ['user', $getIdByUsernameApi],
+                ]
             );
 
         $client->expects($this->once())
@@ -442,16 +442,16 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
-            'custom_fields' => array(
-                array(
+        $parameters = [
+            'custom_fields' => [
+                [
                     'id' => 123,
                     'name' => 'cf_name',
                     'field_format' => 'string',
-                    'value' => array(1, 2, 3),
-                ),
-            ),
-        );
+                    'value' => [1, 2, 3],
+                ],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -495,7 +495,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array();
+        $parameters = [];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -527,14 +527,14 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'project' => 'Project Name',
             'category' => 'Category Name',
             'status' => 'Status Name',
             'tracker' => 'Tracker Name',
             'assigned_to' => 'Assigned to User Name',
             'author' => 'Author Name',
-        );
+        ];
 
         // Create the used mock objects
         $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
@@ -552,18 +552,18 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(array('api', 'put'))
+            ->setMethods(['api', 'put'])
             ->getMock();
         $client->expects($this->exactly(6))
             ->method('api')
             ->willReturnMap(
-                array(
-                    array('project', $getIdByNameApi),
-                    array('issue_category', $getIdByNameApi),
-                    array('issue_status', $getIdByNameApi),
-                    array('tracker', $getIdByNameApi),
-                    array('user', $getIdByUsernameApi),
-                )
+                [
+                    ['project', $getIdByNameApi],
+                    ['issue_category', $getIdByNameApi],
+                    ['issue_status', $getIdByNameApi],
+                    ['tracker', $getIdByNameApi],
+                    ['user', $getIdByUsernameApi],
+                ]
             );
 
         $client->expects($this->once())
@@ -612,7 +612,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(array('api', 'put'))
+            ->setMethods(['api', 'put'])
             ->getMock();
         $client->expects($this->once())
             ->method('api')
@@ -683,12 +683,12 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testBuildXmlWithCustomFields()
     {
         // Test values
-        $parameters = array(
-            'custom_fields' => array(
-                array('id' => 225, 'value' => 'One Custom Field'),
-                array('id' => 25, 'value' => 'Second Custom Field'),
-            ),
-        );
+        $parameters = [
+            'custom_fields' => [
+                ['id' => 225, 'value' => 'One Custom Field'],
+                ['id' => 25, 'value' => 'Second Custom Field'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -724,9 +724,9 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testBuildXmlWithWatchers()
     {
         // Test values
-        $parameters = array(
-            'watcher_user_ids' => array(5, 25),
-        );
+        $parameters = [
+            'watcher_user_ids' => [5, 25],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -762,21 +762,21 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testBuildXmlWithUploads()
     {
         // Test values
-        $parameters = array(
-            'uploads' => array(
-                array(
+        $parameters = [
+            'uploads' => [
+                [
                     'token' => 'first-token',
                     'filename' => 'SomeRandomFile.txt',
                     'description' => 'Simple description',
                     'content_type' => 'text/plain',
-                ),
-                array(
+                ],
+                [
                     'token' => 'second-token',
                     'filename' => 'An-Other-File.css',
                     'content_type' => 'text/css',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -825,21 +825,21 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testBuildXmlWithWatcherAndUploadAndCustomFieldAndStandard()
     {
         // Test values
-        $parameters = array(
-            'watcher_user_ids' => array(5),
+        $parameters = [
+            'watcher_user_ids' => [5],
             'subject' => 'Issue subject',
-            'uploads' => array(
-                array(
+            'uploads' => [
+                [
                     'token' => 'first-token',
                     'filename' => 'SomeRandomFile.txt',
                     'description' => 'Simple description',
                     'content_type' => 'text/plain',
-                ),
-            ),
-            'custom_fields' => array(
-                array('id' => 25, 'value' => 'Second Custom Field'),
-            ),
-        );
+                ],
+            ],
+            'custom_fields' => [
+                ['id' => 25, 'value' => 'Second Custom Field'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

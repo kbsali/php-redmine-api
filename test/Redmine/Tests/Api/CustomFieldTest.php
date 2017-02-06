@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\CustomField;
 
 /**
- * @coversDefaultClass Redmine\Api\CustomField
+ * @coversDefaultClass \Redmine\Api\CustomField
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -55,7 +55,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $allParameters = array('not-used');
+        $allParameters = ['not-used'];
         $getResponse = 'API Response';
 
         // Create the used mock objects
@@ -73,7 +73,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame(array($getResponse), $api->all($allParameters));
+        $this->assertSame([$getResponse], $api->all($allParameters));
     }
 
     /**
@@ -88,11 +88,11 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithHighLimit()
     {
         // Test values
-        $allParameters = array('limit' => 250);
-        $returnDataSet = array(
+        $allParameters = ['limit' => 250];
+        $returnDataSet = [
             'limit' => '100',
-            'items' => array(),
-        );
+            'items' => [],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -127,13 +127,13 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()
     {
         // Test values
-        $allParameters = array('limit' => 250);
-        $returnDataSet = array(
+        $allParameters = ['limit' => 250];
+        $returnDataSet = [
             'limit' => '100',
             'offset' => '10',
             'total_count' => '5',
-            'items' => array(),
-        );
+            'items' => [],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -165,16 +165,16 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'custom_fields' => array(
-                array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'custom_fields' => [
+                ['id' => 1, 'name' => 'CustomField 1'],
+                ['id' => 5, 'name' => 'CustomField 5'],
+            ],
+        ];
+        $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -203,16 +203,16 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'custom_fields' => array(
-                array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'custom_fields' => [
+                ['id' => 1, 'name' => 'CustomField 1'],
+                ['id' => 5, 'name' => 'CustomField 5'],
+            ],
+        ];
+        $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -242,16 +242,16 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'custom_fields' => array(
-                array('id' => 1, 'name' => 'CustomField 1'),
-                array('id' => 5, 'name' => 'CustomField 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'custom_fields' => [
+                ['id' => 1, 'name' => 'CustomField 1'],
+                ['id' => 5, 'name' => 'CustomField 5'],
+            ],
+        ];
+        $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -281,11 +281,11 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'custom_fields' => array(
-                array('id' => 5, 'name' => 'CustomField 5'),
-            ),
-        );
+        $getResponse = [
+            'custom_fields' => [
+                ['id' => 5, 'name' => 'CustomField 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

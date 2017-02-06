@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Version;
 
 /**
- * @coversDefaultClass Redmine\Api\Version
+ * @coversDefaultClass \Redmine\Api\Version
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -47,11 +47,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'offset' => 10,
             'limit' => 2,
-        );
-        $getResponse = array('API Response');
+        ];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -218,9 +218,9 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionWithMissingNameInParameters()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'description' => 'Test version description',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -245,10 +245,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionWithInvalidStatus()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'description' => 'Test version description',
             'status' => 'invalid',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -273,9 +273,9 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -312,10 +312,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'status' => 'locked',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -352,10 +352,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'description' => 'Test version description',
             'status' => 'invalid',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -380,9 +380,9 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -419,10 +419,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'status' => 'locked',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -457,16 +457,16 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = array(
-            'versions' => array(
-                array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'versions' => [
+                ['id' => 1, 'name' => 'Version 1'],
+                ['id' => 5, 'name' => 'Version 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -493,16 +493,16 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testListingReturnsIdNameIfReverseIsFalseArray()
     {
         // Test values
-        $getResponse = array(
-            'versions' => array(
-                array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'versions' => [
+                ['id' => 1, 'name' => 'Version 1'],
+                ['id' => 5, 'name' => 'Version 5'],
+            ],
+        ];
+        $expectedReturn = [
             1 => 'Version 1',
             5 => 'Version 5',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -529,16 +529,16 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = array(
-            'versions' => array(
-                array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'versions' => [
+                ['id' => 1, 'name' => 'Version 1'],
+                ['id' => 5, 'name' => 'Version 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -566,16 +566,16 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = array(
-            'versions' => array(
-                array('id' => 1, 'name' => 'Version 1'),
-                array('id' => 5, 'name' => 'Version 5'),
-            ),
-        );
-        $expectedReturn = array(
+        $getResponse = [
+            'versions' => [
+                ['id' => 1, 'name' => 'Version 1'],
+                ['id' => 5, 'name' => 'Version 5'],
+            ],
+        ];
+        $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -603,11 +603,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = array(
-            'versions' => array(
-                array('id' => 5, 'name' => 'Version 5'),
-            ),
-        );
+        $getResponse = [
+            'versions' => [
+                ['id' => 5, 'name' => 'Version 5'],
+            ],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -643,10 +643,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -686,10 +686,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -731,10 +731,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -763,10 +763,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Update the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -806,10 +806,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Update the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -851,10 +851,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
-        );
+        ];
 
         // Update the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -875,13 +875,13 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     public function validSharingProvider()
     {
-        return array(
-            array('none', '<sharing>none</sharing>'),
-            array('descendants', '<sharing>descendants</sharing>'),
-            array('hierarchy', '<sharing>hierarchy</sharing>'),
-            array('tree', '<sharing>tree</sharing>'),
-            array('system', '<sharing>system</sharing>'),
-        );
+        return [
+            ['none', '<sharing>none</sharing>'],
+            ['descendants', '<sharing>descendants</sharing>'],
+            ['hierarchy', '<sharing>hierarchy</sharing>'],
+            ['tree', '<sharing>tree</sharing>'],
+            ['system', '<sharing>system</sharing>'],
+        ];
     }
 
     /**
@@ -891,11 +891,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     public function validEmptySharingProvider()
     {
-        return array(
-            array(null),
-            array(false),
-            array(''),
-        );
+        return [
+            [null],
+            [false],
+            [''],
+        ];
     }
 
     /**
@@ -905,9 +905,9 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidSharingProvider()
     {
-        return array(
-            array('all'),
-            array('invalid'),
-        );
+        return [
+            ['all'],
+            ['invalid'],
+        ];
     }
 }

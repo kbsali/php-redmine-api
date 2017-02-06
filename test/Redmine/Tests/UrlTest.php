@@ -39,9 +39,9 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testGroup()
     {
         $api = $this->client->group;
-        $res = $api->create(array(
+        $res = $api->create([
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/groups.xml');
         $this->assertEquals($res['method'], 'POST');
 
@@ -69,15 +69,15 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testIssue()
     {
         $api = $this->client->issue;
-        $res = $api->create(array(
+        $res = $api->create([
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/issues.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/issues/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -100,7 +100,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['path'], '/issues/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $api->attach(1, array('asdf'));
+        $res = $api->attach(1, ['asdf']);
         $this->assertEquals($res['path'], '/issues/1.json');
         $this->assertEquals($res['method'], 'PUT');
     }
@@ -108,15 +108,15 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testIssueCategory()
     {
         $api = $this->client->issue_category;
-        $res = $api->create('testProject', array(
+        $res = $api->create('testProject', [
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects/testProject/issue_categories.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/issue_categories/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -167,17 +167,17 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testMembership()
     {
         $api = $this->client->membership;
-        $res = $api->create('testProject', array(
+        $res = $api->create('testProject', [
             'user_id' => 1,
-            'role_ids' => array(1),
-        ));
+            'role_ids' => [1],
+        ]);
         $this->assertEquals($res['path'], '/projects/testProject/memberships.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'user_id' => 1,
-            'role_ids' => array(1),
-        ));
+            'role_ids' => [1],
+        ]);
         $this->assertEquals($res['path'], '/memberships/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -205,16 +205,16 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testProject()
     {
         $api = $this->client->project;
-        $res = $api->create(array(
+        $res = $api->create([
             'name' => 'asdf',
             'identifier' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array(
+        $res = $api->update(1, [
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -254,14 +254,14 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testTimeEntry()
     {
         $api = $this->client->time_entry;
-        $res = $api->create(array(
+        $res = $api->create([
             'issue_id' => 1,
             'hours' => 12,
-        ));
+        ]);
         $this->assertEquals($res['path'], '/time_entries.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array());
+        $res = $api->update(1, []);
         $this->assertEquals($res['path'], '/time_entries/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -297,16 +297,16 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testUser()
     {
         $api = $this->client->user;
-        $res = $api->create(array(
+        $res = $api->create([
             'login' => 'asdf',
             'lastname' => 'asdf',
             'firstname' => 'asdf',
             'mail' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/users.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array());
+        $res = $api->update(1, []);
         $this->assertEquals($res['path'], '/users/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -318,15 +318,15 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $api->show(1, array('include' => array('memberships', 'groups')));
+        $res = $api->show(1, ['include' => ['memberships', 'groups']]);
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $api->show(1, array('include' => array('memberships', 'groups', 'parameter1')));
+        $res = $api->show(1, ['include' => ['memberships', 'groups', 'parameter1']]);
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups,parameter1'));
         $this->assertEquals($res['method'], 'GET');
 
-        $res = $api->show(1, array('include' => array('parameter1', 'memberships', 'groups')));
+        $res = $api->show(1, ['include' => ['parameter1', 'memberships', 'groups']]);
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('parameter1,memberships,groups'));
         $this->assertEquals($res['method'], 'GET');
 
@@ -338,13 +338,13 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testVersion()
     {
         $api = $this->client->version;
-        $res = $api->create('testProject', array(
+        $res = $api->create('testProject', [
             'name' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects/testProject/versions.xml');
         $this->assertEquals($res['method'], 'POST');
 
-        $res = $api->update(1, array());
+        $res = $api->update(1, []);
         $this->assertEquals($res['path'], '/versions/1.xml');
         $this->assertEquals($res['method'], 'PUT');
 
@@ -364,19 +364,19 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     public function testWiki()
     {
         $api = $this->client->wiki;
-        $res = $api->create('testProject', 'about', array(
+        $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.xml');
         $this->assertEquals($res['method'], 'PUT');
 
-        $res = $api->update('testProject', 'about', array(
+        $res = $api->update('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
-        ));
+        ]);
         $this->assertEquals($res['path'], '/projects/testProject/wiki/about.xml');
         $this->assertEquals($res['method'], 'PUT');
 

@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Attachment details.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
@@ -14,7 +14,7 @@ class Attachment extends AbstractApi
     /**
      * Get extended information about an attachment.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
      *
      * @param string $id the attachment number
      *
@@ -40,7 +40,7 @@ class Attachment extends AbstractApi
     /**
      * Upload a file to redmine.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
      *
      * @param string $attachment the attachment content
      *

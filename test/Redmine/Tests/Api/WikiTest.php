@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\Wiki;
 
 /**
- * @coversDefaultClass Redmine\Api\Wiki
+ * @coversDefaultClass \Redmine\Api\Wiki
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -47,11 +47,11 @@ class WikiTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParameters()
     {
         // Test values
-        $parameters = array(
+        $parameters = [
             'offset' => 10,
             'limit' => 2,
-        );
-        $getResponse = array('API Response');
+        ];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -257,11 +257,11 @@ class WikiTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'title' => 'Test Wikipage',
             'comments' => 'Initial Edit',
             'text' => 'Some page text',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -330,11 +330,11 @@ class WikiTest extends \PHPUnit_Framework_TestCase
     {
         // Test values
         $getResponse = 'API Response';
-        $parameters = array(
+        $parameters = [
             'title' => 'Test Wikipage',
             'comments' => 'Initial Edit',
             'text' => 'Some page text',
-        );
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')

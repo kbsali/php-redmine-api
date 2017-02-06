@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing issues, searching, editing and closing your projects issues.
  *
- * @link   http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+ * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Issues
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
@@ -20,7 +20,7 @@ class Issue extends AbstractApi
     /**
      * List issues.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
      * available $params :
      * - offset: skip this number of issues in response (optional)
      * - limit: number of issues per page (optional)
@@ -36,7 +36,7 @@ class Issue extends AbstractApi
      *
      * @return array list of issues found
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         return $this->retrieveAll('/issues.json', $params);
     }
@@ -44,7 +44,7 @@ class Issue extends AbstractApi
     /**
      * Get extended information about an issue gitven its id.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON
      * available $params :
      * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
@@ -53,7 +53,7 @@ class Issue extends AbstractApi
      *
      * @return array information about the issue
      */
-    public function show($id, array $params = array())
+    public function show($id, array $params = [])
     {
         if (isset($params['include']) && is_array($params['include'])) {
             $params['include'] = implode(',', $params['include']);
@@ -69,7 +69,7 @@ class Issue extends AbstractApi
      *
      * @return \SimpleXMLElement
      */
-    private function buildXML(array $params = array())
+    private function buildXML(array $params = [])
     {
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
 
@@ -105,15 +105,15 @@ class Issue extends AbstractApi
      * Create a new issue given an array of $params
      * The issue is assigned to the authenticated user.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
      * @param array $params the new issue data
      *
      * @return \SimpleXMLElement
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'subject' => null,
             'description' => null,
             'project_id' => null,
@@ -127,7 +127,7 @@ class Issue extends AbstractApi
             'start_date' => null,
             'watcher_user_ids' => null,
             'fixed_version_id' => null,
-        );
+        ];
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -139,7 +139,7 @@ class Issue extends AbstractApi
     /**
      * Update issue information's by username, repo and issue number. Requires authentication.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
      * @param string $id     the issue number
      * @param array  $params
@@ -148,7 +148,7 @@ class Issue extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = array(
+        $defaults = [
             'id' => $id,
             'subject' => null,
             'notes' => null,
@@ -159,7 +159,7 @@ class Issue extends AbstractApi
             'tracker_id' => null,
             'assigned_to_id' => null,
             'due_date' => null,
-        );
+        ];
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
 
@@ -201,9 +201,9 @@ class Issue extends AbstractApi
         $api = $this->client->issue_status;
         $statusId = $api->getIdByName($status);
 
-        return $this->update($id, array(
+        return $this->update($id, [
             'status_id' => $statusId,
-        ));
+        ]);
     }
 
     /**
@@ -215,10 +215,10 @@ class Issue extends AbstractApi
      */
     public function addNoteToIssue($id, $note, $privateNote = false)
     {
-        return $this->update($id, array(
+        return $this->update($id, [
             'notes' => $note,
             'private_notes' => $privateNote,
-        ));
+        ]);
     }
 
     /**
@@ -228,7 +228,7 @@ class Issue extends AbstractApi
      *
      * @return array
      */
-    private function cleanParams(array $params = array())
+    private function cleanParams(array $params = [])
     {
         if (isset($params['project'])) {
             $apiProject = $this->client->project;
@@ -268,7 +268,7 @@ class Issue extends AbstractApi
     /**
      * Attach a file to an issue. Requires authentication.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
      * @param string $id         the issue number
      * @param array  $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
@@ -277,13 +277,13 @@ class Issue extends AbstractApi
      */
     public function attach($id, array $attachment)
     {
-        return $this->attachMany($id, array($attachment));
+        return $this->attachMany($id, [$attachment]);
     }
 
     /**
      * Attach files to an issue. Requires authentication.
      *
-     * @link http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
      * @param string $id          the issue number
      * @param array  $attachments [
@@ -295,11 +295,11 @@ class Issue extends AbstractApi
      */
     public function attachMany($id, array $attachments)
     {
-        $request = array();
-        $request['issue'] = array(
+        $request = [];
+        $request['issue'] = [
             'id' => $id,
             'uploads' => $attachments,
-        );
+        ];
 
         return $this->put('/issues/'.$id.'.json', json_encode($request));
     }

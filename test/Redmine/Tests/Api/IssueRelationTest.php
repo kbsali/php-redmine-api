@@ -5,7 +5,7 @@ namespace Redmine\Tests\Api;
 use Redmine\Api\IssueRelation;
 
 /**
- * @coversDefaultClass Redmine\Api\IssueRelation
+ * @coversDefaultClass \Redmine\Api\IssueRelation
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
@@ -49,8 +49,8 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
         // Test values
-        $parameters = array('not-used');
-        $getResponse = array('API Response');
+        $parameters = ['not-used'];
+        $getResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -83,9 +83,9 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $returnValue = array(
-            'child' => array(5, 2, 3),
-        );
+        $returnValue = [
+            'child' => [5, 2, 3],
+        ];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -94,7 +94,7 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())
             ->method('get')
             ->with($this->stringStartsWith('/relations/5.json'))
-            ->willReturn(array('relation' => $returnValue));
+            ->willReturn(['relation' => $returnValue]);
 
         // Create the object under test
         $api = new IssueRelation($client);
@@ -125,7 +125,7 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame(array(), $api->show(5));
+        $this->assertSame([], $api->show(5));
     }
 
     /**
@@ -174,9 +174,9 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $responseArray = array('test' => 'response');
+        $responseArray = ['test' => 'response'];
         $postResponse = json_encode($responseArray);
-        $parameters = array();
+        $parameters = [];
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
@@ -186,11 +186,11 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
                ->method('post')
                ->with(
                    '/issues/1/relations.json',
-                   array(
-                       'relation' => array(
+                   [
+                       'relation' => [
                            'relation_type' => 'relates',
-                       ),
-                   )
+                       ],
+                   ]
                )
                ->willReturn($postResponse);
 
