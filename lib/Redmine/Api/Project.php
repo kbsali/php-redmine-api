@@ -70,15 +70,24 @@ class Project extends AbstractApi
     /**
      * Get extended information about a project (including memberships + groups).
      *
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects#Showing-a-project
      *
      * @param string $id the project id
+     * @param array $params available parameters:
+     *        include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
      * @return array information about the project
      */
-    public function show($id)
+    public function show($id, array $params = [])
     {
-        return $this->get('/projects/'.urlencode($id).'.json?include=trackers,issue_categories,attachments,relations');
+        if (isset($params['include']) && is_array($params['include'])) {
+            $params['include'] = implode(',', $params['include']);
+        }
+        else {
+            $params['include'] = 'trackers,issue_categories,attachments,relations';
+        }
+
+        return $this->get('/projects/'.urlencode($id).'.json?'.http_build_query($params));
     }
 
     /**
