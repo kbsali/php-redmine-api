@@ -90,8 +90,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())
             ->method('get')
             ->with(
-                '/projects/5.json?'.
-                urlencode('include=trackers,issue_categories,attachments,relations')
+                '/projects/5.json?include='.
+                urlencode('trackers,issue_categories,attachments,relations')
             )
             ->willReturn($getResponse);
 
@@ -123,7 +123,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with(
                 $this->logicalAnd(
-                    $this->stringStartsWith('/projects/5.json?'),
+                    $this->stringStartsWith('/projects/5.json?include='),
                     $this->stringContains(urlencode('parameter1,parameter2,enabled_modules'))
                 )
             )

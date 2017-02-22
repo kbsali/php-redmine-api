@@ -223,7 +223,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($res['method'], 'GET');
 
         $res = $api->show(1);
-        $this->assertEquals($res['path'], '/projects/1.json?include=trackers,issue_categories,attachments,relations');
+        $this->assertEquals($res['path'], '/projects/1.json?include='.urlencode('trackers,issue_categories,attachments,relations'));
         $this->assertEquals($res['method'], 'GET');
 
         $res = $api->remove(1);
