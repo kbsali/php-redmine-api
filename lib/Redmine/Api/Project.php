@@ -82,8 +82,7 @@ class Project extends AbstractApi
     {
         if (isset($params['include']) && is_array($params['include'])) {
             $params['include'] = implode(',', $params['include']);
-        }
-        else {
+        } else {
             $params['include'] = 'trackers,issue_categories,attachments,relations';
         }
 

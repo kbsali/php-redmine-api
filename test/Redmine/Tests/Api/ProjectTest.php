@@ -90,8 +90,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())
             ->method('get')
             ->with(
-                '/projects/5.json?include=trackers,issue_categories,'
-                .'attachments,relations'
+                '/projects/5.json?'.
+                urlencode('include=trackers,issue_categories,attachments,relations')
             )
             ->willReturn($getResponse);
 
@@ -100,6 +100,40 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         // Perform the tests
         $this->assertSame($getResponse, $api->show(5));
+    }
+
+    /**
+     * Test show().
+     *
+     * @covers ::get
+     * @covers ::show
+     * @test
+     */
+    public function testShowReturnsClientGetResponseWithUniqueParameters()
+    {
+        // Test values
+        $parameters = ['include' => ['parameter1', 'parameter2', 'enabled_modules']];
+        $getResponse = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringStartsWith('/projects/5.json?'),
+                    $this->stringContains(urlencode('parameter1,parameter2,enabled_modules'))
+                )
+            )
+            ->willReturn($getResponse);
+
+        // Create the object under test
+        $api = new Project($client);
+
+        // Perform the tests
+        $this->assertSame($getResponse, $api->show(5, $parameters));
     }
 
     /**
