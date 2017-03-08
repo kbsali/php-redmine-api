@@ -186,11 +186,11 @@ class IssueRelationTest extends \PHPUnit_Framework_TestCase
                ->method('post')
                ->with(
                    '/issues/1/relations.json',
-                   [
+                   json_encode([
                        'relation' => [
                            'relation_type' => 'relates',
                        ],
-                   ]
+                   ])
                )
                ->willReturn($postResponse);
 
