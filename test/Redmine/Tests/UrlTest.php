@@ -4,7 +4,7 @@ namespace Redmine\Tests;
 
 use Redmine\Fixtures\MockClient as TestUrlClient;
 
-class UrlTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TestUrlClient

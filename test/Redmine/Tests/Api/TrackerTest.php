@@ -9,7 +9,7 @@ use Redmine\Api\Tracker;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class TrackerTest extends \PHPUnit_Framework_TestCase
+class TrackerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

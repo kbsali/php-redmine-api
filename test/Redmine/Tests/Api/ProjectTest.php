@@ -9,7 +9,7 @@ use Redmine\Api\Project;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class ProjectTest extends \PHPUnit_Framework_TestCase
+class ProjectTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

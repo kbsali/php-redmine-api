@@ -9,7 +9,7 @@ use Redmine\Api\User;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class UserTest extends \PHPUnit_Framework_TestCase
+class UserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test getCurrentUser().

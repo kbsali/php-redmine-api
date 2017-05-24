@@ -9,7 +9,7 @@ use Redmine\Api\Version;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class VersionTest extends \PHPUnit_Framework_TestCase
+class VersionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

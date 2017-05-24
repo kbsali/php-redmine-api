@@ -9,7 +9,7 @@ use Redmine\Api\IssueStatus;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueStatusTest extends \PHPUnit_Framework_TestCase
+class IssueStatusTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

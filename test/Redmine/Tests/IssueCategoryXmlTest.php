@@ -4,7 +4,7 @@ namespace Redmine\Tests;
 
 use Redmine\Fixtures\MockClient as TestClient;
 
-class IssueCategoryXmlTest extends \PHPUnit_Framework_TestCase
+class IssueCategoryXmlTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TestClient

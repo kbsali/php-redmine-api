@@ -9,7 +9,7 @@ use Redmine\Api\IssueCategory;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueCategoryTest extends \PHPUnit_Framework_TestCase
+class IssueCategoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

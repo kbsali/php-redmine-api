@@ -9,7 +9,7 @@ use Redmine\Api\CustomField;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class CustomFieldTest extends \PHPUnit_Framework_TestCase
+class CustomFieldTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

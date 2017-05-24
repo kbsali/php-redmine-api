@@ -9,7 +9,7 @@ use Redmine\Api\Wiki;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class WikiTest extends \PHPUnit_Framework_TestCase
+class WikiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().
