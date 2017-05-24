@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="lib/autoload.php"
+         bootstrap="vendor/autoload.php"
 >
     <testsuites>
         <testsuite name="php-redmine-api Test Suite">
