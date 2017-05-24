@@ -9,7 +9,7 @@ use Redmine\Api\News;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class NewsTest extends \PHPUnit_Framework_TestCase
+class NewsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

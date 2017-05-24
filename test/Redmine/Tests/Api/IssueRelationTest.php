@@ -9,7 +9,7 @@ use Redmine\Api\IssueRelation;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueRelationTest extends \PHPUnit_Framework_TestCase
+class IssueRelationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

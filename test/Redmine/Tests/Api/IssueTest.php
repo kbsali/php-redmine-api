@@ -9,7 +9,7 @@ use Redmine\Api\Issue;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueTest extends \PHPUnit_Framework_TestCase
+class IssueTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test the constants.

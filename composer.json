@@ -13,16 +13,22 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": "^5.4 || ^7.0",
         "ext-curl": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "^4.8.35 || ^6.0"
     },
     "autoload": {
-        "psr-0": {
-            "Redmine": "lib/"
+        "psr-4": {
+            "Redmine\\": "lib/Redmine/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Redmine\\Tests\\": "test/Redmine/Tests/",
+            "Redmine\\Fixtures\\": "test/Redmine/Fixtures/"
         }
     }
 }

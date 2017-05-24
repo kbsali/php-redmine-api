@@ -9,7 +9,7 @@ use Redmine\Api\Membership;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class MembershipTest extends \PHPUnit_Framework_TestCase
+class MembershipTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

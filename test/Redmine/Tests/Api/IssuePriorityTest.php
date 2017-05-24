@@ -9,7 +9,7 @@ use Redmine\Api\IssuePriority;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssuePriorityTest extends \PHPUnit_Framework_TestCase
+class IssuePriorityTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

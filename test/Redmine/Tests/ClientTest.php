@@ -5,7 +5,7 @@ namespace Redmine\Tests;
 use Redmine\Client;
 use Redmine\Fixtures\MockClient;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers \Redmine\Client

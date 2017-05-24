@@ -9,7 +9,7 @@ use Redmine\Api\TimeEntry;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class TimeEntryTest extends \PHPUnit_Framework_TestCase
+class TimeEntryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

@@ -9,7 +9,7 @@ use Redmine\Api\Query;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class QueryTest extends \PHPUnit_Framework_TestCase
+class QueryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test all().

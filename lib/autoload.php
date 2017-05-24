@@ -7,19 +7,8 @@ spl_autoload_register(function ($class) {
      */
     $class = str_replace('\\', '/', $class);
 
-    /* First, check under the current directory. It is important that
-     * we look here first, so that we don't waste time searching for
-     * test classes in the common case.
-     */
+    // Check under the current directory
     $path = dirname(__FILE__).'/'.$class.'.php';
-    if (file_exists($path)) {
-        require_once $path;
-    }
-
-    /* If we didn't find what we're looking for already, maybe it's
-     * a test class?
-     */
-    $path = dirname(__FILE__).'/../test/'.$class.'.php';
     if (file_exists($path)) {
         require_once $path;
     }
