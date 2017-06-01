@@ -19,7 +19,7 @@ if (file_exists($composer_path))
 spl_autoload_register(function ($class) {
     // project-specific namespace prefix and base directory with trailing /
     $namespace_map = [
-        'Redmine\\' => __DIR__ . '/Redmine/',
+        'Redmine\\'        => __DIR__ . '/Redmine/',
         'Redmine\\Tests\\' => __DIR__ . '/../tests/',
     ];
 
@@ -30,7 +30,7 @@ spl_autoload_register(function ($class) {
         if (strncmp($prefix, $class, $len) !== 0)
         {
             // no, move to the next registered autoloader
-            return;
+            continue;
         }
 
         // get the relative class name
