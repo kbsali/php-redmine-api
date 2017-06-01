@@ -27,8 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Redmine\\Tests\\": "test/Redmine/Tests/",
-            "Redmine\\Fixtures\\": "test/Redmine/Fixtures/"
+            "Redmine\\Tests\\": "tests/"
         }
     }
 }

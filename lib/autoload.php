@@ -1,15 +1,51 @@
 <?php
 
-spl_autoload_register(function ($class) {
-    /* All of the classes have names like "Redmine\Foo", so we need to
-     * replace the backslashes with frontslashes if we want the name
-     * to map directly to a location in the filesystem.
-     */
-    $class = str_replace('\\', '/', $class);
+// use Composer if possible
+$composer_path = __DIR__ . '/../vendor/autoload.php';
 
-    // Check under the current directory
-    $path = dirname(__FILE__).'/'.$class.'.php';
-    if (file_exists($path)) {
-        require_once $path;
+if (file_exists($composer_path))
+{
+    include $composer_path;
+
+    return;
+}
+
+/**
+ * PSR-4 implementation for Redmine
+ *
+ * @param string $class The fully-qualified class name.
+ * @return void
+ */
+spl_autoload_register(function ($class) {
+    // project-specific namespace prefix and base directory with trailing /
+    $namespace_map = [
+        'Redmine\\' => __DIR__ . '/Redmine/',
+        'Redmine\\Tests\\' => __DIR__ . '/../tests/',
+    ];
+
+    foreach ($namespace_map as $prefix => $base_dir)
+    {
+        // does the class use the namespace prefix?
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0)
+        {
+            // no, move to the next registered autoloader
+            return;
+        }
+
+        // get the relative class name
+        $relative_class = substr($class, $len);
+
+        // replace the namespace prefix with the base directory, replace namespace
+        // separators with directory separators in the relative class name, append
+        // with .php
+        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+        // if the file exists, require it
+        if (file_exists($file))
+        {
+            require $file;
+            break;
+        }
     }
 });
