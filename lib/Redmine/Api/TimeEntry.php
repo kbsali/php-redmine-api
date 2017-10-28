@@ -86,7 +86,7 @@ class TimeEntry extends AbstractApi
     }
 
     /**
-     * Update time entry's informations.
+     * Update time entry's information.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *

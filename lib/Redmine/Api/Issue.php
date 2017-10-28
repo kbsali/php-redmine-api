@@ -32,7 +32,7 @@ class Issue extends AbstractApi
      * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
      * - query_id : id of the previously saved query
      *
-     * @param array $params the additional parameters (cf avaiable $params above)
+     * @param array $params the additional parameters (cf available $params above)
      *
      * @return array list of issues found
      */
