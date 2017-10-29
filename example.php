@@ -5,7 +5,7 @@
  * This file holds example commands for reading, creating, updating and deleting redmine components.
  */
 
-// As this is only an example file, we make sure, this is not accidently executed and may destroy real
+// As this is only an example file, we make sure, this is not accidentally executed and may destroy real
 // life content.
 return;
 
@@ -26,7 +26,7 @@ $userId = 3;
 $versionId = 2;
 
 // ----------------------------
-// Instanciate a redmine client
+// Instantiate a redmine client
 // --> with ApiKey
 $client = new Redmine\Client('http://localhost', '1234567890abcdfgh');
 

@@ -227,7 +227,7 @@ class Client
     /**
      * Decodes json response.
      *
-     * Returns $json if no error occured during decoding but decoded value is
+     * Returns $json if no error occurred during decoding but decoded value is
      * null.
      *
      * @param string $json

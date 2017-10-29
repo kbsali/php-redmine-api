@@ -11,7 +11,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @covers \Redmine\Client
      * @test
      */
-    public function shouldPassApiKeyToContructor()
+    public function shouldPassApiKeyToConstructor()
     {
         $client = new Client('http://test.local', 'asdf');
 
@@ -22,7 +22,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      * @covers \Redmine\Client
      * @test
      */
-    public function shouldPassUsernameAndPasswordToContructor()
+    public function shouldPassUsernameAndPasswordToConstructor()
     {
         $client = new Client('http://test.local', 'username', 'pwd');
 
@@ -473,7 +473,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(
             $client->processCurlResponse(false, 'application/xml')
         );
-        // successfull request
+        // successful request
         $this->assertTrue(
             $client->processCurlResponse(true, 'text/html')
         );
