@@ -687,6 +687,7 @@ class IssueTest extends \PHPUnit\Framework\TestCase
             'custom_fields' => [
                 ['id' => 225, 'value' => 'One Custom Field'],
                 ['id' => 25, 'value' => 'Second Custom Field'],
+                ['id' => 321, 'value' => 'http://test.local/?one=first&two=second'],
             ],
         ];
 
@@ -704,7 +705,8 @@ class IssueTest extends \PHPUnit\Framework\TestCase
                     $this->stringContains('<custom_fields type="array">'),
                     $this->stringContains('</custom_fields>'),
                     $this->stringContains('<custom_field id="225"><value>One Custom Field</value></custom_field>'),
-                    $this->stringContains('<custom_field id="25"><value>Second Custom Field</value></custom_field>')
+                    $this->stringContains('<custom_field id="25"><value>Second Custom Field</value></custom_field>'),
+                    $this->stringContains('<custom_field id="321"><value>http://test.local/?one=first&amp;two=second</value></custom_field>')
                 )
             );
 

@@ -204,9 +204,6 @@ abstract class AbstractApi
                     $_values->addChild('value', $val);
                 }
             } else {
-                // as in Issue::buildXML method
-                // "addChild" does not escape text for XML value, but the setter does.
-                // http://stackoverflow.com/a/555039/99904
                 $_field->value = $field['value'];
             }
         }
