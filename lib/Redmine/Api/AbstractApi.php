@@ -204,7 +204,7 @@ abstract class AbstractApi
                     $_values->addChild('value', $val);
                 }
             } else {
-                $_field->addChild('value', $field['value']);
+                $_field->value = $field['value'];
             }
         }
 
