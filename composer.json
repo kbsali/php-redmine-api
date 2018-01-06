@@ -16,7 +16,8 @@
         "php": "^5.4 || ^7.0",
         "ext-curl": "*",
         "ext-simplexml": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "free2wait/composer-free2wait": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
@@ -30,6 +31,11 @@
     "autoload-dev": {
         "psr-4": {
             "Redmine\\Tests\\": "tests/"
+        }
+    },
+    "free2wait": {
+        "to": {
+            "paypal": "your.paypal.to.receive.payouts@example.com"
         }
     }
 }
