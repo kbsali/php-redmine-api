@@ -373,3 +373,7 @@ Array
     [closed] => 1
 )
 */
+
+// ----------------------------
+// Search
+$client->search->search("Myproject", [ "limit" => 100 ])
