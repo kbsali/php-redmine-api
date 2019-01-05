@@ -7,7 +7,6 @@ namespace Redmine\Api;
  *
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
  *
- * @author Javier Sanahuja
  */
 class Search extends AbstractApi
 {
@@ -19,7 +18,7 @@ class Search extends AbstractApi
      * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
      *
      * @param string $query string to search
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return array list of results (projects, issues)
      */
@@ -31,5 +30,3 @@ class Search extends AbstractApi
 		return $this->results;
 	}
 }
-
-?>
