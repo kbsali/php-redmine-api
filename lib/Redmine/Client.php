@@ -140,6 +140,7 @@ class Client
         'user' => 'User',
         'version' => 'Version',
         'wiki' => 'Wiki',
+        'search' => 'Search',
     ];
 
     /**
