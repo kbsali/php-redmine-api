@@ -102,6 +102,30 @@ class Membership extends AbstractApi
     }
 
     /**
+     * Delete membership of project by user id
+     *
+     * @param int $project_id id of project
+     * @param int $user_id id of user
+     *
+     * @return false|\SimpleXMLElement|string
+     */
+    public function removeMember($project_id, $user_id)
+    {
+        $memberships = $this->all($project_id);
+
+        if (isset($memberships['memberships']))
+        {
+            foreach ($memberships['memberships'] as $membership)
+            {
+                if (isset($membership['id']) && isset($membership['user']['id']) && $membership['user']['id'] === $user_id)
+                {
+                    return $this->remove($membership['id']);
+                }
+            }
+        }
+    }
+
+    /**
      * Build the XML for a membership.
      *
      * @param array $params for the new/updated membership data
