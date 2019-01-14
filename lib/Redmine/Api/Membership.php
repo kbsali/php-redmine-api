@@ -104,8 +104,8 @@ class Membership extends AbstractApi
     /**
      * Delete membership of project by user id
      *
-     * @param int $project_id id of project
-     * @param int $user_id id of user
+     * @param int $projectId id of project
+     * @param int $userId id of user
      *
      * @return false|\SimpleXMLElement|string
      */
