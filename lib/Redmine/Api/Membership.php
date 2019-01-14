@@ -109,15 +109,15 @@ class Membership extends AbstractApi
      *
      * @return false|\SimpleXMLElement|string
      */
-    public function removeMember($project_id, $user_id)
+    public function removeMember($projectId, $userId)
     {
-        $memberships = $this->all($project_id);
+        $memberships = $this->all($projectId);
 
         if (isset($memberships['memberships']))
         {
             foreach ($memberships['memberships'] as $membership)
             {
-                if (isset($membership['id']) && isset($membership['user']['id']) && $membership['user']['id'] === $user_id)
+                if (isset($membership['id']) && isset($membership['user']['id']) && $membership['user']['id'] === $userId)
                 {
                     return $this->remove($membership['id']);
                 }
