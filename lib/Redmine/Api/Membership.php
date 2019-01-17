@@ -105,15 +105,16 @@ class Membership extends AbstractApi
      * Delete membership of project by user id
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
-     * 
+     *
      * @param int $projectId id of project
      * @param int $userId id of user
+     * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return false|\SimpleXMLElement|string
      */
-    public function removeMember($projectId, $userId)
+    public function removeMember($projectId, $userId, array $params = [])
     {
-        $memberships = $this->all($projectId);
+        $memberships = $this->all($projectId, $params);
         $removed = false;
 
         if (isset($memberships['memberships']) && is_array($memberships['memberships'])) {
