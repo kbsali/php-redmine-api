@@ -104,6 +104,8 @@ class Membership extends AbstractApi
     /**
      * Delete membership of project by user id
      *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
+     * 
      * @param int $projectId id of project
      * @param int $userId id of user
      *
@@ -113,7 +115,7 @@ class Membership extends AbstractApi
     {
         $memberships = $this->all($projectId);
 
-        if (isset($memberships['memberships']))
+        if (isset($memberships['memberships']) && is_array($memberships['memberships']))
         {
             foreach ($memberships['memberships'] as $membership)
             {
