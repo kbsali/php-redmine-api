@@ -34,13 +34,14 @@ class Project extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the projects var
      * @param bool $reverse     to return an array indexed by name rather than id
+     * @param array  $params   to allow offset/limit (and more) to be passed
      *
      * @return array list of projects (id => project name)
      */
-    public function listing($forceUpdate = false, $reverse = true)
+    public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->projects)) {
-            $this->all();
+            $this->all($params);
         }
         $ret = [];
         foreach ($this->projects['projects'] as $e) {
@@ -54,12 +55,13 @@ class Project extends AbstractApi
      * Get a project id given its name.
      *
      * @param string $name
+     * @param array  $params   to allow offset/limit (and more) to be passed
      *
      * @return int|bool
      */
-    public function getIdByName($name)
+    public function getIdByName($name, array $params = [])
     {
-        $arr = $this->listing();
+        $arr = $this->listing(false, true, $params);
         if (!isset($arr[$name])) {
             return false;
         }
