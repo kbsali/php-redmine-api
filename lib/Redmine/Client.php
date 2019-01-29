@@ -8,25 +8,25 @@ namespace Redmine;
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
  *
- * @property Api\Attachment $attachment
- * @property Api\Group $group
- * @property Api\CustomField $custom_fields
- * @property Api\Issue $issue
- * @property Api\IssueCategory $issue_category
- * @property Api\IssuePriority $issue_priority
- * @property Api\IssueRelation $issue_relation
- * @property Api\IssueStatus $issue_status
- * @property Api\Membership $membership
- * @property Api\News $news
- * @property Api\Project $project
- * @property Api\Query $query
- * @property Api\Role $role
- * @property Api\TimeEntry $time_entry
+ * @property Api\Attachment        $attachment
+ * @property Api\Group             $group
+ * @property Api\CustomField       $custom_fields
+ * @property Api\Issue             $issue
+ * @property Api\IssueCategory     $issue_category
+ * @property Api\IssuePriority     $issue_priority
+ * @property Api\IssueRelation     $issue_relation
+ * @property Api\IssueStatus       $issue_status
+ * @property Api\Membership        $membership
+ * @property Api\News              $news
+ * @property Api\Project           $project
+ * @property Api\Query             $query
+ * @property Api\Role              $role
+ * @property Api\TimeEntry         $time_entry
  * @property Api\TimeEntryActivity $time_entry_activity
- * @property Api\Tracker $tracker
- * @property Api\User $user
- * @property Api\Version $version
- * @property Api\Wiki $wiki
+ * @property Api\Tracker           $tracker
+ * @property Api\User              $user
+ * @property Api\Version           $version
+ * @property Api\Wiki              $wiki
  */
 class Client
 {
@@ -501,19 +501,19 @@ class Client
         return $this;
     }
 
-     /**
-      * Unset a cURL option.
-      *
-      * @param int   $option The CURLOPT_XXX option to unset
-      *
-      * @return Client
-      */
-     public function unsetCurlOption($option)
-     {
-         unset($this->curlOptions[$option]);
+    /**
+     * Unset a cURL option.
+     *
+     * @param int   $option The CURLOPT_XXX option to unset
+     *
+     * @return Client
+     */
+    public function unsetCurlOption($option)
+    {
+        unset($this->curlOptions[$option]);
 
-         return $this;
-     }
+        return $this;
+    }
 
     /**
      * Get all set cURL options.
@@ -623,12 +623,12 @@ class Client
             $httpHeader[] = 'Content-Type: text/xml';
         }
 
-        if ($this->customHost !== null) {
+        if (null !== $this->customHost) {
             $httpHeader[] = 'Host: '.$this->customHost;
         }
 
         // Redmine specific headers
-        if ($this->impersonateUser !== null) {
+        if (null !== $this->impersonateUser) {
             $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
         if (null === $this->pass) {

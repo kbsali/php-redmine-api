@@ -170,24 +170,24 @@ class Issue extends AbstractApi
 
     /**
      * @param int    $id
-     * @param string $watcher_user_id
+     * @param string $watcherUserId
      *
      * @return false|string
      */
-    public function addWatcher($id, $watcher_user_id)
+    public function addWatcher($id, $watcherUserId)
     {
-        return $this->post('/issues/'.$id.'/watchers.xml', '<user_id>'.$watcher_user_id.'</user_id>');
+        return $this->post('/issues/'.$id.'/watchers.xml', '<user_id>'.$watcherUserId.'</user_id>');
     }
 
     /**
      * @param int    $id
-     * @param string $watcher_user_id
+     * @param string $watcherUserId
      *
      * @return false|\SimpleXMLElement|string
      */
-    public function removeWatcher($id, $watcher_user_id)
+    public function removeWatcher($id, $watcherUserId)
     {
-        return $this->delete('/issues/'.$id.'/watchers/'.$watcher_user_id.'.xml');
+        return $this->delete('/issues/'.$id.'/watchers/'.$watcherUserId.'.xml');
     }
 
     /**

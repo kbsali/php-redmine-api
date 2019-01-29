@@ -74,9 +74,9 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects#Showing-a-project
      *
-     * @param string $id the project id
-     * @param array $params available parameters:
-     *        include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
+     * @param string $id     the project id
+     * @param array  $params available parameters:
+     *                       include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
      * @return array information about the project
      */
