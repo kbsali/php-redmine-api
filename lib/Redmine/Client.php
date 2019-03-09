@@ -573,7 +573,17 @@ class Client
         switch ($method) {
             case 'POST':
                 $this->setCurlOption(CURLOPT_POST, 1);
-                if (isset($data)) {
+
+                if ('/uploads.json' === $path || '/uploads.xml' === $path && isset($data) && is_file($data)) {
+                    $file = fopen($data, 'r');
+                    $size = filesize($data);
+                    $filedata = fread($file, $size);
+
+                    $this->setCurlOption(CURLOPT_POSTFIELDS, $filedata);
+                    $this->setCurlOption(CURLOPT_INFILE, $file);
+                    $this->setCurlOption(CURLOPT_INFILESIZE, $size);
+                }
+                elseif (isset($data)) {
                     $this->setCurlOption(CURLOPT_POSTFIELDS, $data);
                 }
                 break;
