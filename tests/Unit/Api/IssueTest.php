@@ -357,17 +357,12 @@ class IssueTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * DISABLED - can't figure out how to fix the failing test :
-     * 1) Redmine\Tests\Unit\Api\IssueTest::testCreateCleansParameters
-     * TypeError: Argument 2 passed to Mock_Project_b34aaea3::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/src/Redmine/Api/Issue.php on line 241.
-     *
      * Test cleanParams().
      *
      * @covers ::create
      * @covers ::cleanParams
      * @test
      */
-    /*
     public function testCreateCleansParameters()
     {
         // Test values
@@ -385,7 +380,13 @@ class IssueTest extends \PHPUnit\Framework\TestCase
         $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
             ->disableOriginalConstructor()
             ->getMock();
-        $getIdByNameApi->expects($this->exactly(4))
+        $getIdByNameApi->expects($this->exactly(3))
+            ->method('getIdByName')
+            ->willReturn('cleanedValue');
+        $issueCategoryGetIdByNameApi = $this->getMockBuilder('Redmine\Api\IssueCategory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $issueCategoryGetIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
         $getIdByUsernameApi = $this->getMockBuilder('Redmine\Api\User')
@@ -404,7 +405,7 @@ class IssueTest extends \PHPUnit\Framework\TestCase
             ->willReturnMap(
                 [
                     ['project', $getIdByNameApi],
-                    ['issue_category', $getIdByNameApi],
+                    ['issue_category', $issueCategoryGetIdByNameApi],
                     ['issue_status', $getIdByNameApi],
                     ['tracker', $getIdByNameApi],
                     ['user', $getIdByUsernameApi],
@@ -434,7 +435,6 @@ class IssueTest extends \PHPUnit\Framework\TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->create($parameters));
     }
-    */
 
     /**
      * Test create() and buildXML().
@@ -523,17 +523,12 @@ class IssueTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * DISABLED - can't figure out how to fix the failing test :
-     * 2) Redmine\Tests\Unit\Api\IssueTest::testUpdateCleansParameters
-     * TypeError: Argument 2 passed to Mock_Project_3a94a82c::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/src/Redmine/Api/Issue.php on line 241.
-     *
      * Test update().
      *
      * @covers ::update
      * @covers ::cleanParams
      * @test
      */
-    /*
     public function testUpdateCleansParameters()
     {
         // Test values
@@ -551,7 +546,13 @@ class IssueTest extends \PHPUnit\Framework\TestCase
         $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
             ->disableOriginalConstructor()
             ->getMock();
-        $getIdByNameApi->expects($this->exactly(4))
+        $getIdByNameApi->expects($this->exactly(3))
+            ->method('getIdByName')
+            ->willReturn('cleanedValue');
+        $issueCategoryGetIdByNameApi = $this->getMockBuilder('Redmine\Api\IssueCategory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $issueCategoryGetIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
         $getIdByUsernameApi = $this->getMockBuilder('Redmine\Api\User')
@@ -570,7 +571,7 @@ class IssueTest extends \PHPUnit\Framework\TestCase
             ->willReturnMap(
                 [
                     ['project', $getIdByNameApi],
-                    ['issue_category', $getIdByNameApi],
+                    ['issue_category', $issueCategoryGetIdByNameApi],
                     ['issue_status', $getIdByNameApi],
                     ['tracker', $getIdByNameApi],
                     ['user', $getIdByUsernameApi],
@@ -601,7 +602,6 @@ class IssueTest extends \PHPUnit\Framework\TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->update(5, $parameters));
     }
-    */
 
     /**
      * Test setIssueStatus().
