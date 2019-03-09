@@ -504,7 +504,7 @@ class Client
     /**
      * Unset a cURL option.
      *
-     * @param int   $option The CURLOPT_XXX option to unset
+     * @param int $option The CURLOPT_XXX option to unset
      *
      * @return Client
      */
@@ -582,8 +582,7 @@ class Client
                     $this->setCurlOption(CURLOPT_POSTFIELDS, $filedata);
                     $this->setCurlOption(CURLOPT_INFILE, $file);
                     $this->setCurlOption(CURLOPT_INFILESIZE, $size);
-                }
-                elseif (isset($data)) {
+                } elseif (isset($data)) {
                     $this->setCurlOption(CURLOPT_POSTFIELDS, $data);
                 }
                 break;
