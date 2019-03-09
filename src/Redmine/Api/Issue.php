@@ -234,7 +234,6 @@ class Issue extends AbstractApi
             $apiProject = $this->client->project;
             $params['project_id'] = $apiProject->getIdByName($params['project']);
             unset($params['project']);
-
             if (isset($params['category'])) {
                 $apiIssueCategory = $this->client->issue_category;
                 $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
