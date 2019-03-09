@@ -359,7 +359,7 @@ class IssueTest extends \PHPUnit\Framework\TestCase
     /**
      * DISABLED - can't figure out how to fix the failing test :
      * 1) Redmine\Tests\Unit\Api\IssueTest::testCreateCleansParameters
-     * TypeError: Argument 2 passed to Mock_Project_b34aaea3::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/lib/Redmine/Api/Issue.php on line 241.
+     * TypeError: Argument 2 passed to Mock_Project_b34aaea3::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/src/Redmine/Api/Issue.php on line 241.
      *
      * Test cleanParams().
      *
@@ -525,7 +525,7 @@ class IssueTest extends \PHPUnit\Framework\TestCase
     /**
      * DISABLED - can't figure out how to fix the failing test :
      * 2) Redmine\Tests\Unit\Api\IssueTest::testUpdateCleansParameters
-     * TypeError: Argument 2 passed to Mock_Project_3a94a82c::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/lib/Redmine/Api/Issue.php on line 241.
+     * TypeError: Argument 2 passed to Mock_Project_3a94a82c::getIdByName() must be of the type array, string given, called in /home/kevin/workspace/me/php-redmine-api/src/Redmine/Api/Issue.php on line 241.
      *
      * Test update().
      *

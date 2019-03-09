@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="lib/autoload.php"
+         bootstrap="src/autoload.php"
 >
     <testsuites>
         <testsuite name="all">
@@ -25,7 +25,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">lib/Redmine/</directory>
+            <directory suffix=".php">src/Redmine/</directory>
         </whitelist>
     </filter>
 
