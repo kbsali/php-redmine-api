@@ -102,13 +102,13 @@ class Membership extends AbstractApi
     }
 
     /**
-     * Delete membership of project by user id
+     * Delete membership of project by user id.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
      *
-     * @param int $projectId id of project
-     * @param int $userId id of user
-     * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param int   $projectId id of project
+     * @param int   $userId    id of user
+     * @param array $params    optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return false|\SimpleXMLElement|string
      */
@@ -124,6 +124,7 @@ class Membership extends AbstractApi
                 }
             }
         }
+
         return $removed;
     }
 

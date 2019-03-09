@@ -5,15 +5,13 @@
     "homepage": "https://github.com/kbsali/php-redmine-api",
     "keywords": ["redmine", "api"],
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Kevin Saliou",
-            "email": "kevin@saliou.name",
-            "homepage": "http://kevin.saliou.name"
-        }
-    ],
+    "authors": [{
+        "name": "Kevin Saliou",
+        "email": "kevin@saliou.name",
+        "homepage": "http://kevin.saliou.name"
+    }],
     "require": {
-        "php": "^5.4 || ^7.0",
+        "php": "^5.4 || ^7.2",
         "ext-curl": "*",
         "ext-simplexml": "*",
         "ext-json": "*"

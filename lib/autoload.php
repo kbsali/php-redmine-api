@@ -5,6 +5,7 @@ $composerPath = __DIR__.'/../vendor/autoload.php';
 
 if (file_exists($composerPath)) {
     include $composerPath;
+
     return;
 }
 
@@ -17,14 +18,14 @@ if (file_exists($composerPath)) {
 spl_autoload_register(function ($class) {
     // project-specific namespace prefix and base directory with trailing /
     $namespaceMap = [
-        'Redmine\\'        => __DIR__.'/Redmine/',
+        'Redmine\\' => __DIR__.'/Redmine/',
         'Redmine\\Tests\\' => __DIR__.'/../tests/',
     ];
 
     foreach ($namespaceMap as $prefix => $baseDir) {
         // does the class use the namespace prefix?
         $len = strlen($prefix);
-        if (strncmp($prefix, $class, $len) !== 0) {
+        if (0 !== strncmp($prefix, $class, $len)) {
             // no, move to the next registered autoloader
             continue;
         }

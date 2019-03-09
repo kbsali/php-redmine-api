@@ -12,8 +12,6 @@ use Redmine\Client;
 abstract class AbstractApi
 {
     /**
-     * The client.
-     *
      * @var Client
      */
     protected $client;
