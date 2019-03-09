@@ -1,6 +1,6 @@
 # PHP Redmine API
 
-A simple Object Oriented wrapper for Redmine API, written with PHP5.
+A simple PHP Object Oriented wrapper for Redmine API.
 
 Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
@@ -83,47 +83,46 @@ It is also possible to install the library oneself, either locally to
 a project or globally; say, in `/usr/share/php`.
 
 First, download and extract the library somewhere. For example, the
-following steps extract v1.5.1 of the library into the
-`vendor/php-redmine-api-1.5.1` directory:
+following steps extract v1.5.18 of the library into the
+`vendor/php-redmine-api-1.5.18` directory:
 
 ```bash
 $ mkdir vendor
-$ wget -q https://github.com/kbsali/php-redmine-api/archive/v1.5.1.tar.gz
-$ tar -xf v1.5.1.tar.gz -C vendor/
-$ rm v1.5.1.tar.gz
+$ wget -q https://github.com/kbsali/php-redmine-api/archive/v1.5.18.tar.gz
+$ tar -xf v1.5.18.tar.gz -C vendor/
+$ rm v1.5.18.tar.gz
 ```
 
 Now, in any scripts that will use the `Redmine` classes, include the
-`lib/autoload.php` file from the php-redmine-api directory. For
+`src/autoload.php` file from the php-redmine-api directory. For
 example,
 
 ```php
 <?php
 // This file ships with php-redmine-api
-require 'vendor/php-redmine-api-1.5.1/lib/autoload.php';
+require 'vendor/php-redmine-api-1.5.18/src/autoload.php';
 $client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 ```
 
 ### Running the test suite
 
-If you have [PHPUnit](https://phpunit.de/) >= 4.0 installed, you can
-run the test suite to make sure that the library will function
-properly on your system. Simply run `phpunit` in the php-redmine-api
-directory. For example,
+You can run test suite to make sure the library will work properly on your system. Simply run `vendor/bin/phpunit` in the project's directory :
 
 ```
-$ phpunit
-PHPUnit 4.3.1 by Sebastian Bergmann.
+$ vendor/bin/phpunit
+PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
 
-Configuration read from ./phpunit.xml.dist
+Error:         No code coverage driver is available
 
-...............................................................  63 / 276 ( 22%)
-............................................................... 126 / 276 ( 45%)
-............................................................... 189 / 276 ( 68%)
-............................................................... 252 / 276 ( 91%)
-........................
+...............................................................  63 / 285 ( 22%)
+............................................................... 126 / 285 ( 44%)
+............................................................... 189 / 285 ( 66%)
+............................................................... 252 / 285 ( 88%)
+.................................                               285 / 285 (100%)
 
-Time: 591 ms, Memory: 10.50Mb
+Time: 107 ms, Memory: 8.00MB
+
+OK (285 tests, 662 assertions)
 ```
 
 ## Basic usage of `php-redmine-api` client
@@ -135,7 +134,7 @@ Time: 591 ms, Memory: 10.50Mb
 require_once 'vendor/autoload.php';
 
 // Or if you've installed the library manually, use this instead.
-// require 'vendor/php-redmine-api-x.y.z/lib/autoload.php';
+// require 'vendor/php-redmine-api-x.y.z/src/autoload.php';
 
 $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 //-- OR --

@@ -18,11 +18,11 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
-        "phpunit/phpunit": "^4.8.35 || ^5.4.3 || ^6.0"
+        "phpunit/phpunit": "^4.8.36 || ^5.4.8 || ^6.0"
     },
     "autoload": {
         "psr-4": {
-            "Redmine\\": "lib/Redmine/"
+            "Redmine\\": "src/Redmine/"
         }
     },
     "autoload-dev": {

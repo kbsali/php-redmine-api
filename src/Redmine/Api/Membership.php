@@ -115,13 +115,13 @@ class Membership extends AbstractApi
     public function removeMember($projectId, $userId, array $params = [])
     {
         $memberships = $this->all($projectId, $params);
+        if (!isset($memberships['memberships']) || !is_array($memberships['memberships'])) {
+            return;
+        }
         $removed = false;
-
-        if (isset($memberships['memberships']) && is_array($memberships['memberships'])) {
-            foreach ($memberships['memberships'] as $membership) {
-                if (isset($membership['id']) && isset($membership['user']['id']) && $membership['user']['id'] === $userId) {
-                    $removed = $this->remove($membership['id']);
-                }
+        foreach ($memberships['memberships'] as $membership) {
+            if (isset($membership['id']) && isset($membership['user']['id']) && $membership['user']['id'] === $userId) {
+                $removed = $this->remove($membership['id']);
             }
         }
 
