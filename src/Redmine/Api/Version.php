@@ -121,9 +121,9 @@ class Version extends AbstractApi
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
-            }  else {
-				$xml->addChild($k, $v);
-			}
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->post('/projects/'.$project.'/versions.xml', $xml->asXML());
@@ -156,9 +156,9 @@ class Version extends AbstractApi
         foreach ($params as $k => $v) {
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
-            }  else {
-				$xml->addChild($k, $v);
-			}
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->put('/versions/'.$id.'.xml', $xml->asXML());
