@@ -119,7 +119,11 @@ class Version extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k && is_array($v)) {
+                $this->attachCustomFieldXML($xml, $v);
+            }  else {
+				$xml->addChild($k, $v);
+			}
         }
 
         return $this->post('/projects/'.$project.'/versions.xml', $xml->asXML());
@@ -150,7 +154,11 @@ class Version extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if ('custom_fields' === $k && is_array($v)) {
+                $this->attachCustomFieldXML($xml, $v);
+            }  else {
+				$xml->addChild($k, $v);
+			}
         }
 
         return $this->put('/versions/'.$id.'.xml', $xml->asXML());
