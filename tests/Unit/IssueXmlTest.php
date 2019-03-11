@@ -36,10 +36,10 @@ class IssueXmlTest extends \PHPUnit\Framework\TestCase
             'description' => 'Here goes the issue description',
             'uploads' => [
                 [
-                  'token' => 'asdfasdfasdfasdf',
-                  'filename' => 'MyFile.pdf',
-                  'description' => 'MyFile is better then YourFile...',
-                  'content_type' => 'application/pdf',
+                    'token' => 'asdfasdfasdfasdf',
+                    'filename' => 'MyFile.pdf',
+                    'description' => 'MyFile is better then YourFile...',
+                    'content_type' => 'application/pdf',
                 ],
             ],
         ]);

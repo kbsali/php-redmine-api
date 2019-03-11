@@ -188,10 +188,10 @@ $client->issue->create([
     'description' => 'Here goes the issue description',
     'uploads' => [
         [
-          'token' => $upload->upload->token,
-          'filename' => 'MyFile.pdf',
-          'description' => 'MyFile is better then YourFile...',
-          'content_type' => 'application/pdf',
+            'token' => $upload->upload->token,
+            'filename' => 'MyFile.pdf',
+            'description' => 'MyFile is better then YourFile...',
+            'content_type' => 'application/pdf',
         ],
     ],
 ]);
@@ -376,4 +376,4 @@ Array
 
 // ----------------------------
 // Search
-$client->search->search("Myproject", [ "limit" => 100 ])
+$client->search->search('Myproject', ['limit' => 100])

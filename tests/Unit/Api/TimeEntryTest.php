@@ -228,12 +228,12 @@ class TimeEntryTest extends \PHPUnit\Framework\TestCase
             'project_id' => '25',
             'hours' => '5.25',
             'custom_fields' => [
-                 [
+                [
                     'id' => 1,
                     'name' => 'Affected version',
                     'value' => '1.0.1',
                 ],
-                 [
+                [
                     'id' => 2,
                     'name' => 'Resolution',
                     'value' => 'Fixed',
@@ -281,12 +281,12 @@ class TimeEntryTest extends \PHPUnit\Framework\TestCase
         $parameters = [
             'hours' => '10.25',
             'custom_fields' => [
-                 [
+                [
                     'id' => 1,
                     'name' => 'Affected version',
                     'value' => '1.0.1',
                 ],
-                 [
+                [
                     'id' => 2,
                     'name' => 'Resolution',
                     'value' => 'Fixed',

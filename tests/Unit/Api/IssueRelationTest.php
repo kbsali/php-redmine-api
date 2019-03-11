@@ -185,14 +185,14 @@ class IssueRelationTest extends \PHPUnit\Framework\TestCase
         $client->expects($this->once())
                ->method('post')
                ->with(
-                   '/issues/1/relations.json',
-                   json_encode([
-                       'relation' => [
-                           'relation_type' => 'relates',
-                       ],
-                   ])
-               )
-               ->willReturn($postResponse);
+                    '/issues/1/relations.json',
+                    json_encode([
+                        'relation' => [
+                            'relation_type' => 'relates',
+                        ],
+                    ])
+                )
+                ->willReturn($postResponse);
 
         // Create the object under test
         $api = new IssueRelation($client);
