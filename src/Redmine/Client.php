@@ -600,8 +600,7 @@ class Client
     private function isUploadCall($path, $data)
     {
         return
-            '/uploads.json' === $path ||
-            '/uploads.xml' === $path &&
+            ('/uploads.json' === $path || '/uploads.xml' === $path) &&
             isset($data) &&
             is_file($data)
         ;
