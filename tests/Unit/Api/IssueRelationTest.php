@@ -180,11 +180,11 @@ class IssueRelationTest extends \PHPUnit\Framework\TestCase
 
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
-                       ->disableOriginalConstructor()
-                       ->getMock();
+                        ->disableOriginalConstructor()
+                        ->getMock();
         $client->expects($this->once())
-               ->method('post')
-               ->with(
+                ->method('post')
+                ->with(
                     '/issues/1/relations.json',
                     json_encode([
                         'relation' => [
