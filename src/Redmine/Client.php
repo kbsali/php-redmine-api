@@ -600,7 +600,7 @@ class Client
     private function isUploadCall($path, $data)
     {
         return
-            ('/uploads.json' === $path || '/uploads.xml' === $path) &&
+            (preg_match('/\/uploads.(json|xml)/i', $path)) &&
             isset($data) &&
             is_file($data)
         ;
@@ -626,7 +626,7 @@ class Client
 
         // Content type headers
         $tmp = parse_url($this->url.$path);
-        if ('/uploads.json' === $path || '/uploads.xml' === $path) {
+        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
             $httpHeader[] = 'Content-Type: application/octet-stream';
         } elseif ('json' === substr($tmp['path'], -4)) {
             $httpHeader[] = 'Content-Type: application/json';
