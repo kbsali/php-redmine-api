@@ -134,7 +134,7 @@ class AttachmentTest extends \PHPUnit\Framework\TestCase
         $client->expects($this->once())
             ->method('post')
             ->with(
-                $this->equalTo('/uploads.json'),
+                $this->stringStartsWith('/uploads.json'),
                 $this->equalTo($postRequestData)
             )
             ->willReturn($postResponse);
