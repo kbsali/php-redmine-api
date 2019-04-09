@@ -24,7 +24,7 @@ class UrlTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($res['method'], 'GET');
 
         $res = $api->upload('asdf');
-        $this->assertEquals($res['path'], '/uploads.json');
+        $this->assertEquals($res['path'], '/uploads.json?');
         $this->assertEquals($res['method'], 'POST');
     }
 
