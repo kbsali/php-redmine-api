@@ -602,7 +602,7 @@ class Client
         return
             (preg_match('/\/uploads.(json|xml)/i', $path)) &&
             isset($data) &&
-            is_file($data)
+            is_file(strval(str_replace("\0", "", $data))
         ;
     }
 
