@@ -194,7 +194,7 @@ abstract class AbstractApi
                 $_field->addAttribute('field_format', $field['field_format']);
             }
             $_field->addAttribute('id', $field['id']);
-            if (is_array($field['value'])) {
+            if (array_key_exists('value', $field) && is_array($field['value'])) {
                 $_field->addAttribute('multiple', 'true');
                 $_values = $_field->addChild('value');
                 $_values->addAttribute('type', 'array');
