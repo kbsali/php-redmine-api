@@ -71,7 +71,18 @@ class Wiki extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
+            if (is_array($v)) {
+                $uploadsItem = $xml->addChild('uploads', '');
+                $uploadsItem->addAttribute('type', 'array');
+                foreach ($v as $upload) {
+                    $upload_item = $uploadsItem->addChild('upload', '');
+                    foreach ($upload as $upload_k => $upload_v) {
+                        $upload_item->addChild($upload_k, $upload_v);
+                    }
+                }
+            } else {
+                $xml->addChild($k, $v);
+            }
         }
 
         return $this->put('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
