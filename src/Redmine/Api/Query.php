@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Custom queries retrieval.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Queries
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

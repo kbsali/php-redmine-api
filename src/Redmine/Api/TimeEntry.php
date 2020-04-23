@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing time entries, creating, editing.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

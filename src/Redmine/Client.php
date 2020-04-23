@@ -324,7 +324,7 @@ class Client
     {
         // Make sure verify value is set to "2" for boolean argument
         // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-        if (true === $check) {
+        if ($check) {
             $check = self::SSL_VERIFYHOST;
         }
         $this->checkSslHost = $check;
@@ -661,7 +661,7 @@ class Client
      */
     public function processCurlResponse($response, $contentType)
     {
-        if ($response) {
+        if ($response !== '') {
             // if response is XML, return an SimpleXMLElement object
             if (0 === strpos($contentType, 'application/xml')) {
                 return new \SimpleXMLElement($response);
@@ -692,7 +692,7 @@ class Client
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
-        if (curl_errno($curl)) {
+        if (curl_errno($curl) !== 0) {
             $e = new \Exception(curl_error($curl), curl_errno($curl));
             curl_close($curl);
             throw $e;

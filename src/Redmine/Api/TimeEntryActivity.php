@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing time entry activities.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationstime_entry_activitiesformat
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationstime_entry_activitiesformat
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

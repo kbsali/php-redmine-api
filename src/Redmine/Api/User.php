@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing users, creating, editing.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Users
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

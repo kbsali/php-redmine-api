@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing projects, creating, editing.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
@@ -40,7 +40,7 @@ class Project extends AbstractApi
      */
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
-        if (true === $forceUpdate || empty($this->projects)) {
+        if ($forceUpdate || empty($this->projects)) {
             $this->all($params);
         }
         $ret = [];

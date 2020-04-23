@@ -3,7 +3,7 @@
 namespace Redmine\Api;
 
 /**
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Search
  */
 class Search extends AbstractApi
 {
@@ -12,7 +12,7 @@ class Search extends AbstractApi
     /**
      * Search.
      *
-     * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Search
      *
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)

@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing issue statuses.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

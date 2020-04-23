@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing custom fields.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

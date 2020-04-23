@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing issue priorities.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

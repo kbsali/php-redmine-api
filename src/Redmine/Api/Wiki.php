@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing Wiki pages.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

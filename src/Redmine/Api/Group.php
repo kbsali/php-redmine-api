@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Handling of groups.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Groups
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing issues, searching, editing and closing your projects issues.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

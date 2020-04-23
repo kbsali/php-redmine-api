@@ -3,7 +3,7 @@
 namespace Redmine\Api;
 
 /**
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_News
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_News
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

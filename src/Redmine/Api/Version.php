@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing versions, creating, editing.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Versions
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
@@ -42,7 +42,7 @@ class Version extends AbstractApi
      */
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
-        if (true === $forceUpdate || empty($this->versions)) {
+        if ($forceUpdate || empty($this->versions)) {
             $this->all($project, $params);
         }
         $ret = [];

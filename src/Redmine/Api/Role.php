@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing roles.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Roles
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

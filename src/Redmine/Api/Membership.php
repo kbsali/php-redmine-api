@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Handling project memberships.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Memberships
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing issue categories, creating, editing.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
@@ -40,7 +40,7 @@ class IssueCategory extends AbstractApi
      */
     public function listing($project, $forceUpdate = false)
     {
-        if (true === $forceUpdate || empty($this->issueCategories)) {
+        if ($forceUpdate || empty($this->issueCategories)) {
             $this->all($project);
         }
         $ret = [];

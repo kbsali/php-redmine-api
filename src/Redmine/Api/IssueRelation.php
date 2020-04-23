@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Handling issue relations.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

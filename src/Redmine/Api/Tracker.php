@@ -5,7 +5,7 @@ namespace Redmine\Api;
 /**
  * Listing trackers.
  *
- * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Trackers
+ * @see http://www.redmine.org/projects/redmine/wiki/Rest_Trackers
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */

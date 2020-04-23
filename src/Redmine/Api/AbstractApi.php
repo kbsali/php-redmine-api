@@ -113,7 +113,9 @@ abstract class AbstractApi
     {
         return array_filter(
             array_merge($defaults, $params),
-            [$this, 'isNotNull']
+            function ($var) {
+                return $this->isNotNull($var);
+            }
         );
     }
 
@@ -153,7 +155,7 @@ abstract class AbstractApi
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $newDataSet = (array) $this->get($endpoint.'?'.preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', http_build_query($params)));
+            $newDataSet = (array) $this->get($endpoint.'?'.preg_replace('/%5B\d+%5D/simU', '%5B%5D', http_build_query($params)));
             $ret = array_merge_recursive($ret, $newDataSet);
 
             $offset += $_limit;
