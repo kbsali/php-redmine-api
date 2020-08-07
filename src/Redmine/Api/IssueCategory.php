@@ -122,8 +122,7 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
-     * @param string $id     the issue category id
-     * @param array  $params
+     * @param string $id the issue category id
      *
      * @return string|false
      */
