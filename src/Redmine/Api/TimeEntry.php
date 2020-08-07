@@ -90,8 +90,7 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param int   $id
-     * @param array $params
+     * @param int $id
      *
      * @return string|false
      */

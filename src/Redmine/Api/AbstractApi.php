@@ -16,9 +16,6 @@ abstract class AbstractApi
      */
     protected $client;
 
-    /**
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -104,9 +101,6 @@ abstract class AbstractApi
     }
 
     /**
-     * @param array $defaults
-     * @param array $params
-     *
      * @return array
      */
     protected function sanitizeParams(array $defaults, array $params)

@@ -134,8 +134,7 @@ class Version extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#PUT
      *
-     * @param string $id     the issue category id
-     * @param array  $params
+     * @param string $id the issue category id
      *
      * @return string|false
      */

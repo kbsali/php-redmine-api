@@ -169,8 +169,7 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param string $id     the user id
-     * @param array  $params
+     * @param string $id the user id
      *
      * @return string|false
      */

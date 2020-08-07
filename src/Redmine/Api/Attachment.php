@@ -42,10 +42,11 @@ class Attachment extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
      * available $params :
-	 * filename: filename of the attachment
-	 * 
+     * - filename: filename of the attachment
+     *
      * @param string $attachment the attachment content
-     * @param array $params optional parameters to be passed to the api 
+     * @param array  $params     optional parameters to be passed to the api
+     *
      * @return array information about the attachment
      */
     public function upload($attachment, $params = [])

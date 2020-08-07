@@ -128,8 +128,7 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param string $id     the project id
-     * @param array  $params
+     * @param string $id the project id
      *
      * @return string|false
      */

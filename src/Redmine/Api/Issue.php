@@ -141,8 +141,7 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param string $id     the issue number
-     * @param array  $params
+     * @param string $id the issue number
      *
      * @return string|false
      */
@@ -223,8 +222,6 @@ class Issue extends AbstractApi
 
     /**
      * Transforms literal identifiers to integer ids.
-     *
-     * @param array $params
      *
      * @return array
      */
