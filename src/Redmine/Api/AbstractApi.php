@@ -197,9 +197,16 @@ abstract class AbstractApi
             if (array_key_exists('value', $field) && is_array($field['value'])) {
                 $_field->addAttribute('multiple', 'true');
                 $_values = $_field->addChild('value');
-                $_values->addAttribute('type', 'array');
-                foreach ($field['value'] as $val) {
-                    $_values->addChild('value', $val);
+                if (array_key_exists('token', $field['value'])) {
+                    foreach ($field['value'] as $key => $val) {
+                        $_values->addChild($key, $val);
+                    }
+                } else {
+                    $_field->addAttribute('multiple', 'true');
+                    $_values->addAttribute('type', 'array');
+                    foreach ($field['value'] as $val) {
+                        $_values->addChild('value', $val);
+                    }
                 }
             } else {
                 $_field->value = $field['value'];
