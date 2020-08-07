@@ -77,7 +77,7 @@ class Wiki extends AbstractApi
                 foreach ($v as $upload) {
                     $uploadItem = $item->addChild('upload', '');
                     foreach ($upload as $uploadK => $uploadV) {
-                        $uploadItem->addChild($uploadpK, $uploadV);
+                        $uploadItem->addChild($uploadK, $uploadV);
                     }
                 }
             } else {
