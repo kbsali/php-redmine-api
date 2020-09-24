@@ -376,4 +376,4 @@ Array
 
 // ----------------------------
 // Search
-$client->search->search('Myproject', ['limit' => 100])
+$client->search->search('Myproject', ['limit' => 100]);
