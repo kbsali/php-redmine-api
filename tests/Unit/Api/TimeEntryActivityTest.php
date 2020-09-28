@@ -72,4 +72,81 @@ class TimeEntryActivityTest extends \PHPUnit\Framework\TestCase
         // Perform the tests
         $this->assertSame($getResponse, $api->all($parameters));
     }
+
+    public function testListingReturnsNameIdArray()
+    {
+        $response = [
+            'time_entry_activities' => [
+                ['id' => 1, 'name' => 'TimeEntryActivities 1'],
+                ['id' => 2, 'name' => 'TimeEntryActivities 2'],
+            ],
+        ];
+        $expectedReturn = [
+            'TimeEntryActivities 1' => 1,
+            'TimeEntryActivities 2' => 2,
+        ];
+
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->atLeastOnce())
+            ->method('get')
+            ->with(
+                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+            )
+            ->willReturn($response);
+        $api = new TimeEntryActivity($client);
+        $this->assertSame($expectedReturn, $api->listing());
+    }
+
+    public function testListingCallsGetEveryTimeWithForceUpdate()
+    {
+        $response = [
+            'time_entry_activities' => [
+                ['id' => 1, 'name' => 'TimeEntryActivities 1'],
+                ['id' => 2, 'name' => 'TimeEntryActivities 2'],
+            ],
+        ];
+        $expectedReturn = [
+            'TimeEntryActivities 1' => 1,
+            'TimeEntryActivities 2' => 2,
+        ];
+
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->atLeastOnce())
+            ->method('get')
+            ->with(
+                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+            )
+            ->willReturn($response);
+        $api = new TimeEntryActivity($client);
+
+        $this->assertSame($expectedReturn, $api->listing(true));
+        $this->assertSame($expectedReturn, $api->listing(true));
+    }
+
+    public function testGetIdByNameMakesGetRequest()
+    {
+        $response = [
+            'time_entry_activities' => [
+                ['id' => 2, 'name' => 'TimeEntryActivities 2'],
+            ],
+        ];
+
+        $client = $this->getMockBuilder('Redmine\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())
+            ->method('get')
+            ->with(
+                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+            )
+            ->willReturn($response);
+        $api = new TimeEntryActivity($client);
+
+        $this->assertFalse($api->getIdByName('TimeEntryActivities 1'));
+        $this->assertSame(2, $api->getIdByName('TimeEntryActivities 2'));
+    }
 }
