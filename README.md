@@ -32,16 +32,16 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 * Check header's response code (especially for POST/PUT/DELETE requests)
 * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
-* Maybe Guzzle for handling http connections
+* Maybe Guzzle for handling HTTP connections
 * https://github.com/guzzle/guzzle
 
 ## Limitations
 
-Redmine is missing some APIs for a full remote management of the data :
-* List of activities & roles : http://www.redmine.org/issues/11464
+Redmine is missing some APIs for full remote management of the data :
+* List of activities & roles: http://www.redmine.org/issues/11464
 * ...
 
-A possible solution to this would be to create an extra APIs implementing the missing entry points. See existing effort in doing so : https://github.com/rschobbert/redmine-miss-api
+A possible solution to this would be to create extra APIs implementing the missing entry points. See existing effort in doing so: https://github.com/rschobbert/redmine-miss-api
 
 ## Requirements
 
@@ -80,11 +80,11 @@ $client = new Redmine\Client('http://redmine.example.com', 'username', 'password
 ### Manual
 
 It is also possible to install the library oneself, either locally to
-a project or globally; say, in `/usr/share/php`.
+a project or globally; say, in `/user/share/PHP`.
 
 First, download and extract the library somewhere. For example, the
 following steps extract v1.5.18 of the library into the
-`vendor/php-redmine-api-1.5.18` directory:
+`vendor/PHP-Redmine-API-1.5.18` directory:
 
 ```bash
 $ mkdir vendor
@@ -106,10 +106,10 @@ $client = new Redmine\Client('http://redmine.example.com', 'username', 'password
 
 ### Running the test suite
 
-You can run test suite to make sure the library will work properly on your system. Simply run `vendor/bin/phpunit` in the project's directory :
+You can run the test suite to make sure the library will work properly on your system. Simply run `vendor/bin/PHPUnit` in the project's directory :
 
 ```
-$ vendor/bin/phpunit
+$ vendor/bin/PHPUnit
 PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
 
 Error:         No code coverage driver is available
@@ -158,9 +158,9 @@ See `example.php` for further examples.
 
 ## User Impersonation
 
-As of Redmine V2.2 you can impersonate user through the REST API :
+As of Redmine V2.2, you can impersonate user through the REST API :
 
-```php
+PHP
 
 $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 
@@ -178,6 +178,6 @@ $client->setImpersonateUser(null);
 ### Thanks!
 
 * Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
-* Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the php-github-api library, great source of inspiration!
+* Thanks to [Thibault Duplessis aka. ornicar](https://github.com/ornicar) for the PHP-GitHub-API library, a great source of inspiration!
 * And all the [contributors](https://github.com/kbsali/php-redmine-api/graphs/contributors)
 * specially [JanMalte](https://github.com/JanMalte) for his impressive contribution to the test coverage! :)
