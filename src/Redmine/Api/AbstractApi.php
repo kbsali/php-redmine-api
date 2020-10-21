@@ -196,7 +196,6 @@ abstract class AbstractApi
                         $_values->addChild($key, $val);
                     }
                 } else {
-                    $_field->addAttribute('multiple', 'true');
                     $_values->addAttribute('type', 'array');
                     foreach ($field['value'] as $val) {
                         $_values->addChild('value', $val);
