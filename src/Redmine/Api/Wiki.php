@@ -71,13 +71,13 @@ class Wiki extends AbstractApi
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
         foreach ($params as $k => $v) {
-            if (is_array($v)) {
-                $uploadsItem = $xml->addChild('uploads', '');
-                $uploadsItem->addAttribute('type', 'array');
+            if ('uploads' === $k && is_array($v)) {
+                $item = $xml->addChild('uploads', '');
+                $item->addAttribute('type', 'array');
                 foreach ($v as $upload) {
-                    $upload_item = $uploadsItem->addChild('upload', '');
-                    foreach ($upload as $upload_k => $upload_v) {
-                        $upload_item->addChild($upload_k, $upload_v);
+                    $uploadItem = $item->addChild('upload', '');
+                    foreach ($upload as $uploadK => $uploadV) {
+                        $uploadItem->addChild($uploadK, $uploadV);
                     }
                 }
             } else {
