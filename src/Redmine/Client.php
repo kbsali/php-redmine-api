@@ -688,7 +688,7 @@ class Client
     {
         $curl = $this->prepareRequest($path, $method, $data);
 
-	// use HTTP 1.1
+        // use HTTP 1.1
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
         $response = curl_exec($curl);
