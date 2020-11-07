@@ -53,4 +53,18 @@ class Attachment extends AbstractApi
     {
         return $this->post('/uploads.json?'.http_build_query($params), $attachment);
     }
+
+    /**
+     * Delete an attachment
+     *
+     * @see https://www.redmine.org/projects/redmine/wiki/Rest_Attachments#DELETE
+     *
+     * @param int $id id of the attachment
+     *
+     * @return false|\SimpleXMLElement|string
+     */
+    public function remove($id)
+    {
+        return $this->delete('/attachments/'.$id.'.xml');
+    }
 }
