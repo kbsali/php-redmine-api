@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 
 /**
@@ -9,7 +11,7 @@ use Redmine\Api\Version;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class VersionTest extends \PHPUnit\Framework\TestCase
+class VersionTest extends TestCase
 {
     /**
      * Test all().
@@ -191,11 +193,12 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
+        $this->expectException(Exception::class);
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
@@ -212,11 +215,12 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithMissingNameInParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -239,11 +243,12 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      *
      * @covers ::create
      * @covers ::validateStatus
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithInvalidStatus()
     {
+        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -346,11 +351,12 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      *
      * @covers ::update
      * @covers ::validateStatus
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
+        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -723,13 +729,14 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      * @covers            ::create
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
-     * @expectedException \Exception
+     *
      * @test
      *
      * @param string $sharingValue
      */
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
+        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'name' => 'Test version',
@@ -843,13 +850,14 @@ class VersionTest extends \PHPUnit\Framework\TestCase
      * @covers            ::update
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
-     * @expectedException \Exception
+     *
      * @test
      *
      * @param string $sharingValue
      */
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
+        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'name' => 'Test version',

@@ -2,25 +2,27 @@
 
 namespace Redmine\Tests\Unit;
 
+use DOMDocument;
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Redmine\Tests\Fixtures\MockClient as TestClient;
+use SimpleXMLElement;
 
-class GroupXmlTest extends \PHPUnit\Framework\TestCase
+class GroupXmlTest extends TestCase
 {
     /**
      * @var TestClient
      */
     private $client;
 
-    public function setup()
+    public function setup(): void
     {
         $this->client = new TestClient('http://test.local', 'asdf');
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testCreateBlank()
     {
+        $this->expectException(Exception::class);
         $api = $this->client->group;
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
@@ -46,11 +48,9 @@ class GroupXmlTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testUpdateNotImplemented()
     {
+        $this->expectException(Exception::class);
         $api = $this->client->group;
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
@@ -59,10 +59,10 @@ class GroupXmlTest extends \PHPUnit\Framework\TestCase
 
     private function formatXml($xml)
     {
-        $dom = new \DOMDocument('1.0');
+        $dom = new DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->loadXML((new \SimpleXMLElement($xml))->asXML());
+        $dom->loadXML((new SimpleXMLElement($xml))->asXML());
 
         return $dom->saveXML();
     }

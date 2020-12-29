@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Tracker;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\Tracker;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class TrackerTest extends \PHPUnit\Framework\TestCase
+class TrackerTest extends TestCase
 {
     /**
      * Test all().

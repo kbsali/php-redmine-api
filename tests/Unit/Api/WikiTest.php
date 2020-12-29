@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\Wiki;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class WikiTest extends \PHPUnit\Framework\TestCase
+class WikiTest extends TestCase
 {
     /**
      * Test all().

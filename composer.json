@@ -3,22 +3,27 @@
     "type": "library",
     "description": "Redmine API client",
     "homepage": "https://github.com/kbsali/php-redmine-api",
-    "keywords": ["redmine", "api"],
+    "keywords": [
+        "redmine",
+        "api"
+    ],
     "license": "MIT",
-    "authors": [{
-        "name": "Kevin Saliou",
-        "email": "kevin@saliou.name",
-        "homepage": "http://kevin.saliou.name"
-    }],
+    "authors": [
+        {
+            "name": "Kevin Saliou",
+            "email": "kevin@saliou.name",
+            "homepage": "http://kevin.saliou.name"
+        }
+    ],
     "require": {
-        "php": "^5.4 || ^7.2",
+        "php": "^5.4 || ^7.2 || ^8.0",
         "ext-curl": "*",
         "ext-simplexml": "*",
         "ext-json": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
-        "phpunit/phpunit": "^4.8.36 || ^5.4.8 || ^6.0"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {

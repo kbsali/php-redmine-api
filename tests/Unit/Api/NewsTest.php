@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\News;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\News;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class NewsTest extends \PHPUnit\Framework\TestCase
+class NewsTest extends TestCase
 {
     /**
      * Test all().

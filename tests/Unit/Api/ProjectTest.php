@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 
 /**
@@ -9,7 +11,7 @@ use Redmine\Api\Project;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class ProjectTest extends \PHPUnit\Framework\TestCase
+class ProjectTest extends TestCase
 {
     /**
      * Test all().
@@ -318,11 +320,12 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
 
@@ -342,11 +345,12 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionIfIdentifierIsMissingInParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
         $parameters = [
@@ -369,11 +373,12 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionIfNameIsMissingInParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
         $parameters = [

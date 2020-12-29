@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 
 /**
@@ -9,7 +11,7 @@ use Redmine\Api\TimeEntry;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class TimeEntryTest extends \PHPUnit\Framework\TestCase
+class TimeEntryTest extends TestCase
 {
     /**
      * Test all().
@@ -137,11 +139,12 @@ class TimeEntryTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
 
@@ -161,11 +164,12 @@ class TimeEntryTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionIfIssueIdAndProjectIdAreMissingInParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
         $parameters = [
@@ -188,11 +192,12 @@ class TimeEntryTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionIfHoursAreMissingInParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
         $parameters = [

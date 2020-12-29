@@ -2,10 +2,13 @@
 
 namespace Redmine\Tests\Unit;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Redmine\Client;
 use Redmine\Tests\Fixtures\MockClient;
+use SimpleXMLElement;
 
-class ClientTest extends \PHPUnit\Framework\TestCase
+class ClientTest extends TestCase
 {
     /**
      * @covers \Redmine\Client
@@ -32,10 +35,11 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers \Redmine\Client
      * @test
-     * @expectedException \InvalidArgumentException
+     *
      */
     public function shouldNotGetApiInstance()
     {
+        $this->expectException(InvalidArgumentException::class);
         $client = new Client('http://test.local', 'asdf');
         $client->do_not_exist;
     }
@@ -330,7 +334,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $data = [1 => 'post_1', '25' => 'post_25'];
         $client->prepareRequest('/issues.json', 'POST', $data);
         $curlOptions = $client->getCurlOptions();
-        $this->assertRegExp('/USER_API-KEY159\:[0-9]*/', $curlOptions[CURLOPT_USERPWD]);
+        $this->assertMatchesRegularExpression('/USER_API-KEY159\:[0-9]*/', $curlOptions[CURLOPT_USERPWD]);
         $this->assertSame(CURLAUTH_BASIC, $curlOptions[CURLOPT_HTTPAUTH]);
         $this->assertSame('http://test.local/issues.json', $curlOptions[CURLOPT_URL]);
         $this->assertSame(0, $curlOptions[CURLOPT_VERBOSE]);
@@ -367,7 +371,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
         $curlOptions = $client->getCurlOptions();
 
-        $this->assertRegExp('/username\:secret/m', $curlOptions[CURLOPT_USERPWD]);
+        $this->assertMatchesRegularExpression('/username\:secret/m', $curlOptions[CURLOPT_USERPWD]);
         $this->assertSame('PROXYURL:PORT', $curlOptions[CURLOPT_PROXY]);
         $this->assertSame(CURLAUTH_BASIC, $curlOptions[CURLOPT_HTTPAUTH]);
         $this->assertSame('http://test.local/issues.xml', $curlOptions[CURLOPT_URL]);
@@ -488,7 +492,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
             $client->processCurlResponse('{"api": "redmine"}', 'application/json')
         );
         // XML response
-        /* @var $xmlResponse \SimpleXMLElement */
+        /* @var $xmlResponse SimpleXMLElement */
         $xmlResponse = $client->processCurlResponse('<issue/>', 'application/xml');
         $this->assertInstanceOf('\SimpleXMLElement', $xmlResponse);
         $this->assertSame('issue', $xmlResponse->getName());

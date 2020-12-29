@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssuePriority;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\IssuePriority;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssuePriorityTest extends \PHPUnit\Framework\TestCase
+class IssuePriorityTest extends TestCase
 {
     /**
      * Test all().

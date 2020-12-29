@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\CustomField;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class CustomFieldTest extends \PHPUnit\Framework\TestCase
+class CustomFieldTest extends TestCase
 {
     /**
      * Test all().
@@ -111,8 +112,8 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
         // Perform the tests
         $retrievedDataSet = $api->all($allParameters);
         $this->assertTrue(is_array($retrievedDataSet));
-        $this->assertTrue(array_key_exists('limit', $retrievedDataSet));
-        $this->assertTrue(array_key_exists('items', $retrievedDataSet));
+        $this->assertArrayHasKey('limit', $retrievedDataSet);
+        $this->assertArrayHasKey('items', $retrievedDataSet);
     }
 
     /**
@@ -152,8 +153,8 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
         // Perform the tests
         $retrievedDataSet = $api->all($allParameters);
         $this->assertTrue(is_array($retrievedDataSet));
-        $this->assertTrue(array_key_exists('limit', $retrievedDataSet));
-        $this->assertTrue(array_key_exists('items', $retrievedDataSet));
+        $this->assertArrayHasKey('limit', $retrievedDataSet);
+        $this->assertArrayHasKey('items', $retrievedDataSet);
     }
 
     /**

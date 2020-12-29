@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\Role;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class RoleTest extends \PHPUnit\Framework\TestCase
+class RoleTest extends TestCase
 {
     /**
      * Test all().
