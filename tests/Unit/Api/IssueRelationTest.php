@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\IssueRelation;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueRelationTest extends \PHPUnit\Framework\TestCase
+class IssueRelationTest extends TestCase
 {
     /**
      * Test all().

@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Query;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\Query;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class QueryTest extends \PHPUnit\Framework\TestCase
+class QueryTest extends TestCase
 {
     /**
      * Test all().

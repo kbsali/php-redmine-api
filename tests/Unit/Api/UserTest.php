@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 
 /**
@@ -9,7 +11,7 @@ use Redmine\Api\User;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class UserTest extends \PHPUnit\Framework\TestCase
+class UserTest extends TestCase
 {
     /**
      * Test getCurrentUser().
@@ -240,11 +242,12 @@ class UserTest extends \PHPUnit\Framework\TestCase
      * Test create().
      *
      * @covers ::create
-     * @expectedException \Exception
+     *
      * @test
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
+        $this->expectException(Exception::class);
         // Test values
         $getResponse = 'API Response';
 
@@ -265,13 +268,14 @@ class UserTest extends \PHPUnit\Framework\TestCase
      *
      * @covers            ::create
      * @dataProvider      incompleteCreateParameterProvider
-     * @expectedException \Exception
+     *
      * @test
      *
      * @param array $parameters Parameters for create()
      */
     public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters)
     {
+        $this->expectException(Exception::class);
         // Create the used mock objects
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()

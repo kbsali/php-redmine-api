@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 
 /**
@@ -9,7 +10,7 @@ use Redmine\Api\Issue;
  *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
-class IssueTest extends \PHPUnit\Framework\TestCase
+class IssueTest extends TestCase
 {
     /**
      * Test the constants.

@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Fixtures;
 
+use Exception;
 use Redmine\Client;
 
 /**
@@ -48,7 +49,7 @@ class MockClient extends Client
      * @param string $method
      * @param string $data
      *
-     * @throws \Exception If anything goes wrong on curl request
+     * @throws Exception If anything goes wrong on curl request
      *
      * @return string
      */
