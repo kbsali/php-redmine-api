@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamInterface;
 use Redmine\Api\ApiInterface;
 use Redmine\Psr18Client;
 use Redmine\ClientInterface;
@@ -123,8 +124,38 @@ class Psr18ClientTest extends TestCase
             'access_token'
         );
 
-        // Perform the tests
         $this->assertSame(false, $client->requestGet('path'));
+    }
+
+    /**
+     * @covers \Redmine\Psr18Client
+     * @test
+     */
+    public function testRequestGetReturnsCorrectContent()
+    {
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->method('__toString')->willReturn('{"foo_bar": 12345}');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(200);
+        $response->method('getHeaderLine')->willReturn('application/json');
+        $response->method('getBody')->willReturn($stream);
+
+        $httpClient = $this->createMock(HttpClient::class);
+        $httpClient->method('sendRequest')->willReturn($response);
+
+        $client = new Psr18Client(
+            $httpClient,
+            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->assertSame(true, $client->requestGet('path'));
+        $this->assertSame(200, $client->getLastResponseStatusCode());
+        $this->assertSame('application/json', $client->getLastResponseContentType());
+        $this->assertSame('{"foo_bar": 12345}', $client->getLastResponseBody());
     }
 
     /**

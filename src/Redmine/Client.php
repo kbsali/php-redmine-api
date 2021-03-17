@@ -768,6 +768,6 @@ class Client implements ClientInterface
         }
         curl_close($curl);
 
-        return $this->processCurlResponse($response, $responseContentType);
+        return $this->processCurlResponse($response, $this->responseContentType);
     }
 }
