@@ -4,7 +4,9 @@ namespace Redmine\Tests\Unit;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\ApiInterface;
 use Redmine\Client;
+use Redmine\ClientInterface;
 use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
@@ -19,6 +21,7 @@ class ClientTest extends TestCase
         $client = new Client('http://test.local', 'asdf');
 
         $this->assertInstanceOf('Redmine\Client', $client);
+        $this->assertInstanceOf(ClientInterface::class, $client);
     }
 
     /**
@@ -30,6 +33,7 @@ class ClientTest extends TestCase
         $client = new Client('http://test.local', 'username', 'pwd');
 
         $this->assertInstanceOf('Redmine\Client', $client);
+        $this->assertInstanceOf(ClientInterface::class, $client);
     }
 
     /**
@@ -39,8 +43,11 @@ class ClientTest extends TestCase
      */
     public function shouldNotGetApiInstance()
     {
-        $this->expectException(InvalidArgumentException::class);
         $client = new Client('http://test.local', 'asdf');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`, `search`');
+
         $client->do_not_exist;
     }
 
@@ -109,6 +116,39 @@ class ClientTest extends TestCase
         $client = new Client('http://test.local', 'asdf');
 
         $this->assertEquals(0, $client->getResponseCode());
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     */
+    public function testGetLastResponseStatusCodeIsInitialNull()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame(0, $client->getLastResponseStatusCode());
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     */
+    public function testGetLastResponseContentTypeIsInitialEmpty()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame('', $client->getLastResponseContentType());
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     */
+    public function testGetLastResponseBodyIsInitialEmpty()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertSame('', $client->getLastResponseBody());
     }
 
     /**
@@ -506,10 +546,30 @@ class ClientTest extends TestCase
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
-    public function shouldGetApiInstance($apiName, $class)
+    public function apiShouldReturnApiInstance($apiName, $class)
     {
         $client = new Client('http://test.local', 'asdf');
-        $this->assertInstanceOf($class, $client->api($apiName));
+        $api = $client->api($apiName);
+
+        $this->assertInstanceOf($class, $api);
+        $this->assertInstanceOf(ApiInterface::class, $api);
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     *
+     * @param string $apiName
+     * @param string $class
+     * @dataProvider getApiClassesProvider
+     */
+    public function getApiShouldReturnApiInstance($apiName, $class)
+    {
+        $client = new Client('http://test.local', 'asdf');
+        $api = $client->getApi($apiName);
+
+        $this->assertInstanceOf($class, $api);
+        $this->assertInstanceOf(ApiInterface::class, $api);
     }
 
     public function getApiClassesProvider()

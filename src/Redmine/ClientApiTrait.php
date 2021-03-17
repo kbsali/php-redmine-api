@@ -2,6 +2,7 @@
 
 namespace Redmine;
 
+use InvalidArgumentException;
 use Redmine\Api\ApiInterface;
 
 /**
@@ -40,14 +41,18 @@ trait ClientApiTrait
     /**
      * @param string $name
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @return ApiInterface
      */
     public function getApi(string $name): ApiInterface
     {
         if (!isset($this->apiClassnames[$name])) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException(sprintf(
+                '`%s` is not a valid api. Possible apis are `%s`',
+                $name,
+                implode('`, `', array_keys($this->apiClassnames))
+            ));
         }
         if (isset($this->apiInstances[$name])) {
             return $this->apiInstances[$name];
