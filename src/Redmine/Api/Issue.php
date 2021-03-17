@@ -197,7 +197,7 @@ class Issue extends AbstractApi
      */
     public function setIssueStatus($id, $status)
     {
-        $api = $this->client->issue_status;
+        $api = $this->client->getApi('issue_status');
         $statusId = $api->getIdByName($status);
 
         return $this->update($id, [
@@ -228,32 +228,32 @@ class Issue extends AbstractApi
     private function cleanParams(array $params = [])
     {
         if (isset($params['project'])) {
-            $apiProject = $this->client->project;
+            $apiProject = $this->client->getApi('project');
             $params['project_id'] = $apiProject->getIdByName($params['project']);
             unset($params['project']);
             if (isset($params['category'])) {
-                $apiIssueCategory = $this->client->issue_category;
+                $apiIssueCategory = $this->client->getApi('issue_category');
                 $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
                 unset($params['category']);
             }
         }
         if (isset($params['status'])) {
-            $apiIssueStatus = $this->client->issue_status;
+            $apiIssueStatus = $this->client->getApi('issue_status');
             $params['status_id'] = $apiIssueStatus->getIdByName($params['status']);
             unset($params['status']);
         }
         if (isset($params['tracker'])) {
-            $apiTracker = $this->client->tracker;
+            $apiTracker = $this->client->getApi('tracker');
             $params['tracker_id'] = $apiTracker->getIdByName($params['tracker']);
             unset($params['tracker']);
         }
         if (isset($params['assigned_to'])) {
-            $apiUser = $this->client->user;
+            $apiUser = $this->client->getApi('user');
             $params['assigned_to_id'] = $apiUser->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
         if (isset($params['author'])) {
-            $apiUser = $this->client->user;
+            $apiUser = $this->client->getApi('user');
             $params['author_id'] = $apiUser->getIdByUsername($params['author']);
             unset($params['author']);
         }

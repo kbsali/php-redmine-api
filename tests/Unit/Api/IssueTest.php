@@ -399,10 +399,10 @@ class IssueTest extends TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(['api', 'post'])
+            ->setMethods(['getApi', 'post'])
             ->getMock();
         $client->expects($this->exactly(6))
-            ->method('api')
+            ->method('getApi')
             ->willReturnMap(
                 [
                     ['project', $getIdByNameApi],
@@ -565,10 +565,10 @@ class IssueTest extends TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(['api', 'put'])
+            ->setMethods(['getApi', 'put'])
             ->getMock();
         $client->expects($this->exactly(6))
-            ->method('api')
+            ->method('getApi')
             ->willReturnMap(
                 [
                     ['project', $getIdByNameApi],
@@ -625,10 +625,10 @@ class IssueTest extends TestCase
 
         $client = $this->getMockBuilder('Redmine\Client')
             ->disableOriginalConstructor()
-            ->setMethods(['api', 'put'])
+            ->setMethods(['getApi', 'put'])
             ->getMock();
         $client->expects($this->once())
-            ->method('api')
+            ->method('getApi')
             ->with('issue_status')
             ->willReturn($issueStatusApi);
 
