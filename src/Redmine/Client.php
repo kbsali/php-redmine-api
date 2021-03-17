@@ -103,6 +103,16 @@ class Client implements ClientInterface
     private $responseCode = null;
 
     /**
+     * @var string Redmine response content type
+     */
+    private $responseContentType = '';
+
+    /**
+     * @var string Redmine response body
+     */
+    private $responseBody = '';
+
+    /**
      * @var array cURL options
      */
     private $curlOptions = [];
@@ -167,6 +177,94 @@ class Client implements ClientInterface
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * HTTP GETs a json $path.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function requestGet(string $path): bool
+    {
+        $result = $this->get($path, true);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * HTTP POSTs $params to $path.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function requestPost(string $path, string $data): bool
+    {
+        $result = $this->post($path, $data);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * HTTP PUTs $params to $path.
+     *
+     * @param string $path
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function requestPut(string $path, string $data): bool
+    {
+        $result = $this->put($path, $data);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * HTTP PUTs $params to $path.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function requestDelete(string $path): bool
+    {
+        $result = $this->delete($path);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+    * Returns status code of the last response.
+    *
+    * @return int
+    */
+    public function getLastResponseStatusCode(): int
+    {
+        return (int) $this->responseCode;
+    }
+
+    /**
+    * Returns content type of the last response.
+    *
+    * @return string
+    */
+    public function getLastResponseContentType(): string
+    {
+        return (string) $this->responseContentType;
+    }
+
+    /**
+     * Returns the body of the last response.
+     *
+     * @return string
+     */
+    public function getLastResponseBody(): string
+    {
+        return (string) $this->responseBody;
     }
 
     /**
@@ -502,6 +600,8 @@ class Client implements ClientInterface
     public function prepareRequest($path, $method = 'GET', $data = '')
     {
         $this->responseCode = null;
+        $this->responseContentType = '';
+        $this->responseBody = '';
         $curl = curl_init();
 
         // General cURL options
@@ -657,8 +757,9 @@ class Client implements ClientInterface
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
         $response = curl_exec($curl);
+        $this->responseBody = ($response === false) ? '' : $response;
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+        $this->responseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
         if (curl_errno($curl)) {
             $e = new \Exception(curl_error($curl), curl_errno($curl));
@@ -667,6 +768,6 @@ class Client implements ClientInterface
         }
         curl_close($curl);
 
-        return $this->processCurlResponse($response, $contentType);
+        return $this->processCurlResponse($response, $responseContentType);
     }
 }
