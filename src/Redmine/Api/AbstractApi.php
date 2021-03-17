@@ -2,21 +2,21 @@
 
 namespace Redmine\Api;
 
-use Redmine\Client;
+use Redmine\ClientInterface;
 
 /**
  * Abstract class for Api classes.
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-abstract class AbstractApi
+abstract class AbstractApi implements ApiInterface
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }

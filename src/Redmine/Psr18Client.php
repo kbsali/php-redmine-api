@@ -2,15 +2,17 @@
 
 namespace Redmine;
 
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as PsrClient;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Psr18 client.
  */
-final class Psr18Client
+final class Psr18Client implements ClientInterface
 {
+    use ClientApiTrait;
+
     /**
      * @var string
      */
@@ -27,7 +29,7 @@ final class Psr18Client
     private $pass;
 
     /**
-     * @var ClientInterface
+     * @var PsrClient
      */
     private $httpClient;
 
@@ -50,7 +52,7 @@ final class Psr18Client
      * @param string|null $pass
      */
     public function __construct(
-        ClientInterface $httpClient,
+        PsrClient $httpClient,
         ServerRequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
         string $url,

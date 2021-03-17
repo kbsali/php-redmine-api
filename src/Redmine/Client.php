@@ -28,8 +28,10 @@ namespace Redmine;
  * @property Api\Version           $version
  * @property Api\Wiki              $wiki
  */
-class Client
+class Client implements ClientInterface
 {
+    use ClientApiTrait;
+
     /**
      * Value for CURLOPT_SSL_VERIFYHOST.
      *
@@ -86,11 +88,6 @@ class Client
     private $useHttpAuth = true;
 
     /**
-     * @var array APIs
-     */
-    private $apis = [];
-
-    /**
      * @var string|null username for impersonating API calls
      */
     protected $impersonateUser = null;
@@ -118,29 +115,6 @@ class Client
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
-    ];
-
-    private $classes = [
-        'attachment' => 'Attachment',
-        'group' => 'Group',
-        'custom_fields' => 'CustomField',
-        'issue' => 'Issue',
-        'issue_category' => 'IssueCategory',
-        'issue_priority' => 'IssuePriority',
-        'issue_relation' => 'IssueRelation',
-        'issue_status' => 'IssueStatus',
-        'membership' => 'Membership',
-        'news' => 'News',
-        'project' => 'Project',
-        'query' => 'Query',
-        'role' => 'Role',
-        'time_entry' => 'TimeEntry',
-        'time_entry_activity' => 'TimeEntryActivity',
-        'tracker' => 'Tracker',
-        'user' => 'User',
-        'version' => 'Version',
-        'wiki' => 'Wiki',
-        'search' => 'Search',
     ];
 
     /**
@@ -182,16 +156,7 @@ class Client
      */
     public function api($name)
     {
-        if (!isset($this->classes[$name])) {
-            throw new \InvalidArgumentException();
-        }
-        if (isset($this->apis[$name])) {
-            return $this->apis[$name];
-        }
-        $class = 'Redmine\Api\\'.$this->classes[$name];
-        $this->apis[$name] = new $class($this);
-
-        return $this->apis[$name];
+        return $this->getApi(strval($name));
     }
 
     /**
