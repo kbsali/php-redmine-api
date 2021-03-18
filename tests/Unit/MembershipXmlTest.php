@@ -22,9 +22,11 @@ class MembershipXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
         $api = $this->client->getApi('membership');
         $this->assertInstanceOf('Redmine\Api\Membership', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create('aProject');
     }

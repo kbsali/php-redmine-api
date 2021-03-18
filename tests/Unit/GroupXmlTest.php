@@ -22,9 +22,11 @@ class GroupXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
         $api = $this->client->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create();
     }
@@ -51,9 +53,11 @@ class GroupXmlTest extends TestCase
 
     public function testUpdateNotImplemented()
     {
-        $this->expectException(Exception::class);
         $api = $this->client->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Not implemented');
 
         $api->update(1);
     }

@@ -217,7 +217,6 @@ class VersionTest extends TestCase
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        $this->expectException(Exception::class);
         // Create the used mock objects
         $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
@@ -225,6 +224,9 @@ class VersionTest extends TestCase
 
         // Create the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         // Perform the tests
         $api->create(5);
@@ -239,7 +241,6 @@ class VersionTest extends TestCase
      */
     public function testCreateThrowsExceptionWithMissingNameInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -252,6 +253,9 @@ class VersionTest extends TestCase
 
         // Create the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         // Perform the tests
         $api->create(5, $parameters);
@@ -267,7 +271,6 @@ class VersionTest extends TestCase
      */
     public function testCreateThrowsExceptionWithInvalidStatus()
     {
-        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -281,6 +284,9 @@ class VersionTest extends TestCase
 
         // Create the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         // Perform the tests
         $api->create('test', $parameters);
@@ -381,7 +387,6 @@ class VersionTest extends TestCase
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
-        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'description' => 'Test version description',
@@ -395,6 +400,9 @@ class VersionTest extends TestCase
 
         // Create the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Possible values for status : open, locked, closed');
 
         // Perform the tests
         $api->update('test', $parameters);
@@ -779,7 +787,6 @@ class VersionTest extends TestCase
      */
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
-        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'name' => 'Test version',
@@ -793,6 +800,9 @@ class VersionTest extends TestCase
 
         // Create the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Possible values for sharing : none, descendants, hierarchy, tree, system');
 
         // Perform the tests
         $api->create('test', $parameters);
@@ -906,7 +916,6 @@ class VersionTest extends TestCase
      */
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
-        $this->expectException(Exception::class);
         // Test values
         $parameters = [
             'name' => 'Test version',
@@ -920,6 +929,9 @@ class VersionTest extends TestCase
 
         // Update the object under test
         $api = new Version($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Possible values for sharing : none, descendants, hierarchy, tree, system');
 
         // Perform the tests
         $api->update('test', $parameters);

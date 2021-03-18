@@ -22,9 +22,11 @@ class ProjectXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
         $api = $this->client->getApi('project');
         $this->assertInstanceOf('Redmine\Api\Project', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create();
     }

@@ -22,9 +22,11 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
         $api = $this->client->getApi('issue_category');
         $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create('aProject');
     }
