@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\TimeEntry
@@ -22,22 +23,25 @@ class TimeEntryTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/time_entries.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -54,14 +58,14 @@ class TimeEntryTest extends TestCase
             'user_id' => 10,
             'limit' => 2,
         ];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/time_entries.json?'),
@@ -70,13 +74,16 @@ class TimeEntryTest extends TestCase
                     $this->stringContains('limit=2')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all($parameters));
+        $this->assertSame([$response], $api->all($parameters));
     }
 
     /**
@@ -89,22 +96,25 @@ class TimeEntryTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/time_entries/5.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -117,22 +127,25 @@ class TimeEntryTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/time_entries/5.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -144,20 +157,22 @@ class TimeEntryTest extends TestCase
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new TimeEntry($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(['id' => 5]));
+        $this->assertSame($response, $api->create(['id' => 5]));
     }
 
     /**
@@ -169,23 +184,25 @@ class TimeEntryTest extends TestCase
      */
     public function testCreateThrowsExceptionIfIssueIdAndProjectIdAreMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'hours' => '5.25',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new TimeEntry($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -197,24 +214,26 @@ class TimeEntryTest extends TestCase
      */
     public function testCreateThrowsExceptionIfHoursAreMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'issue_id' => '15',
             'project_id' => '25',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new TimeEntry($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -227,7 +246,7 @@ class TimeEntryTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'issue_id' => '15',
             'project_id' => '25',
@@ -247,11 +266,11 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/time_entries.xml',
                 $this->logicalAnd(
@@ -263,13 +282,16 @@ class TimeEntryTest extends TestCase
                     $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -282,7 +304,7 @@ class TimeEntryTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'hours' => '10.25',
             'custom_fields' => [
@@ -300,11 +322,11 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/time_entries/5.xml',
                 $this->logicalAnd(
@@ -314,12 +336,15 @@ class TimeEntryTest extends TestCase
                     $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 }

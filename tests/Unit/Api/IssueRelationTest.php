@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\IssueRelation
@@ -21,24 +22,27 @@ class IssueRelationTest extends TestCase
     public function testAllReturnsClientGetResponseWithProject()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/issues/5/relations.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5));
+        $this->assertSame($response, $api->all(5));
     }
 
     /**
@@ -51,27 +55,30 @@ class IssueRelationTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/issues/5/relations.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5, $parameters));
+        $this->assertSame([$response], $api->all(5, $parameters));
     }
 
     /**
@@ -84,18 +91,25 @@ class IssueRelationTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
+        $response = '{"relation":{"child":[5,2,3]}}';
         $returnValue = [
             'child' => [5, 2, 3],
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/relations/5.json'))
-            ->willReturn(['relation' => $returnValue]);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
@@ -114,13 +128,16 @@ class IssueRelationTest extends TestCase
     public function testShowReturnsArrayIfNull()
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/relations/5.json'))
-            ->willReturn(null);
+            ->willReturn(false);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn('');
 
         // Create the object under test
         $api = new IssueRelation($client);
@@ -139,14 +156,14 @@ class IssueRelationTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/relations/5'),
@@ -156,13 +173,16 @@ class IssueRelationTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -175,16 +195,16 @@ class IssueRelationTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
+        $response = '{"test":"response"}';
         $responseArray = ['test' => 'response'];
-        $postResponse = json_encode($responseArray);
         $parameters = [];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
                         ->disableOriginalConstructor()
                         ->getMock();
         $client->expects($this->once())
-                ->method('post')
+                ->method('requestPost')
                 ->with(
                     '/issues/1/relations.json',
                     json_encode([
@@ -193,7 +213,10 @@ class IssueRelationTest extends TestCase
                         ],
                     ])
                 )
-                ->willReturn($postResponse);
+                ->willReturn(true);
+            $client->expects($this->exactly(1))
+                ->method('getLastResponseBody')
+                ->willReturn($response);
 
         // Create the object under test
         $api = new IssueRelation($client);

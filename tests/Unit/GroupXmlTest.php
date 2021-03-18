@@ -23,7 +23,7 @@ class GroupXmlTest extends TestCase
     public function testCreateBlank()
     {
         $this->expectException(Exception::class);
-        $api = $this->client->group;
+        $api = $this->client->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $api->create();
@@ -31,10 +31,11 @@ class GroupXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->group->create([
+        $res = $this->client->getApi('group')->create([
             'name' => 'Developers',
             'user_ids' => [3, 5],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <group>
@@ -51,7 +52,7 @@ class GroupXmlTest extends TestCase
     public function testUpdateNotImplemented()
     {
         $this->expectException(Exception::class);
-        $api = $this->client->group;
+        $api = $this->client->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $api->update(1);

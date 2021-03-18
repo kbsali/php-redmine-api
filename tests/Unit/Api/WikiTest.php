@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Wiki
@@ -21,22 +22,25 @@ class WikiTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/wiki/index.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5));
+        $this->assertSame($response, $api->all(5));
     }
 
     /**
@@ -52,14 +56,14 @@ class WikiTest extends TestCase
             'offset' => 10,
             'limit' => 2,
         ];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/wiki/index.json'),
@@ -67,13 +71,16 @@ class WikiTest extends TestCase
                     $this->stringContains('limit=2')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5, $parameters));
+        $this->assertSame([$response], $api->all(5, $parameters));
     }
 
     /**
@@ -86,22 +93,25 @@ class WikiTest extends TestCase
     public function testShowWithNumericIdsReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/projects/5/wiki/test.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5, 'test'));
+        $this->assertSame($response, $api->show(5, 'test'));
     }
 
     /**
@@ -114,22 +124,25 @@ class WikiTest extends TestCase
     public function testShowWithIdentifierReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/projects/test/wiki/example.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show('test', 'example'));
+        $this->assertSame($response, $api->show('test', 'example'));
     }
 
     /**
@@ -142,22 +155,25 @@ class WikiTest extends TestCase
     public function testShowWithNumericIdsAndVersionReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/projects/5/wiki/test/22.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5, 'test', 22));
+        $this->assertSame($response, $api->show(5, 'test', 22));
     }
 
     /**
@@ -170,22 +186,25 @@ class WikiTest extends TestCase
     public function testShowWithIdentifierAndVersionReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/projects/test/wiki/example/22.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show('test', 'example', 22));
+        $this->assertSame($response, $api->show('test', 'example', 22));
     }
 
     /**
@@ -198,22 +217,25 @@ class WikiTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/projects/5/wiki/test.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5, 'test'));
+        $this->assertSame($response, $api->remove(5, 'test'));
     }
 
     /**
@@ -226,25 +248,28 @@ class WikiTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
                 '<?xml version="1.0"?>'."\n".'<wiki_page/>'."\n"
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, 'test'));
+        $this->assertSame($response, $api->create(5, 'test'));
     }
 
     /**
@@ -257,7 +282,7 @@ class WikiTest extends TestCase
     public function testCreateWithParametersCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'title' => 'Test Wikipage',
             'comments' => 'Initial Edit',
@@ -265,11 +290,11 @@ class WikiTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
@@ -280,13 +305,16 @@ class WikiTest extends TestCase
                     $this->stringContains('<text>Some page text</text>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, 'test', $parameters));
+        $this->assertSame($response, $api->create(5, 'test', $parameters));
     }
 
     /**
@@ -299,25 +327,28 @@ class WikiTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
                 '<?xml version="1.0"?>'."\n".'<wiki_page/>'."\n"
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, 'test'));
+        $this->assertSame($response, $api->update(5, 'test'));
     }
 
     /**
@@ -330,7 +361,7 @@ class WikiTest extends TestCase
     public function testUpdateWithParametersCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'title' => 'Test Wikipage',
             'comments' => 'Initial Edit',
@@ -338,11 +369,11 @@ class WikiTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
@@ -353,12 +384,15 @@ class WikiTest extends TestCase
                     $this->stringContains('<text>Some page text</text>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, 'test', $parameters));
+        $this->assertSame($response, $api->update(5, 'test', $parameters));
     }
 }

@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Group
@@ -22,24 +23,27 @@ class GroupTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/groups.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -52,27 +56,30 @@ class GroupTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all($parameters));
+        $this->assertSame([$response], $api->all($parameters));
     }
 
     /**
@@ -84,27 +91,28 @@ class GroupTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = [
-            'groups' => [
-                ['id' => 1, 'name' => 'Group 1'],
-                ['id' => 5, 'name' => 'Group 5'],
-            ],
-        ];
+        $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';
         $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->atLeastOnce())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/groups.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Group($client);
@@ -122,27 +130,28 @@ class GroupTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = [
-            'groups' => [
-                ['id' => 1, 'name' => 'Group 1'],
-                ['id' => 5, 'name' => 'Group 5'],
-            ],
-        ];
+        $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';
         $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/groups.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Group($client);
@@ -161,27 +170,28 @@ class GroupTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = [
-            'groups' => [
-                ['id' => 1, 'name' => 'Group 1'],
-                ['id' => 5, 'name' => 'Group 5'],
-            ],
-        ];
+        $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';
         $expectedReturn = [
             'Group 1' => 1,
             'Group 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/groups.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(4))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Group($client);
@@ -201,22 +211,25 @@ class GroupTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->stringStartsWith('/groups/5.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -229,28 +242,31 @@ class GroupTest extends TestCase
     public function testShowCallsGetUrlWithParameters()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $allParameters = ['not-used'];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups/5.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5, $allParameters));
+        $this->assertSame($response, $api->show(5, $allParameters));
     }
 
     /**
@@ -263,14 +279,14 @@ class GroupTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups/5'),
@@ -280,13 +296,16 @@ class GroupTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -299,17 +318,17 @@ class GroupTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $postParameter = [
             'name' => 'Group Name',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups'),
@@ -320,13 +339,16 @@ class GroupTest extends TestCase
                 ),
                 $this->stringContains('<group><name>Group Name</name></group>')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($postParameter));
+        $this->assertSame($response, $api->create($postParameter));
     }
 
     /**
@@ -339,17 +361,19 @@ class GroupTest extends TestCase
      */
     public function testCreateThrowsExceptionIsNameIsMissing()
     {
-        $this->expectException(Exception::class);
         // Test values
         $postParameter = [];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Group($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         // Perform the tests
         $api->create($postParameter);
@@ -365,14 +389,14 @@ class GroupTest extends TestCase
     public function testAddUserCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups/5/users'),
@@ -383,13 +407,16 @@ class GroupTest extends TestCase
                 ),
                 $this->stringContains('<user_id>10</user_id>')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->addUser(5, 10));
+        $this->assertSame($response, $api->addUser(5, 10));
     }
 
     /**
@@ -402,14 +429,14 @@ class GroupTest extends TestCase
     public function testRemoveUserCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups/5/users/10'),
@@ -419,12 +446,15 @@ class GroupTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->removeUser(5, 10));
+        $this->assertSame($response, $api->removeUser(5, 10));
     }
 }

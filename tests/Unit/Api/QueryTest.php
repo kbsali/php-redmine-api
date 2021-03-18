@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Query;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Query
@@ -21,24 +22,27 @@ class QueryTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/queries.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Query($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -51,26 +55,29 @@ class QueryTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/queries.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Query($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all($parameters));
+        $this->assertSame([$response], $api->all($parameters));
     }
 }

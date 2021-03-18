@@ -23,7 +23,7 @@ class UserXmlTest extends TestCase
     public function testCreateBlank()
     {
         $this->expectException(Exception::class);
-        $api = $this->client->user;
+        $api = $this->client->getApi('user');
         $this->assertInstanceOf('Redmine\Api\User', $api);
 
         $api->create();
@@ -31,13 +31,14 @@ class UserXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->user;
+        $api = $this->client->getApi('user');
         $res = $api->create([
             'login' => 'test',
             'firstname' => 'test',
             'lastname' => 'test',
             'mail' => 'test@example.com',
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <user>
@@ -51,10 +52,11 @@ class UserXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->user;
+        $api = $this->client->getApi('user');
         $res = $api->update(1, [
             'firstname' => 'Raul',
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <user>

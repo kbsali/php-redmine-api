@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Version
@@ -22,22 +23,25 @@ class VersionTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/versions.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5));
+        $this->assertSame($response, $api->all(5));
     }
 
     /**
@@ -53,14 +57,14 @@ class VersionTest extends TestCase
             'offset' => 10,
             'limit' => 2,
         ];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->any())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/versions.json'),
@@ -68,13 +72,16 @@ class VersionTest extends TestCase
                     $this->stringContains('limit=2')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5, $parameters));
+        $this->assertSame([$response], $api->all(5, $parameters));
     }
 
     /**
@@ -87,22 +94,25 @@ class VersionTest extends TestCase
     public function testShowWithNumericIdReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/versions/5.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -115,22 +125,25 @@ class VersionTest extends TestCase
     public function testShowWithStringReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/versions/test.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show('test'));
+        $this->assertSame($response, $api->show('test'));
     }
 
     /**
@@ -143,22 +156,25 @@ class VersionTest extends TestCase
     public function testRemoveWithNumericIdCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/versions/5.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -171,22 +187,25 @@ class VersionTest extends TestCase
     public function testRemoveWithStringCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/versions/test.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove('test'));
+        $this->assertSame($response, $api->remove('test'));
     }
 
     /**
@@ -200,7 +219,7 @@ class VersionTest extends TestCase
     {
         $this->expectException(Exception::class);
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -227,7 +246,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -256,7 +275,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -277,17 +296,17 @@ class VersionTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
@@ -296,13 +315,16 @@ class VersionTest extends TestCase
                     $this->stringContains('<name>Test version</name>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, $parameters));
+        $this->assertSame($response, $api->create(5, $parameters));
     }
 
     /**
@@ -316,18 +338,18 @@ class VersionTest extends TestCase
     public function testCreateWithValidStatusCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'status' => 'locked',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
@@ -337,13 +359,16 @@ class VersionTest extends TestCase
                     $this->stringContains('<status>locked</status>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, $parameters));
+        $this->assertSame($response, $api->create(5, $parameters));
     }
 
     /**
@@ -364,7 +389,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -385,17 +410,17 @@ class VersionTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
@@ -404,13 +429,16 @@ class VersionTest extends TestCase
                     $this->stringContains('<name>Test version</name>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update('test', $parameters));
     }
 
     /**
@@ -424,18 +452,18 @@ class VersionTest extends TestCase
     public function testUpdateWithValidStatusCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'status' => 'locked',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
@@ -445,13 +473,16 @@ class VersionTest extends TestCase
                     $this->stringContains('<status>locked</status>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update('test', $parameters));
     }
 
     /**
@@ -463,25 +494,26 @@ class VersionTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = [
-            'versions' => [
-                ['id' => 1, 'name' => 'Version 1'],
-                ['id' => 5, 'name' => 'Version 5'],
-            ],
-        ];
+        $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
         $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/versions.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
@@ -499,25 +531,26 @@ class VersionTest extends TestCase
     public function testListingReturnsIdNameIfReverseIsFalseArray()
     {
         // Test values
-        $getResponse = [
-            'versions' => [
-                ['id' => 1, 'name' => 'Version 1'],
-                ['id' => 5, 'name' => 'Version 5'],
-            ],
-        ];
+        $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
         $expectedReturn = [
             1 => 'Version 1',
             5 => 'Version 5',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/versions.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
@@ -535,25 +568,26 @@ class VersionTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = [
-            'versions' => [
-                ['id' => 1, 'name' => 'Version 1'],
-                ['id' => 5, 'name' => 'Version 5'],
-            ],
-        ];
+        $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
         $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/versions.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
@@ -572,25 +606,26 @@ class VersionTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = [
-            'versions' => [
-                ['id' => 1, 'name' => 'Version 1'],
-                ['id' => 5, 'name' => 'Version 5'],
-            ],
-        ];
+        $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
         $expectedReturn = [
             'Version 1' => 1,
             'Version 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects/5/versions.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(4))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
@@ -609,22 +644,24 @@ class VersionTest extends TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = [
-            'versions' => [
-                ['id' => 5, 'name' => 'Version 5'],
-            ],
-        ];
+        $response = '{"versions":[{"id":5,"name":"Version 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects/5/versions.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
@@ -648,18 +685,18 @@ class VersionTest extends TestCase
     public function testCreateWithValidSharing($sharingValue, $sharingXmlElement)
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
@@ -669,13 +706,16 @@ class VersionTest extends TestCase
                     $this->stringContains($sharingXmlElement)
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create('test', $parameters));
+        $this->assertSame($response, $api->create('test', $parameters));
     }
 
     /**
@@ -691,18 +731,18 @@ class VersionTest extends TestCase
     public function testCreateWithValidEmptySharing($sharingValue)
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
@@ -714,13 +754,16 @@ class VersionTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create('test', $parameters));
+        $this->assertSame($response, $api->create('test', $parameters));
     }
 
     /**
@@ -744,7 +787,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -769,18 +812,18 @@ class VersionTest extends TestCase
     public function testUpdateWithValidSharing($sharingValue, $sharingXmlElement)
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
@@ -790,13 +833,16 @@ class VersionTest extends TestCase
                     $this->stringContains($sharingXmlElement)
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Update the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update('test', $parameters));
     }
 
     /**
@@ -812,18 +858,18 @@ class VersionTest extends TestCase
     public function testUpdateWithValidEmptySharing($sharingValue)
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test version',
             'sharing' => $sharingValue,
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
@@ -835,13 +881,16 @@ class VersionTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Update the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update('test', $parameters));
     }
 
     /**
@@ -865,7 +914,7 @@ class VersionTest extends TestCase
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 

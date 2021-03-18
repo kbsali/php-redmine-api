@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\User
@@ -22,27 +23,30 @@ class UserTest extends TestCase
     public function testGetCurrentUserReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/users/current.json'),
                     $this->stringContains(urlencode('memberships,groups'))
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->getCurrentUser());
+        $this->assertSame($response, $api->getCurrentUser());
     }
 
     /**
@@ -54,22 +58,24 @@ class UserTest extends TestCase
     public function testGetIdByUsernameMakesGetRequest()
     {
         // Test values
-        $getResponse = [
-            'users' => [
-                ['id' => 5, 'login' => 'User 5'],
-            ],
-        ];
+        $response = '{"users":[{"id":5,"login":"User 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/users.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new User($client);
@@ -88,22 +94,25 @@ class UserTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/users.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -119,14 +128,14 @@ class UserTest extends TestCase
             'offset' => 10,
             'limit' => 2,
         ];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/users.json?'),
@@ -134,13 +143,16 @@ class UserTest extends TestCase
                     $this->stringContains('limit=2')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all($parameters));
+        $this->assertSame([$response], $api->all($parameters));
     }
 
     /**
@@ -153,27 +165,30 @@ class UserTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/users/5.json'),
                     $this->stringContains(urlencode('memberships,groups'))
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -187,27 +202,30 @@ class UserTest extends TestCase
     {
         // Test values
         $parameters = ['include' => ['parameter1', 'parameter2', 'memberships']];
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/users/5.json'),
                     $this->stringContains(urlencode('parameter1,parameter2,memberships,groups'))
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5, $parameters));
+        $this->assertSame($response, $api->show(5, $parameters));
     }
 
     /**
@@ -220,22 +238,25 @@ class UserTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/users/5.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -247,20 +268,22 @@ class UserTest extends TestCase
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new User($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create());
+        $this->assertSame($response, $api->create());
     }
 
     /**
@@ -275,14 +298,16 @@ class UserTest extends TestCase
      */
     public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters)
     {
-        $this->expectException(Exception::class);
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new User($client);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         // Perform the tests
         $api->create($parameters);
@@ -345,7 +370,7 @@ class UserTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'login' => 'TestUser',
             'password' => 'secretPass',
@@ -355,11 +380,11 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
@@ -372,13 +397,16 @@ class UserTest extends TestCase
                     $this->stringContains('<mail>mail@example.com</mail>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -392,7 +420,7 @@ class UserTest extends TestCase
     public function testCreateWithCustomField()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'login' => 'TestUser',
             'password' => 'secretPass',
@@ -406,11 +434,11 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
@@ -430,13 +458,16 @@ class UserTest extends TestCase
                     $this->stringContains('</custom_field>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -449,17 +480,17 @@ class UserTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'mail' => 'user@example.com',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
@@ -468,13 +499,16 @@ class UserTest extends TestCase
                     $this->stringContains('<mail>user@example.com</mail>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -488,7 +522,7 @@ class UserTest extends TestCase
     public function testUpdateWithCustomField()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'custom_fields' => [
                 ['id' => 5, 'value' => 'Value 5'],
@@ -497,11 +531,11 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
@@ -516,13 +550,16 @@ class UserTest extends TestCase
                     $this->stringContains('</custom_field>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new User($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -534,27 +571,28 @@ class UserTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = [
-            'users' => [
-                ['id' => 1, 'login' => 'User 1'],
-                ['id' => 5, 'login' => 'User 5'],
-            ],
-        ];
+        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
         $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->atLeastOnce())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/users.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new User($client);
@@ -572,27 +610,28 @@ class UserTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = [
-            'users' => [
-                ['id' => 1, 'login' => 'User 1'],
-                ['id' => 5, 'login' => 'User 5'],
-            ],
-        ];
+        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
         $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/users.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new User($client);
@@ -611,27 +650,28 @@ class UserTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = [
-            'users' => [
-                ['id' => 1, 'login' => 'User 1'],
-                ['id' => 5, 'login' => 'User 5'],
-            ],
-        ];
+        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
         $expectedReturn = [
             'User 1' => 1,
             'User 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/users.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(4))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new User($client);
