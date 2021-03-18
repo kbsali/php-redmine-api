@@ -108,24 +108,29 @@ class Psr18ClientRequestGenerationTest extends TestCase
     {
         return [
             [
+                // Test username/password in auth header
+                'http://test.local', 'username', 'password',
+                'requestGet', '/path', null,
+                'GET http://test.local/path 1.1'.\PHP_EOL.
+                'Host: test.local'.\PHP_EOL.
+                'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ='.\PHP_EOL.
+                \PHP_EOL
+            ],
+            [
+                // Test access token in X-Redmine-API-Key header
                 'http://test.local', 'access_token', null,
                 'requestGet', '/path', null,
                 'GET http://test.local/path 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 \PHP_EOL
             ],
             [
                 'http://test.local', 'access_token', null,
-                'requestGet', '/path.json', null,
-                'GET http://test.local/path.json 1.1'.\PHP_EOL.
-                'Host: test.local'.\PHP_EOL.
-                \PHP_EOL
-            ],
-            [
-                'http://test.local', 'username', 'password',
                 'requestPost', '/path.json', '{"foo":"bar"}',
                 'POST http://test.local/path.json 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 \PHP_EOL.
                 '{"foo":"bar"}'
             ],

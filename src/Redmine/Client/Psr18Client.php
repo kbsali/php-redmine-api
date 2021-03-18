@@ -9,6 +9,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
 /**
@@ -170,7 +171,7 @@ final class Psr18Client implements Client
     }
 
     /**
-     *
+     * Create an run a request
      *
      * @param string $method
      * @param string $path
@@ -178,16 +179,38 @@ final class Psr18Client implements Client
      *
      * @throws Exception If anything goes wrong on the request
      *
-     * @return bool
+     * @return bool true if status code of the response is not 4xx oder 5xx
      */
     private function runRequest(string $method, string $path, string $data = ''): bool
     {
         $this->lastResponse = null;
 
+        $request = $this->createRequest($method, $path, $data);
+
+        try {
+            $this->lastResponse = $this->httpClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return ($this->lastResponse->getStatusCode() < 400);
+    }
+
+    private function createRequest(string $method, string $path, string $data = ''): ServerRequestInterface
+    {
         $request = $this->requestFactory->createServerRequest(
             $method,
             $this->url . $path
         );
+
+        if ($this->pass !== null) {
+            $request = $request->withHeader(
+                'Authorization',
+                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->pass)
+            );
+        } else {
+            $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);
+        }
 
         switch ($method) {
             case 'post':
@@ -210,13 +233,7 @@ final class Psr18Client implements Client
                 break;
         }
 
-        try {
-            $this->lastResponse = $this->httpClient->sendRequest($request);
-        } catch (ClientExceptionInterface $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-
-        return ($this->lastResponse->getStatusCode() < 400);
+        return $request;
     }
 
     private function isUploadCall(string $path, string $data): bool
