@@ -1,6 +1,6 @@
 <?php
 
-namespace Redmine\Api;
+namespace Redmine;
 
 /**
  * api interface.

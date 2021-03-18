@@ -4,7 +4,7 @@ namespace Redmine\Tests\Unit;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Api;
+use Redmine\Api;
 use Redmine\Client;
 use Redmine\Client\Client as ClientInterface;
 use Redmine\Tests\Fixtures\MockClient;

@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Api;
 use Redmine\Client\Client;
 
 /**

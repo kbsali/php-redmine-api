@@ -3,7 +3,7 @@
 namespace Redmine\Client;
 
 use InvalidArgumentException;
-use Redmine\Api\Api;
+use Redmine\Api;
 
 /**
  * client api trait.
