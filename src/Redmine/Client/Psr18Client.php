@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Redmine;
+namespace Redmine\Client;
 
 use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Client\ClientInterface as PsrClient;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -14,7 +14,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 /**
  * Psr18 client.
  */
-final class Psr18Client implements ClientInterface
+final class Psr18Client implements Client
 {
     use ClientApiTrait;
 
@@ -34,7 +34,7 @@ final class Psr18Client implements ClientInterface
     private $pass;
 
     /**
-     * @var PsrClient
+     * @var ClientInterface
      */
     private $httpClient;
 
@@ -62,7 +62,7 @@ final class Psr18Client implements ClientInterface
      * @param string|null $pass
      */
     public function __construct(
-        PsrClient $httpClient,
+        ClientInterface $httpClient,
         ServerRequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
         string $url,

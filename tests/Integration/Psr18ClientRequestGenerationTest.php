@@ -7,13 +7,13 @@ namespace Redmine\Tests\Integration;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Client\ClientInterface as HttpClient;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
-use Redmine\Psr18Client;
+use Redmine\Client\Psr18Client;
 
 class Psr18ClientRequestGenerationTest extends TestCase
 {
@@ -30,7 +30,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
     ) {
         $response = $this->createMock(ResponseInterface::class);
 
-        $httpClient = $this->createMock(HttpClient::class);
+        $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->will(
             $this->returnCallback(function($request) use ($response, $expectedOutput) {
                 // Create a text representation of the HTTP request

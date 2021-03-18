@@ -1,9 +1,9 @@
 <?php
 
-namespace Redmine;
+namespace Redmine\Client;
 
 use InvalidArgumentException;
-use Redmine\Api\ApiInterface;
+use Redmine\Api\Api;
 
 /**
  * client api trait.
@@ -43,9 +43,9 @@ trait ClientApiTrait
      *
      * @throws InvalidArgumentException
      *
-     * @return ApiInterface
+     * @return Api
      */
-    public function getApi(string $name): ApiInterface
+    public function getApi(string $name): Api
     {
         if (!isset($this->apiClassnames[$name])) {
             throw new InvalidArgumentException(sprintf(

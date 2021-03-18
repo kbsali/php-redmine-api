@@ -1,19 +1,19 @@
 <?php
 
-namespace Redmine\Tests\Unit;
+namespace Redmine\Tests\Unit\Client;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Client\ClientInterface as HttpClient;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
-use Redmine\Api\ApiInterface;
-use Redmine\Psr18Client;
-use Redmine\ClientInterface;
+use Redmine\Api\Api;
+use Redmine\Client\Psr18Client;
+use Redmine\Client\Client;
 
 class Psr18ClientTest extends TestCase
 {
@@ -24,7 +24,7 @@ class Psr18ClientTest extends TestCase
     public function shouldPassApiKeyToConstructor()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -32,7 +32,7 @@ class Psr18ClientTest extends TestCase
         );
 
         $this->assertInstanceOf(Psr18Client::class, $client);
-        $this->assertInstanceOf(ClientInterface::class, $client);
+        $this->assertInstanceOf(Client::class, $client);
     }
 
     /**
@@ -42,7 +42,7 @@ class Psr18ClientTest extends TestCase
     public function shouldPassUsernameAndPasswordToConstructor()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -51,7 +51,7 @@ class Psr18ClientTest extends TestCase
         );
 
         $this->assertInstanceOf(Psr18Client::class, $client);
-        $this->assertInstanceOf(ClientInterface::class, $client);
+        $this->assertInstanceOf(Client::class, $client);
     }
 
     /**
@@ -61,7 +61,7 @@ class Psr18ClientTest extends TestCase
     public function testGetLastResponseStatusCodeIsInitialNull()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -78,7 +78,7 @@ class Psr18ClientTest extends TestCase
     public function testGetLastResponseContentTypeIsInitialEmpty()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -95,7 +95,7 @@ class Psr18ClientTest extends TestCase
     public function testGetLastResponseBodyIsInitialEmpty()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -114,7 +114,7 @@ class Psr18ClientTest extends TestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(404);
 
-        $httpClient = $this->createMock(HttpClient::class);
+        $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturn($response);
 
         $client = new Psr18Client(
@@ -142,7 +142,7 @@ class Psr18ClientTest extends TestCase
         $response->method('getHeaderLine')->willReturn('application/json');
         $response->method('getBody')->willReturn($stream);
 
-        $httpClient = $this->createMock(HttpClient::class);
+        $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturn($response);
 
         $client = new Psr18Client(
@@ -170,7 +170,7 @@ class Psr18ClientTest extends TestCase
     public function getApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
@@ -213,7 +213,7 @@ class Psr18ClientTest extends TestCase
     public function getApiShouldThrowException()
     {
         $client = new Psr18Client(
-            $this->createMock(HttpClient::class),
+            $this->createMock(ClientInterface::class),
             $this->createMock(ServerRequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',

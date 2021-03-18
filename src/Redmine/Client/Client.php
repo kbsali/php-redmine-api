@@ -1,22 +1,23 @@
 <?php
 
-namespace Redmine;
+namespace Redmine\Client;
 
-use Redmine\Api\ApiInterface;
+use InvalidArgumentException;
+use Redmine\Api\Api;
 
 /**
  * client interface.
  */
-interface ClientInterface
+interface Client
 {
     /**
      * @param string $name
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * @return ApiInterface
+     * @return Api
      */
-    public function getApi(string $name): ApiInterface;
+    public function getApi(string $name): Api;
 
     /**
      * HTTP GETs a json $path.

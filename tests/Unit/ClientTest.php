@@ -4,9 +4,9 @@ namespace Redmine\Tests\Unit;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\ApiInterface;
+use Redmine\Api\Api;
 use Redmine\Client;
-use Redmine\ClientInterface;
+use Redmine\Client\Client as ClientInterface;
 use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
@@ -552,7 +552,7 @@ class ClientTest extends TestCase
         $api = $client->api($apiName);
 
         $this->assertInstanceOf($class, $api);
-        $this->assertInstanceOf(ApiInterface::class, $api);
+        $this->assertInstanceOf(Api::class, $api);
     }
 
     /**
@@ -569,7 +569,7 @@ class ClientTest extends TestCase
         $api = $client->getApi($apiName);
 
         $this->assertInstanceOf($class, $api);
-        $this->assertInstanceOf(ApiInterface::class, $api);
+        $this->assertInstanceOf(Api::class, $api);
     }
 
     public function getApiClassesProvider()

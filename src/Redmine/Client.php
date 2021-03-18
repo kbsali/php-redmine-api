@@ -2,6 +2,9 @@
 
 namespace Redmine;
 
+use Redmine\Client\Client as ClientInterface;
+use Redmine\Client\ClientApiTrait;
+
 /**
  * Simple PHP Redmine client.
  *

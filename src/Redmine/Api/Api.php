@@ -5,6 +5,6 @@ namespace Redmine\Api;
 /**
  * api interface.
  */
-interface ApiInterface
+interface Api
 {
 }
