@@ -233,6 +233,17 @@ final class Psr18Client implements Client
                 break;
         }
 
+        // set Content-Type header
+        $tmp = parse_url($this->url.$path);
+
+        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
+            $request = $request->withHeader('Content-Type', 'application/octet-stream');
+        } elseif ('json' === substr($tmp['path'], -4)) {
+            $request = $request->withHeader('Content-Type', 'application/json');
+        } elseif ('xml' === substr($tmp['path'], -3)) {
+            $request = $request->withHeader('Content-Type', 'text/xml');
+        }
+
         return $request;
     }
 

@@ -131,6 +131,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'POST http://test.local/path.json 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
+                'Content-Type: application/json'.\PHP_EOL.
                 \PHP_EOL.
                 '{"foo":"bar"}'
             ],
