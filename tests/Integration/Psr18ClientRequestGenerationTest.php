@@ -110,6 +110,8 @@ class Psr18ClientRequestGenerationTest extends TestCase
 
     public function createdGetRequestsData()
     {
+        // $path = realpath(__DIR__.'/../Fixtures/FF4D00-1.png');
+        // var_dump(base64_encode(file_get_contents($path)));
         return [
             [
                 // Test username/password in auth header
@@ -149,6 +151,43 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'Content-Type: application/json'.\PHP_EOL.
                 \PHP_EOL.
                 '{"foo":"bar"}'
+            ],
+            [
+                // Test fileupload with file content
+                // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
+                'http://test.local', 'access_token', null, null,
+                'requestPost', '/uploads.json?filename=textfile.md', 'The content of the file',
+                'POST http://test.local/uploads.json?filename=textfile.md HTTP/1.1'.\PHP_EOL.
+                'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
+                'Content-Type: application/octet-stream'.\PHP_EOL.
+                \PHP_EOL.
+                'The content of the file'
+            ],
+            [
+                // Test fileupload with file path
+                // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
+                'http://test.local', 'access_token', null, null,
+                'requestPost', '/uploads.json?filename=textfile.md', realpath(__DIR__.'/../Fixtures/testfile_01.txt'),
+                'POST http://test.local/uploads.json?filename=textfile.md HTTP/1.1'.\PHP_EOL.
+                'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
+                'Content-Type: application/octet-stream'.\PHP_EOL.
+                \PHP_EOL.
+                'This is a test file.'.\PHP_EOL.
+                'It will be needed for testing file uploads.'.\PHP_EOL
+            ],
+            [
+                // Test fileupload with file path to image
+                // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
+                'http://test.local', 'access_token', null, null,
+                'requestPost', '/uploads.json?filename=1x1.png', realpath(__DIR__.'/../Fixtures/FF4D00-1.png'),
+                'POST http://test.local/uploads.json?filename=1x1.png HTTP/1.1'.\PHP_EOL.
+                'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
+                'Content-Type: application/octet-stream'.\PHP_EOL.
+                \PHP_EOL.
+                base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAACklEQVR4nGNiAAAABgADNjd8qAAAAABJRU5ErkJggg==')
             ],
             [
                 // Test PUT

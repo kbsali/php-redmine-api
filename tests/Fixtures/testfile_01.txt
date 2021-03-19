@@ -1,0 +1,2 @@
+This is a test file.
+It will be needed for testing file uploads.
