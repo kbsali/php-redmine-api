@@ -78,7 +78,7 @@ class TimeEntry extends AbstractApi
             if ('custom_fields' === $k && is_array($v)) {
                 $this->attachCustomFieldXML($xml, $v);
             } else {
-                $xml->addChild($k, $v);
+                $xml->addChild($k, htmlspecialchars($v));
             }
         }
 
