@@ -232,6 +232,7 @@ class TimeEntryTest extends TestCase
             'issue_id' => '15',
             'project_id' => '25',
             'hours' => '5.25',
+            'comments' => 'some text with xml entities: & < > " \' ',
             'custom_fields' => [
                 [
                     'id' => 1,
