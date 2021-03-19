@@ -171,7 +171,7 @@ class Project extends AbstractApi
                     $array->addChild($_params[$k], $id);
                 }
             } else {
-                $xml->addChild($k, $v);
+                $xml->addChild($k, htmlspecialchars($v));
             }
         }
 
