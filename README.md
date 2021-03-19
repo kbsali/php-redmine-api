@@ -6,7 +6,7 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 ## Features
 
-* Follows PSR-0 conventions and coding standard: autoload friendly
+* Follows PSR-4 conventions and coding standard: autoload friendly
 * API entry points implementation state :
 * OK Attachments
 * OK Groups
@@ -45,11 +45,11 @@ A possible solution to this would be to create an extra APIs implementing the mi
 
 ## Requirements
 
-* PHP >= 5.4
+* PHP >= 7.3 or PHP 8.0
 * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
 * The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
 * The PHP [JSON](http://php.net/manual/en/book.json.php) extension
-* [PHPUnit](https://phpunit.de/) >= 4.0 (optional) to run the test suite
+* [PHPUnit](https://phpunit.de/) >= 9.0 (optional) to run the test suite
 * "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
 * then obtain your *API access key* in your profile page : /my/account
 * or use your *username & password*
@@ -61,7 +61,7 @@ A possible solution to this would be to create an extra APIs implementing the mi
 [Composer](http://getcomposer.org/download/) users can simply run:
 
 ```bash
-$ php composer.phar require kbsali/redmine-api:~1.0
+$ php composer.phar require kbsali/redmine-api
 ```
 
 at the root of their projects. To utilize the library, include
@@ -110,19 +110,22 @@ You can run test suite to make sure the library will work properly on your syste
 
 ```
 $ vendor/bin/phpunit
-PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
+PHPUnit 9.5.3 by Sebastian Bergmann and contributors.
 
-Error:         No code coverage driver is available
+Warning:       No code coverage driver available
 
-...............................................................  63 / 285 ( 22%)
-............................................................... 126 / 285 ( 44%)
-............................................................... 189 / 285 ( 66%)
-............................................................... 252 / 285 ( 88%)
-.................................                               285 / 285 (100%)
+...............................................................  63 / 445 ( 14%)
+............................................................... 126 / 445 ( 28%)
+............................................................... 189 / 445 ( 42%)
+............................................................... 252 / 445 ( 56%)
+............................................................... 315 / 445 ( 70%)
+............................................................... 378 / 445 ( 84%)
+............................................................... 441 / 445 ( 99%)
+....                                                            445 / 445 (100%)
 
-Time: 107 ms, Memory: 8.00MB
+Time: 00:00.102, Memory: 12.00 MB
 
-OK (285 tests, 662 assertions)
+OK (445 tests, 993 assertions)
 ```
 
 ## Basic usage of `php-redmine-api` client
@@ -140,16 +143,16 @@ $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 //-- OR --
 $client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 
-$client->user->all();
-$client->user->listing();
+$client->getApi('user')->all();
+$client->getApi('user')->listing();
 
-$client->issue->create([
+$client->getApi('issue')->create([
     'project_id'  => 'test',
     'subject'     => 'some subject',
     'description' => 'a long description blablabla',
     'assigned_to_id' => 123, // or 'assigned_to' => 'user1'
 ]);
-$client->issue->all([
+$client->getApi('issue')->all([
     'limit' => 1000
 ]);
 ```
@@ -165,13 +168,13 @@ As of Redmine V2.2 you can impersonate user through the REST API :
 $client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
 
 // impersonate user
-$client->setImpersonateUser('jsmith');
+$client->startImpersonateUser('jsmith');
 
 // create a time entry for jsmith
-$client->time_entry->create($data);
+$client->getApi('time_entry')->create($data);
 
 // remove impersonation for further calls
-$client->setImpersonateUser(null);
+$client->stopImpersonateUser();
 ```
 
 
