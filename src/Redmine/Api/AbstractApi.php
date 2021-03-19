@@ -62,19 +62,7 @@ abstract class AbstractApi implements Api
             try {
                 $body = json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
             } catch (JsonException $e) {
-                $error = 'Sorry, no more details.';
-                $jsonErrors = [
-                    JSON_ERROR_NONE => 'No error has occurred',
-                    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
-                    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-                    JSON_ERROR_SYNTAX => 'Syntax error',
-                ];
-
-                if (array_key_exists($e->getCode(), $jsonErrors)) {
-                    $error = $jsonErrors[$e->getCode()];
-                }
-
-                $body = 'Error decoding body as JSON: '.$e->getMessage().' | '.$error;
+                $body = 'Error decoding body as JSON: '.$e->getMessage();
             }
         }
 

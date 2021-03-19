@@ -2,10 +2,12 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use ReflectionMethod;
+use SimpleXMLElement;
 
 /**
  * @coversDefaultClass \Redmine\Api\AbstractApi
@@ -100,13 +102,13 @@ class AbstractApiTest extends TestCase
     /**
      * @covers \Redmine\Api\AbstractApi
      * @test
-     * @dataProvider getDecodingFromGetMethodData
+     * @dataProvider getJsonDecodingFromGetMethodData
      */
-    public function testDecodingFromGetMethod($response, $contentType, $decode, $expected)
+    public function testJsonDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn($contentType);
+        $client->method('getLastResponseContentType')->willReturn('application/json');
 
         $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
 
@@ -121,12 +123,60 @@ class AbstractApiTest extends TestCase
         }
     }
 
-    public function getDecodingFromGetMethodData()
+    public function getJsonDecodingFromGetMethodData()
     {
         return [
-            ['{"foo_bar": 12345}', 'application/json', null, ['foo_bar' => 12345]], // test decode by default
-            ['{"foo_bar": 12345}', 'application/json', false, '{"foo_bar": 12345}'],
-            ['{"foo_bar": 12345}', 'application/json', true, ['foo_bar' => 12345]],
+            ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]], // test decode by default
+            ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
+            ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
+            ['', true, null], // test decode with empty body
+            ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'], // test invalid JSON
+        ];
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi
+     * @test
+     * @dataProvider getXmlDecodingFromGetMethodData
+     */
+    public function testXmlDecodingFromGetMethod($response, $decode, $expected)
+    {
+        $xmlToString = function(SimpleXMLElement $xmlElement) {
+            $dom = new DOMDocument('1.0');
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = false;
+            $dom->loadXML($xmlElement->asXML());
+
+            // Remove line breaks
+            return preg_replace("/\r|\n/", '', $dom->saveXML());
+        };
+
+        $client = $this->createMock(Client::class);
+        $client->method('getLastResponseBody')->willReturn($response);
+        $client->method('getLastResponseContentType')->willReturn('application/xml');
+
+        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+
+        $method = new ReflectionMethod($api, 'get');
+        $method->setAccessible(true);
+
+        // Perform the tests
+        if (is_bool($decode)) {
+            $return = $method->invoke($api, 'path', $decode);
+        } else {
+            $return = $method->invoke($api, 'path');
+        }
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertSame($expected, $xmlToString($return));
+    }
+
+    public function getXmlDecodingFromGetMethodData()
+    {
+        return [
+            ['<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
+            ['<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
+            ['<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
         ];
     }
 }
