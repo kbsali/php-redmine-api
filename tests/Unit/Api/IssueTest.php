@@ -842,7 +842,8 @@ class IssueTest extends TestCase
         // Test values
         $parameters = [
             'watcher_user_ids' => [5],
-            'subject' => 'Issue subject',
+            'subject' => 'Issue subject with some xml entities: & < > " \' ',
+            'description' => 'Description with some xml entities: & < > " \' ',
             'uploads' => [
                 [
                     'token' => 'first-token',
@@ -883,7 +884,8 @@ class IssueTest extends TestCase
                         .'<value>Second Custom Field</value>'
                         .'</custom_field>'
                     ),
-                    $this->stringContains('<subject>Issue subject</subject>')
+                    $this->stringContains('<subject>Issue subject with some xml entities: &amp; &lt; &gt; " \' </subject>'),
+                    $this->stringContains('<description>Description with some xml entities: &amp; &lt; &gt; " \' </description>')
                 )
             );
 
