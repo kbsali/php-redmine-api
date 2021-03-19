@@ -172,15 +172,16 @@ class Psr18ClientTest extends TestCase
     /**
      * @covers \Redmine\Psr18Client
      * @test
+     * @dataProvider getRequestReponseData
      */
-    public function testRequestGetReturnsCorrectContent()
+    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
     {
         $stream = $this->createMock(StreamInterface::class);
-        $stream->method('__toString')->willReturn('{"foo_bar": 12345}');
+        $stream->method('__toString')->willReturn($content);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getStatusCode')->willReturn(200);
-        $response->method('getHeaderLine')->willReturn('application/json');
+        $response->method('getStatusCode')->willReturn($statusCode);
+        $response->method('getHeaderLine')->willReturn($contentType);
         $response->method('getBody')->willReturn($stream);
 
         $httpClient = $this->createMock(ClientInterface::class);
@@ -188,6 +189,7 @@ class Psr18ClientTest extends TestCase
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('withHeader')->willReturn($request);
+        $request->method('withBody')->willReturn($request);
 
         $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
         $requestFactory->method('createServerRequest')->willReturn($request);
@@ -200,10 +202,36 @@ class Psr18ClientTest extends TestCase
             'access_token'
         );
 
-        $this->assertSame(true, $client->requestGet('/path'));
-        $this->assertSame(200, $client->getLastResponseStatusCode());
-        $this->assertSame('application/json', $client->getLastResponseContentType());
-        $this->assertSame('{"foo_bar": 12345}', $client->getLastResponseBody());
+        $this->assertSame($boolReturn, $client->$method('/path', $data));
+        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
+        $this->assertSame($contentType, $client->getLastResponseContentType());
+        $this->assertSame($content, $client->getLastResponseBody());
+    }
+
+    public function getRequestReponseData()
+    {
+        return [
+            ['requestGet', '', true, 101, 'text/plain', ''],
+            ['requestGet', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestGet', '', true, 301, 'application/json', ''],
+            ['requestGet', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestGet', '', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestPost', '{"foo":"bar"}', true, 101, 'text/plain', ''],
+            ['requestPost', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestPost', '{"foo":"bar"}', true, 301, 'application/json', ''],
+            ['requestPost', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestPost', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestPut', '{"foo":"bar"}', true, 101, 'text/plain', ''],
+            ['requestPut', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestPut', '{"foo":"bar"}', true, 301, 'application/json', ''],
+            ['requestPut', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestPut', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestDelete', '', true, 101, 'text/plain', ''],
+            ['requestDelete', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestDelete', '', true, 301, 'application/json', ''],
+            ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
+        ];
     }
 
     /**
