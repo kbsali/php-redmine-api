@@ -20,6 +20,17 @@ interface Client
     public function getApi(string $name): Api;
 
     /**
+     * Sets to an existing username so api calls can be
+     * impersonated to this user.
+     */
+    public function startImpersonateUser(string $username): void;
+
+    /**
+     * Remove the user impersonate.
+     */
+    public function stopImpersonateUser(): void;
+
+    /**
      * HTTP GETs a json $path.
      *
      * @param string $path

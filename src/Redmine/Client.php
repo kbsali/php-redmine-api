@@ -510,6 +510,23 @@ class Client implements ClientInterface
     /**
      * Sets to an existing username so api calls can be
      * impersonated to this user.
+     */
+    public function startImpersonateUser(string $username): void
+    {
+        $this->impersonateUser = $username;
+    }
+
+    /**
+     * Remove the user impersonate.
+     */
+    public function stopImpersonateUser(): void
+    {
+        $this->impersonateUser = null;
+    }
+
+    /**
+     * Sets to an existing username so api calls can be
+     * impersonated to this user.
      *
      * @param string|null $username
      *
@@ -517,7 +534,11 @@ class Client implements ClientInterface
      */
     public function setImpersonateUser($username = null)
     {
-        $this->impersonateUser = $username;
+        if ($username === null) {
+            $this->stopImpersonateUser();
+        } else {
+            $this->startImpersonateUser($username);
+        }
 
         return $this;
     }

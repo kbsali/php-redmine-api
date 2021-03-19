@@ -24,7 +24,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
      * @dataProvider createdGetRequestsData
      */
     public function testPsr18ClientCreatesCorrectRequests(
-        string $url, string $apikeyOrUsername, $pwd,
+        string $url, string $apikeyOrUsername, $pwd, $impersonateUser,
         string $method, string $path, $data,
         $expectedOutput
     ) {
@@ -101,6 +101,10 @@ class Psr18ClientRequestGenerationTest extends TestCase
             $pwd
         );
 
+        if ($impersonateUser !== null) {
+            $client->startImpersonateUser($impersonateUser);
+        }
+
         $client->$method($path, $data);
     }
 
@@ -109,7 +113,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         return [
             [
                 // Test username/password in auth header
-                'http://test.local', 'username', 'password',
+                'http://test.local', 'username', 'password', null,
                 'requestGet', '/path', null,
                 'GET http://test.local/path 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
@@ -118,7 +122,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             [
                 // Test access token in X-Redmine-API-Key header
-                'http://test.local', 'access_token', null,
+                'http://test.local', 'access_token', null, null,
                 'requestGet', '/path', null,
                 'GET http://test.local/path 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
@@ -126,7 +130,17 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 \PHP_EOL
             ],
             [
-                'http://test.local', 'access_token', null,
+                // Test user impersonate in X-Redmine-Switch-User header
+                'http://test.local', 'access_token', null, 'Robin',
+                'requestGet', '/path', null,
+                'GET http://test.local/path 1.1'.\PHP_EOL.
+                'Host: test.local'.\PHP_EOL.
+                'X-Redmine-API-Key: access_token'.\PHP_EOL.
+                'X-Redmine-Switch-User: Robin'.\PHP_EOL.
+                \PHP_EOL
+            ],
+            [
+                'http://test.local', 'access_token', null, null,
                 'requestPost', '/path.json', '{"foo":"bar"}',
                 'POST http://test.local/path.json 1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.

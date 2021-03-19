@@ -217,6 +217,21 @@ class ClientTest extends TestCase
      * @covers \Redmine\Client
      * @test
      */
+    public function testStartAndStopImpersonateUser()
+    {
+        $client = new Client('http://test.local', 'asdf');
+
+        $this->assertNull($client->getImpersonateUser());
+        $client->startImpersonateUser('Mike');
+        $this->assertSame('Mike', $client->getImpersonateUser());
+        $client->stopImpersonateUser();
+        $this->assertNull($client->getImpersonateUser());
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     */
     public function testGetAndSetImpersonateUser()
     {
         $client = new Client('http://test.local', 'asdf');

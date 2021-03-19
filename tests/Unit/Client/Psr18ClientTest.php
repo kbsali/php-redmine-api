@@ -109,6 +109,41 @@ class Psr18ClientTest extends TestCase
      * @covers \Redmine\Psr18Client
      * @test
      */
+    public function testStartAndStopImpersonateUser()
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->exactly(4))
+            ->method('withHeader')
+            ->withConsecutive(
+                ['X-Redmine-API-Key', 'access_token'],
+                ['X-Redmine-API-Key', 'access_token'],
+                ['X-Redmine-Switch-User', 'Sam'],
+                ['X-Redmine-API-Key', 'access_token'],
+            )
+            ->willReturn($request);
+
+        $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
+        $requestFactory->method('createServerRequest')->willReturn($request);
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $requestFactory,
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token'
+        );
+
+        $client->requestGet('/path');
+        $client->startImpersonateUser('Sam');
+        $client->requestGet('/path');
+        $client->stopImpersonateUser();
+        $client->requestGet('/path');
+    }
+
+    /**
+     * @covers \Redmine\Psr18Client
+     * @test
+     */
     public function testRequestGetReturnsFalse()
     {
         $response = $this->createMock(ResponseInterface::class);

@@ -35,6 +35,11 @@ final class Psr18Client implements Client
     private $pass;
 
     /**
+     * @var string|null
+     */
+    private $impersonateUser;
+
+    /**
      * @var ClientInterface
      */
     private $httpClient;
@@ -76,6 +81,23 @@ final class Psr18Client implements Client
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->pass = $pass;
+    }
+
+    /**
+     * Sets to an existing username so api calls can be
+     * impersonated to this user.
+     */
+    public function startImpersonateUser(string $username): void
+    {
+        $this->impersonateUser = $username;
+    }
+
+    /**
+     * Remove the user impersonate.
+     */
+    public function stopImpersonateUser(): void
+    {
+        $this->impersonateUser = null;
     }
 
     /**
@@ -203,6 +225,8 @@ final class Psr18Client implements Client
             $this->url . $path
         );
 
+        // Set Authentication header
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
         if ($this->pass !== null) {
             $request = $request->withHeader(
                 'Authorization',
@@ -210,6 +234,12 @@ final class Psr18Client implements Client
             );
         } else {
             $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);
+        }
+
+        // Set User Impersonation Header
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation
+        if (null !== $this->impersonateUser) {
+            $request = $request->withHeader('X-Redmine-Switch-User', $this->impersonateUser);
         }
 
         switch ($method) {
