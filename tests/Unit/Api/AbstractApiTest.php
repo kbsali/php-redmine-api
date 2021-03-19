@@ -139,7 +139,7 @@ class AbstractApiTest extends TestCase
      * @test
      * @dataProvider getXmlDecodingFromGetMethodData
      */
-    public function testXmlDecodingFromGetMethod($response, $decode, $expected)
+    public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
     {
         $xmlToString = function(SimpleXMLElement $xmlElement) {
             $dom = new DOMDocument('1.0');
@@ -157,26 +157,36 @@ class AbstractApiTest extends TestCase
 
         $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
 
-        $method = new ReflectionMethod($api, 'get');
+        $method = new ReflectionMethod($api, $methodName);
         $method->setAccessible(true);
 
         // Perform the tests
-        if (is_bool($decode)) {
+        if ($methodName === 'get') {
             $return = $method->invoke($api, 'path', $decode);
-        } else {
-            $return = $method->invoke($api, 'path');
-        }
 
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertSame($expected, $xmlToString($return));
+            $this->assertInstanceOf(SimpleXMLElement::class, $return);
+            $this->assertSame($expected, $xmlToString($return));
+        } elseif ($methodName === 'delete') {
+            $return = $method->invoke($api, 'path');
+
+            $this->assertSame($expected, $return);
+        } else {
+            $return = $method->invoke($api, 'path', '');
+
+            $this->assertInstanceOf(SimpleXMLElement::class, $return);
+            $this->assertSame($expected, $xmlToString($return));
+        }
     }
 
     public function getXmlDecodingFromGetMethodData()
     {
         return [
-            ['<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
-            ['<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
-            ['<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
+            ['get', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
+            ['get', '<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
+            ['get', '<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
+            ['post', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
+            ['put', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
+            ['delete', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
         ];
     }
 }
