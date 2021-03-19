@@ -110,8 +110,6 @@ class Psr18ClientRequestGenerationTest extends TestCase
 
     public function createdGetRequestsData()
     {
-        // $path = realpath(__DIR__.'/../Fixtures/FF4D00-1.png');
-        // var_dump(base64_encode(file_get_contents($path)));
         return [
             [
                 // Test username/password in auth header
