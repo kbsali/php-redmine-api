@@ -4,9 +4,9 @@ Since `php-redmine-api` v1.7.0 there is a new PSR-18 based client `Redmine\Clien
 
 ## 1. Use new client methods
 
-### api() to getApi()
-
 With the new interface `Redmine\Client\Client` there are now standarized methods for all clients. The new `Redmine\Client\Psr18Client` and the current `Redmine\Client` implementing this interface.
+
+### api() to getApi()
 
 Search in your code for the usage of `$client->api('issue')` and the magic getter like `$client->issue`. Then replace this calls with `$client->getApi('issue')`.
 
@@ -55,8 +55,8 @@ This example shows how you can parse the response body of a GET request.
 +        throw new \Exception('Error decoding body as JSON: '.$e->getMessage());
 +    }
 +} else {
-    $dataAsString = $body;
-}
++    $dataAsString = $body;
++}
 ```
 
 ### post() to requestPost()
@@ -74,8 +74,8 @@ This example shows how you can parse the response body of a POST request.
 +if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
 +    $dataAsXML = new \SimpleXMLElement($body);
 +} else {
-    $dataAsString = $body;
-}
++    $dataAsString = $body;
++}
 ```
 
 ### put() to requestPut()
@@ -93,8 +93,8 @@ This example shows how you can parse the response body of a PUT request.
 +if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
 +    $dataAsXML = new \SimpleXMLElement($body);
 +} else {
-    $dataAsString = $body;
-}
++    $dataAsString = $body;
++}
 ```
 
 ### delete() to requestDelete()
