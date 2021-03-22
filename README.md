@@ -305,7 +305,7 @@ $client->getApi('issue')->all([
 ]);
 ```
 
-See [example.php](example.php) for further examples.
+[See further examples and read more about usage in the docs](docs/usage.md).
 
 ### Thanks!
 

@@ -20,7 +20,6 @@ This will create a new entry in your `composer.json`.
 +        "kbsali/php-redmine-api": "^1.6"
     }
 }
-
 ```
 
 ### ... or without Composer
@@ -56,7 +55,6 @@ require_once 'vendor/autoload.php';
 
 ... or valid username/password.
 
-
 ```diff
 <?php
 
@@ -86,8 +84,8 @@ $client = new Redmine\Client('https://redmine.example.com', '1234567890abcdfgh')
 +
 +// [OPTIONAL] set a custom host
 +$client->setCustomHost('https://localhost:8080');
-
 ```
+
 #### Psr-18 compatible Client `Redmine\Client\Psr18Client`
 
 The `Psr18Client` requires
@@ -165,7 +163,6 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 // Instantiate with ApiKey
 -$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
 +$client = new Redmine\Client\Prs18Client($guzzleWrapper, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
-
 ```
 
 ## Built-in Redmine features
