@@ -6,7 +6,9 @@ use InvalidArgumentException;
 use Redmine\Api;
 
 /**
- * client api trait.
+ * Provide API instantiation to clients
+ *
+ * @internal
  */
 trait ClientApiTrait
 {
