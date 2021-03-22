@@ -143,6 +143,8 @@ Create your project e.g. in the `index.php` by require the `vendor/autoload.php`
 
 You can choose between the navite curl client or the PSR-18 compatible client.
 
+> :bulb: Since `php-redmine-api` v1.7.0 there is a new PSR-18 based client `Redmine\Client\Psr18Client`. [See this guide if you want to switch to this client.](docs/migrate-to-psr18client.md).
+
 #### Native curl Client `Redmine\Client`
 
 Every Client requires a URL to your Redmine instance and either a valid Apikey...
