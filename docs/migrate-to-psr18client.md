@@ -134,16 +134,22 @@ The `Redmine\Client\Psr18Client` requires:
 - a `Psr\Http\Message\StreamFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-message-implementation)
 - a URL to your Redmine instance
 - an Apikey or username
-- and optional a password if you want tu use username/password.
+- and optional a password if you want to use username/password (not recommended).
 
 ```diff
 -// Instantiate with ApiKey
--$client = new Redmine\Client('https://redmine.example.com', '1234567890abcdfgh');
+-$client = new Redmine\Client(
 +$guzzle = \GuzzleHttp\Client();
 +$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 +
 +// Instantiate with ApiKey
-+$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
++$client = new Redmine\Client\Prs18Client(
++    $guzzle,
++    $psr17Factory,
++    $psr17Factory,
+    'https://redmine.example.com',
+    '1234567890abcdfgh'
+);
 ```
 
 ## 3. Set `cURL` options
