@@ -307,25 +307,6 @@ $client->getApi('issue')->all([
 
 See `[example.php](example.php)` for further examples.
 
-## User Impersonation
-
-As of Redmine V2.2 you can impersonate user through the REST API :
-
-```php
-
-$client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
-
-// impersonate user
-$client->startImpersonateUser('jsmith');
-
-// create a time entry for jsmith
-$client->getApi('time_entry')->create($data);
-
-// remove impersonation for further calls
-$client->stopImpersonateUser();
-```
-
-
 ### Thanks!
 
 * Thanks to [Thomas Spycher](https://github.com/tspycher/) for the 1st version of the class.
