@@ -437,7 +437,8 @@ class ProjectTest extends TestCase
         $response = 'API Response';
         $parameters = [
             'identifier' => 'test-project',
-            'name' => 'Test Project',
+            'name' => 'Test Project with some xml entities: & < > " \' ',
+            'description' => 'Description with some xml entities: & < > " \' ',
         ];
 
         // Create the used mock objects
@@ -452,7 +453,8 @@ class ProjectTest extends TestCase
                     $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<project>'),
                     $this->stringEndsWith('</project>'."\n"),
                     $this->stringContains('<identifier>test-project</identifier>'),
-                    $this->stringContains('<name>Test Project</name>')
+                    $this->stringContains('<name>Test Project with some xml entities: &amp; &lt; &gt; " \' </name>'),
+                    $this->stringContains('<description>Description with some xml entities: &amp; &lt; &gt; " \' </description>')
                 )
             )
             ->willReturn(true);

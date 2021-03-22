@@ -284,9 +284,9 @@ class WikiTest extends TestCase
         // Test values
         $response = 'API Response';
         $parameters = [
-            'title' => 'Test Wikipage',
-            'comments' => 'Initial Edit',
-            'text' => 'Some page text',
+            'title' => 'Test Wikipage with xml entities: & < > " \' ',
+            'comments' => 'Initial Edit with xml entities: & < > " \' ',
+            'text' => 'Some page text with xml entities: & < > " \' ',
         ];
 
         // Create the used mock objects
@@ -300,9 +300,9 @@ class WikiTest extends TestCase
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<wiki_page>'),
                     $this->stringEndsWith('</wiki_page>'."\n"),
-                    $this->stringContains('<title>Test Wikipage</title>'),
-                    $this->stringContains('<comments>Initial Edit</comments>'),
-                    $this->stringContains('<text>Some page text</text>')
+                    $this->stringContains('<title>Test Wikipage with xml entities: &amp; &lt; &gt; " \' </title>'),
+                    $this->stringContains('<comments>Initial Edit with xml entities: &amp; &lt; &gt; " \' </comments>'),
+                    $this->stringContains('<text>Some page text with xml entities: &amp; &lt; &gt; " \' </text>')
                 )
             )
             ->willReturn(true);

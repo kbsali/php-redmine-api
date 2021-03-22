@@ -81,7 +81,7 @@ class Wiki extends AbstractApi
                     }
                 }
             } else {
-                $xml->addChild($k, $v);
+                $xml->addChild($k, htmlspecialchars($v));
             }
         }
 

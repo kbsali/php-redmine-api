@@ -251,6 +251,7 @@ class TimeEntryTest extends TestCase
             'issue_id' => '15',
             'project_id' => '25',
             'hours' => '5.25',
+            'comments' => 'some text with xml entities: & < > " \' ',
             'custom_fields' => [
                 [
                     'id' => 1,
@@ -279,6 +280,7 @@ class TimeEntryTest extends TestCase
                     $this->stringContains('<issue_id>15</issue_id>'),
                     $this->stringContains('<project_id>25</project_id>'),
                     $this->stringContains('<hours>5.25</hours>'),
+                    $this->stringContains('<comments>some text with xml entities: &amp; &lt; &gt; " \' </comments>'),
                     $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )
             )
