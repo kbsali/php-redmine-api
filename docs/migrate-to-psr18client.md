@@ -34,7 +34,7 @@ Replace every call for `$client->getResponseCode()` with `$client->getLastRespon
 
 If you are using `$client->get()`, `$client->post()`, `$client->put()` or `$client->delete()` directly you will have to change your code. This methods parse a possible JSON or XML response but in future the parsing of the raw response body will be up to you.
 
-To help you with the parsing of the raw response the client interface introduces two new methods: `getLastResponseContentType()` and `getLastResponseBody`.
+To help you with the parsing of the raw response the client interface introduces two new methods: `getLastResponseContentType()` and `getLastResponseBody()`.
 
 This example shows how you can parse the response body of a GET request.
 
@@ -111,7 +111,7 @@ This example shows how you can parse the response body of a DELETE request.
 
 If you are using the [Redmine user impersonation](https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation) you have to change your code.
 
-```php
+```diff
 // impersonate the user `robin`
 -$client->setImpersonateUser('robin');
 +$client->startImpersonateUser('robin');
@@ -126,5 +126,24 @@ $userData = $client->getApi('user')->getCurrentUser();
 After this changes you should be able to test your code without
 
 ## 2. Switch to `Psr18Client`
+
+The `Redmine\Client\Psr18Client` requires:
+
+- a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle), [see packagist.org](https://packagist.org/providers/psr/http-client-implementation)
+- a `Psr\Http\Message\ServerRequestFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-factory-implementation)
+- a `Psr\Http\Message\StreamFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-message-implementation)
+- a URL to your Redmine instance
+- an Apikey or username
+- and optional a password if you want tu use username/password.
+
+```diff
+-// Instantiate with ApiKey
+-$client = new Redmine\Client('https://redmine.example.com', '1234567890abcdfgh');
++$guzzle = \GuzzleHttp\Client();
++$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
++
++// Instantiate with ApiKey
++$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
+```
 
 ## 3. Set `cURL` options
