@@ -1,12 +1,12 @@
 # Usage
 
-:warning: This file shows example commands for reading, creating, updating and deleting redmine components. As this are only examples, please **make sure, that you do not execute them at your production Redmine instance and may destroy real life content!**
+:warning: This file shows example commands for reading, creating, updating and deleting Redmine data. As these are only examples, please **make sure, that you do not execute them against your production instance as it may break real content!**
 
 ## Installation
 
 ### With Composer
 
-Please make sure you have install `php-remine-api` with an PSR-4 autoloader like [Composer](https://getcomposer.org/).
+Please make sure you install `php-remine-api` with an PSR-4 autoloader like [Composer](https://getcomposer.org/).
 
 ```bash
 php composer.phar require kbsali/php-redmine-api
@@ -25,11 +25,11 @@ This will create a new entry in your `composer.json`.
 
 ### ... or without Composer
 
-As an alternative you can download the code with all required dependencies from [php-download.com](https://php-download.com/package/kbsali/redmine-api) and unzip all files in your project folder.
+As an alternative you can download the code with all required dependencies from [php-download.com](https://php-download.com/package/kbsali/redmine-api) and unzip all files in your project folder. The service will create the autoloader for you.
 
 ### Start your project
 
-Create your project e.g. in the `index.php` by require the `vendor/autoload.php`
+Create your project e.g. in the `index.php` by require the `vendor/autoload.php` file.
 
 ```diff
 +<?php
@@ -39,11 +39,11 @@ Create your project e.g. in the `index.php` by require the `vendor/autoload.php`
 
 ### Instantiate a Redmine Client
 
-You can choose between the navite curl client without other PHP dependencies or the PSR-18 compatible client.
+You can choose between the navite curl client or the PSR-18 compatible client.
 
 #### Native curl Client `Redmine\Client`
 
-Every Client requires a URL to your Redmine instance and either an Apikey...
+Every Client requires a URL to your Redmine instance and either a valid Apikey...
 
 ```diff
 <?php
@@ -66,9 +66,9 @@ require_once 'vendor/autoload.php';
 +$client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 ```
 
-> :bulb: For security reason it is recommended that you use a ApiKey instead of username/password.
+> :bulb: For security reason it is recommended that you use an ApiKey rather than your username/password.
 
-After you instantiate a client you can set some optinal settings.
+After you instantiate a client you can set some optional settings.
 
 ```diff
 <?php
@@ -99,7 +99,7 @@ The `Psr18Client` requires
 - an Apikey or username
 - and optional a password if you want tu use username/password.
 
-> :bulb: For security reason it is recommended that you use a ApiKey instead of username/password.
+> :bulb: For security reason it is recommended that you use an ApiKey rather than your username/password.
 
 ```diff
 <?php
@@ -119,7 +119,7 @@ require_once 'vendor/autoload.php';
 
 Because the `Psr18Client` is agnostic about the HTTP client implementation every configuration specific to the transport has to be set to the `Psr\Http\Client\ClientInterface` implementation.
 
-This means if you want to set any curl settings to guzzle you have multiple ways to set them:
+This means that if you want to set any `cURL` settings to `Guzzle` you have multiple ways to set them:
 
 1. Using [Guzzle environment variables](https://docs.guzzlephp.org/en/stable/quickstart.html#environment-variables)
 2. Using [request options](https://docs.guzzlephp.org/en/stable/request-options.html) inside a `Psr\Http\Client\ClientInterface` wrapper:
@@ -136,22 +136,28 @@ require_once 'vendor/autoload.php';
 $guzzle = \GuzzleHttp\Client();
 $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 
-+$guzzleWrapper = new class($guzzle) implements ClientInterface
++$guzzleWrapper = new class(\GuzzleHttp\Client $guzzle) implements ClientInterface
 +{
 +    private $guzzle;
 +
-+    public function __construct(ClientInterface $client)
++    public function __construct(\GuzzleHttp\Client $guzzle)
 +    {
-+        $this->guzzle = $client;
++        $this->guzzle = $guzzle;
 +    }
 +
 +    public function sendRequest(RequestInterface $request): ResponseInterface
 +    {
 +        return $this->guzzle->send($request, [
-+            // Set your request options here
++            // Set the options for every request here
 +            'auth' => ['username', 'password', 'digest'],
 +            'cert' => ['/path/server.pem', 'password'],
 +            'connect_timeout' => 3.14,
++            // Set specific CURL options, see https://docs.guzzlephp.org/en/stable/faq.html#how-can-i-add-custom-curl-options
++            'curl' => [
++                CURLOPT_SSL_VERIFYPEER => 1,
++                CURLOPT_SSL_VERIFYHOST => 1,
++                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
++            ],
 +        ]);
 +    }
 +};
@@ -162,9 +168,23 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 
 ```
 
+## Built-in Redmine features
+
+### Impersonate User
+
+Redmine allows you [to impersonate another user](https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation). This can be done using the methods `startImpersonateUser()` and `stopImpersonateUser()`.
+
+```php
+$client->startImpersonateUser('kim');
+// all requests will now impersonate the user `kim`
+
+// To stop impersonation
+$client->stopImpersonateUser();
+```
+
 ## API
 
-You can use the `getApi()` method to create and get a specific Redmine API.
+You can now use the `getApi()` method to create and get a specific Redmine API.
 
 ```php
 // ----------------------------
