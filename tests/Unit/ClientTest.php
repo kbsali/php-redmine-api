@@ -578,6 +578,23 @@ class ClientTest extends TestCase
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
+    public function getApiOverMagicGetterShouldReturnApiInstance($apiName, $class)
+    {
+        $client = new Client('http://test.local', 'asdf');
+        $api = $client->$apiName;
+
+        $this->assertInstanceOf($class, $api);
+        $this->assertInstanceOf(Api::class, $api);
+    }
+
+    /**
+     * @covers \Redmine\Client
+     * @test
+     *
+     * @param string $apiName
+     * @param string $class
+     * @dataProvider getApiClassesProvider
+     */
     public function getApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new Client('http://test.local', 'asdf');
