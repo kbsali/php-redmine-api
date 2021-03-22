@@ -21,12 +21,13 @@ class WikiXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->wiki;
+        $api = $this->client->getApi('wiki');
         $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <wiki_page>
@@ -39,12 +40,13 @@ class WikiXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->wiki;
+        $api = $this->client->getApi('wiki');
         $res = $api->update('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <wiki_page>

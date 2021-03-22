@@ -2,14 +2,17 @@
 
 namespace Redmine\Api;
 
-use Redmine\Client;
+use JsonException;
+use Redmine\Api;
+use Redmine\Client\Client;
+use SimpleXMLElement;
 
 /**
  * Abstract class for Api classes.
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-abstract class AbstractApi
+abstract class AbstractApi implements Api
 {
     /**
      * @var Client
@@ -28,7 +31,7 @@ abstract class AbstractApi
      */
     public function lastCallFailed()
     {
-        $code = $this->client->getResponseCode();
+        $code = $this->client->getLastResponseStatusCode();
 
         return 200 !== $code && 201 !== $code;
     }
@@ -37,13 +40,30 @@ abstract class AbstractApi
      * Perform the client get() method.
      *
      * @param string $path
-     * @param bool   $decode
+     * @param bool   $decodeIfJson
      *
-     * @return array
+     * @return string|array|SimpleXMLElement|null
      */
-    protected function get($path, $decode = true)
+    protected function get($path, $decodeIfJson = true)
     {
-        return $this->client->get($path, $decode);
+        $this->client->requestGet($path);
+
+        $body = $this->client->getLastResponseBody();
+
+        // if response is XML, return a SimpleXMLElement object
+        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+            return new SimpleXMLElement($body);
+        }
+
+        if ($decodeIfJson === true && $body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/json')) {
+            try {
+                return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                return 'Error decoding body as JSON: '.$e->getMessage();
+            }
+        }
+
+        return ($body === '') ? null : $body;
     }
 
     /**
@@ -56,7 +76,16 @@ abstract class AbstractApi
      */
     protected function post($path, $data)
     {
-        return $this->client->post($path, $data);
+        $this->client->requestPost($path, $data);
+
+        $body = $this->client->getLastResponseBody();
+
+        // if response is XML, return a SimpleXMLElement object
+        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**
@@ -69,7 +98,16 @@ abstract class AbstractApi
      */
     protected function put($path, $data)
     {
-        return $this->client->put($path, $data);
+        $this->client->requestPut($path, $data);
+
+        $body = $this->client->getLastResponseBody();
+
+        // if response is XML, return a SimpleXMLElement object
+        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**
@@ -77,11 +115,13 @@ abstract class AbstractApi
      *
      * @param string $path
      *
-     * @return false|\SimpleXMLElement|string
+     * @return false|SimpleXMLElement|string
      */
     protected function delete($path)
     {
-        return $this->client->delete($path);
+        $this->client->requestDelete($path);
+
+        return $this->client->getLastResponseBody();
     }
 
     /**
@@ -167,14 +207,14 @@ abstract class AbstractApi
     /**
      * Attaches Custom Fields to a create/update query.
      *
-     * @param \SimpleXMLElement $xml    XML Element the custom fields are attached to
+     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param array             $fields array of fields to attach, each field needs name, id and value set
      *
-     * @return \SimpleXMLElement $xml
+     * @return SimpleXMLElement $xml
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */
-    protected function attachCustomFieldXML(\SimpleXMLElement $xml, array $fields)
+    protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
     {
         $_fields = $xml->addChild('custom_fields');
         $_fields->addAttribute('type', 'array');

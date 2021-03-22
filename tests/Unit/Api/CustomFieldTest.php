@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\CustomField
@@ -24,24 +25,27 @@ class CustomFieldTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -57,24 +61,27 @@ class CustomFieldTest extends TestCase
     {
         // Test values
         $allParameters = ['not-used'];
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringContains('not-used')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame([$getResponse], $api->all($allParameters));
+        $this->assertSame([$response], $api->all($allParameters));
     }
 
     /**
@@ -89,6 +96,7 @@ class CustomFieldTest extends TestCase
     public function testAllReturnsClientGetResponseWithHighLimit()
     {
         // Test values
+        $response = '{"limit":"100","items":[]}';
         $allParameters = ['limit' => 250];
         $returnDataSet = [
             'limit' => '100',
@@ -96,15 +104,21 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(3))
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($returnDataSet);
+            ->willReturn(true);
+        $client->expects($this->exactly(3))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(6))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
@@ -128,6 +142,7 @@ class CustomFieldTest extends TestCase
     public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()
     {
         // Test values
+        $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
         $allParameters = ['limit' => 250];
         $returnDataSet = [
             'limit' => '100',
@@ -137,15 +152,21 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($returnDataSet);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
@@ -166,27 +187,28 @@ class CustomFieldTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = [
-            'custom_fields' => [
-                ['id' => 1, 'name' => 'CustomField 1'],
-                ['id' => 5, 'name' => 'CustomField 5'],
-            ],
-        ];
+        $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
         $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->atLeastOnce())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
@@ -204,27 +226,28 @@ class CustomFieldTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = [
-            'custom_fields' => [
-                ['id' => 1, 'name' => 'CustomField 1'],
-                ['id' => 5, 'name' => 'CustomField 5'],
-            ],
-        ];
+        $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
         $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
@@ -243,27 +266,28 @@ class CustomFieldTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = [
-            'custom_fields' => [
-                ['id' => 1, 'name' => 'CustomField 1'],
-                ['id' => 5, 'name' => 'CustomField 5'],
-            ],
-        ];
+        $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
         $expectedReturn = [
             'CustomField 1' => 1,
             'CustomField 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(4))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
@@ -282,22 +306,24 @@ class CustomFieldTest extends TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = [
-            'custom_fields' => [
-                ['id' => 5, 'name' => 'CustomField 5'],
-            ],
-        ];
+        $response = '{"custom_fields":[{"id":5,"name":"CustomField 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/custom_fields.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);

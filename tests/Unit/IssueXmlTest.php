@@ -21,18 +21,20 @@ class IssueXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
         $xml = '<?xml version="1.0"?>
 <issue/>';
         $res = $api->create();
+        $res = json_decode($res, true);
+
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testCreateComplexWithUpload()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'myproject',
             'subject' => 'A test issue',
@@ -46,6 +48,7 @@ class IssueXmlTest extends TestCase
                 ],
             ],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -66,7 +69,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -91,6 +94,7 @@ class IssueXmlTest extends TestCase
             ],
             'watcher_user_ids' => [],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -109,7 +113,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateComplexWithLineBreakInDescription()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -134,6 +138,7 @@ class IssueXmlTest extends TestCase
             ],
             'watcher_user_ids' => [],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <issue>
@@ -153,7 +158,7 @@ line2</description>
 
     public function testUpdateIssue()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $res = $api->update(1, [
             'subject' => 'test note (xml) 1',
             'notes' => 'test note api',
@@ -165,6 +170,8 @@ line2</description>
             // not testable because this will trigger a status name to id resolving
             // 'status' => 'Resolved',
         ]);
+        $res = json_decode($res, true);
+
         $xml = '<?xml version="1.0"?>
 <issue>
     <id>1</id>
@@ -180,8 +187,10 @@ line2</description>
 
     public function testAddNoteToIssue()
     {
-        $api = $this->client->issue;
+        $api = $this->client->getApi('issue');
         $res = $api->addNoteToIssue(1, 'some comment');
+        $res = json_decode($res, true);
+
         $xml = '<?xml version="1.0"?>
 <issue>
     <id>1</id>

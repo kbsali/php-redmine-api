@@ -22,20 +22,23 @@ class MembershipXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
-        $api = $this->client->membership;
+        $api = $this->client->getApi('membership');
         $this->assertInstanceOf('Redmine\Api\Membership', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create('aProject');
     }
 
     public function testCreateComplex()
     {
-        $api = $this->client->membership;
+        $api = $this->client->getApi('membership');
         $res = $api->create('otherProject', [
             'user_id' => 1,
             'role_ids' => [1, 2],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <membership>
@@ -50,10 +53,11 @@ class MembershipXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->membership;
+        $api = $this->client->getApi('membership');
         $res = $api->update(1, [
             'role_ids' => [1, 2],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <membership>

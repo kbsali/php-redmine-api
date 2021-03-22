@@ -49,40 +49,40 @@ $client->setCustomHost('http://redmine.example.com');
 
 // ----------------------------
 // Trackers
-$client->tracker->all();
-$client->tracker->listing();
+$client->getApi('tracker')->all();
+$client->getApi('tracker')->listing();
 
 // ----------------------------
 // Issue statuses
-$client->issue_status->all();
-$client->issue_status->listing();
-$client->issue_status->getIdByName('New');
+$client->getApi('issue_status')->all();
+$client->getApi('issue_status')->listing();
+$client->getApi('issue_status')->getIdByName('New');
 
 // ----------------------------
 // Project
-$client->project->all();
-$client->project->all([
+$client->getApi('project')->all();
+$client->getApi('project')->all([
     'limit' => 10,
 ]);
-$client->project->listing();
-$client->project->listing();
-$client->project->show($projectId);
-$client->project->getIdByName('Elvis');
-$client->project->create([
+$client->getApi('project')->listing();
+$client->getApi('project')->listing();
+$client->getApi('project')->show($projectId);
+$client->getApi('project')->getIdByName('Elvis');
+$client->getApi('project')->create([
     'name' => 'some name',
     'identifier' => 'the_identifier',
     'tracker_ids' => [],
 ]);
-$client->project->update($projectId, [
+$client->getApi('project')->update($projectId, [
     'name' => 'different name',
 ]);
-$client->project->remove($projectId);
+$client->getApi('project')->remove($projectId);
 
 // ----------------------------
 // Users
-$client->user->all();
-$client->user->listing();
-$client->user->getCurrentUser([
+$client->getApi('user')->all();
+$client->getApi('user')->listing();
+$client->getApi('user')->getCurrentUser([
     'include' => [
         'memberships',
         'groups',
@@ -90,8 +90,8 @@ $client->user->getCurrentUser([
         'status',
     ],
 ]);
-$client->user->getIdByUsername('kbsali');
-$client->user->show($userId, [
+$client->getApi('user')->getIdByUsername('kbsali');
+$client->getApi('user')->show($userId, [
     'include' => [
         'memberships',
         'groups',
@@ -99,11 +99,11 @@ $client->user->show($userId, [
         'status',
     ],
 ]);
-$client->user->update($userId, [
+$client->getApi('user')->update($userId, [
     'firstname' => 'Raul',
 ]);
-$client->user->remove($userId);
-$client->user->create([
+$client->getApi('user')->remove($userId);
+$client->getApi('user')->create([
     'login' => 'test',
     'firstname' => 'test',
     'lastname' => 'test',
@@ -112,16 +112,16 @@ $client->user->create([
 
 // ----------------------------
 // Issues
-$client->issue->show($issueId);
-$client->issue->all([
+$client->getApi('issue')->show($issueId);
+$client->getApi('issue')->all([
     'limit' => 100,
 ]);
-$client->issue->all(['category_id' => $categoryId]);
-$client->issue->all(['tracker_id' => $trackerId]);
-$client->issue->all(['status_id' => 'closed']);
-$client->issue->all(['assigned_to_id' => $userId]);
-$client->issue->all(['project_id' => 'test']);
-$client->issue->all([
+$client->getApi('issue')->all(['category_id' => $categoryId]);
+$client->getApi('issue')->all(['tracker_id' => $trackerId]);
+$client->getApi('issue')->all(['status_id' => 'closed']);
+$client->getApi('issue')->all(['assigned_to_id' => $userId]);
+$client->getApi('issue')->all(['project_id' => 'test']);
+$client->getApi('issue')->all([
     'offset' => 100,
     'limit' => 100,
     'sort' => 'id',
@@ -134,7 +134,7 @@ $client->issue->all([
     'cf_1' => 'some value of this custom field', // where 1 = id of the customer field
     //  cf_SOME_CUSTOM_FIELD_ID => 'value'
 ]);
-$client->issue->create([
+$client->getApi('issue')->create([
     'project_id' => 'test',
     'subject' => 'test api (xml) 3',
     'description' => 'test api',
@@ -158,7 +158,7 @@ $client->issue->create([
     ],
     'watcher_user_ids' => [],
 ]);
-$client->issue->update($issueId, [
+$client->getApi('issue')->update($issueId, [
     // 'subject'        => 'test note (xml) 1',
     // 'notes'          => 'test note api',
     // 'assigned_to_id' => $userId,
@@ -167,13 +167,13 @@ $client->issue->update($issueId, [
     'priority_id' => 5,
     'due_date' => date('Y-m-d'),
 ]);
-$client->issue->setIssueStatus($issueId, 'Resolved');
-$client->issue->addNoteToIssue($issueId, 'some comment');
-$client->issue->remove($issueId);
+$client->getApi('issue')->setIssueStatus($issueId, 'Resolved');
+$client->getApi('issue')->addNoteToIssue($issueId, 'some comment');
+$client->getApi('issue')->remove($issueId);
 
 // To upload a file + attach it to an existing issue with $issueId
-$upload = json_decode($client->attachment->upload($filecontent));
-$client->issue->attach($issueId, [
+$upload = json_decode($client->getApi('attachment')->upload($filecontent));
+$client->getApi('issue')->attach($issueId, [
     'token' => $upload->upload->token,
     'filename' => 'MyFile.pdf',
     'description' => 'MyFile is better then YourFile...',
@@ -181,8 +181,8 @@ $client->issue->attach($issueId, [
 ]);
 
 // Or, create a new issue with the file attached in one step
-$upload = json_decode($client->attachment->upload($filecontent));
-$client->issue->create([
+$upload = json_decode($client->getApi('attachment')->upload($filecontent));
+$client->getApi('issue')->create([
     'project_id' => 'myproject',
     'subject' => 'A test issue',
     'description' => 'Here goes the issue description',
@@ -198,69 +198,69 @@ $client->issue->create([
 
 // ----------------------------
 // Issue categories
-$client->issue_category->all('project1');
-$client->issue_category->listing($projectId);
-$client->issue_category->show($categoryId);
-$client->issue_category->getIdByName($projectId, 'Administration');
-$client->issue_category->create('otherProject', [
+$client->getApi('issue_category')->all('project1');
+$client->getApi('issue_category')->listing($projectId);
+$client->getApi('issue_category')->show($categoryId);
+$client->getApi('issue_category')->getIdByName($projectId, 'Administration');
+$client->getApi('issue_category')->create('otherProject', [
     'name' => 'test category',
 ]);
-$client->issue_category->update($categoryId, [
+$client->getApi('issue_category')->update($categoryId, [
     'name' => 'new category name',
 ]);
-$client->issue_category->remove($categoryId);
-$client->issue_category->remove($categoryId, [
+$client->getApi('issue_category')->remove($categoryId);
+$client->getApi('issue_category')->remove($categoryId, [
     'reassign_to_id' => $userId,
 ]);
 
 // ----------------------------
 // Versions
-$client->version->all('test');
-$client->version->listing('test');
-$client->version->show($versionId);
-$client->version->getIdByName('test', 'v2');
-$client->version->create('test', [
+$client->getApi('version')->all('test');
+$client->getApi('version')->listing('test');
+$client->getApi('version')->show($versionId);
+$client->getApi('version')->getIdByName('test', 'v2');
+$client->getApi('version')->create('test', [
     'name' => 'v3432',
 ]);
-$client->version->update($versionId, [
+$client->getApi('version')->update($versionId, [
     'name' => 'v1121',
 ]);
-$client->version->remove($versionId);
+$client->getApi('version')->remove($versionId);
 
 // ----------------------------
 // Attachments
-$client->attachment->show($attachmentId);
+$client->getApi('attachment')->show($attachmentId);
 
-$file_content = $client->attachment->download($attachmentId);
+$file_content = $client->getApi('attachment')->download($attachmentId);
 file_put_contents('example.png', $file_content);
 
 // ----------------------------
 // News
-$client->news->all('test');
-$client->news->all();
+$client->getApi('news')->all('test');
+$client->getApi('news')->all();
 
 // ----------------------------
 // Roles
-$client->role->all();
-$client->role->show(1);
-$client->role->listing();
+$client->getApi('role')->all();
+$client->getApi('role')->show(1);
+$client->getApi('role')->listing();
 
 // ----------------------------
 // Queries
-$client->query->all();
+$client->getApi('query')->all();
 
 // ----------------------------
 // Time entries
-$client->time_entry->all();
-$client->time_entry->show($timeEntryId);
-$client->time_entry->all([
+$client->getApi('time_entry')->all();
+$client->getApi('time_entry')->show($timeEntryId);
+$client->getApi('time_entry')->all([
     'issue_id' => 1234,
     'project_id' => 1234,
     'spent_on' => '2015-04-13',
     'user_id' => 168,
     'activity_id' => 13,
 ]);
-$client->time_entry->create([
+$client->getApi('time_entry')->create([
     'project_id' => $projectId,
     // 'issue_id' => 140,
     // 'spent_on' => null,
@@ -275,7 +275,7 @@ $client->time_entry->create([
         ],
     ],
 ]);
-$client->time_entry->update($timeEntryId, [
+$client->getApi('time_entry')->update($timeEntryId, [
     'issue_id' => $issueId,
     // 'spent_on' => null,
     'hours' => 8,
@@ -289,76 +289,76 @@ $client->time_entry->update($timeEntryId, [
         ],
     ],
 ]);
-$client->time_entry->remove($timeEntryId);
+$client->getApi('time_entry')->remove($timeEntryId);
 
 // ----------------------------
 // Time entry activities
-$client->time_entry_activity->all();
+$client->getApi('time_entry_activity')->all();
 
 // ----------------------------
 // Issue relations
-$client->issue_relation->all($issueId);
-$client->issue_relation->show($issueRelationId);
-$client->issue_relation->remove($issueRelationId);
+$client->getApi('issue_relation')->all($issueId);
+$client->getApi('issue_relation')->show($issueRelationId);
+$client->getApi('issue_relation')->remove($issueRelationId);
 
 // ----------------------------
 // Group (of members)
-$client->group->all();
-$client->group->listing();
-$client->group->show($groupId, ['include' => 'users,memberships']);
-$client->group->remove($groupId);
-$client->group->addUser($groupId, $userId);
-$client->group->removeUser($groupId, $userId);
-$client->group->create([
+$client->getApi('group')->all();
+$client->getApi('group')->listing();
+$client->getApi('group')->show($groupId, ['include' => 'users,memberships']);
+$client->getApi('group')->remove($groupId);
+$client->getApi('group')->addUser($groupId, $userId);
+$client->getApi('group')->removeUser($groupId, $userId);
+$client->getApi('group')->create([
     'name' => 'asdf',
     'user_ids' => [1, 2],
 ]);
 
 // ----------------------------
 // Project memberships
-$client->membership->all($projectId);
-$client->membership->create($projectId, [
+$client->getApi('membership')->all($projectId);
+$client->getApi('membership')->create($projectId, [
     'user_id' => null,
     'role_ids' => [],
 ]);
-$client->membership->remove($membershipId);
+$client->getApi('membership')->remove($membershipId);
 
 // ----------------------------
 // Issue priorities
-$client->issue_priority->all();
+$client->getApi('issue_priority')->all();
 
 // ----------------------------
 // Wiki
-$client->wiki->all('testProject');
-$client->wiki->show('testProject', 'about');
-$client->wiki->show('testProject', 'about', $version);
-$client->wiki->create('testProject', 'about', [
+$client->getApi('wiki')->all('testProject');
+$client->getApi('wiki')->show('testProject', 'about');
+$client->getApi('wiki')->show('testProject', 'about', $version);
+$client->getApi('wiki')->create('testProject', 'about', [
     'text' => null,
     'comments' => null,
     'version' => null,
 ]);
-$client->wiki->update('testProject', 'about', [
+$client->getApi('wiki')->update('testProject', 'about', [
     'text' => null,
     'comments' => null,
     'version' => null,
 ]);
-$client->wiki->remove('testProject', 'about');
+$client->getApi('wiki')->remove('testProject', 'about');
 
 // ----------------------------
 // Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
-$issues['all'] = $client->issue->all([
+$issues['all'] = $client->getApi('issue')->all([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => '*',
 ])['total_count'];
 
-$issues['opened'] = $client->issue->all([
+$issues['opened'] = $client->getApi('issue')->all([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => 'open',
 ])['total_count'];
 
-$issues['closed'] = $client->issue->all([
+$issues['closed'] = $client->getApi('issue')->all([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => 'closed',
@@ -376,4 +376,4 @@ Array
 
 // ----------------------------
 // Search
-$client->search->search('Myproject', ['limit' => 100]);
+$client->getApi('search')->search('Myproject', ['limit' => 100]);

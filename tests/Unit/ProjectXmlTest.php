@@ -22,16 +22,18 @@ class ProjectXmlTest extends TestCase
 
     public function testCreateBlank()
     {
-        $this->expectException(Exception::class);
-        $api = $this->client->project;
+        $api = $this->client->getApi('project');
         $this->assertInstanceOf('Redmine\Api\Project', $api);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
 
         $api->create();
     }
 
     public function testCreateComplex()
     {
-        $api = $this->client->project;
+        $api = $this->client->getApi('project');
         $res = $api->create([
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -44,6 +46,7 @@ class ProjectXmlTest extends TestCase
                 ],
             ],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <project>
@@ -64,7 +67,7 @@ class ProjectXmlTest extends TestCase
 
     public function testCreateComplexWithTrackerIds()
     {
-        $api = $this->client->project;
+        $api = $this->client->getApi('project');
         $res = $api->create([
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -72,6 +75,7 @@ class ProjectXmlTest extends TestCase
                 1, 2, 3,
             ],
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <project>
@@ -88,10 +92,11 @@ class ProjectXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->project;
+        $api = $this->client->getApi('project');
         $res = $api->update(1, [
             'name' => 'different name',
         ]);
+        $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
 <project>

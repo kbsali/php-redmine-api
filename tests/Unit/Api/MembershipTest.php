@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Membership
@@ -22,24 +23,27 @@ class MembershipTest extends TestCase
     public function testAllReturnsClientGetResponseWithProject()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects/5/memberships.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5));
+        $this->assertSame($response, $api->all(5));
     }
 
     /**
@@ -52,27 +56,30 @@ class MembershipTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/memberships.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all(5, $parameters));
+        $this->assertSame([$response], $api->all(5, $parameters));
     }
 
     /**
@@ -85,14 +92,14 @@ class MembershipTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/memberships/5'),
@@ -102,13 +109,16 @@ class MembershipTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -120,20 +130,22 @@ class MembershipTest extends TestCase
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Membership($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5));
+        $this->assertSame($response, $api->create(5));
     }
 
     /**
@@ -145,20 +157,22 @@ class MembershipTest extends TestCase
      */
     public function testCreateThrowsExceptionIfRoleIdsAreMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Membership($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, ['user_id' => 4]));
+        $this->assertSame($response, $api->create(5, ['user_id' => 4]));
     }
 
     /**
@@ -171,18 +185,18 @@ class MembershipTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'user_id' => 1,
             'role_ids' => 1,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/memberships'),
@@ -193,13 +207,16 @@ class MembershipTest extends TestCase
                     $this->stringEndsWith('</membership>'."\n")
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, $parameters));
+        $this->assertSame($response, $api->create(5, $parameters));
     }
 
     /**
@@ -212,18 +229,18 @@ class MembershipTest extends TestCase
     public function testCreateBuildsXml()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'user_id' => 10,
             'role_ids' => [5, 6],
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/memberships'),
@@ -239,13 +256,16 @@ class MembershipTest extends TestCase
                     $this->stringContains('<user_id>10</user_id>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(5, $parameters));
+        $this->assertSame($response, $api->create(5, $parameters));
     }
 
     /**
@@ -257,20 +277,22 @@ class MembershipTest extends TestCase
      */
     public function testUpdateThrowsExceptionIfRoleIdsAreMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Membership($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, ['user_id' => 4]));
+        $this->assertSame($response, $api->update(5, ['user_id' => 4]));
     }
 
     /**
@@ -283,17 +305,17 @@ class MembershipTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'role_ids' => 1,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/memberships/5'),
@@ -303,12 +325,15 @@ class MembershipTest extends TestCase
                     )
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 }

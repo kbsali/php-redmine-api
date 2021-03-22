@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Project
@@ -22,22 +23,25 @@ class ProjectTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with('/projects.json')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all());
+        $this->assertSame($response, $api->all());
     }
 
     /**
@@ -50,27 +54,30 @@ class ProjectTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $getResponse = ['API Response'];
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->any())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects.json'),
                     $this->stringContains('not-used')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->all($parameters));
+        $this->assertSame([$response], $api->all($parameters));
     }
 
     /**
@@ -83,25 +90,28 @@ class ProjectTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 '/projects/5.json?include='.
                 urlencode('trackers,issue_categories,attachments,relations')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -115,27 +125,30 @@ class ProjectTest extends TestCase
     {
         // Test values
         $parameters = ['include' => ['parameter1', 'parameter2', 'enabled_modules']];
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5.json?include='),
                     $this->stringContains(urlencode('parameter1,parameter2,enabled_modules'))
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5, $parameters));
+        $this->assertSame($response, $api->show(5, $parameters));
     }
 
     /**
@@ -148,22 +161,25 @@ class ProjectTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('delete')
+            ->method('requestDelete')
             ->with('/projects/5.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->remove(5));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -175,27 +191,28 @@ class ProjectTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $getResponse = [
-            'projects' => [
-                ['id' => 1, 'name' => 'Project 1'],
-                ['id' => 5, 'name' => 'Project 5'],
-            ],
-        ];
+        $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
         $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $client->expects($this->atLeastOnce())
-            ->method('get')
+        $client->expects($this->once())
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Project($client);
@@ -213,27 +230,28 @@ class ProjectTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $getResponse = [
-            'projects' => [
-                ['id' => 1, 'name' => 'Project 1'],
-                ['id' => 5, 'name' => 'Project 5'],
-            ],
-        ];
+        $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
         $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Project($client);
@@ -252,27 +270,28 @@ class ProjectTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $getResponse = [
-            'projects' => [
-                ['id' => 1, 'name' => 'Project 1'],
-                ['id' => 5, 'name' => 'Project 5'],
-            ],
-        ];
+        $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
         $expectedReturn = [
             'Project 1' => 1,
             'Project 5' => 5,
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->exactly(2))
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(4))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Project($client);
@@ -291,22 +310,24 @@ class ProjectTest extends TestCase
     public function testGetIdByNameMakesGetRequest()
     {
         // Test values
-        $getResponse = [
-            'projects' => [
-                ['id' => 5, 'name' => 'Project 5'],
-            ],
-        ];
+        $response = '{"projects":[{"id":5,"name":"Project 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with(
                 $this->stringStartsWith('/projects.json')
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(2))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Project($client);
@@ -325,20 +346,22 @@ class ProjectTest extends TestCase
      */
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Project($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create(['id' => 5]));
+        $this->assertSame($response, $api->create(['id' => 5]));
     }
 
     /**
@@ -350,23 +373,25 @@ class ProjectTest extends TestCase
      */
     public function testCreateThrowsExceptionIfIdentifierIsMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test Project',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Project($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -378,23 +403,25 @@ class ProjectTest extends TestCase
      */
     public function testCreateThrowsExceptionIfNameIsMissingInParameters()
     {
-        $this->expectException(Exception::class);
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'identifier' => 'test-project',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // Create the object under test
         $api = new Project($client);
 
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Missing mandatory parameters');
+
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -407,7 +434,7 @@ class ProjectTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'identifier' => 'test-project',
             'name' => 'Test Project with some xml entities: & < > " \' ',
@@ -415,11 +442,11 @@ class ProjectTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
@@ -430,13 +457,16 @@ class ProjectTest extends TestCase
                     $this->stringContains('<description>Description with some xml entities: &amp; &lt; &gt; " \' </description>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -449,7 +479,7 @@ class ProjectTest extends TestCase
     public function testCreateCallsPostWithTrackers()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'identifier' => 'test-project',
             'name' => 'Test Project',
@@ -457,11 +487,11 @@ class ProjectTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
@@ -473,13 +503,16 @@ class ProjectTest extends TestCase
                     $this->stringContains('</tracker_ids>')
                 )
             )
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->create($parameters));
+        $this->assertSame($response, $api->create($parameters));
     }
 
     /**
@@ -492,24 +525,27 @@ class ProjectTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
         $parameters = [
             'name' => 'Test Project',
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('put')
+            ->method('requestPut')
             ->with('/projects/5.xml')
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Project($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->update(5, $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 }

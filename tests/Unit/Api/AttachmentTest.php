@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
+use Redmine\Client\Client;
 
 /**
  * @coversDefaultClass \Redmine\Api\Attachment
@@ -26,11 +27,11 @@ class AttachmentTest extends TestCase
     public function testLastCallFailedTrue($responseCode, $hasFailed)
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('getResponseCode')
+            ->method('getLastResponseStatusCode')
             ->willReturn($responseCode);
 
         // Create the object under test
@@ -69,22 +70,25 @@ class AttachmentTest extends TestCase
     public function testShowReturnsClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
+            ->method('requestGet')
             ->with($this->equalTo('/attachments/5.json'))
-            ->willReturn($getResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Attachment($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->show(5));
+        $this->assertSame($response, $api->show(5));
     }
 
     /**
@@ -97,22 +101,25 @@ class AttachmentTest extends TestCase
     public function testDownloadReturnsUndecodedClientGetResponse()
     {
         // Test values
-        $getResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('/attachments/download/5'), false)
-            ->willReturn($getResponse);
+            ->method('requestGet')
+            ->with($this->equalTo('/attachments/download/5'))
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Attachment($client);
 
         // Perform the tests
-        $this->assertSame($getResponse, $api->download(5));
+        $this->assertSame($response, $api->download(5));
     }
 
     /**
@@ -126,24 +133,27 @@ class AttachmentTest extends TestCase
     {
         // Test values
         $postRequestData = 'API Response';
-        $postResponse = 'API Response';
+        $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder('Redmine\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->expects($this->once())
-            ->method('post')
+            ->method('requestPost')
             ->with(
                 $this->stringStartsWith('/uploads.json'),
                 $this->equalTo($postRequestData)
             )
-            ->willReturn($postResponse);
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
 
         // Create the object under test
         $api = new Attachment($client);
 
         // Perform the tests
-        $this->assertSame($postResponse, $api->upload($postRequestData));
+        $this->assertSame($response, $api->upload($postRequestData));
     }
 }

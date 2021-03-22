@@ -2,6 +2,9 @@
 
 namespace Redmine;
 
+use Redmine\Client\Client as ClientInterface;
+use Redmine\Client\ClientApiTrait;
+
 /**
  * Simple PHP Redmine client.
  *
@@ -28,8 +31,10 @@ namespace Redmine;
  * @property Api\Version           $version
  * @property Api\Wiki              $wiki
  */
-class Client
+class Client implements ClientInterface
 {
+    use ClientApiTrait;
+
     /**
      * Value for CURLOPT_SSL_VERIFYHOST.
      *
@@ -86,11 +91,6 @@ class Client
     private $useHttpAuth = true;
 
     /**
-     * @var array APIs
-     */
-    private $apis = [];
-
-    /**
      * @var string|null username for impersonating API calls
      */
     protected $impersonateUser = null;
@@ -106,6 +106,16 @@ class Client
     private $responseCode = null;
 
     /**
+     * @var string Redmine response content type
+     */
+    private $responseContentType = '';
+
+    /**
+     * @var string Redmine response body
+     */
+    private $responseBody = '';
+
+    /**
      * @var array cURL options
      */
     private $curlOptions = [];
@@ -118,29 +128,6 @@ class Client
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
         JSON_ERROR_SYNTAX => 'Syntax error',
-    ];
-
-    private $classes = [
-        'attachment' => 'Attachment',
-        'group' => 'Group',
-        'custom_fields' => 'CustomField',
-        'issue' => 'Issue',
-        'issue_category' => 'IssueCategory',
-        'issue_priority' => 'IssuePriority',
-        'issue_relation' => 'IssueRelation',
-        'issue_status' => 'IssueStatus',
-        'membership' => 'Membership',
-        'news' => 'News',
-        'project' => 'Project',
-        'query' => 'Query',
-        'role' => 'Role',
-        'time_entry' => 'TimeEntry',
-        'time_entry_activity' => 'TimeEntryActivity',
-        'tracker' => 'Tracker',
-        'user' => 'User',
-        'version' => 'Version',
-        'wiki' => 'Wiki',
-        'search' => 'Search',
     ];
 
     /**
@@ -182,16 +169,7 @@ class Client
      */
     public function api($name)
     {
-        if (!isset($this->classes[$name])) {
-            throw new \InvalidArgumentException();
-        }
-        if (isset($this->apis[$name])) {
-            return $this->apis[$name];
-        }
-        $class = 'Redmine\Api\\'.$this->classes[$name];
-        $this->apis[$name] = new $class($this);
-
-        return $this->apis[$name];
+        return $this->getApi(strval($name));
     }
 
     /**
@@ -202,6 +180,70 @@ class Client
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Create and send a GET request.
+     */
+    public function requestGet(string $path): bool
+    {
+        $result = $this->get($path, true);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * Create and send a POST request.
+     */
+    public function requestPost(string $path, string $body): bool
+    {
+        $result = $this->post($path, $body);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * Create and send a PUT request.
+     */
+    public function requestPut(string $path, string $body): bool
+    {
+        $result = $this->put($path, $body);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+     * Create and send a DELETE request.
+     */
+    public function requestDelete(string $path): bool
+    {
+        $result = $this->delete($path);
+
+        return ($result === false) ? false : true;
+    }
+
+    /**
+    * Returns status code of the last response.
+    */
+    public function getLastResponseStatusCode(): int
+    {
+        return (int) $this->responseCode;
+    }
+
+    /**
+    * Returns content type of the last response.
+    */
+    public function getLastResponseContentType(): string
+    {
+        return (string) $this->responseContentType;
+    }
+
+    /**
+     * Returns the body of the last response.
+     */
+    public function getLastResponseBody(): string
+    {
+        return (string) $this->responseBody;
     }
 
     /**
@@ -444,6 +486,23 @@ class Client
     /**
      * Sets to an existing username so api calls can be
      * impersonated to this user.
+     */
+    public function startImpersonateUser(string $username): void
+    {
+        $this->impersonateUser = $username;
+    }
+
+    /**
+     * Remove the user impersonate.
+     */
+    public function stopImpersonateUser(): void
+    {
+        $this->impersonateUser = null;
+    }
+
+    /**
+     * Sets to an existing username so api calls can be
+     * impersonated to this user.
      *
      * @param string|null $username
      *
@@ -451,7 +510,11 @@ class Client
      */
     public function setImpersonateUser($username = null)
     {
-        $this->impersonateUser = $username;
+        if ($username === null) {
+            $this->stopImpersonateUser();
+        } else {
+            $this->startImpersonateUser($username);
+        }
 
         return $this;
     }
@@ -537,6 +600,8 @@ class Client
     public function prepareRequest($path, $method = 'GET', $data = '')
     {
         $this->responseCode = null;
+        $this->responseContentType = '';
+        $this->responseBody = '';
         $curl = curl_init();
 
         // General cURL options
@@ -692,8 +757,9 @@ class Client
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
         $response = curl_exec($curl);
+        $this->responseBody = ($response === false) ? '' : $response;
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+        $this->responseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
         if (curl_errno($curl)) {
             $e = new \Exception(curl_error($curl), curl_errno($curl));
@@ -702,6 +768,6 @@ class Client
         }
         curl_close($curl);
 
-        return $this->processCurlResponse($response, $contentType);
+        return $this->processCurlResponse($response, $this->responseContentType);
     }
 }
