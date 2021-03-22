@@ -60,12 +60,8 @@ final class Psr18Client implements Client
     private $lastResponse;
 
     /**
-     * Usage: apikeyOrUsername can be auth key or username.
-     * Password needs to be set if username is given.
-     *
-     * @param string      $url
-     * @param string      $apikeyOrUsername
-     * @param string|null $pass
+     * $apikeyOrUsername should be your ApiKey, but it could also be your username.
+     * $pass needs to be set if a username is given (not recommended).
      */
     public function __construct(
         ClientInterface $httpClient,
@@ -101,11 +97,7 @@ final class Psr18Client implements Client
     }
 
     /**
-     * HTTP GETs a json $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a GET request.
      */
     public function requestGet(string $path): bool
     {
@@ -113,37 +105,23 @@ final class Psr18Client implements Client
     }
 
     /**
-     * HTTP POSTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a POST request.
      */
-    public function requestPost(string $path, string $data): bool
+    public function requestPost(string $path, string $body): bool
     {
-        return $this->runRequest('post', $path, $data);
+        return $this->runRequest('post', $path, $body);
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a PUT request.
      */
-    public function requestPut(string $path, string $data): bool
+    public function requestPut(string $path, string $body): bool
     {
-        return $this->runRequest('put', $path, $data);
+        return $this->runRequest('put', $path, $body);
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a DELETE request.
      */
     public function requestDelete(string $path): bool
     {
@@ -152,8 +130,6 @@ final class Psr18Client implements Client
 
     /**
     * Returns status code of the last response.
-    *
-    * @return int
     */
     public function getLastResponseStatusCode(): int
     {
@@ -166,8 +142,6 @@ final class Psr18Client implements Client
 
     /**
     * Returns content type of the last response.
-    *
-    * @return string
     */
     public function getLastResponseContentType(): string
     {
@@ -180,8 +154,6 @@ final class Psr18Client implements Client
 
     /**
      * Returns the body of the last response.
-     *
-     * @return string
      */
     public function getLastResponseBody(): string
     {
@@ -193,21 +165,17 @@ final class Psr18Client implements Client
     }
 
     /**
-     * Create an run a request
-     *
-     * @param string $method
-     * @param string $path
-     * @param string $data
+     * Create and run a request
      *
      * @throws Exception If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
-    private function runRequest(string $method, string $path, string $data = ''): bool
+    private function runRequest(string $method, string $path, string $body = ''): bool
     {
         $this->lastResponse = null;
 
-        $request = $this->createRequest($method, $path, $data);
+        $request = $this->createRequest($method, $path, $body);
 
         try {
             $this->lastResponse = $this->httpClient->sendRequest($request);
@@ -218,7 +186,7 @@ final class Psr18Client implements Client
         return ($this->lastResponse->getStatusCode() < 400);
     }
 
-    private function createRequest(string $method, string $path, string $data = ''): ServerRequestInterface
+    private function createRequest(string $method, string $path, string $body = ''): ServerRequestInterface
     {
         $request = $this->requestFactory->createServerRequest(
             $method,
@@ -244,20 +212,20 @@ final class Psr18Client implements Client
 
         switch ($method) {
             case 'post':
-                if ($this->isUploadCall($path, $data)) {
+                if ($this->isUploadCall($path, $body)) {
                     $request = $request->withBody(
-                        $this->streamFactory->createStreamFromFile($data)
+                        $this->streamFactory->createStreamFromFile($body)
                     );
-                } elseif ($data !== '') {
+                } elseif ($body !== '') {
                     $request = $request->withBody(
-                        $this->streamFactory->createStream($data)
+                        $this->streamFactory->createStream($body)
                     );
                 }
                 break;
             case 'put':
-                if ($data !== '') {
+                if ($body !== '') {
                     $request = $request->withBody(
-                        $this->streamFactory->createStream($data)
+                        $this->streamFactory->createStream($body)
                     );
                 }
                 break;
@@ -277,12 +245,12 @@ final class Psr18Client implements Client
         return $request;
     }
 
-    private function isUploadCall(string $path, string $data): bool
+    private function isUploadCall(string $path, string $body): bool
     {
         return
             (preg_match('/\/uploads.(json|xml)/i', $path)) &&
-            $data !== '' &&
-            is_file(strval(str_replace("\0", '', $data)))
+            $body !== '' &&
+            is_file(strval(str_replace("\0", '', $body)))
         ;
     }
 }

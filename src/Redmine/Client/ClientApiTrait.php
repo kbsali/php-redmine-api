@@ -11,7 +11,7 @@ use Redmine\Api;
 trait ClientApiTrait
 {
     /**
-     * @var array APIs
+     * @var array Api[]
      */
     private $apiInstances = [];
 
@@ -39,11 +39,7 @@ trait ClientApiTrait
     ];
 
     /**
-     * @param string $name
-     *
      * @throws InvalidArgumentException
-     *
-     * @return Api
      */
     public function getApi(string $name): Api
     {

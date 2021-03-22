@@ -11,11 +11,7 @@ use Redmine\Api;
 interface Client
 {
     /**
-     * @param string $name
-     *
      * @throws InvalidArgumentException
-     *
-     * @return Api
      */
     public function getApi(string $name): Api;
 
@@ -31,61 +27,37 @@ interface Client
     public function stopImpersonateUser(): void;
 
     /**
-     * HTTP GETs a json $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a GET request.
      */
     public function requestGet(string $path): bool;
 
     /**
-     * HTTP POSTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a POST request.
      */
-    public function requestPost(string $path, string $data): bool;
+    public function requestPost(string $path, string $body): bool;
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a PUT request.
      */
-    public function requestPut(string $path, string $data): bool;
+    public function requestPut(string $path, string $body): bool;
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a DELETE request.
      */
     public function requestDelete(string $path): bool;
 
     /**
     * Returns status code of the last response.
-    *
-    * @return int
     */
     public function getLastResponseStatusCode(): int;
 
     /**
     * Returns content type of the last response.
-    *
-    * @return string
     */
     public function getLastResponseContentType(): string;
 
     /**
      * Returns the body of the last response.
-     *
-     * @return string
      */
     public function getLastResponseBody(): string;
 }

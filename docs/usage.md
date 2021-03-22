@@ -62,7 +62,7 @@ require_once 'vendor/autoload.php';
 
 require_once 'vendor/autoload.php';
 +
-+// Instantiate with ApiKey with Username/Password
++// Instantiate with Username/Password (not recommended)
 +$client = new Redmine\Client('http://redmine.example.com', 'username', 'password');
 ```
 
@@ -111,7 +111,7 @@ require_once 'vendor/autoload.php';
 +
 +// Instantiate with ApiKey
 +$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
-+// ...or Instantiate with ApiKey with Username/Password (not recommended)
++// ...or Instantiate with Username/Password (not recommended)
 +$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', 'username', 'password');
 ```
 
@@ -155,7 +155,7 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 +            // Set specific CURL options, see https://docs.guzzlephp.org/en/stable/faq.html#how-can-i-add-custom-curl-options
 +            'curl' => [
 +                CURLOPT_SSL_VERIFYPEER => 1,
-+                CURLOPT_SSL_VERIFYHOST => 1,
++                CURLOPT_SSL_VERIFYHOST => 2,
 +                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
 +            ],
 +        ]);

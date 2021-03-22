@@ -183,11 +183,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP GETs a json $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a GET request.
      */
     public function requestGet(string $path): bool
     {
@@ -197,41 +193,27 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP POSTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a POST request.
      */
-    public function requestPost(string $path, string $data): bool
+    public function requestPost(string $path, string $body): bool
     {
-        $result = $this->post($path, $data);
+        $result = $this->post($path, $body);
 
         return ($result === false) ? false : true;
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return bool
+     * Create and send a PUT request.
      */
-    public function requestPut(string $path, string $data): bool
+    public function requestPut(string $path, string $body): bool
     {
-        $result = $this->put($path, $data);
+        $result = $this->put($path, $body);
 
         return ($result === false) ? false : true;
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     *
-     * @return bool
+     * Create and send a DELETE request.
      */
     public function requestDelete(string $path): bool
     {
@@ -242,8 +224,6 @@ class Client implements ClientInterface
 
     /**
     * Returns status code of the last response.
-    *
-    * @return int
     */
     public function getLastResponseStatusCode(): int
     {
@@ -252,8 +232,6 @@ class Client implements ClientInterface
 
     /**
     * Returns content type of the last response.
-    *
-    * @return string
     */
     public function getLastResponseContentType(): string
     {
@@ -262,8 +240,6 @@ class Client implements ClientInterface
 
     /**
      * Returns the body of the last response.
-     *
-     * @return string
      */
     public function getLastResponseBody(): string
     {
