@@ -137,13 +137,12 @@ The `Redmine\Client\Psr18Client` requires:
 - and optional a password if you want to use username/password (not recommended).
 
 ```diff
--// Instantiate with ApiKey
--$client = new Redmine\Client(
-+$guzzle = \GuzzleHttp\Client();
-+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
++$guzzle = new \GuzzleHttp\Client();
++$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
 +
-+// Instantiate with ApiKey
-+$client = new Redmine\Client\Prs18Client(
+// Instantiate with ApiKey
+-$client = new \Redmine\Client(
++$client = new \Redmine\Client\Prs18Client(
 +    $guzzle,
 +    $psr17Factory,
 +    $psr17Factory,
@@ -152,4 +151,143 @@ The `Redmine\Client\Psr18Client` requires:
 );
 ```
 
+If you want more control over the PSR-17 ServerRequestFactory you can also create a anonymous class:
+
+```diff
++use Psr\Http\Message\ServerRequestFactoryInterface;
++use Psr\Http\Message\ServerRequestInterface;
++use Psr\Http\Message\StreamFactoryInterface;
++use Psr\Http\Message\StreamInterface;
++
+$guzzle = new \GuzzleHttp\Client();
+-$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
++$psr17Factory = new class() implements ServerRequestFactoryInterface, StreamFactoryInterface {
++    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
++    {
++        return new \GuzzleHttp\Psr7\ServerRequest($method, $uri);
++    }
++
++    public function createStream(string $content = ''): StreamInterface
++    {
++        return \GuzzleHttp\Psr7\Utils::streamFor($content);
++    }
++
++    public function createStreamFromFile(string $file, string $mode = 'r'): StreamInterface
++    {
++        return \GuzzleHttp\Psr7\Utils::streamFor(\GuzzleHttp\Psr7\Utils::tryFopen($file, $mode));
++    }
++
++    public function createStreamFromResource($resource): StreamInterface
++    {
++        return \GuzzleHttp\Psr7\Utils::streamFor($resource);
++    }
++};
+
+// Instantiate with ApiKey
+$client = new \Redmine\Client\Prs18Client(
+    $guzzle,
+    $psr17Factory,
+    $psr17Factory,
+    'https://redmine.example.com',
+    '1234567890abcdfgh'
+);
+```
+
 ## 3. Set `cURL` options
+
+If you have set custom `cURL` options you now have to set them to `Guzzle`. Thanks to the HTTP client you can set them to every request:
+
+```diff
+$guzzle = new \GuzzleHttp\Client();
+$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
+
++$guzzleWrapper = new class(\GuzzleHttp\Client $guzzle) implements \Psr\Http\Client\ClientInterface
++{
++    private $guzzle;
++
++    public function __construct(\GuzzleHttp\Client $guzzle)
++    {
++        $this->guzzle = $guzzle;
++    }
++
++    public function sendRequest(\Psr\Http\Message\RequestInterface $request): \Psr\Http\Message\ResponseInterface
++    {
++        return $this->guzzle->send($request, [
++            // Set other the options for every request here
++            'auth' => ['username', 'password', 'digest'],
++            'cert' => ['/path/server.pem', 'password'],
++            'connect_timeout' => 3.14,
++            // Set specific CURL options, see https://docs.guzzlephp.org/en/stable/faq.html#how-can-i-add-custom-curl-options
++            'curl' => [
++                CURLOPT_SSL_VERIFYPEER => 1,
++                CURLOPT_SSL_VERIFYHOST => 2,
++                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
++            ],
++        ]);
++    }
++};
++
+// Instantiate with ApiKey
+$client = new \Redmine\Client\Prs18Client(
+-    $guzzle,
++    $guzzleWrapper,
+    $psr17Factory,
+    $psr17Factory,
+    'https://redmine.example.com',
+    '1234567890abcdfgh'
+);
+-
+-$client->setCheckSslCertificate(true);
+-$client->setCheckSslHost(true);
+-$client->setSslVersion(CURL_SSLVERSION_TLSv1_3);
+```
+
+If you don't want `php-redmine-api` to use HTTP auth, you can disable it by removing the headers from the request.
+
+```diff
+$guzzle = new \GuzzleHttp\Client();
+$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
+
+$guzzleWrapper = new class(\GuzzleHttp\Client $guzzle) implements ClientInterface
+{
+    private $guzzle;
+
+    public function __construct(\GuzzleHttp\Client $guzzle)
+    {
+        $this->guzzle = $guzzle;
+    }
+
+    public function sendRequest(\Psr\Http\Message\RequestInterface $request): \Psr\Http\Message\ResponseInterface
+    {
++        // Remove the auth headers
++        $request = $request->withoutHeader('X-Redmine-API-Key');
++        $request = $request->withoutHeader('Authorization');
++
+        return $this->guzzle->send($request, [
+            // Set other the options for every request here
+            'auth' => ['username', 'password', 'digest'],
+            'cert' => ['/path/server.pem', 'password'],
+            'connect_timeout' => 3.14,
+            // Set specific CURL options, see https://docs.guzzlephp.org/en/stable/faq.html#how-can-i-add-custom-curl-options
+            'curl' => [
+                CURLOPT_SSL_VERIFYPEER => 1,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
+            ],
+        ]);
+    }
+};
+
+// Instantiate with ApiKey
+$client = new \Redmine\Client\Prs18Client(
+    $guzzleWrapper,
+    $psr17Factory,
+    $psr17Factory,
+    'https://redmine.example.com',
+    '1234567890abcdfgh'
+);
+-
+-$client->setUseHttpAuth(false);
+```
+
+Now you should be ready. Please make sure that you are only using client methods that are defined in `Redmine\Client\Client` because all other methods will be removed or set to private in a future major release. Otherwise you will have to change your code in future again.
