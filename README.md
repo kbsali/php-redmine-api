@@ -143,6 +143,8 @@ Create your project e.g. in the `index.php` by require the `vendor/autoload.php`
 
 You can choose between the navite curl client or the PSR-18 compatible client.
 
+> :bulb: Since `php-redmine-api` v1.7.0 there is a new PSR-18 based client `Redmine\Client\Psr18Client`. [See this guide if you want to switch to this client.](docs/migrate-to-psr18client.md).
+
 #### Native curl Client `Redmine\Client`
 
 Every Client requires a URL to your Redmine instance and either a valid Apikey...
@@ -305,26 +307,7 @@ $client->getApi('issue')->all([
 ]);
 ```
 
-See `[example.php](example.php)` for further examples.
-
-## User Impersonation
-
-As of Redmine V2.2 you can impersonate user through the REST API :
-
-```php
-
-$client = new Redmine\Client('http://redmine.example.com', 'API_ACCESS_KEY');
-
-// impersonate user
-$client->startImpersonateUser('jsmith');
-
-// create a time entry for jsmith
-$client->getApi('time_entry')->create($data);
-
-// remove impersonation for further calls
-$client->stopImpersonateUser();
-```
-
+[See further examples and read more about usage in the docs](docs/usage.md).
 
 ### Thanks!
 
