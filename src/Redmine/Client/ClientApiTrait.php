@@ -12,12 +12,9 @@ use Redmine\Api;
  */
 trait ClientApiTrait
 {
-    /**
-     * @var array Api[]
-     */
-    private $apiInstances = [];
+    private array $apiInstances = [];
 
-    private $apiClassnames = [
+    private array $apiClassnames = [
         'attachment' => 'Attachment',
         'group' => 'Group',
         'custom_fields' => 'CustomField',
