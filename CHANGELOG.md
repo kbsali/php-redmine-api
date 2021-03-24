@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - This `CHANGELOG.md` file
 
+### Changed
+
+- Better type checking thanks to typed properties
+- Move `example.php` into new `docs` folder
+
+### Removed
+
+- Drop support for PHP 7.3
+
+### Fixed
+
+- `Redmine\Client::getCheckSslHost()` always returns as boolean
+
 ## [v1.7.0](https://github.com/kbsali/php-redmine-api/compare/v1.6.0...v1.7.0) - 2021-03-22
 
 ### Added
