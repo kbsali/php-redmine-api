@@ -516,10 +516,10 @@ class VersionTest extends TestCase
             ->method('requestGet')
             ->with('/projects/5/versions.json')
             ->willReturn(true);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(2))
+        $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 
@@ -553,10 +553,10 @@ class VersionTest extends TestCase
             ->method('requestGet')
             ->with('/projects/5/versions.json')
             ->willReturn(true);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(2))
+        $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 
@@ -590,10 +590,10 @@ class VersionTest extends TestCase
             ->method('requestGet')
             ->with('/projects/5/versions.json')
             ->willReturn(true);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(2))
+        $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 
@@ -631,7 +631,7 @@ class VersionTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(4))
+        $client->expects($this->exactly(2))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 
@@ -664,10 +664,10 @@ class VersionTest extends TestCase
                 $this->stringStartsWith('/projects/5/versions.json')
             )
             ->willReturn(true);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(2))
+        $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 
