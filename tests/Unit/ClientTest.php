@@ -178,7 +178,7 @@ class ClientTest extends TestCase
         $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost());
         $this->assertFalse($client->getCheckSslHost());
         $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(true));
-        $this->assertSame(2, $client->getCheckSslHost());
+        $this->assertSame(true, $client->getCheckSslHost());
         $this->assertInstanceOf('Redmine\Client', $client->setCheckSslHost(false));
         $this->assertFalse($client->getCheckSslHost());
     }

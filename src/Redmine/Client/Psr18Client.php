@@ -22,11 +22,11 @@ final class Psr18Client implements Client
     private string $url;
     private string $apikeyOrUsername;
     private ?string $password;
-    private ?string $impersonateUser;
+    private ?string $impersonateUser = null;
     private ClientInterface $httpClient;
     private ServerRequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
-    private ?ResponseInterface $lastResponse;
+    private ?ResponseInterface $lastResponse = null;
 
     /**
      * $apikeyOrUsername should be your ApiKey, but it could also be your username.
@@ -46,8 +46,6 @@ final class Psr18Client implements Client
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->password = $password;
-        $this->impersonateUser = null;
-        $this->lastResponse = null;
     }
 
     /**
