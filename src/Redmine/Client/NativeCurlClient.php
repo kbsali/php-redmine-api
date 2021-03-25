@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Client;
 
 use Exception;
@@ -110,7 +112,14 @@ class NativeCurlClient implements Client
      */
     private function request(string $method, string $path, string $body = ''): bool
     {
-        throw new \Exception(__METHOD__ . ' is not implemented.', 1);
+        $this->lastResponseStatusCode = 0;
+        $this->lastResponseContentType = '';
+        $this->lastResponseBody = '';
 
+        $curl = curl_init();
+
+        $response = curl_exec($curl);
+
+        return false;
     }
 }
