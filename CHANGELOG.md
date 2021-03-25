@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed support for PHP 5.6, 7.0, 7.1 and 7.2
 
-## [v1.5.22](https://github.com/kbsali/php-redmine-api/compare/v1.5.21...v1.5.22) - 2021-01-02
+## [v1.5.22](https://github.com/kbsali/php-redmine-api/compare/v1.5.21...v1.5.22) - 2020-08-07
 
 ### Added
 
