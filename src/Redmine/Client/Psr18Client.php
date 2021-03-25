@@ -19,49 +19,18 @@ final class Psr18Client implements Client
 {
     use ClientApiTrait;
 
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $apikeyOrUsername;
-
-    /**
-     * @var string|null
-     */
-    private $pass;
-
-    /**
-     * @var string|null
-     */
-    private $impersonateUser;
-
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    private $requestFactory;
-
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $streamFactory;
-
-    /**
-     * @var ResponseInterface|null
-     */
-    private $lastResponse;
+    private string $url;
+    private string $apikeyOrUsername;
+    private ?string $password;
+    private ?string $impersonateUser = null;
+    private ClientInterface $httpClient;
+    private ServerRequestFactoryInterface $requestFactory;
+    private StreamFactoryInterface $streamFactory;
+    private ?ResponseInterface $lastResponse = null;
 
     /**
      * $apikeyOrUsername should be your ApiKey, but it could also be your username.
-     * $pass needs to be set if a username is given (not recommended).
+     * $password needs to be set if a username is given (not recommended).
      */
     public function __construct(
         ClientInterface $httpClient,
@@ -69,14 +38,14 @@ final class Psr18Client implements Client
         StreamFactoryInterface $streamFactory,
         string $url,
         string $apikeyOrUsername,
-        string $pass = null
+        string $password = null
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
-        $this->pass = $pass;
+        $this->password = $password;
     }
 
     /**
@@ -195,10 +164,10 @@ final class Psr18Client implements Client
 
         // Set Authentication header
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
-        if ($this->pass !== null) {
+        if ($this->password !== null) {
             $request = $request->withHeader(
                 'Authorization',
-                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->pass)
+                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password)
             );
         } else {
             $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);

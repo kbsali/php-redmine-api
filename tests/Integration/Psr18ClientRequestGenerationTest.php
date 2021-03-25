@@ -172,8 +172,8 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/octet-stream'.\PHP_EOL.
                 \PHP_EOL.
-                'This is a test file.'.\PHP_EOL.
-                'It will be needed for testing file uploads.'.\PHP_EOL
+                'This is a test file.'."\n".
+                'It will be needed for testing file uploads.'."\n"
             ],
             [
                 // Test fileupload with file path to image

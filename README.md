@@ -45,7 +45,7 @@ A possible solution to this would be to create an extra APIs implementing the mi
 
 ## Requirements
 
-* PHP ^7.3 || ^8.0
+* PHP ^7.4 || ^8.0
 * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension
 * The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
 * The PHP [JSON](http://php.net/manual/en/book.json.php) extension

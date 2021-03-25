@@ -49,13 +49,14 @@ abstract class AbstractApi implements Api
         $this->client->requestGet($path);
 
         $body = $this->client->getLastResponseBody();
+        $contentType = $this->client->getLastResponseContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ($body !== '' && 0 === strpos($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
-        if ($decodeIfJson === true && $body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/json')) {
+        if ($decodeIfJson === true && $body !== '' && 0 === strpos($contentType, 'application/json')) {
             try {
                 return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
             } catch (JsonException $e) {

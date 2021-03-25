@@ -42,53 +42,23 @@ class Client implements ClientInterface
      */
     const SSL_VERIFYHOST = 2;
 
-    /**
-     * @var array
-     */
-    private static $defaultPorts = [
+    private static array $defaultPorts = [
         'http' => 80,
         'https' => 443,
     ];
 
-    /**
-     * @var int
-     */
-    private $port;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $apikeyOrUsername;
-
-    /**
-     * @var string|null
-     */
-    private $pass;
-
-    /**
-     * @var bool
-     */
-    private $checkSslCertificate = false;
-
-    /**
-     * @var bool
-     */
-    private $checkSslHost = false;
-
-    /**
-     * @var int
-     */
-    private $sslVersion = 0;
-
-    /**
-     * @var bool Flag to determine authentication method
-     */
-    private $useHttpAuth = true;
+    private ?int $port = null;
+    private string $url;
+    private string $apikeyOrUsername;
+    private ?string $pass;
+    private bool $checkSslCertificate = false;
+    private bool $checkSslHost = false;
+    private int $sslVersion = 0;
+    private bool $useHttpAuth = true;
+    private int $responseCode = 0;
+    private string $responseContentType = '';
+    private string $responseBody = '';
+    private array $curlOptions = [];
 
     /**
      * @var string|null username for impersonating API calls
@@ -101,29 +71,9 @@ class Client implements ClientInterface
     protected $customHost = null;
 
     /**
-     * @var int|null Redmine response code, null if request is not still completed
-     */
-    private $responseCode = null;
-
-    /**
-     * @var string Redmine response content type
-     */
-    private $responseContentType = '';
-
-    /**
-     * @var string Redmine response body
-     */
-    private $responseBody = '';
-
-    /**
-     * @var array cURL options
-     */
-    private $curlOptions = [];
-
-    /**
      * Error strings if json is invalid.
      */
-    private static $jsonErrors = [
+    private static array $jsonErrors = [
         JSON_ERROR_NONE => 'No error has occurred',
         JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
         JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
@@ -142,7 +92,7 @@ class Client implements ClientInterface
     {
         $this->url = $url;
         $this->getPort();
-        $this->apikeyOrUsername = $apikeyOrUsername;
+        $this->apikeyOrUsername = strval($apikeyOrUsername);
         $this->pass = $pass;
     }
 
@@ -364,12 +314,7 @@ class Client implements ClientInterface
      */
     public function setCheckSslHost($check = false)
     {
-        // Make sure verify value is set to "2" for boolean argument
-        // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-        if (true === $check) {
-            $check = self::SSL_VERIFYHOST;
-        }
-        $this->checkSslHost = $check;
+        $this->checkSslHost = (bool) $check;
 
         return $this;
     }
@@ -599,7 +544,7 @@ class Client implements ClientInterface
      */
     public function prepareRequest($path, $method = 'GET', $data = '')
     {
-        $this->responseCode = null;
+        $this->responseCode = 0;
         $this->responseContentType = '';
         $this->responseBody = '';
         $curl = curl_init();
@@ -624,7 +569,9 @@ class Client implements ClientInterface
         $this->setCurlOption(CURLOPT_PORT, $this->getPort());
         if (80 !== $this->getPort()) {
             $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, (int) $this->checkSslCertificate);
-            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, (int) $this->checkSslHost);
+            // Make sure verify value is set to "2" for boolean argument
+            // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
+            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0);
             $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 

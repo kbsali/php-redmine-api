@@ -11,7 +11,7 @@ use Redmine\Api;
 interface Client
 {
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException if $name is not a valid api name
      */
     public function getApi(string $name): Api;
 
