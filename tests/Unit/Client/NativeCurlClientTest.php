@@ -113,4 +113,65 @@ class NativeCurlClientTest extends TestCase
         $client->stopImpersonateUser();
         $client->requestGet('/path');
     }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
+     *
+     * @param string $apiName
+     * @param string $class
+     * @dataProvider getApiClassesProvider
+     */
+    public function getApiShouldReturnApiInstance($apiName, $class)
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->assertInstanceOf($class, $client->getApi($apiName));
+    }
+
+    public function getApiClassesProvider()
+    {
+        return [
+            ['attachment', 'Redmine\Api\Attachment'],
+            ['group', 'Redmine\Api\Group'],
+            ['custom_fields', 'Redmine\Api\CustomField'],
+            ['issue', 'Redmine\Api\Issue'],
+            ['issue_category', 'Redmine\Api\IssueCategory'],
+            ['issue_priority', 'Redmine\Api\IssuePriority'],
+            ['issue_relation', 'Redmine\Api\IssueRelation'],
+            ['issue_status', 'Redmine\Api\IssueStatus'],
+            ['membership', 'Redmine\Api\Membership'],
+            ['news', 'Redmine\Api\News'],
+            ['project', 'Redmine\Api\Project'],
+            ['query', 'Redmine\Api\Query'],
+            ['role', 'Redmine\Api\Role'],
+            ['time_entry', 'Redmine\Api\TimeEntry'],
+            ['time_entry_activity', 'Redmine\Api\TimeEntryActivity'],
+            ['tracker', 'Redmine\Api\Tracker'],
+            ['user', 'Redmine\Api\User'],
+            ['version', 'Redmine\Api\Version'],
+            ['wiki', 'Redmine\Api\Wiki'],
+        ];
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
+     *
+     */
+    public function getApiShouldThrowException()
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`, `search`');
+
+        $client->getApi('do_not_exist');
+    }
 }
