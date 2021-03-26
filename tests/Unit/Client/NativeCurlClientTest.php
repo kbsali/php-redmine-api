@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Api;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Client\Client;
+use stdClass;
 
 class NativeCurlClientTest extends TestCase
 {
@@ -96,11 +97,76 @@ class NativeCurlClientTest extends TestCase
      */
     public function testStartAndStopImpersonateUser()
     {
+        $curl = $this->createMock(stdClass::class);
+
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-        $curlInit->expects($this->exactly(3))->willReturn([]);
+        $curlInit->expects($this->exactly(3))->willReturn($curl);
 
         $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
         $curlExec->expects($this->exactly(3))->willReturn('');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, 200],
+            [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
+        ])));
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(3))
+            ->withConsecutive(
+                [
+                    $this->anything(),
+                    $this->identicalTo([
+                            41 => 0,
+                            42 => 0,
+                            19913 => 1,
+                            84 => 2,
+                            10005 => 'access_token:199999',
+                            107 => 1,
+                            10002 => 'http://test.local/path',
+                            3 => 80,
+                            10023 => [
+                                0 => 'Expect: ',
+                                1 => 'X-Redmine-API-Key: access_token',
+                            ]
+                    ]),
+                ],
+                [
+                    $this->anything(),
+                    $this->identicalTo([
+                            41 => 0,
+                            42 => 0,
+                            19913 => 1,
+                            84 => 2,
+                            10005 => 'access_token:199999',
+                            107 => 1,
+                            10002 => 'http://test.local/path',
+                            3 => 80,
+                            10023 => [
+                                0 => 'Expect: ',
+                                1 => 'X-Redmine-Switch-User: Sam',
+                                2 => 'X-Redmine-API-Key: access_token',
+                            ]
+                    ]),
+                ],
+                [
+                    $this->anything(),
+                    $this->identicalTo([
+                            41 => 0,
+                            42 => 0,
+                            19913 => 1,
+                            84 => 2,
+                            10005 => 'access_token:199999',
+                            107 => 1,
+                            10002 => 'http://test.local/path',
+                            3 => 80,
+                            10023 => [
+                                0 => 'Expect: ',
+                                1 => 'X-Redmine-API-Key: access_token',
+                            ]
+                    ]),
+                ],
+            );
 
         $client = new NativeCurlClient(
             'http://test.local',
