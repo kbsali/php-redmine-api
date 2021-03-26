@@ -117,56 +117,62 @@ class NativeCurlClientTest extends TestCase
                 [
                     $this->anything(),
                     $this->identicalTo([
-                            41 => 0,
-                            42 => 0,
-                            19913 => 1,
-                            84 => 2,
-                            10005 => 'access_token:199999',
-                            107 => 1,
-                            10002 => 'http://test.local/path',
-                            3 => 80,
-                            10023 => [
-                                0 => 'Expect: ',
-                                1 => 'X-Redmine-API-Key: access_token',
+                            CURLOPT_VERBOSE => 0,
+                            CURLOPT_HEADER => 0,
+                            CURLOPT_RETURNTRANSFER => 1,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_USERPWD => 'access_token:199999',
+                            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+                            CURLOPT_URL => 'http://test.local/path',
+                            CURLOPT_PORT => 80,
+                            CURLOPT_HTTPHEADER => [
+                                'Expect: ',
+                                'X-Redmine-API-Key: access_token',
                             ]
                     ]),
                 ],
                 [
                     $this->anything(),
                     $this->identicalTo([
-                            41 => 0,
-                            42 => 0,
-                            19913 => 1,
-                            84 => 2,
-                            10005 => 'access_token:199999',
-                            107 => 1,
-                            10002 => 'http://test.local/path',
-                            3 => 80,
-                            10023 => [
-                                0 => 'Expect: ',
-                                1 => 'X-Redmine-Switch-User: Sam',
-                                2 => 'X-Redmine-API-Key: access_token',
+                            CURLOPT_VERBOSE => 0,
+                            CURLOPT_HEADER => 0,
+                            CURLOPT_RETURNTRANSFER => 1,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_USERPWD => 'access_token:199999',
+                            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+                            CURLOPT_URL => 'http://test.local/path',
+                            CURLOPT_PORT => 80,
+                            CURLOPT_HTTPHEADER => [
+                                'Expect: ',
+                                'X-Redmine-Switch-User: Sam',
+                                'X-Redmine-API-Key: access_token',
                             ]
                     ]),
                 ],
                 [
                     $this->anything(),
                     $this->identicalTo([
-                            41 => 0,
-                            42 => 0,
-                            19913 => 1,
-                            84 => 2,
-                            10005 => 'access_token:199999',
-                            107 => 1,
-                            10002 => 'http://test.local/path',
-                            3 => 80,
-                            10023 => [
-                                0 => 'Expect: ',
-                                1 => 'X-Redmine-API-Key: access_token',
+                            CURLOPT_VERBOSE => 0,
+                            CURLOPT_HEADER => 0,
+                            CURLOPT_RETURNTRANSFER => 1,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_USERPWD => 'access_token:199999',
+                            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+                            CURLOPT_URL => 'http://test.local/path',
+                            CURLOPT_PORT => 80,
+                            CURLOPT_HTTPHEADER => [
+                                'Expect: ',
+                                'X-Redmine-API-Key: access_token',
                             ]
                     ]),
                 ],
-            );
+            )
+        ;
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(3))->willReturn(0);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -178,6 +184,71 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
         $client->stopImpersonateUser();
         $client->requestGet('/path');
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
+     * @dataProvider getRequestReponseData
+     */
+    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn($content);
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, $statusCode],
+            [$curl, CURLINFO_CONTENT_TYPE, $contentType],
+        ])));
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(0);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->assertSame($boolReturn, $client->$method('/path', $data));
+        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
+        $this->assertSame($contentType, $client->getLastResponseContentType());
+        $this->assertSame($content, $client->getLastResponseBody());
+    }
+
+    public function getRequestReponseData()
+    {
+        return [
+            ['requestGet', '', true, 101, 'text/plain', ''],
+            ['requestGet', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestGet', '', true, 301, 'application/json', ''],
+            ['requestGet', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestGet', '', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestPost', '{"foo":"bar"}', true, 101, 'text/plain', ''],
+            ['requestPost', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestPost', '{"foo":"bar"}', true, 301, 'application/json', ''],
+            ['requestPost', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestPost', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestPut', '{"foo":"bar"}', true, 101, 'text/plain', ''],
+            ['requestPut', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestPut', '{"foo":"bar"}', true, 301, 'application/json', ''],
+            ['requestPut', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestPut', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
+            ['requestDelete', '', true, 101, 'text/plain', ''],
+            ['requestDelete', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
+            ['requestDelete', '', true, 301, 'application/json', ''],
+            ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
+            ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
+        ];
     }
 
     /**
