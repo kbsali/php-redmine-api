@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Client;
 
+use Exception;
 use InvalidArgumentException;
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
@@ -210,7 +211,7 @@ class NativeCurlClientTest extends TestCase
         ])));
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(0);
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
 
         $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
@@ -249,6 +250,41 @@ class NativeCurlClientTest extends TestCase
             ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
             ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
         ];
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
+     */
+    public function testCurlErrorThrowsException()
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn(false);
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_URL_MALFORMAT);
+
+        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
+        $curlError->expects($this->exactly(1))->willReturn('cURL error 3: <url> malformed');
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('cURL error 3: <url> malformed');
+
+        $client->requestGet('/path');
     }
 
     /**

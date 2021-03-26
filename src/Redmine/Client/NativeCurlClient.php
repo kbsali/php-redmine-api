@@ -157,17 +157,18 @@ class NativeCurlClient implements Client
 
         $response = curl_exec($curl);
 
-        $this->lastResponseBody = ($response === false) ? '' : $response;
-        $this->lastResponseStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->lastResponseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
-
         $curlErrorNumber = curl_errno($curl);
 
-        if ($curlErrorNumber > 0) {
+        if ($curlErrorNumber !== CURLE_OK) {
             $e = new Exception(curl_error($curl), $curlErrorNumber);
             curl_close($curl);
             throw $e;
         }
+
+        $this->lastResponseBody = ($response === false) ? '' : $response;
+        $this->lastResponseStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->lastResponseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+
         curl_close($curl);
 
         return ($this->lastResponseStatusCode < 400);
