@@ -113,6 +113,22 @@ class NativeCurlClientTest extends TestCase
      */
     public function testStartAndStopImpersonateUser()
     {
+        $expectedOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_USERPWD => 'access_token:199999',
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_URL => 'http://test.local/path',
+            CURLOPT_PORT => 80,
+            CURLOPT_HTTPHEADER => [
+                'Expect: ',
+                'X-Redmine-Switch-User: Sam',
+                'X-Redmine-API-Key: access_token',
+            ],
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ];
+
         $curl = $this->createMock(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
@@ -132,55 +148,15 @@ class NativeCurlClientTest extends TestCase
             ->withConsecutive(
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
                 ],
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-Switch-User: Sam',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo($expectedOptions),
                 ],
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
                 ],
             )
         ;
@@ -208,6 +184,21 @@ class NativeCurlClientTest extends TestCase
      */
     public function testSetSslVersion()
     {
+        $expectedOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+            CURLOPT_USERPWD => 'access_token:199999',
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_URL => 'http://test.local/path',
+            CURLOPT_PORT => 80,
+            CURLOPT_HTTPHEADER => [
+                'Expect: ',
+                'X-Redmine-API-Key: access_token',
+            ],
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ];
+
         $curl = $this->createMock(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
@@ -227,54 +218,15 @@ class NativeCurlClientTest extends TestCase
             ->withConsecutive(
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
                 ],
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo($expectedOptions),
                 ],
                 [
                     $this->anything(),
-                    $this->identicalTo([
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_USERPWD => 'access_token:199999',
-                        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-                        CURLOPT_URL => 'http://test.local/path',
-                        CURLOPT_PORT => 80,
-                        CURLOPT_HTTPHEADER => [
-                            'Expect: ',
-                            'X-Redmine-API-Key: access_token',
-                        ],
-                        CURLOPT_VERBOSE => 0,
-                        CURLOPT_HEADER => 0,
-                        CURLOPT_RETURNTRANSFER => 1,
-                    ]),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
                 ],
             )
         ;
