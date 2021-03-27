@@ -22,8 +22,6 @@ class NativeCurlClientTest extends TestCase
     const DEFAULT_CURL_OPTIONS = [
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_PORT => 80,
-        CURLOPT_USERPWD => 'access_token:199999',
-        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
         CURLOPT_URL => 'http://test.local/path',
         CURLOPT_HTTPHEADER => [
             'Expect: ',
@@ -116,8 +114,6 @@ class NativeCurlClientTest extends TestCase
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_PORT => 80,
-            CURLOPT_USERPWD => 'access_token:199999',
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_URL => 'http://test.local/path',
             CURLOPT_HTTPHEADER => [
                 'Expect: ',
@@ -187,8 +183,6 @@ class NativeCurlClientTest extends TestCase
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
             CURLOPT_PORT => 80,
-            CURLOPT_USERPWD => 'access_token:199999',
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_URL => 'http://test.local/path',
             CURLOPT_HTTPHEADER => [
                 'Expect: ',
@@ -257,8 +251,6 @@ class NativeCurlClientTest extends TestCase
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_PORT => 80,
-            CURLOPT_USERPWD => 'access_token:199999',
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_SSL_VERIFYPEER => 1,
             CURLOPT_URL => 'http://test.local/path',
             CURLOPT_HTTPHEADER => [
@@ -328,8 +320,6 @@ class NativeCurlClientTest extends TestCase
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_PORT => 80,
-            CURLOPT_USERPWD => 'access_token:199999',
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_SSL_VERIFYHOST => 2, // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
             CURLOPT_URL => 'http://test.local/path',
             CURLOPT_HTTPHEADER => [
@@ -399,8 +389,6 @@ class NativeCurlClientTest extends TestCase
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_PORT => 8080,
-            CURLOPT_USERPWD => 'access_token:199999',
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_URL => 'http://test.local/path',
             CURLOPT_HTTPHEADER => [
                 'Expect: ',

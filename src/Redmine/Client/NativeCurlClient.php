@@ -28,7 +28,6 @@ final class NativeCurlClient implements Client
     private string $lastResponseBody = '';
     private array $curlOptions = [];
     private ?int $port = null;
-    private bool $useHttpAuth = true;
 
     /**
      * @var string|null customHost
@@ -218,16 +217,6 @@ final class NativeCurlClient implements Client
             CURLOPT_PORT => $this->port,
         ];
 
-        // HTTP Basic Authentication
-        if ($this->apikeyOrUsername && $this->useHttpAuth) {
-            if (null === $this->password) {
-                $curlOptions[CURLOPT_USERPWD] = $this->apikeyOrUsername.':199999';
-            } else {
-                $curlOptions[CURLOPT_USERPWD] = $this->apikeyOrUsername.':'.$this->password;
-            }
-            $curlOptions[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
-        }
-
         // Merge custom curl options
         $curlOptions = array_replace($curlOptions, $this->curlOptions);
 
@@ -317,8 +306,15 @@ final class NativeCurlClient implements Client
         if (null !== $this->impersonateUser) {
             $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
+        // Set Authentication header
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
         if (null === $this->password) {
-            $httpHeader[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
+            $httpHeader[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
+        } else {
+            // Setting Header "Authorization: Basic base64" is the same as
+            // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
+            // @see https://stackoverflow.com/a/26285941
+            $httpHeader[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
         }
 
         return $httpHeader;
