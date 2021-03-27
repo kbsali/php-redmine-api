@@ -10,7 +10,7 @@ use Redmine\Api;
 /**
  * Native cURL client
  */
-class NativeCurlClient implements Client
+/*final */class NativeCurlClient implements Client
 {
     use ClientApiTrait;
 
@@ -145,6 +145,28 @@ class NativeCurlClient implements Client
     }
 
     /**
+     * Unset a cURL option.
+     *
+     * @param int $option The CURLOPT_XXX option to unset
+     */
+    public function unsetCurlOption(int $option): void
+    {
+        if (array_key_exists($option, $this->curlOptions)) {
+            unset($this->curlOptions[$option]);
+        }
+    }
+
+    /**
+     * Get all permanent cURL options.
+     *
+     * @return array
+     */
+    public function getAllPermanentCurlOptions()
+    {
+        return $this->curlOptions;
+    }
+
+    /**
      * @throws Exception If anything goes wrong on curl request
      */
     private function request(string $method, string $path, string $body = ''): bool
@@ -185,72 +207,80 @@ class NativeCurlClient implements Client
      */
     private function createCurl(string $method, string $path, string $body = '')
     {
-        $curl = curl_init();
-
         // General cURL options
-        $this->setCurlOption(CURLOPT_VERBOSE, 0);
-        $this->setCurlOption(CURLOPT_HEADER, 0);
-        $this->setCurlOption(CURLOPT_RETURNTRANSFER, 1);
-        // use HTTP 1.1
-        $this->setCurlOption(CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        $curlOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // use HTTP 1.1
+        ];
 
         // HTTP Basic Authentication
         if ($this->apikeyOrUsername && $this->useHttpAuth) {
             if (null === $this->password) {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':199999');
+                $curlOptions[CURLOPT_USERPWD] = $this->apikeyOrUsername.':199999';
             } else {
-                $this->setCurlOption(CURLOPT_USERPWD, $this->apikeyOrUsername.':'.$this->password);
+                $curlOptions[CURLOPT_USERPWD] = $this->apikeyOrUsername.':'.$this->password;
             }
-            $this->setCurlOption(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            $curlOptions[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
         }
 
+        // Merge custom curl options
+        $curlOptions = array_replace($curlOptions, $this->curlOptions);
+
         // Host and request options
-        $this->setCurlOption(CURLOPT_URL, $this->url.$path);
-        $this->setCurlOption(CURLOPT_PORT, $this->getPort());
+        $curlOptions[CURLOPT_URL] = $this->url.$path;
+        $curlOptions[CURLOPT_PORT] = $this->getPort();
         if (80 !== $this->getPort()) {
-            $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, (int) $this->checkSslCertificate);
+            $curlOptions[CURLOPT_SSL_VERIFYPEER] = (int) $this->checkSslCertificate;
             // Make sure verify value is set to "2" for boolean argument
             // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0);
-            $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
+            $curlOptions[CURLOPT_SSL_VERIFYHOST] = ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0;
+            $curlOptions[CURLOPT_SSLVERSION] = $this->sslVersion;
         }
 
         // Set the HTTP request headers
-        $this->setCurlOption(CURLOPT_HTTPHEADER, $this->createHttpHeader($path));
+        $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path);
 
-        $this->unsetCurlOption(CURLOPT_CUSTOMREQUEST);
-        $this->unsetCurlOption(CURLOPT_POST);
-        $this->unsetCurlOption(CURLOPT_POSTFIELDS);
+        unset($curlOptions[CURLOPT_CUSTOMREQUEST]);
+        unset($curlOptions[CURLOPT_POST]);
+        unset($curlOptions[CURLOPT_POSTFIELDS]);
         switch ($method) {
             case 'post':
-                $this->setCurlOption(CURLOPT_POST, 1);
+                $curlOptions[CURLOPT_POST] = 1;
                 if ($this->isUploadCall($path, $body)) {
                     $file = fopen($body, 'r');
                     $size = filesize($body);
                     $filedata = fread($file, $size);
 
-                    $this->setCurlOption(CURLOPT_POSTFIELDS, $filedata);
-                    $this->setCurlOption(CURLOPT_INFILE, $file);
-                    $this->setCurlOption(CURLOPT_INFILESIZE, $size);
+                    $curlOptions[CURLOPT_POSTFIELDS] = $filedata;
+                    $curlOptions[CURLOPT_INFILE] = $file;
+                    $curlOptions[CURLOPT_INFILESIZE] = $size;
                 } elseif (isset($body)) {
-                    $this->setCurlOption(CURLOPT_POSTFIELDS, $body);
+                    $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
             case 'put':
-                $this->setCurlOption(CURLOPT_CUSTOMREQUEST, 'PUT');
+                $curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
                 if (isset($body)) {
-                    $this->setCurlOption(CURLOPT_POSTFIELDS, $body);
+                    $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
             case 'delete':
-                $this->setCurlOption(CURLOPT_CUSTOMREQUEST, 'DELETE');
+                $curlOptions[CURLOPT_CUSTOMREQUEST] = 'DELETE';
                 break;
             default: // GET
                 break;
         }
 
+        // Set or reset mandatory curl options
+        $curlOptions = array_replace($curlOptions, [
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ]);
+
+        $curl = curl_init();
+
         // Set all cURL options to the current cURL resource
-        curl_setopt_array($curl, $this->curlOptions);
+        curl_setopt_array($curl, $curlOptions);
 
         return $curl;
     }
@@ -262,18 +292,6 @@ class NativeCurlClient implements Client
             $body !== '' &&
             is_file(strval(str_replace("\0", '', $body)))
         ;
-    }
-
-    /**
-     * Unset a cURL option.
-     *
-     * @param int $option The CURLOPT_XXX option to unset
-     */
-    private function unsetCurlOption(int $option): void
-    {
-        if (array_key_exists($option, $this->curlOptions)) {
-            unset($this->curlOptions[$option]);
-        }
     }
 
     /**
