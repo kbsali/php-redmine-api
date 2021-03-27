@@ -10,16 +10,14 @@ use Redmine\Api;
 /**
  * Native cURL client
  */
-/*final */class NativeCurlClient implements Client
+final class NativeCurlClient implements Client
 {
     use ClientApiTrait;
 
-    /**
-     * Value for CURLOPT_SSL_VERIFYHOST.
-     *
-     * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-     */
-    const SSL_VERIFYHOST = 2;
+    private static array $defaultPorts = [
+        'http' => 80,
+        'https' => 443,
+    ];
 
     private string $url;
     private string $apikeyOrUsername;
@@ -30,13 +28,7 @@ use Redmine\Api;
     private string $lastResponseBody = '';
     private array $curlOptions = [];
     private ?int $port = null;
-    private bool $checkSslHost = false;
     private bool $useHttpAuth = true;
-
-    private static array $defaultPorts = [
-        'http' => 80,
-        'https' => 443,
-    ];
 
     /**
      * @var string|null customHost
@@ -226,11 +218,6 @@ use Redmine\Api;
         // Host and request options
         $curlOptions[CURLOPT_URL] = $this->url.$path;
         $curlOptions[CURLOPT_PORT] = $this->getPort();
-        if (80 !== $this->getPort()) {
-            // Make sure verify value is set to "2" for boolean argument
-            // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-            $curlOptions[CURLOPT_SSL_VERIFYHOST] = ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0;
-        }
 
         // Set the HTTP request headers
         $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path);

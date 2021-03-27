@@ -322,6 +322,77 @@ class NativeCurlClientTest extends TestCase
     /**
      * @covers \Redmine\NativeCurlClient
      * @test
+     */
+    public function testSetSslVerifyhost()
+    {
+        $expectedOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_USERPWD => 'access_token:199999',
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_SSL_VERIFYHOST => 2, // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
+            CURLOPT_URL => 'http://test.local/path',
+            CURLOPT_PORT => 80,
+            CURLOPT_HTTPHEADER => [
+                'Expect: ',
+                'X-Redmine-API-Key: access_token',
+            ],
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ];
+
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(3))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(3))->willReturn('');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, 200],
+            [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
+        ])));
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(3))
+            ->withConsecutive(
+                [
+                    $this->anything(),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
+                ],
+                [
+                    $this->anything(),
+                    $this->identicalTo($expectedOptions),
+                ],
+                [
+                    $this->anything(),
+                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
+                ],
+            )
+        ;
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(3))->willReturn(0);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $client->requestGet('/path');
+        $client->setCurlOption(CURLOPT_SSL_VERIFYHOST, 2);
+        $client->requestGet('/path');
+        $client->unsetCurlOption(CURLOPT_SSL_VERIFYHOST);
+        $client->requestGet('/path');
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
      * @dataProvider getRequestReponseData
      */
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
