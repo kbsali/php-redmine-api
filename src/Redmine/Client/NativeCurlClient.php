@@ -30,9 +30,7 @@ use Redmine\Api;
     private string $lastResponseBody = '';
     private array $curlOptions = [];
     private ?int $port = null;
-    private bool $checkSslCertificate = false;
     private bool $checkSslHost = false;
-    private int $sslVersion = 0;
     private bool $useHttpAuth = true;
 
     private static array $defaultPorts = [
@@ -229,11 +227,9 @@ use Redmine\Api;
         $curlOptions[CURLOPT_URL] = $this->url.$path;
         $curlOptions[CURLOPT_PORT] = $this->getPort();
         if (80 !== $this->getPort()) {
-            $curlOptions[CURLOPT_SSL_VERIFYPEER] = (int) $this->checkSslCertificate;
             // Make sure verify value is set to "2" for boolean argument
             // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
             $curlOptions[CURLOPT_SSL_VERIFYHOST] = ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0;
-            $curlOptions[CURLOPT_SSLVERSION] = $this->sslVersion;
         }
 
         // Set the HTTP request headers
