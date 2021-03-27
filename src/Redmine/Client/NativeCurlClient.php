@@ -47,7 +47,22 @@ final class NativeCurlClient implements Client
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
         $this->password = $password;
-        $this->getPort();
+
+        // get Port from url
+        $defaultPorts = [
+            'http' => 80,
+            'https' => 443,
+        ];
+
+        $tmp = parse_url($this->url);
+
+        if (isset($tmp['port'])) {
+            $this->port = $tmp['port'];
+        } elseif (isset($tmp['scheme']) && array_key_exists($tmp['scheme'], $defaultPorts)) {
+            $this->port = $defaultPorts[$tmp['scheme']];
+        } else {
+            $this->port = $defaultPorts['http'];
+        }
     }
 
     /**
@@ -200,6 +215,7 @@ final class NativeCurlClient implements Client
         // General cURL options
         $curlOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // use HTTP 1.1
+            CURLOPT_PORT => $this->port,
         ];
 
         // HTTP Basic Authentication
@@ -217,7 +233,6 @@ final class NativeCurlClient implements Client
 
         // Host and request options
         $curlOptions[CURLOPT_URL] = $this->url.$path;
-        $curlOptions[CURLOPT_PORT] = $this->getPort();
 
         // Set the HTTP request headers
         $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path);
@@ -275,27 +290,6 @@ final class NativeCurlClient implements Client
             $body !== '' &&
             is_file(strval(str_replace("\0", '', $body)))
         ;
-    }
-
-    /**
-     * Returns the port of the current connection,
-     * if not set, it will try to guess the port
-     * from the url of the client.
-     */
-    private function getPort(): int
-    {
-        if (null !== $this->port) {
-            return $this->port;
-        }
-
-        $tmp = parse_url($this->url);
-        if (isset($tmp['port'])) {
-            $this->setPort($tmp['port']);
-        } elseif (isset($tmp['scheme'])) {
-            $this->port = self::$defaultPorts[$tmp['scheme']];
-        }
-
-        return $this->port;
     }
 
     private function createHttpHeader($path): array
