@@ -201,9 +201,11 @@ final class NativeCurlClient implements Client
      */
     private function unsetHttpHeader(string $name): void
     {
-        if (array_key_exists(strtolower($name), $this->httpHeadersNames)) {
-            unset($this->httpHeaders[$this->httpHeadersNames[$name]]);
-            unset($this->httpHeadersNames[$name]);
+        $headerId = strtolower($name);
+
+        if (array_key_exists($headerId, $this->httpHeadersNames)) {
+            unset($this->httpHeaders[$this->httpHeadersNames[$headerId]]);
+            unset($this->httpHeadersNames[$headerId]);
         }
     }
 
@@ -346,12 +348,8 @@ final class NativeCurlClient implements Client
         // prepare custom headers
         $customHttpHeaders = [];
 
-        foreach ($this->httpHeadersNames as $headerKey => $headerName) {
-            $customHttpHeaders[] = sprintf(
-                '%s: %s',
-                $headerName,
-                $this->httpHeaders[$headerName]
-            );
+        foreach ($this->httpHeaders as $headerName => $headerValue) {
+            $customHttpHeaders[] = $headerName . ': ' . $headerValue;
         }
 
         // Merge custom headers
