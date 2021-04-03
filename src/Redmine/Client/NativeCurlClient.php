@@ -137,6 +137,14 @@ final class NativeCurlClient implements Client
      */
     public function setCurlOption(int $option, $value): void
     {
+        // Headers must be handled serperatly
+        if ($option === CURLOPT_HTTPHEADER) {
+            // $value must be an array. setHttpHeaders() will enforce this.
+            $this->setHttpHeaders($value);
+
+            return;
+        }
+
         $this->curlOptions[$option] = $value;
     }
 
@@ -147,8 +155,33 @@ final class NativeCurlClient implements Client
      */
     public function unsetCurlOption(int $option): void
     {
+        // Headers must be handled serperatly
+        if ($option === CURLOPT_HTTPHEADER) {
+            $this->httpHeaders = [];
+            $this->httpHeadersNames = [];
+
+            return;
+        }
+
         if (array_key_exists($option, $this->curlOptions)) {
             unset($this->curlOptions[$option]);
+        }
+    }
+
+    /**
+     * Set multiple HTTP headers.
+     */
+    private function setHttpHeaders(array $headers): void
+    {
+        foreach ($headers as $header) {
+            $values = explode(':', $header, 2);
+
+            // Ignore invalid header
+            if (count($values) < 2) {
+                continue;
+            }
+
+            $this->setHttpHeader(trim($values[0]), trim($values[1]));
         }
     }
 
@@ -292,10 +325,6 @@ final class NativeCurlClient implements Client
             'Expect: ',
         ];
 
-        // if (null !== $this->customHost) {
-        //     $httpHeaders[] = 'Host: '.$this->customHost;
-        // }
-
         // Redmine specific headers
         if (null !== $this->impersonateUser && ! array_key_exists(strtolower('X-Redmine-Switch-User'), $this->httpHeadersNames)) {
             $httpHeaders[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
@@ -314,8 +343,19 @@ final class NativeCurlClient implements Client
             }
         }
 
+        // prepare custom headers
+        $customHttpHeaders = [];
+
+        foreach ($this->httpHeadersNames as $headerKey => $headerName) {
+            $customHttpHeaders[] = sprintf(
+                '%s: %s',
+                $headerName,
+                $this->httpHeaders[$headerName]
+            );
+        }
+
         // Merge custom headers
-        $httpHeaders = array_replace($httpHeaders, $this->httpHeaders);
+        $httpHeaders = array_merge($httpHeaders, $customHttpHeaders);
 
         // Now set or reset mandatory headers
 
