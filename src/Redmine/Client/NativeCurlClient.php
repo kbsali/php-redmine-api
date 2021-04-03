@@ -14,11 +14,6 @@ final class NativeCurlClient implements Client
 {
     use ClientApiTrait;
 
-    private static array $defaultPorts = [
-        'http' => 80,
-        'https' => 443,
-    ];
-
     private string $url;
     private string $apikeyOrUsername;
     private ?string $password;
@@ -27,12 +22,9 @@ final class NativeCurlClient implements Client
     private string $lastResponseContentType = '';
     private string $lastResponseBody = '';
     private array $curlOptions = [];
+    private array $httpHeaders = [];
+    private array $httpHeadersNames = [];
     private ?int $port = null;
-
-    /**
-     * @var string|null customHost
-     */
-    private $customHost = null;
 
     /**
      * $apikeyOrUsername should be your ApiKey, but it could also be your username.
@@ -161,13 +153,25 @@ final class NativeCurlClient implements Client
     }
 
     /**
-     * Get all permanent cURL options.
-     *
-     * @return array
+     * Set a HTTP header.
      */
-    public function getAllPermanentCurlOptions()
+    private function setHttpHeader(string $name, string $value): void
     {
-        return $this->curlOptions;
+        $this->unsetHttpHeader($name);
+
+        $this->httpHeadersNames[strtolower($name)] = $name;
+        $this->httpHeaders[$name] = $value;
+    }
+
+    /**
+     * Unset a HTTP header.
+     */
+    private function unsetHttpHeader(string $name): void
+    {
+        if (array_key_exists(strtolower($name), $this->httpHeadersNames)) {
+            unset($this->httpHeaders[$this->httpHeadersNames[$name]]);
+            unset($this->httpHeadersNames[$name]);
+        }
     }
 
     /**
@@ -284,39 +288,48 @@ final class NativeCurlClient implements Client
     private function createHttpHeader($path): array
     {
         // Additional request headers
-        $httpHeader = [
+        $httpHeaders = [
             'Expect: ',
         ];
 
-        // Content type headers
-        $tmp = parse_url($this->url.$path);
-        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
-            $httpHeader[] = 'Content-Type: application/octet-stream';
-        } elseif ('json' === substr($tmp['path'], -4)) {
-            $httpHeader[] = 'Content-Type: application/json';
-        } elseif ('xml' === substr($tmp['path'], -3)) {
-            $httpHeader[] = 'Content-Type: text/xml';
-        }
-
-        if (null !== $this->customHost) {
-            $httpHeader[] = 'Host: '.$this->customHost;
-        }
+        // if (null !== $this->customHost) {
+        //     $httpHeaders[] = 'Host: '.$this->customHost;
+        // }
 
         // Redmine specific headers
-        if (null !== $this->impersonateUser) {
-            $httpHeader[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
-        }
-        // Set Authentication header
-        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
-        if (null === $this->password) {
-            $httpHeader[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
-        } else {
-            // Setting Header "Authorization: Basic base64" is the same as
-            // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
-            // @see https://stackoverflow.com/a/26285941
-            $httpHeader[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
+        if (null !== $this->impersonateUser && ! array_key_exists(strtolower('X-Redmine-Switch-User'), $this->httpHeadersNames)) {
+            $httpHeaders[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
 
-        return $httpHeader;
+        // Set Authentication header
+        // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
+        if (null === $this->password && ! array_key_exists(strtolower('X-Redmine-API-Key'), $this->httpHeadersNames)) {
+            $httpHeaders[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
+        } else {
+            if (! array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
+                // Setting Header "Authorization: Basic base64" is the same as
+                // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
+                // @see https://stackoverflow.com/a/26285941
+                $httpHeaders[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
+            }
+        }
+
+        // Merge custom headers
+        $httpHeaders = array_replace($httpHeaders, $this->httpHeaders);
+
+        // Now set or reset mandatory headers
+
+        // Content type headers
+        $tmp = parse_url($this->url.$path);
+
+        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
+            $httpHeaders[] = 'Content-Type: application/octet-stream';
+        } elseif ('json' === substr($tmp['path'], -4)) {
+            $httpHeaders[] = 'Content-Type: application/json';
+        } elseif ('xml' === substr($tmp['path'], -3)) {
+            $httpHeaders[] = 'Content-Type: text/xml';
+        }
+
+        return $httpHeaders;
     }
 }

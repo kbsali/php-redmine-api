@@ -451,6 +451,118 @@ class NativeCurlClientTest extends TestCase
     /**
      * @covers \Redmine\NativeCurlClient
      * @test
+     */
+    public function testCustomPortWillSetFromSchema()
+    {
+        $expectedOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_PORT => 443,
+            CURLOPT_URL => 'https://test.local/path',
+            CURLOPT_HTTPHEADER => [
+                'Expect: ',
+                'X-Redmine-API-Key: access_token',
+            ],
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ];
+
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn('');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, 200],
+            [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
+        ])));
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(1))
+            ->withConsecutive(
+                [
+                    $this->anything(),
+                    $this->identicalTo($expectedOptions),
+                ],
+            )
+        ;
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(0);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'https://test.local',
+            'access_token'
+        );
+
+        $client->requestGet('/path');
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
+     */
+    public function testCustomPortWillSetFromUrl()
+    {
+        $expectedOptions = [
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_PORT => 3456,
+            CURLOPT_URL => 'http://test.local:3456/path',
+            CURLOPT_HTTPHEADER => [
+                'Expect: ',
+                'X-Redmine-API-Key: access_token',
+            ],
+            CURLOPT_VERBOSE => 0,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+        ];
+
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn('');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, 200],
+            [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
+        ])));
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(1))
+            ->withConsecutive(
+                [
+                    $this->anything(),
+                    $this->identicalTo($expectedOptions),
+                ],
+            )
+        ;
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(0);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local:3456',
+            'access_token'
+        );
+
+        $client->requestGet('/path');
+    }
+
+    /**
+     * @covers \Redmine\NativeCurlClient
+     * @test
      * @dataProvider getRequestReponseData
      */
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
