@@ -123,7 +123,7 @@ $userData = $client->getApi('user')->getCurrentUser();
 +$client->stopImpersonateUser();
 ```
 
-After this changes you should be able to test your code without
+After this changes you should be able to test your code without errors.
 
 ## 2. Switch to `Psr18Client`
 

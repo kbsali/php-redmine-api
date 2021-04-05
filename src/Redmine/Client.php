@@ -99,6 +99,8 @@ class Client implements ClientInterface
     /**
      * PHP getter magic method.
      *
+     * @deprecated
+     *
      * @param string $name
      *
      * @throws \InvalidArgumentException
@@ -113,6 +115,8 @@ class Client implements ClientInterface
     /**
      * @param string $name
      *
+     * @deprecated
+     *
      * @throws \InvalidArgumentException
      *
      * @return Api\AbstractApi
@@ -124,6 +128,8 @@ class Client implements ClientInterface
 
     /**
      * Returns Url.
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -199,6 +205,8 @@ class Client implements ClientInterface
     /**
      * HTTP GETs a json $path and tries to decode it.
      *
+     * @deprecated
+     *
      * @param string $path
      * @param bool   $decode
      *
@@ -219,6 +227,8 @@ class Client implements ClientInterface
 
     /**
      * Decodes json response.
+     *
+     * @deprecated
      *
      * Returns $json if no error occurred during decoding but decoded value is
      * null.
@@ -246,6 +256,8 @@ class Client implements ClientInterface
     /**
      * HTTP POSTs $params to $path.
      *
+     * @deprecated
+     *
      * @param string $path
      * @param string $data
      *
@@ -258,6 +270,8 @@ class Client implements ClientInterface
 
     /**
      * HTTP PUTs $params to $path.
+     *
+     * @deprecated
      *
      * @param string $path
      * @param string $data
@@ -272,6 +286,8 @@ class Client implements ClientInterface
     /**
      * HTTP PUTs $params to $path.
      *
+     * @deprecated
+     *
      * @param string $path
      *
      * @return false|\SimpleXMLElement|string
@@ -283,6 +299,8 @@ class Client implements ClientInterface
 
     /**
      * Turns on/off ssl certificate check.
+     *
+     * @deprecated
      *
      * @param bool $check
      *
@@ -298,6 +316,8 @@ class Client implements ClientInterface
     /**
      * Get the on/off flag for ssl certificate check.
      *
+     * @deprecated
+     *
      * @return bool
      */
     public function getCheckSslCertificate()
@@ -307,6 +327,8 @@ class Client implements ClientInterface
 
     /**
      * Turns on/off ssl host certificate check.
+     *
+     * @deprecated
      *
      * @param bool $check
      *
@@ -322,6 +344,8 @@ class Client implements ClientInterface
     /**
      * Get the on/off flag for ssl host certificate check.
      *
+     * @deprecated
+     *
      * @return bool
      */
     public function getCheckSslHost()
@@ -331,6 +355,8 @@ class Client implements ClientInterface
 
     /**
      * Forces the SSL/TLS version to use.
+     *
+     * @deprecated
      *
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html
      *
@@ -348,6 +374,8 @@ class Client implements ClientInterface
     /**
      * Returns the SSL Version used.
      *
+     * @deprecated
+     *
      * @return int
      */
     public function getSslVersion()
@@ -357,6 +385,8 @@ class Client implements ClientInterface
 
     /**
      * Turns on/off http auth.
+     *
+     * @deprecated
      *
      * @param bool $use
      *
@@ -372,6 +402,8 @@ class Client implements ClientInterface
     /**
      * Get the on/off flag for http auth.
      *
+     * @deprecated
+     *
      * @return bool
      */
     public function getUseHttpAuth()
@@ -381,6 +413,8 @@ class Client implements ClientInterface
 
     /**
      * Set the port of the connection.
+     *
+     * @deprecated
      *
      * @param int $port
      *
@@ -398,6 +432,8 @@ class Client implements ClientInterface
     /**
      * Returns Redmine response code.
      *
+     * @deprecated
+     *
      * @return int
      */
     public function getResponseCode()
@@ -409,6 +445,8 @@ class Client implements ClientInterface
      * Returns the port of the current connection,
      * if not set, it will try to guess the port
      * from the url of the client.
+     *
+     * @deprecated
      *
      * @return int the port number
      */
@@ -449,6 +487,8 @@ class Client implements ClientInterface
      * Sets to an existing username so api calls can be
      * impersonated to this user.
      *
+     * @deprecated
+     *
      * @param string|null $username
      *
      * @return Client
@@ -467,6 +507,8 @@ class Client implements ClientInterface
     /**
      * Get the impersonate user.
      *
+     * @deprecated
+     *
      * @return string|null
      */
     public function getImpersonateUser()
@@ -476,6 +518,8 @@ class Client implements ClientInterface
 
     /**
      * @param string|null $customHost
+     *
+     * @deprecated
      *
      * @return Client
      */
@@ -488,6 +532,8 @@ class Client implements ClientInterface
 
     /**
      * @return string|null
+     *
+     * @deprecated
      */
     public function getCustomHost()
     {
@@ -526,6 +572,8 @@ class Client implements ClientInterface
     /**
      * Get all set cURL options.
      *
+     * @deprecated
+     *
      * @return array
      */
     public function getCurlOptions()
@@ -535,6 +583,8 @@ class Client implements ClientInterface
 
     /**
      * Prepare the request by setting the cURL options.
+     *
+     * @deprecated
      *
      * @param string $path
      * @param string $method
@@ -664,6 +714,8 @@ class Client implements ClientInterface
     /**
      * Process the cURL response.
      *
+     * @deprecated
+     *
      * @param string $response
      * @param string $contentType
      *
@@ -687,6 +739,8 @@ class Client implements ClientInterface
 
     /**
      * @codeCoverageIgnore Ignore due to untestable curl_* function calls.
+     *
+     * @deprecated
      *
      * @param string $path
      * @param string $method
