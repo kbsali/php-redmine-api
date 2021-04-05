@@ -8,7 +8,7 @@ use Exception;
 use Redmine\Api;
 
 /**
- * Native cURL client
+ * Native cURL client.
  */
 final class NativeCurlClient implements Client
 {
@@ -106,16 +106,16 @@ final class NativeCurlClient implements Client
     }
 
     /**
-    * Returns status code of the last response.
-    */
+     * Returns status code of the last response.
+     */
     public function getLastResponseStatusCode(): int
     {
         return $this->lastResponseStatusCode;
     }
 
     /**
-    * Returns content type of the last response.
-    */
+     * Returns content type of the last response.
+     */
     public function getLastResponseContentType(): string
     {
         return $this->lastResponseContentType;
@@ -138,7 +138,7 @@ final class NativeCurlClient implements Client
     public function setCurlOption(int $option, $value): void
     {
         // Headers must be handled serperatly
-        if ($option === CURLOPT_HTTPHEADER) {
+        if (CURLOPT_HTTPHEADER === $option) {
             // $value must be an array. setHttpHeaders() will enforce this.
             $this->setHttpHeaders($value);
 
@@ -156,7 +156,7 @@ final class NativeCurlClient implements Client
     public function unsetCurlOption(int $option): void
     {
         // Headers must be handled serperatly
-        if ($option === CURLOPT_HTTPHEADER) {
+        if (CURLOPT_HTTPHEADER === $option) {
             $this->httpHeaders = [];
             $this->httpHeadersNames = [];
 
@@ -224,27 +224,23 @@ final class NativeCurlClient implements Client
 
         $curlErrorNumber = curl_errno($curl);
 
-        if ($curlErrorNumber !== CURLE_OK) {
+        if (CURLE_OK !== $curlErrorNumber) {
             $e = new Exception(curl_error($curl), $curlErrorNumber);
             curl_close($curl);
             throw $e;
         }
 
-        $this->lastResponseBody = ($response === false) ? '' : $response;
+        $this->lastResponseBody = (false === $response) ? '' : $response;
         $this->lastResponseStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $this->lastResponseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
         curl_close($curl);
 
-        return ($this->lastResponseStatusCode < 400);
+        return $this->lastResponseStatusCode < 400;
     }
 
     /**
      * Prepare the request by setting the cURL options.
-     *
-     * @param string $path
-     * @param string $method
-     * @param string $body
      *
      * @return resource a cURL handle on success, <b>FALSE</b> on errors
      */
@@ -315,7 +311,7 @@ final class NativeCurlClient implements Client
     {
         return
             (preg_match('/\/uploads.(json|xml)/i', $path)) &&
-            $body !== '' &&
+            '' !== $body &&
             is_file(strval(str_replace("\0", '', $body)))
         ;
     }
@@ -328,20 +324,20 @@ final class NativeCurlClient implements Client
         ];
 
         // Redmine specific headers
-        if (null !== $this->impersonateUser && ! array_key_exists(strtolower('X-Redmine-Switch-User'), $this->httpHeadersNames)) {
+        if (null !== $this->impersonateUser && !array_key_exists(strtolower('X-Redmine-Switch-User'), $this->httpHeadersNames)) {
             $httpHeaders[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
         }
 
         // Set Authentication header
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
-        if (null === $this->password && ! array_key_exists(strtolower('X-Redmine-API-Key'), $this->httpHeadersNames)) {
-            $httpHeaders[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
+        if (null === $this->password && !array_key_exists(strtolower('X-Redmine-API-Key'), $this->httpHeadersNames)) {
+            $httpHeaders[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
         } else {
-            if (! array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
+            if (!array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
                 // Setting Header "Authorization: Basic base64" is the same as
                 // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
                 // @see https://stackoverflow.com/a/26285941
-                $httpHeaders[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
+                $httpHeaders[] = 'Authorization: Basic '.base64_encode($this->apikeyOrUsername.':'.$this->password);
             }
         }
 
@@ -349,7 +345,7 @@ final class NativeCurlClient implements Client
         $customHttpHeaders = [];
 
         foreach ($this->httpHeaders as $headerName => $headerValue) {
-            $customHttpHeaders[] = $headerName . ': ' . $headerValue;
+            $customHttpHeaders[] = $headerName.': '.$headerValue;
         }
 
         // Merge custom headers

@@ -39,7 +39,6 @@ class ClientTest extends TestCase
     /**
      * @covers \Redmine\Client
      * @test
-     *
      */
     public function shouldNotGetApiInstance()
     {

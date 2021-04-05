@@ -55,7 +55,7 @@ class Attachment extends AbstractApi
     }
 
     /**
-     * Delete an attachment
+     * Delete an attachment.
      *
      * @see https://www.redmine.org/projects/redmine/wiki/Rest_Attachments#DELETE
      *

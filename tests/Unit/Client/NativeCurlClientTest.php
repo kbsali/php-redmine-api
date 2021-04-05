@@ -8,9 +8,8 @@ use Exception;
 use InvalidArgumentException;
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Api;
-use Redmine\Client\NativeCurlClient;
 use Redmine\Client\Client;
+use Redmine\Client\NativeCurlClient;
 use stdClass;
 
 class NativeCurlClientTest extends TestCase
@@ -852,7 +851,6 @@ class NativeCurlClientTest extends TestCase
     /**
      * @covers \Redmine\NativeCurlClient
      * @test
-     *
      */
     public function getApiShouldThrowException()
     {

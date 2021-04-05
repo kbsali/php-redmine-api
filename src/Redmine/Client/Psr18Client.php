@@ -98,11 +98,11 @@ final class Psr18Client implements Client
     }
 
     /**
-    * Returns status code of the last response.
-    */
+     * Returns status code of the last response.
+     */
     public function getLastResponseStatusCode(): int
     {
-        if ($this->lastResponse === null) {
+        if (null === $this->lastResponse) {
             return 0;
         }
 
@@ -110,11 +110,11 @@ final class Psr18Client implements Client
     }
 
     /**
-    * Returns content type of the last response.
-    */
+     * Returns content type of the last response.
+     */
     public function getLastResponseContentType(): string
     {
-        if ($this->lastResponse === null) {
+        if (null === $this->lastResponse) {
             return '';
         }
 
@@ -126,7 +126,7 @@ final class Psr18Client implements Client
      */
     public function getLastResponseBody(): string
     {
-        if ($this->lastResponse === null) {
+        if (null === $this->lastResponse) {
             return '';
         }
 
@@ -134,7 +134,7 @@ final class Psr18Client implements Client
     }
 
     /**
-     * Create and run a request
+     * Create and run a request.
      *
      * @throws Exception If anything goes wrong on the request
      *
@@ -152,22 +152,22 @@ final class Psr18Client implements Client
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
 
-        return ($this->lastResponse->getStatusCode() < 400);
+        return $this->lastResponse->getStatusCode() < 400;
     }
 
     private function createRequest(string $method, string $path, string $body = ''): ServerRequestInterface
     {
         $request = $this->requestFactory->createServerRequest(
             $method,
-            $this->url . $path
+            $this->url.$path
         );
 
         // Set Authentication header
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
-        if ($this->password !== null) {
+        if (null !== $this->password) {
             $request = $request->withHeader(
                 'Authorization',
-                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password)
+                'Basic '.base64_encode($this->apikeyOrUsername.':'.$this->password)
             );
         } else {
             $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);
@@ -185,14 +185,14 @@ final class Psr18Client implements Client
                     $request = $request->withBody(
                         $this->streamFactory->createStreamFromFile($body)
                     );
-                } elseif ($body !== '') {
+                } elseif ('' !== $body) {
                     $request = $request->withBody(
                         $this->streamFactory->createStream($body)
                     );
                 }
                 break;
             case 'put':
-                if ($body !== '') {
+                if ('' !== $body) {
                     $request = $request->withBody(
                         $this->streamFactory->createStream($body)
                     );
@@ -218,7 +218,7 @@ final class Psr18Client implements Client
     {
         return
             (preg_match('/\/uploads.(json|xml)/i', $path)) &&
-            $body !== '' &&
+            '' !== $body &&
             is_file(strval(str_replace("\0", '', $body)))
         ;
     }

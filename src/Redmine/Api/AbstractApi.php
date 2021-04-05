@@ -52,11 +52,11 @@ abstract class AbstractApi implements Api
         $contentType = $this->client->getLastResponseContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ($body !== '' && 0 === strpos($contentType, 'application/xml')) {
+        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
-        if ($decodeIfJson === true && $body !== '' && 0 === strpos($contentType, 'application/json')) {
+        if (true === $decodeIfJson && '' !== $body && 0 === strpos($contentType, 'application/json')) {
             try {
                 return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
             } catch (JsonException $e) {
@@ -64,7 +64,7 @@ abstract class AbstractApi implements Api
             }
         }
 
-        return ($body === '') ? null : $body;
+        return ('' === $body) ? null : $body;
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class AbstractApi implements Api
         $body = $this->client->getLastResponseBody();
 
         // if response is XML, return a SimpleXMLElement object
-        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ('' !== $body && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -104,7 +104,7 @@ abstract class AbstractApi implements Api
         $body = $this->client->getLastResponseBody();
 
         // if response is XML, return a SimpleXMLElement object
-        if ($body !== '' && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ('' !== $body && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -209,7 +209,7 @@ abstract class AbstractApi implements Api
      * Attaches Custom Fields to a create/update query.
      *
      * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param array             $fields array of fields to attach, each field needs name, id and value set
+     * @param array            $fields array of fields to attach, each field needs name, id and value set
      *
      * @return SimpleXMLElement $xml
      *

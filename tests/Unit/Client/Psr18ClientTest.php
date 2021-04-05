@@ -2,7 +2,6 @@
 
 namespace Redmine\Tests\Unit\Client;
 
-use GuzzleHttp\Psr7\ServerRequest;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
@@ -11,9 +10,8 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
-use Redmine\Api\Api;
-use Redmine\Client\Psr18Client;
 use Redmine\Client\Client;
+use Redmine\Client\Psr18Client;
 
 class Psr18ClientTest extends TestCase
 {
@@ -283,7 +281,6 @@ class Psr18ClientTest extends TestCase
     /**
      * @covers \Redmine\Psr18Client
      * @test
-     *
      */
     public function getApiShouldThrowException()
     {

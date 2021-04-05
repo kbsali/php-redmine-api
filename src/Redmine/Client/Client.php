@@ -47,13 +47,13 @@ interface Client
     public function requestDelete(string $path): bool;
 
     /**
-    * Returns status code of the last response.
-    */
+     * Returns status code of the last response.
+     */
     public function getLastResponseStatusCode(): int;
 
     /**
-    * Returns content type of the last response.
-    */
+     * Returns content type of the last response.
+     */
     public function getLastResponseContentType(): string;
 
     /**

@@ -145,7 +145,7 @@ class Client implements ClientInterface
     {
         $result = $this->get($path, true);
 
-        return ($result === false) ? false : true;
+        return (false === $result) ? false : true;
     }
 
     /**
@@ -155,7 +155,7 @@ class Client implements ClientInterface
     {
         $result = $this->post($path, $body);
 
-        return ($result === false) ? false : true;
+        return (false === $result) ? false : true;
     }
 
     /**
@@ -165,7 +165,7 @@ class Client implements ClientInterface
     {
         $result = $this->put($path, $body);
 
-        return ($result === false) ? false : true;
+        return (false === $result) ? false : true;
     }
 
     /**
@@ -175,20 +175,20 @@ class Client implements ClientInterface
     {
         $result = $this->delete($path);
 
-        return ($result === false) ? false : true;
+        return (false === $result) ? false : true;
     }
 
     /**
-    * Returns status code of the last response.
-    */
+     * Returns status code of the last response.
+     */
     public function getLastResponseStatusCode(): int
     {
         return (int) $this->responseCode;
     }
 
     /**
-    * Returns content type of the last response.
-    */
+     * Returns content type of the last response.
+     */
     public function getLastResponseContentType(): string
     {
         return (string) $this->responseContentType;
@@ -231,7 +231,7 @@ class Client implements ClientInterface
      * @deprecated
      *
      * Returns $json if no error occurred during decoding but decoded value is
-     * null.
+     * null
      *
      * @param string $json
      *
@@ -357,7 +357,6 @@ class Client implements ClientInterface
      * Forces the SSL/TLS version to use.
      *
      * @deprecated
-     *
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html
      *
      * @param int $sslVersion
@@ -495,7 +494,7 @@ class Client implements ClientInterface
      */
     public function setImpersonateUser($username = null)
     {
-        if ($username === null) {
+        if (null === $username) {
             $this->stopImpersonateUser();
         } else {
             $this->startImpersonateUser($username);
@@ -621,7 +620,7 @@ class Client implements ClientInterface
             $this->setCurlOption(CURLOPT_SSL_VERIFYPEER, (int) $this->checkSslCertificate);
             // Make sure verify value is set to "2" for boolean argument
             // @see http://curl.haxx.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html
-            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, ($this->checkSslHost === true) ? self::SSL_VERIFYHOST : 0);
+            $this->setCurlOption(CURLOPT_SSL_VERIFYHOST, (true === $this->checkSslHost) ? self::SSL_VERIFYHOST : 0);
             $this->setCurlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
 
@@ -758,7 +757,7 @@ class Client implements ClientInterface
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
         $response = curl_exec($curl);
-        $this->responseBody = ($response === false) ? '' : $response;
+        $this->responseBody = (false === $response) ? '' : $response;
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $this->responseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
