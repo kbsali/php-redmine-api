@@ -6,7 +6,7 @@ Since `php-redmine-api` v1.7.0 there is a new PSR-18 based client `Redmine\Clien
 
 With the new interface `Redmine\Client\Client` there are now standarized methods for all clients. The new `Redmine\Client\Psr18Client` and the current `Redmine\Client` implementing this interface.
 
-### api() to getApi()
+### `api()` -> `getApi()`
 
 Search in your code for the usage of `$client->api('issue')` and the magic getter like `$client->issue`. Then replace this calls with `$client->getApi('issue')`.
 
@@ -18,7 +18,7 @@ Search in your code for the usage of `$client->api('issue')` and the magic gette
 +$client->getApi('issue')->create($data);
 ```
 
-### getResponseCode() to getLastResponseStatusCode()
+### `getResponseCode()` -> `getLastResponseStatusCode()`
 
 Replace every call for `$client->getResponseCode()` with `$client->getLastResponseStatusCode()`.
 
@@ -30,7 +30,7 @@ Replace every call for `$client->getResponseCode()` with `$client->getLastRespon
 }
 ```
 
-### get() to requestGet()
+### `get()` -> `requestGet()`
 
 If you are using `$client->get()`, `$client->post()`, `$client->put()` or `$client->delete()` directly you will have to change your code. This methods parse a possible JSON or XML response but in future the parsing of the raw response body will be up to you.
 
@@ -59,7 +59,7 @@ This example shows how you can parse the response body of a GET request.
 +}
 ```
 
-### post() to requestPost()
+### `post()` -> `requestPost()`
 
 This example shows how you can parse the response body of a POST request.
 
@@ -78,7 +78,7 @@ This example shows how you can parse the response body of a POST request.
 +}
 ```
 
-### put() to requestPut()
+### `put()` -> `requestPut()`
 
 This example shows how you can parse the response body of a PUT request.
 
@@ -97,7 +97,7 @@ This example shows how you can parse the response body of a PUT request.
 +}
 ```
 
-### delete() to requestDelete()
+### `delete()` -> `requestDelete()`
 
 This example shows how you can parse the response body of a DELETE request.
 
@@ -107,7 +107,7 @@ This example shows how you can parse the response body of a DELETE request.
 +$dataAsString = $this->client->getLastResponseBody();
 ```
 
-### setImpersonateUser() to startImpersonateUser()
+### `setImpersonateUser()` -> `startImpersonateUser()`
 
 If you are using the [Redmine user impersonation](https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation) you have to change your code.
 

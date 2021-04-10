@@ -30,7 +30,7 @@ Replace every calls for `$client->getResponseCode()` with `$client->getLastRespo
 }
 ```
 
-### get() to requestGet()
+### `get()` -> `requestGet()`
 
 If you are using `$client->get()`, `$client->post()`, `$client->put()` or
 `$client->delete()` directly you will have to change your code. This methods
@@ -82,7 +82,7 @@ This example shows how you can parse the response body of a POST request.
 +}
 ```
 
-### put() to requestPut()
+### `put()` -> `requestPut()`
 
 This example shows how you can parse the response body of a PUT request.
 
@@ -101,7 +101,7 @@ This example shows how you can parse the response body of a PUT request.
 +}
 ```
 
-### delete() to requestDelete()
+### `delete()` -> `requestDelete()`
 
 This example shows how you can parse the response body of a DELETE request.
 
@@ -111,7 +111,7 @@ This example shows how you can parse the response body of a DELETE request.
 +$dataAsString = $this->client->getLastResponseBody();
 ```
 
-### setImpersonateUser() to startImpersonateUser()
+### `setImpersonateUser()` -> `startImpersonateUser()`
 
 If you are using the [Redmine user impersonation](https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation)
 you have to change your code as follow :
@@ -128,28 +128,28 @@ $userData = $client->getApi('user')->getCurrentUser();
 +$client->stopImpersonateUser();
 ```
 
-### setCheckSslCertificate() to setCurlOption()
+### `setCheckSslCertificate()` -> `setCurlOption()`
 
 ```diff
 -$client->setCheckSslCertificate(true);
 +$client->setCurlOption(CURLOPT_SSL_VERIFYPEER, true);
 ```
 
-### setCheckSslHost() to setCurlOption()
+### `setCheckSslHost()` -> `setCurlOption()`
 
 ```diff
 -$client->setCheckSslHost(true);
 +$client->setCurlOption(CURLOPT_SSL_VERIFYHOST, 2);
 ```
 
-### setSslVersion() to setCurlOption()
+### `setSslVersion()` -> `setCurlOption()`
 
 ```diff
 -$client->setSslVersion(true);
 +$client->setCurlOption(CURLOPT_SSLVERSION, CURL_SSLVERSION_DEFAULT);
 ```
 
-### setUseHttpAuth() can be removed
+### `setUseHttpAuth()` can be removed
 
 Authorization for Redmine uses always the http headers `X-Redmine-API-Key` or
 `Authorization`. So the setting `setUseHttpAuth()` is not longer needed.
@@ -168,21 +168,21 @@ can set them via `setCurlOption()` method.
 +$client->setCurlOption(CURLOPT_HTTPHEADER, ['X-Redmine-API-Key: secret_access_key']);
 ```
 
-### setPort() to setCurlOption()
+### `setPort()` -> `setCurlOption()`
 
 ```diff
 -$client->setPort(8080);
 +$client->setCurlOption(CURLOPT_PORT, 8080);
 ```
 
-### getResponseCode() to getLastResponseStatusCode()
+### `getResponseCode()` -> `getLastResponseStatusCode()`
 
 ```diff
 -$statusCode = $client->getResponseCode();
 +$statuscode = $client->getLastResponseStatusCode();
 ```
 
-### setImpersonateUser() to startImpersonateUser()
+### `setImpersonateUser()` -> `startImpersonateUser()`
 
 ```diff
 // impersonate the user `robin`
@@ -196,7 +196,7 @@ $userData = $client->getApi('user')->getCurrentUser();
 +$client->stopImpersonateUser();
 ```
 
-### setCustomHost() to setCurlOption()
+### `setCustomHost()` -> `setCurlOption()`
 
 ```diff
 -$client->setCustomHost('http://custom.example.com');
