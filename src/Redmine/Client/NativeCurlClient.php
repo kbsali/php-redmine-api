@@ -316,7 +316,7 @@ final class NativeCurlClient implements Client
         ;
     }
 
-    private function createHttpHeader($path): array
+    private function createHttpHeader(string $path): array
     {
         // Additional request headers
         $httpHeaders = [

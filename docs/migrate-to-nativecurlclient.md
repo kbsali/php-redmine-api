@@ -1,19 +1,14 @@
-# Migrate from `Redmine\Client` to `Redmine\Client\NativeCurlClient`
+# Migrating from `Redmine\Client` to `Redmine\Client\NativeCurlClient`
 
-Since `php-redmine-api` v1.8.0 there is a new native cURL client
-`Redmine\Client\NativeCurlClient`. This guide will help you to migrate your code
-to this client.
+Since `v1.8.0`, there is a new native cURL client `Redmine\Client\NativeCurlClient`. This guide will help migrate your code to this client.
 
-## 1. Use new client methods
+## 1. New client's methods
 
-With the new interface `Redmine\Client\Client` there are now standarized methods
-for all clients. The new `Redmine\Client\NativeCurlClient` and the current `Redmine\Client` implementing this interface.
+With the new interface `Redmine\Client\Client` there are now standardized methods for all clients. The new `Redmine\Client\NativeCurlClient` and the current `Redmine\Client` both implement this interface.
 
-### api() to getApi()
+### `api()` -> `getApi()`
 
-Search in your code for the usage of `$client->api('issue')` and the magic
-getter like `$client->issue`. Then replace this calls with
-`$client->getApi('issue')`.
+We got rid of `api()` method as well as the magic getters. So now to query the `issue` API for instance, use `$client->getApi('issue')` instead. See the following example :
 
 ```diff
 -$issue = $client->issue->show($issueId);
@@ -23,10 +18,9 @@ getter like `$client->issue`. Then replace this calls with
 +$client->getApi('issue')->create($data);
 ```
 
-### getResponseCode() to getLastResponseStatusCode()
+### `getResponseCode()` -> `getLastResponseStatusCode()`
 
-Replace every call for `$client->getResponseCode()` with
-`$client->getLastResponseStatusCode()`.
+Replace every calls for `$client->getResponseCode()` with `$client->getLastResponseStatusCode()`.
 
 ```diff
 -if ($client->getResponseCode() === 500)
@@ -69,7 +63,7 @@ This example shows how you can parse the response body of a GET request.
 +}
 ```
 
-### post() to requestPost()
+### `post()` -> `requestPost()`
 
 This example shows how you can parse the response body of a POST request.
 
@@ -120,7 +114,7 @@ This example shows how you can parse the response body of a DELETE request.
 ### setImpersonateUser() to startImpersonateUser()
 
 If you are using the [Redmine user impersonation](https://www.redmine.org/projects/redmine/wiki/Rest_api#User-Impersonation)
-you have to change your code.
+you have to change your code as follow :
 
 ```diff
 // impersonate the user `robin`
@@ -209,7 +203,7 @@ $userData = $client->getApi('user')->getCurrentUser();
 +$client->setCurlOption(CURLOPT_HTTPHEADER, ['Host: http://custom.example.com']);
 ```
 
-## 2. Stop using deprecated methods
+## 2. Methods deprecation
 
 The following methods are deprecated and were set public or protected only for
 testing. They are not available in `NativeCurlClient`. If you are using them,
@@ -231,13 +225,13 @@ please remove them.
 
 ## 3. Switch to `NativeCurlClient`
 
-As the old client the `Redmine\Client\NativeCurlClient` requires:
+Just like with the old `Redmine\Client`, the `Redmine\Client\NativeCurlClient` requires :
 
 - a URL to your Redmine instance
 - an Apikey or username
 - and optional a password if you want to use username/password (not recommended).
 
-So after you made all changes in the previous sections you should be able to
+So after making all the changes suggested in the previous sections you should be able to
 test your code without errors and now simply switch the client.
 
 ```diff
@@ -250,6 +244,6 @@ test your code without errors and now simply switch the client.
 ```
 
 Now you should be ready. Please make sure that you are only using client public
-methods that are defined in `Redmine\Client\NativeCurlClient` because all other
+methods that are defined in `Redmine\Client\NativeCurlClient` because all the other
 methods will be removed or set to private in the next major release. Otherwise
-you will have to change your code in future again.
+you will have to change your code in the future again.

@@ -1,6 +1,6 @@
 # Usage
 
-:warning: This file shows example commands for reading, creating, updating and
+:warning: This file shows example commands for retrieving, creating, updating and
 deleting Redmine data. As these are only examples, please **make sure, that you
 do not execute them against your production instance as it may break real
 content!**
@@ -9,7 +9,7 @@ content!**
 
 ### With Composer
 
-Please make sure you install `php-remine-api` with an PSR-4 autoloader like
+Please make sure you install `php-remine-api` with a PSR-4 autoloader like
 [Composer](https://getcomposer.org/).
 
 ```bash
@@ -35,7 +35,7 @@ for you.
 
 ### Start your project
 
-Create your project e.g. in the `index.php` by require the `vendor/autoload.php`
+Create your project e.g. in the `index.php` by requiring the `vendor/autoload.php`
 file.
 
 ```diff
@@ -51,7 +51,7 @@ client.
 
 #### Native cURL Client `Redmine\Client\NativeCurlClient`
 
-Every Client requires a URL to your Redmine instance and either a valid
+Every client requires a URL to your Redmine instance and either a valid
 Apikey...
 
 ```diff
