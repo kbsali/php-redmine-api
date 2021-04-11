@@ -49,20 +49,16 @@ class MockClient extends Client
     }
 
     /**
-    * Returns status code of the last response.
-    *
-    * @return int
-    */
+     * Returns status code of the last response.
+     */
     public function getLastResponseStatusCode(): int
     {
         return (int) $this->responseCodeMock;
     }
 
     /**
-    * Returns content type of the last response.
-    *
-    * @return string
-    */
+     * Returns content type of the last response.
+     */
     public function getLastResponseContentType(): string
     {
         return (string) $this->responseContentTypeMock;
@@ -70,8 +66,6 @@ class MockClient extends Client
 
     /**
      * Returns the body of the last response.
-     *
-     * @return string
      */
     public function getLastResponseBody(): string
     {

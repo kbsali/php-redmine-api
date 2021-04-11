@@ -214,7 +214,7 @@ class IssueRelationTest extends TestCase
                     ])
                 )
                 ->willReturn(true);
-            $client->expects($this->exactly(1))
+        $client->expects($this->exactly(1))
                 ->method('getLastResponseBody')
                 ->willReturn($response);
 

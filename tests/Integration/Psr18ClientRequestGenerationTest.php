@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Psr18Client;
@@ -32,14 +31,14 @@ class Psr18ClientRequestGenerationTest extends TestCase
 
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->will(
-            $this->returnCallback(function($request) use ($response, $expectedOutput) {
+            $this->returnCallback(function ($request) use ($response, $expectedOutput) {
                 // Create a text representation of the HTTP request
                 $content = $request->getBody()->__toString();
 
                 $headers = '';
 
                 foreach ($request->getHeaders() as $k => $v) {
-                    $headers .= $k . ": " . $request->getHeaderLine($k).\PHP_EOL;
+                    $headers .= $k.': '.$request->getHeaderLine($k).\PHP_EOL;
                 }
 
                 $cookies = [];
@@ -70,7 +69,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
 
         $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
         $requestFactory->method('createServerRequest')->will(
-            $this->returnCallback(function($method, $uri) {
+            $this->returnCallback(function ($method, $uri) {
                 return new ServerRequest($method, $uri);
             })
         );
@@ -101,7 +100,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             $pwd
         );
 
-        if ($impersonateUser !== null) {
+        if (null !== $impersonateUser) {
             $client->startImpersonateUser($impersonateUser);
         }
 
@@ -118,7 +117,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'GET http://test.local/path HTTP/1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
                 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ='.\PHP_EOL.
-                \PHP_EOL
+                \PHP_EOL,
             ],
             [
                 // Test access token in X-Redmine-API-Key header
@@ -127,7 +126,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'GET http://test.local/path HTTP/1.1'.\PHP_EOL.
                 'Host: test.local'.\PHP_EOL.
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
-                \PHP_EOL
+                \PHP_EOL,
             ],
             [
                 // Test user impersonate in X-Redmine-Switch-User header
@@ -137,7 +136,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'Host: test.local'.\PHP_EOL.
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'X-Redmine-Switch-User: Robin'.\PHP_EOL.
-                \PHP_EOL
+                \PHP_EOL,
             ],
             [
                 // Test POST
@@ -148,7 +147,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/json'.\PHP_EOL.
                 \PHP_EOL.
-                '{"foo":"bar"}'
+                '{"foo":"bar"}',
             ],
             [
                 // Test fileupload with file content
@@ -160,7 +159,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/octet-stream'.\PHP_EOL.
                 \PHP_EOL.
-                'The content of the file'
+                'The content of the file',
             ],
             [
                 // Test fileupload with file path
@@ -173,7 +172,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'Content-Type: application/octet-stream'.\PHP_EOL.
                 \PHP_EOL.
                 'This is a test file.'."\n".
-                'It will be needed for testing file uploads.'."\n"
+                'It will be needed for testing file uploads.'."\n",
             ],
             [
                 // Test fileupload with file path to image
@@ -185,7 +184,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/octet-stream'.\PHP_EOL.
                 \PHP_EOL.
-                base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAACklEQVR4nGNiAAAABgADNjd8qAAAAABJRU5ErkJggg==')
+                base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAACklEQVR4nGNiAAAABgADNjd8qAAAAABJRU5ErkJggg=='),
             ],
             [
                 // Test PUT
@@ -196,7 +195,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/json'.\PHP_EOL.
                 \PHP_EOL.
-                '{"foo":"bar"}'
+                '{"foo":"bar"}',
             ],
             [
                 // Test DELETE
@@ -206,7 +205,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'Host: test.local'.\PHP_EOL.
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/json'.\PHP_EOL.
-                \PHP_EOL
+                \PHP_EOL,
             ],
             [
                 // Test body will be ignored on DELETE
@@ -216,7 +215,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 'Host: test.local'.\PHP_EOL.
                 'X-Redmine-API-Key: access_token'.\PHP_EOL.
                 'Content-Type: application/json'.\PHP_EOL.
-                \PHP_EOL
+                \PHP_EOL,
             ],
         ];
     }

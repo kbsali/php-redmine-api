@@ -141,7 +141,7 @@ class AbstractApiTest extends TestCase
      */
     public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
     {
-        $xmlToString = function(SimpleXMLElement $xmlElement) {
+        $xmlToString = function (SimpleXMLElement $xmlElement) {
             $dom = new DOMDocument('1.0');
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = false;
@@ -161,12 +161,12 @@ class AbstractApiTest extends TestCase
         $method->setAccessible(true);
 
         // Perform the tests
-        if ($methodName === 'get') {
+        if ('get' === $methodName) {
             $return = $method->invoke($api, 'path', $decode);
 
             $this->assertInstanceOf(SimpleXMLElement::class, $return);
             $this->assertSame($expected, $xmlToString($return));
-        } elseif ($methodName === 'delete') {
+        } elseif ('delete' === $methodName) {
             $return = $method->invoke($api, 'path');
 
             $this->assertSame($expected, $return);

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New native cURL client `Redmine\Client\NativeCurlClient` as a replacement for  `Redmine\Client`
 - This `CHANGELOG.md` file
 
 ### Changed

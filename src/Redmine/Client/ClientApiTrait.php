@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Redmine\Api;
 
 /**
- * Provide API instantiation to clients
+ * Provide API instantiation to clients.
  *
  * @internal
  */
@@ -38,16 +38,12 @@ trait ClientApiTrait
     ];
 
     /**
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException if $name is not a valid api name
      */
     public function getApi(string $name): Api
     {
         if (!isset($this->apiClassnames[$name])) {
-            throw new InvalidArgumentException(sprintf(
-                '`%s` is not a valid api. Possible apis are `%s`',
-                $name,
-                implode('`, `', array_keys($this->apiClassnames))
-            ));
+            throw new InvalidArgumentException(sprintf('`%s` is not a valid api. Possible apis are `%s`', $name, implode('`, `', array_keys($this->apiClassnames))));
         }
         if (isset($this->apiInstances[$name])) {
             return $this->apiInstances[$name];

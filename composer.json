@@ -26,7 +26,8 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
         "phpunit/phpunit": "^9.5",
-        "guzzlehttp/psr7": "^1.7"
+        "guzzlehttp/psr7": "^1.7",
+        "php-mock/php-mock-phpunit": "^2.6"
     },
     "autoload": {
         "psr-4": {
