@@ -5,6 +5,16 @@ namespace Redmine;
 use Redmine\Client\Client as ClientInterface;
 use Redmine\Client\ClientApiTrait;
 
+@trigger_error(
+    sprintf(
+        'The "%s" class is deprecated, use "%s" or "%s" instead.',
+        'Redmine\Client',
+        'Redmine\Client\NativeCurlClient',
+        'Redmine\Client\Psr18Client'
+    ),
+    E_USER_DEPRECATED
+);
+
 /**
  * Simple PHP Redmine client.
  *
@@ -705,7 +715,7 @@ class Client implements ClientInterface
                 break;
         }
         // Set all cURL options to the current cURL resource
-        curl_setopt_array($curl, $this->getCurlOptions());
+        curl_setopt_array($curl, $this->curlOptions);
 
         return $curl;
     }
