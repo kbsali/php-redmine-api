@@ -5,8 +5,20 @@ namespace Redmine;
 use Redmine\Client\Client as ClientInterface;
 use Redmine\Client\ClientApiTrait;
 
+@trigger_error(
+    sprintf(
+        'The "%s" class is deprecated, use "%s" or "%s" instead.',
+        'Redmine\Client',
+        'Redmine\Client\NativeCurlClient',
+        'Redmine\Client\Psr18Client'
+    ),
+    E_USER_DEPRECATED
+);
+
 /**
  * Simple PHP Redmine client.
+ *
+ * @deprecated `Redmine\Client` is deprecated, use `Redmine\Client\NativeCurlClient` or `Redmine\Client\Psr18Client` instead
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  * Website: http://github.com/kbsali/php-redmine-api
@@ -99,7 +111,7 @@ class Client implements ClientInterface
     /**
      * PHP getter magic method.
      *
-     * @deprecated
+     * @deprecated use getApi() instead
      *
      * @param string $name
      *
@@ -109,13 +121,15 @@ class Client implements ClientInterface
      */
     public function __get($name)
     {
-        return $this->api($name);
+        @trigger_error('The '.__METHOD__.' method is deprecated, use getApi() instead.', E_USER_DEPRECATED);
+
+        return $this->getApi(strval($name));
     }
 
     /**
      * @param string $name
      *
-     * @deprecated
+     * @deprecated use getApi() instead
      *
      * @throws \InvalidArgumentException
      *
@@ -123,6 +137,8 @@ class Client implements ClientInterface
      */
     public function api($name)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use getApi() instead.', E_USER_DEPRECATED);
+
         return $this->getApi(strval($name));
     }
 
@@ -135,6 +151,8 @@ class Client implements ClientInterface
      */
     public function getUrl()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->url;
     }
 
@@ -205,7 +223,7 @@ class Client implements ClientInterface
     /**
      * HTTP GETs a json $path and tries to decode it.
      *
-     * @deprecated
+     * @deprecated use requestGet() instead
      *
      * @param string $path
      * @param bool   $decode
@@ -214,6 +232,8 @@ class Client implements ClientInterface
      */
     public function get($path, $decode = true)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use requestGet() instead.', E_USER_DEPRECATED);
+
         if (false === $json = $this->runRequest($path, 'GET')) {
             return false;
         }
@@ -239,6 +259,8 @@ class Client implements ClientInterface
      */
     public function decode($json)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         if (empty($json)) {
             return '';
         }
@@ -256,7 +278,7 @@ class Client implements ClientInterface
     /**
      * HTTP POSTs $params to $path.
      *
-     * @deprecated
+     * @deprecated use requestPost() instead
      *
      * @param string $path
      * @param string $data
@@ -265,13 +287,15 @@ class Client implements ClientInterface
      */
     public function post($path, $data)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use requestPost() instead.', E_USER_DEPRECATED);
+
         return $this->runRequest($path, 'POST', $data);
     }
 
     /**
      * HTTP PUTs $params to $path.
      *
-     * @deprecated
+     * @deprecated use requestPut() instead
      *
      * @param string $path
      * @param string $data
@@ -280,13 +304,15 @@ class Client implements ClientInterface
      */
     public function put($path, $data)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use requestPut() instead.', E_USER_DEPRECATED);
+
         return $this->runRequest($path, 'PUT', $data);
     }
 
     /**
      * HTTP PUTs $params to $path.
      *
-     * @deprecated
+     * @deprecated use requestDelete() instead
      *
      * @param string $path
      *
@@ -294,13 +320,15 @@ class Client implements ClientInterface
      */
     public function delete($path)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use requestDelete() instead.', E_USER_DEPRECATED);
+
         return $this->runRequest($path, 'DELETE');
     }
 
     /**
      * Turns on/off ssl certificate check.
      *
-     * @deprecated
+     * @deprecated use setCurlOption() instead
      *
      * @param bool $check
      *
@@ -308,6 +336,8 @@ class Client implements ClientInterface
      */
     public function setCheckSslCertificate($check = false)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         $this->checkSslCertificate = $check;
 
         return $this;
@@ -322,13 +352,15 @@ class Client implements ClientInterface
      */
     public function getCheckSslCertificate()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->checkSslCertificate;
     }
 
     /**
      * Turns on/off ssl host certificate check.
      *
-     * @deprecated
+     * @deprecated use setCurlOption() instead
      *
      * @param bool $check
      *
@@ -336,6 +368,8 @@ class Client implements ClientInterface
      */
     public function setCheckSslHost($check = false)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         $this->checkSslHost = (bool) $check;
 
         return $this;
@@ -350,13 +384,15 @@ class Client implements ClientInterface
      */
     public function getCheckSslHost()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->checkSslHost;
     }
 
     /**
      * Forces the SSL/TLS version to use.
      *
-     * @deprecated
+     * @deprecated use setCurlOption() instead
      * @see http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html
      *
      * @param int $sslVersion
@@ -365,6 +401,8 @@ class Client implements ClientInterface
      */
     public function setSslVersion($sslVersion = 0)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         $this->sslVersion = $sslVersion;
 
         return $this;
@@ -379,13 +417,15 @@ class Client implements ClientInterface
      */
     public function getSslVersion()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->sslVersion;
     }
 
     /**
      * Turns on/off http auth.
      *
-     * @deprecated
+     * @deprecated use setCurlOption() instead
      *
      * @param bool $use
      *
@@ -393,6 +433,8 @@ class Client implements ClientInterface
      */
     public function setUseHttpAuth($use = true)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         $this->useHttpAuth = $use;
 
         return $this;
@@ -407,13 +449,15 @@ class Client implements ClientInterface
      */
     public function getUseHttpAuth()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->useHttpAuth;
     }
 
     /**
      * Set the port of the connection.
      *
-     * @deprecated
+     * @deprecated use setCurlOption() instead
      *
      * @param int $port
      *
@@ -421,6 +465,8 @@ class Client implements ClientInterface
      */
     public function setPort($port = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         if (null !== $port) {
             $this->port = (int) $port;
         }
@@ -431,13 +477,15 @@ class Client implements ClientInterface
     /**
      * Returns Redmine response code.
      *
-     * @deprecated
+     * @deprecated use getLastResponseStatusCode() instead
      *
      * @return int
      */
     public function getResponseCode()
     {
-        return (int) $this->responseCode;
+        @trigger_error('The '.__METHOD__.' method is deprecated, use getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+
+        return (int) $this->getLastResponseStatusCode();
     }
 
     /**
@@ -451,11 +499,13 @@ class Client implements ClientInterface
      */
     public function getPort()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         if (null !== $this->port) {
             return $this->port;
         }
 
-        $tmp = parse_url($this->getUrl());
+        $tmp = parse_url($this->url);
         if (isset($tmp['port'])) {
             $this->setPort($tmp['port']);
         } elseif (isset($tmp['scheme'])) {
@@ -486,7 +536,7 @@ class Client implements ClientInterface
      * Sets to an existing username so api calls can be
      * impersonated to this user.
      *
-     * @deprecated
+     * @deprecated use startImpersonateUser() and stopImpersonateUser() instead
      *
      * @param string|null $username
      *
@@ -495,8 +545,12 @@ class Client implements ClientInterface
     public function setImpersonateUser($username = null)
     {
         if (null === $username) {
+            @trigger_error('The '.__METHOD__.' method is deprecated, use stopImpersonateUser() instead.', E_USER_DEPRECATED);
+
             $this->stopImpersonateUser();
         } else {
+            @trigger_error('The '.__METHOD__.' method is deprecated, use startImpersonateUser() instead.', E_USER_DEPRECATED);
+
             $this->startImpersonateUser($username);
         }
 
@@ -512,6 +566,8 @@ class Client implements ClientInterface
      */
     public function getImpersonateUser()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->impersonateUser;
     }
 
@@ -524,6 +580,8 @@ class Client implements ClientInterface
      */
     public function setCustomHost($customHost = null)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use setCurlOption() instead.', E_USER_DEPRECATED);
+
         $this->customHost = $customHost;
 
         return $this;
@@ -536,6 +594,8 @@ class Client implements ClientInterface
      */
     public function getCustomHost()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->customHost;
     }
 
@@ -577,6 +637,8 @@ class Client implements ClientInterface
      */
     public function getCurlOptions()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         return $this->curlOptions;
     }
 
@@ -593,6 +655,8 @@ class Client implements ClientInterface
      */
     public function prepareRequest($path, $method = 'GET', $data = '')
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         $this->responseCode = 0;
         $this->responseContentType = '';
         $this->responseBody = '';
@@ -653,7 +717,7 @@ class Client implements ClientInterface
                 break;
         }
         // Set all cURL options to the current cURL resource
-        curl_setopt_array($curl, $this->getCurlOptions());
+        curl_setopt_array($curl, $this->curlOptions);
 
         return $curl;
     }
@@ -724,6 +788,8 @@ class Client implements ClientInterface
      */
     public function processCurlResponse($response, $contentType)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         if ($response) {
             // if response is XML, return an SimpleXMLElement object
             if (0 === strpos($contentType, 'application/xml')) {
@@ -751,6 +817,8 @@ class Client implements ClientInterface
      */
     protected function runRequest($path, $method = 'GET', $data = '')
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated. You should stop using it, as it will be removed in the future.', E_USER_DEPRECATED);
+
         $curl = $this->prepareRequest($path, $method, $data);
 
         // use HTTP 1.1

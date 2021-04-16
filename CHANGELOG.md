@@ -25,6 +25,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Redmine\Client::getCheckSslHost()` always returns as boolean
 
+### Deprecated
+
+- `Redmine\Client` is deprecated, use `Redmine\Client\NativeCurlClient` or `Redmine\Client\Psr18Client` instead
+- Magic getter in `Redmine\Client` is deprecated, use `Redmine\Client::getApi()` instead
+- `Redmine\Client::api()` is deprecated, use `Redmine\Client::getApi()` instead
+- `Redmine\Client::get()` is deprecated, use `Redmine\Client::requestGet()` instead
+- `Redmine\Client::post()` is deprecated, use `Redmine\Client::requestPost()` instead
+- `Redmine\Client::put()` is deprecated, use `Redmine\Client::requestPut()` instead
+- `Redmine\Client::delete()` is deprecated, use `Redmine\Client::requestDelete()` instead
+- `Redmine\Client::setCheckSslCertificate()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::setCheckSslHost()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::setSslVersion()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::setUseHttpAuth()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::setPort()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::getResponseCode()` is deprecated, use `Redmine\Client::getLastResponseStatusCode()` instead
+- `Redmine\Client::setImpersonateUser()` is deprecated, use `Redmine\Client::startImpersonateUser()` and `Redmine\Client::stopImpersonateUser()` instead
+- `Redmine\Client::setCustomHost()` is deprecated, use `Redmine\Client::setCurlOption()` instead
+- `Redmine\Client::getUrl()` is deprecated, you should stop using it
+- `Redmine\Client::decode()` is deprecated, you should stop using it
+- `Redmine\Client::getCheckSslCertificate()` is deprecated, you should stop using it
+- `Redmine\Client::getCheckSslHost()` is deprecated, you should stop using it
+- `Redmine\Client::getSslVersion()` is deprecated, you should stop using it
+- `Redmine\Client::getUseHttpAuth()` is deprecated, you should stop using it
+- `Redmine\Client::getPort()` is deprecated, you should stop using it
+- `Redmine\Client::getImpersonateUser()` is deprecated, you should stop using it
+- `Redmine\Client::getCustomHost()` is deprecated, you should stop using it
+- `Redmine\Client::getCurlOptions()` is deprecated, you should stop using it
+- `Redmine\Client::prepareRequest()` is deprecated, you should stop using it
+- `Redmine\Client::processCurlResponse()` is deprecated, you should stop using it
+- `Redmine\Client::runRequest()` is deprecated, you should stop using it
+
 ## [v1.7.0](https://github.com/kbsali/php-redmine-api/compare/v1.6.0...v1.7.0) - 2021-03-22
 
 ### Added

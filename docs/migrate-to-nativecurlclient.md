@@ -107,7 +107,7 @@ This example shows how you can parse the response body of a DELETE request.
 
 ```diff
 -$dataAsString = $this->client->delete($path);
-+$this->client->requestDelte($path);
++$this->client->requestDelete($path);
 +$dataAsString = $this->client->getLastResponseBody();
 ```
 
@@ -237,7 +237,7 @@ test your code without errors and now simply switch the client.
 ```diff
 // Instantiate with ApiKey
 -$client = new \Redmine\Client(
-+$client = new \Redmine\Client\Prs18Client(
++$client = new \Redmine\Client\NativeCurlClient(
     'https://redmine.example.com',
     '1234567890abcdfgh'
 );
