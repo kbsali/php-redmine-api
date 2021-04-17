@@ -183,7 +183,9 @@ require_once 'vendor/autoload.php';
 
 > :bulb: For security reason it is recommended that you use an ApiKey rather than your username/password.
 
-After you instantiate a client you can set some optional settings.
+##### Guzzle configuration
+
+After you instantiate a client you can set some optional `cURL` settings.
 
 ```diff
 <?php
@@ -191,21 +193,21 @@ After you instantiate a client you can set some optional settings.
 require_once 'vendor/autoload.php';
 
 // Instantiate with ApiKey
-$client = new Redmine\Client('https://redmine.example.com', '1234567890abcdfgh');
+$client = new Redmine\Client\NativeCurlClient('https://redmine.example.com', '1234567890abcdfgh');
 +
 +// [OPTIONAL] if you want to check the servers' SSL certificate on Curl call
-+$client->setCheckSslCertificate(true);
++$client->setCurlOption(CURLOPT_SSL_VERIFYPEER, true);
 +
 +// [OPTIONAL] set the port (it will try to guess it from the url)
-+$client->setPort(8080);
++$client->setCurlOption(CURLOPT_PORT, 8080);
 +
 +// [OPTIONAL] set a custom host
-+$client->setCustomHost('https://localhost:8080');
++$client->setCurlOption(CURLOPT_HTTPHEADER, ['Host: http://custom.example.com']);
 
 ```
 #### 2. Psr-18 compatible Client `Redmine\Client\Psr18Client`
 
-> :bulb: This client was introduced in `v1.7.0` of this library. If you are using the old `Redmine\Client` please [follow this migration guide](docs/migrate-to-psr18client.md). 
+> :bulb: This client was introduced in `v1.7.0` of this library. If you are using the old `Redmine\Client` please [follow this migration guide](docs/migrate-to-psr18client.md).
 
 The `Psr18Client` requires
 
