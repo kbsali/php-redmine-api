@@ -183,7 +183,7 @@ require_once 'vendor/autoload.php';
 
 > :bulb: For security reason it is recommended that you use an ApiKey rather than your username/password.
 
-##### Guzzle configuration
+##### cURL configuration
 
 After you instantiate a client you can set some optional `cURL` settings.
 
