@@ -58,7 +58,7 @@ class MockClient implements Client
      */
     public function startImpersonateUser(string $username): void
     {
-        throw new \Exception('not implemented');
+        throw new Exception('not implemented');
     }
 
     /**
@@ -66,7 +66,7 @@ class MockClient implements Client
      */
     public function stopImpersonateUser(): void
     {
-        throw new \Exception('not implemented');
+        throw new Exception('not implemented');
     }
 
     /**
@@ -125,15 +125,6 @@ class MockClient implements Client
         return (string) $this->responseBodyMock;
     }
 
-    /**
-     * @param string $path
-     * @param string $method
-     * @param string $data
-     *
-     * @throws Exception If anything goes wrong on curl request
-     *
-     * @return string
-     */
     private function runRequest(string $path, string $method = 'GET', string $data = ''): bool
     {
         if (null !== $this->runRequestReturnValue) {
