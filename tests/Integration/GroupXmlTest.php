@@ -1,23 +1,23 @@
 <?php
 
-namespace Redmine\Tests\Unit;
+namespace Redmine\Tests\Integration;
 
 use DOMDocument;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Redmine\Tests\Fixtures\MockClient as TestClient;
+use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
 class GroupXmlTest extends TestCase
 {
     /**
-     * @var TestClient
+     * @var MockClient
      */
     private $client;
 
     public function setup(): void
     {
-        $this->client = new TestClient('http://test.local', 'asdf');
+        $this->client = new MockClient('http://test.local', 'asdf');
     }
 
     public function testCreateBlank()

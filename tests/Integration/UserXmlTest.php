@@ -1,71 +1,70 @@
 <?php
 
-namespace Redmine\Tests\Unit;
+namespace Redmine\Tests\Integration;
 
 use DOMDocument;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Redmine\Tests\Fixtures\MockClient as TestClient;
+use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
-class MembershipXmlTest extends TestCase
+class UserXmlTest extends TestCase
 {
     /**
-     * @var TestClient
+     * @var MockClient
      */
     private $client;
 
     public function setup(): void
     {
-        $this->client = new TestClient('http://test.local', 'asdf');
+        $this->client = new MockClient('http://test.local', 'asdf');
     }
 
     public function testCreateBlank()
     {
-        $api = $this->client->getApi('membership');
-        $this->assertInstanceOf('Redmine\Api\Membership', $api);
+        $api = $this->client->getApi('user');
+        $this->assertInstanceOf('Redmine\Api\User', $api);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Missing mandatory parameters');
 
-        $api->create('aProject');
+        $api->create();
     }
 
     public function testCreateComplex()
     {
-        $api = $this->client->getApi('membership');
-        $res = $api->create('otherProject', [
-            'user_id' => 1,
-            'role_ids' => [1, 2],
+        $api = $this->client->getApi('user');
+        $res = $api->create([
+            'login' => 'test',
+            'firstname' => 'test',
+            'lastname' => 'test',
+            'mail' => 'test@example.com',
         ]);
         $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
-<membership>
-    <user_id>1</user_id>
-    <role_ids type="array">
-        <role_id>1</role_id>
-        <role_id>2</role_id>
-    </role_ids>
-</membership>';
+<user>
+    <login>test</login>
+    <lastname>test</lastname>
+    <firstname>test</firstname>
+    <mail>test@example.com</mail>
+</user>';
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
     public function testUpdate()
     {
-        $api = $this->client->getApi('membership');
+        $api = $this->client->getApi('user');
         $res = $api->update(1, [
-            'role_ids' => [1, 2],
+            'firstname' => 'Raul',
         ]);
         $res = json_decode($res, true);
 
         $xml = '<?xml version="1.0"?>
-<membership>
-    <role_ids type="array">
-        <role_id>1</role_id>
-        <role_id>2</role_id>
-    </role_ids>
-</membership>';
+<user>
+    <id>1</id>
+    <firstname>Raul</firstname>
+</user>';
         $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
     }
 
