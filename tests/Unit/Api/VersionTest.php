@@ -26,9 +26,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/projects/5/versions.json')
@@ -60,9 +58,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->any())
             ->method('requestGet')
             ->with(
@@ -97,9 +93,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/versions/5.json')
@@ -128,9 +122,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/versions/test.json')
@@ -159,9 +151,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with('/versions/5.xml')
@@ -190,9 +180,7 @@ class VersionTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with('/versions/test.xml')
@@ -218,9 +206,7 @@ class VersionTest extends TestCase
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -247,9 +233,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -278,9 +262,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -308,9 +290,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -351,9 +331,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -394,9 +372,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -424,9 +400,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -467,9 +441,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -509,9 +481,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/projects/5/versions.json')
@@ -546,9 +516,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/projects/5/versions.json')
@@ -583,9 +551,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/projects/5/versions.json')
@@ -621,9 +587,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with('/projects/5/versions.json')
@@ -655,9 +619,7 @@ class VersionTest extends TestCase
         $response = '{"versions":[{"id":5,"name":"Version 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -700,9 +662,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -746,9 +706,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -794,9 +752,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -829,9 +785,7 @@ class VersionTest extends TestCase
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -875,9 +829,7 @@ class VersionTest extends TestCase
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -923,9 +875,7 @@ class VersionTest extends TestCase
         ];
 
         // Update the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Update the object under test
         $api = new Version($client);

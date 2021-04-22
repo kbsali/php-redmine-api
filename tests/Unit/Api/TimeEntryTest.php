@@ -26,9 +26,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/time_entries.json')
@@ -61,9 +59,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -99,9 +95,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/time_entries/5.json')
@@ -130,9 +124,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with('/time_entries/5.xml')
@@ -161,9 +153,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new TimeEntry($client);
@@ -191,9 +181,7 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new TimeEntry($client);
@@ -222,9 +210,7 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new TimeEntry($client);
@@ -267,9 +253,7 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -324,9 +308,7 @@ class TimeEntryTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(

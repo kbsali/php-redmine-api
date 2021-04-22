@@ -28,9 +28,7 @@ class CustomFieldTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -64,9 +62,7 @@ class CustomFieldTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -104,9 +100,7 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(3))
             ->method('requestGet')
             ->with(
@@ -152,9 +146,7 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -194,9 +186,7 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -233,9 +223,7 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -273,9 +261,7 @@ class CustomFieldTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
@@ -309,9 +295,7 @@ class CustomFieldTest extends TestCase
         $response = '{"custom_fields":[{"id":5,"name":"CustomField 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(

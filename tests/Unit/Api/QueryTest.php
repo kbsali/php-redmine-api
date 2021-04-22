@@ -25,9 +25,7 @@ class QueryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -58,9 +56,7 @@ class QueryTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->any())
             ->method('requestGet')
             ->with(

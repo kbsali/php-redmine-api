@@ -26,9 +26,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -61,9 +59,7 @@ class UserTest extends TestCase
         $response = '{"users":[{"id":5,"login":"User 5"}]}';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -97,9 +93,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with('/users.json')
@@ -131,9 +125,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -168,9 +160,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -205,9 +195,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -241,9 +229,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with('/users/5.xml')
@@ -272,9 +258,7 @@ class UserTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new User($client);
@@ -299,9 +283,7 @@ class UserTest extends TestCase
     public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters)
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         // Create the object under test
         $api = new User($client);
@@ -380,9 +362,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -434,9 +414,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -486,9 +464,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -531,9 +507,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -578,9 +552,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -617,9 +589,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -657,9 +627,7 @@ class UserTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
