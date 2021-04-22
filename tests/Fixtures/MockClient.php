@@ -3,7 +3,8 @@
 namespace Redmine\Tests\Fixtures;
 
 use Exception;
-use Redmine\Client;
+use Redmine\Client\Client;
+use Redmine\Client\ClientApiTrait;
 
 /**
  * Mock client class.
@@ -11,8 +12,10 @@ use Redmine\Client;
  * The runRequest method of this client class just returns the value of
  * the path, method and data or the $runRequestReturnValue value if set.
  */
-class MockClient extends Client
+class MockClient implements Client
 {
+    use ClientApiTrait;
+
     /**
      * Return value the mocked runRequest method should return.
      *
@@ -31,21 +34,71 @@ class MockClient extends Client
     public $responseCodeMock;
     public $responseContentTypeMock;
 
-    /**
-     * Just return the data from runRequest().
-     *
-     * @param string $path
-     * @param bool   $decode
-     *
-     * @return array
-     */
-    public function get($path, $decode = true)
-    {
-        if ($this->useOriginalGetMethod) {
-            return parent::get($path, $decode);
-        }
+    private string $url;
+    private string $apikeyOrUsername;
+    private ?string $password;
 
+    /**
+     * $apikeyOrUsername should be your ApiKey, but it could also be your username.
+     * $password needs to be set if a username is given (not recommended).
+     */
+    public function __construct(
+        string $url,
+        string $apikeyOrUsername,
+        string $password = null
+    ) {
+        $this->url = $url;
+        $this->apikeyOrUsername = $apikeyOrUsername;
+        $this->password = $password;
+    }
+
+    /**
+     * Sets to an existing username so api calls can be
+     * impersonated to this user.
+     */
+    public function startImpersonateUser(string $username): void
+    {
+        throw new \Exception('not implemented');
+    }
+
+    /**
+     * Remove the user impersonate.
+     */
+    public function stopImpersonateUser(): void
+    {
+        throw new \Exception('not implemented');
+    }
+
+    /**
+     * Create and send a GET request.
+     */
+    public function requestGet(string $path): bool
+    {
         return $this->runRequest($path, 'GET');
+    }
+
+    /**
+     * Create and send a POST request.
+     */
+    public function requestPost(string $path, string $body): bool
+    {
+        return $this->runRequest($path, 'POST', $body);
+    }
+
+    /**
+     * Create and send a PUT request.
+     */
+    public function requestPut(string $path, string $body): bool
+    {
+        return $this->runRequest($path, 'PUT', $body);
+    }
+
+    /**
+     * Create and send a DELETE request.
+     */
+    public function requestDelete(string $path): bool
+    {
+        return $this->runRequest($path, 'DELETE');
     }
 
     /**
@@ -81,7 +134,7 @@ class MockClient extends Client
      *
      * @return string
      */
-    protected function runRequest($path, $method = 'GET', $data = '')
+    private function runRequest(string $path, string $method = 'GET', string $data = ''): bool
     {
         if (null !== $this->runRequestReturnValue) {
             return $this->runRequestReturnValue;
@@ -97,6 +150,6 @@ class MockClient extends Client
         $this->responseCodeMock = 200;
         $this->responseContentType = 'application/json';
 
-        return $return;
+        return true;
     }
 }
