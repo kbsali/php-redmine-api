@@ -142,7 +142,7 @@ The `Redmine\Client\Psr18Client` requires:
 +
 // Instantiate with ApiKey
 -$client = new \Redmine\Client(
-+$client = new \Redmine\Client\Prs18Client(
++$client = new \Redmine\Client\Psr18Client(
 +    $guzzle,
 +    $psr17Factory,
 +    $psr17Factory,
