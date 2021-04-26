@@ -184,7 +184,7 @@ $guzzle = new \GuzzleHttp\Client();
 +};
 
 // Instantiate with ApiKey
-$client = new \Redmine\Client\Prs18Client(
+$client = new \Redmine\Client\Psr18Client(
     $guzzle,
     $psr17Factory,
     $psr17Factory,
@@ -228,7 +228,7 @@ $psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
 +};
 +
 // Instantiate with ApiKey
-$client = new \Redmine\Client\Prs18Client(
+$client = new \Redmine\Client\Psr18Client(
 -    $guzzle,
 +    $guzzleWrapper,
     $psr17Factory,
@@ -279,7 +279,7 @@ $guzzleWrapper = new class(\GuzzleHttp\Client $guzzle) implements ClientInterfac
 };
 
 // Instantiate with ApiKey
-$client = new \Redmine\Client\Prs18Client(
+$client = new \Redmine\Client\Psr18Client(
     $guzzleWrapper,
     $psr17Factory,
     $psr17Factory,
