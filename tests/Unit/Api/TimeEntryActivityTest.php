@@ -25,9 +25,7 @@ class TimeEntryActivityTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -58,9 +56,7 @@ class TimeEntryActivityTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -89,9 +85,7 @@ class TimeEntryActivityTest extends TestCase
             'TimeEntryActivities 2' => 2,
         ];
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->atLeastOnce())
             ->method('requestGet')
             ->with(
@@ -118,9 +112,7 @@ class TimeEntryActivityTest extends TestCase
             'TimeEntryActivities 2' => 2,
         ];
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
@@ -144,9 +136,7 @@ class TimeEntryActivityTest extends TestCase
     {
         $response = '{"time_entry_activities":[{"id":2,"name":"TimeEntryActivities 2"}]}';
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(

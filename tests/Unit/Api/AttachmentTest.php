@@ -27,9 +27,7 @@ class AttachmentTest extends TestCase
     public function testLastCallFailedTrue($responseCode, $hasFailed)
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('getLastResponseStatusCode')
             ->willReturn($responseCode);
@@ -73,9 +71,7 @@ class AttachmentTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with($this->equalTo('/attachments/5.json'))
@@ -104,9 +100,7 @@ class AttachmentTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with($this->equalTo('/attachments/download/5'))
@@ -136,9 +130,7 @@ class AttachmentTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(

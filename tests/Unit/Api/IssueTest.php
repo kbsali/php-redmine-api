@@ -39,9 +39,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -72,9 +70,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -108,9 +104,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with($this->stringStartsWith('/issues/5.json'))
@@ -140,9 +134,7 @@ class IssueTest extends TestCase
         $allParameters = ['not-used'];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -176,9 +168,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -212,9 +202,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with(
@@ -261,9 +249,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -300,9 +286,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -333,9 +317,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with(
@@ -367,9 +349,7 @@ class IssueTest extends TestCase
         $parameters = [];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -409,28 +389,20 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $getIdByNameApi = $this->createMock('Redmine\Api\Project');
         $getIdByNameApi->expects($this->exactly(3))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
-        $issueCategoryGetIdByNameApi = $this->getMockBuilder('Redmine\Api\IssueCategory')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $issueCategoryGetIdByNameApi = $this->createMock('Redmine\Api\IssueCategory');
         $issueCategoryGetIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
-        $getIdByUsernameApi = $this->getMockBuilder('Redmine\Api\User')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
         $getIdByUsernameApi->expects($this->exactly(2))
             ->method('getIdByUsername')
             ->willReturn('cleanedValue');
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(6))
             ->method('getApi')
             ->willReturnMap(
@@ -494,9 +466,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
 
         $client->expects($this->once())
             ->method('requestPost')
@@ -541,9 +511,7 @@ class IssueTest extends TestCase
         $parameters = [];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -583,28 +551,20 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $getIdByNameApi = $this->getMockBuilder('Redmine\Api\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $getIdByNameApi = $this->createMock('Redmine\Api\Project');
         $getIdByNameApi->expects($this->exactly(3))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
-        $issueCategoryGetIdByNameApi = $this->getMockBuilder('Redmine\Api\IssueCategory')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $issueCategoryGetIdByNameApi = $this->createMock('Redmine\Api\IssueCategory');
         $issueCategoryGetIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
-        $getIdByUsernameApi = $this->getMockBuilder('Redmine\Api\User')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
         $getIdByUsernameApi->expects($this->exactly(2))
             ->method('getIdByUsername')
             ->willReturn('cleanedValue');
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->exactly(6))
             ->method('getApi')
             ->willReturnMap(
@@ -657,16 +617,12 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $issueStatusApi = $this->getMockBuilder('Redmine\Api\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $issueStatusApi = $this->createMock('Redmine\Api\Project');
         $issueStatusApi->expects($this->once())
             ->method('getIdByName')
             ->willReturn(123);
 
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('getApi')
             ->with('issue_status')
@@ -707,9 +663,7 @@ class IssueTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
@@ -751,9 +705,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -790,9 +742,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -840,9 +790,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
@@ -904,9 +852,7 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestPost')
             ->with(

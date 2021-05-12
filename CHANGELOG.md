@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v1.8.0...master)
 
+### Removed
+
+- **BREAKING**: Deprecated client `Redmine\Client` was removed, use `Redmine\Client\NativeCurlClient` or `Redmine\Client\Psr18Client` instead
+
 ## [v1.8.0](https://github.com/kbsali/php-redmine-api/compare/v1.7.0...v1.8.0) - 2021-04-19
 
 ### Added

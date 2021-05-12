@@ -115,22 +115,21 @@ You can run test suite to make sure the library will work properly on your syste
 
 ```
 $ vendor/bin/phpunit
-PHPUnit 9.5.3 by Sebastian Bergmann and contributors.
+PHPUnit 9.5.4 by Sebastian Bergmann and contributors.
 
 Warning:       No code coverage driver available
 
-...............................................................  63 / 445 ( 14%)
-............................................................... 126 / 445 ( 28%)
-............................................................... 189 / 445 ( 42%)
-............................................................... 252 / 445 ( 56%)
-............................................................... 315 / 445 ( 70%)
-............................................................... 378 / 445 ( 84%)
-............................................................... 441 / 445 ( 99%)
-....                                                            445 / 445 (100%)
+...............................................................  63 / 432 ( 14%)
+............................................................... 126 / 432 ( 29%)
+............................................................... 189 / 432 ( 43%)
+............................................................... 252 / 432 ( 58%)
+............................................................... 315 / 432 ( 72%)
+............................................................... 378 / 432 ( 87%)
+......................................................          432 / 432 (100%)
 
-Time: 00:00.102, Memory: 12.00 MB
+Time: 00:00.149, Memory: 14.00 MB
 
-OK (445 tests, 993 assertions)
+OK (432 tests, 1098 assertions)
 ```
 
 ## Basic usage of `php-redmine-api` client
@@ -170,7 +169,6 @@ require_once 'vendor/autoload.php';
 ```
 
 ... or valid username/password.
-
 
 ```diff
 <?php
@@ -282,9 +280,14 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 +};
 +
 // Instantiate with ApiKey
--$client = new \Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
-+$client = new \Redmine\Client\Prs18Client($guzzleWrapper, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
-
+$client = new \Redmine\Client\Prs18Client(
+-    $guzzle,
++    $guzzleWrapper,
+    $psr17Factory,
+    $psr17Factory,
+    'https://redmine.example.com',
+    '1234567890abcdfgh'
+);
 ```
 
 ## Built-in Redmine features

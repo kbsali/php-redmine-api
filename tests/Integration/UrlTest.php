@@ -1,20 +1,20 @@
 <?php
 
-namespace Redmine\Tests\Unit;
+namespace Redmine\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use Redmine\Tests\Fixtures\MockClient as TestUrlClient;
+use Redmine\Tests\Fixtures\MockClient;
 
 class UrlTest extends TestCase
 {
     /**
-     * @var TestUrlClient
+     * @var MockClient
      */
     private $client;
 
     public function setup(): void
     {
-        $this->client = new TestUrlClient('http://test.local', 'asdf');
+        $this->client = new MockClient('http://test.local', 'asdf');
     }
 
     public function testAttachment()

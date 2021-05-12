@@ -25,9 +25,7 @@ class IssueRelationTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -58,9 +56,7 @@ class IssueRelationTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
@@ -97,9 +93,7 @@ class IssueRelationTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with($this->stringStartsWith('/relations/5.json'))
@@ -128,9 +122,7 @@ class IssueRelationTest extends TestCase
     public function testShowReturnsArrayIfNull()
     {
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
             ->with($this->stringStartsWith('/relations/5.json'))
@@ -159,9 +151,7 @@ class IssueRelationTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
             ->with(
@@ -200,9 +190,7 @@ class IssueRelationTest extends TestCase
         $parameters = [];
 
         // Create the used mock objects
-        $client = $this->getMockBuilder(Client::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
                 ->method('requestPost')
                 ->with(
