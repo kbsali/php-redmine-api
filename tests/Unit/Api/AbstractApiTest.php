@@ -129,7 +129,8 @@ class AbstractApiTest extends TestCase
             ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]], // test decode by default
             ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
             ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
-            ['', true, null], // test decode with empty body
+            'Empty body, JSON decode: false' => ['', false, false],
+            'Empty body, JSON decode: true' => ['', true, false],
             ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'], // test invalid JSON
         ];
     }

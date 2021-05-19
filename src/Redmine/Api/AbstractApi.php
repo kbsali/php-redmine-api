@@ -42,7 +42,7 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param bool   $decodeIfJson
      *
-     * @return string|array|SimpleXMLElement|null
+     * @return string|array|SimpleXMLElement|false
      */
     protected function get($path, $decodeIfJson = true)
     {
@@ -64,7 +64,7 @@ abstract class AbstractApi implements Api
             }
         }
 
-        return ('' === $body) ? null : $body;
+        return ('' === $body) ? false : $body;
     }
 
     /**
