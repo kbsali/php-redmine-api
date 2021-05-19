@@ -42,7 +42,7 @@ class IssueRelation extends AbstractApi
     public function show($id)
     {
         $ret = $this->get('/relations/'.urlencode($id).'.json');
-        if (null === $ret) {
+        if (false === $ret) {
             return [];
         }
 
