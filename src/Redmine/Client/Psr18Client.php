@@ -180,7 +180,7 @@ final class Psr18Client implements Client
         }
 
         switch ($method) {
-            case 'post':
+            case 'POST':
                 if ($this->isUploadCall($path, $body)) {
                     $request = $request->withBody(
                         $this->streamFactory->createStreamFromFile($body)
@@ -191,7 +191,7 @@ final class Psr18Client implements Client
                     );
                 }
                 break;
-            case 'put':
+            case 'PUT':
                 if ('' !== $body) {
                     $request = $request->withBody(
                         $this->streamFactory->createStream($body)
