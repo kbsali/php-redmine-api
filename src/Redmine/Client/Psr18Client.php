@@ -70,7 +70,7 @@ final class Psr18Client implements Client
      */
     public function requestGet(string $path): bool
     {
-        return $this->runRequest('get', $path);
+        return $this->runRequest('GET', $path);
     }
 
     /**
@@ -78,7 +78,7 @@ final class Psr18Client implements Client
      */
     public function requestPost(string $path, string $body): bool
     {
-        return $this->runRequest('post', $path, $body);
+        return $this->runRequest('POST', $path, $body);
     }
 
     /**
@@ -86,7 +86,7 @@ final class Psr18Client implements Client
      */
     public function requestPut(string $path, string $body): bool
     {
-        return $this->runRequest('put', $path, $body);
+        return $this->runRequest('PUT', $path, $body);
     }
 
     /**
@@ -94,7 +94,7 @@ final class Psr18Client implements Client
      */
     public function requestDelete(string $path): bool
     {
-        return $this->runRequest('delete', $path);
+        return $this->runRequest('DELETE', $path);
     }
 
     /**
