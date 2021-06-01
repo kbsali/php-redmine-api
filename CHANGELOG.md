@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `AbstractApi::get()` returns `null` on empty response body instead of `false` for BC reasons
+- Use uppercase in HTTP verbs
 
 ## [v1.8.0](https://github.com/kbsali/php-redmine-api/compare/v1.7.0...v1.8.0) - 2021-04-19
 
