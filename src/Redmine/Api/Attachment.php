@@ -47,7 +47,7 @@ class Attachment extends AbstractApi
      * @param string $attachment the attachment content
      * @param array  $params     optional parameters to be passed to the api
      *
-     * @return array information about the attachment
+     * @return string information about the attachment
      */
     public function upload($attachment, $params = [])
     {
