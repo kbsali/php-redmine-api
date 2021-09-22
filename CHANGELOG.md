@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.0.1...v2.x)
 
+### Fixed
+
+- `lastCallFailed` method no longer returns `true` for 2xx status codes that are not 200 or 201
+
 ## [v2.0.1](https://github.com/kbsali/php-redmine-api/compare/v2.0.0...v2.0.1) - 2021-09-22
 
 ### Fixed

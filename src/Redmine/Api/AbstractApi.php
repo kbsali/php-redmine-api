@@ -33,7 +33,8 @@ abstract class AbstractApi implements Api
     {
         $code = $this->client->getLastResponseStatusCode();
 
-        return 200 !== $code && 201 !== $code;
+        // only assume 2xx codes to be success
+        return 200 > $code || 300 <= $code;
     }
 
     /**
