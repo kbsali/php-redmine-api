@@ -210,8 +210,8 @@ $client = new Redmine\Client\NativeCurlClient('https://redmine.example.com', '12
 The `Psr18Client` requires
 
 - a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle), [see](https://packagist.org/providers/psr/http-client-implementation)
-- a `Psr\Http\Message\ServerRequestFactoryInterface` implementation (like nyholm/psr7), [see](https://packagist.org/providers/psr/http-factory-implementation)
-- a `Psr\Http\Message\StreamFactoryInterface` implementation (like nyholm/psr7), [see](https://packagist.org/providers/psr/http-message-implementation)
+- a `Psr\Http\Message\ServerRequestFactoryInterface` implementation (like guzzlehttp/psr7), [see](https://packagist.org/providers/psr/http-factory-implementation)
+- a `Psr\Http\Message\StreamFactoryInterface` implementation (like guzzlehttp/psr7), [see](https://packagist.org/providers/psr/http-message-implementation)
 - a URL to your Redmine instance
 - an Apikey or username
 - and optional a password if you want tu use username/password.
@@ -223,13 +223,26 @@ The `Psr18Client` requires
 
 require_once 'vendor/autoload.php';
 +
-+$guzzle = \GuzzleHttp\Client();
-+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
++$guzzle = new \GuzzleHttp\Client();
++$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
 +
 +// Instantiate with ApiKey
-+$client = new \Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
++$client = new \Redmine\Client\Psr18Client(
++    $guzzle,
++    $psr17Factory,
++    $psr17Factory,
++    'https://redmine.example.com',
++    '1234567890abcdfgh'
++);
 +// ...or Instantiate with Username/Password (not recommended)
-+$client = new \Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', 'username', 'password');
++$client = new \Redmine\Client\Psr18Client(
++    $guzzle,
++    $psr17Factory,
++    $psr17Factory,
++    'https://redmine.example.com',
++    'username',
++    'password'
++);
 ```
 
 ##### Guzzle configuration
@@ -280,7 +293,7 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 +};
 +
 // Instantiate with ApiKey
-$client = new \Redmine\Client\Prs18Client(
+$client = new \Redmine\Client\Psr18Client(
 -    $guzzle,
 +    $guzzleWrapper,
     $psr17Factory,
