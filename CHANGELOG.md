@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.0.0...v2.x)
 
+### Fixed
+
+- Fixed the handling of a response if the content type header is missing
+
 ## [v2.0.0](https://github.com/kbsali/php-redmine-api/compare/v1.8.1...v2.0.0) - 2021-06-08
 
 ### Removed
