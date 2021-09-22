@@ -11,11 +11,11 @@ namespace Redmine\Api;
  */
 class Issue extends AbstractApi
 {
-    const PRIO_LOW = 1;
-    const PRIO_NORMAL = 2;
-    const PRIO_HIGH = 3;
-    const PRIO_URGENT = 4;
-    const PRIO_IMMEDIATE = 5;
+    public const PRIO_LOW = 1;
+    public const PRIO_NORMAL = 2;
+    public const PRIO_HIGH = 3;
+    public const PRIO_URGENT = 4;
+    public const PRIO_IMMEDIATE = 5;
 
     /**
      * List issues.

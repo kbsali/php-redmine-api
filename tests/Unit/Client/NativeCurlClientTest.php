@@ -16,9 +16,9 @@ class NativeCurlClientTest extends TestCase
 {
     use PHPMock;
 
-    const __NAMESPACE__ = 'Redmine\Client';
+    public const __NAMESPACE__ = 'Redmine\Client';
 
-    const DEFAULT_CURL_OPTIONS = [
+    public const DEFAULT_CURL_OPTIONS = [
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_PORT => 80,
         CURLOPT_URL => 'http://test.local/path',
