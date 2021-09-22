@@ -771,6 +771,48 @@ class NativeCurlClientTest extends TestCase
     }
 
     /**
+     * @covers \Redmine\Client\NativeCurlClient
+     * @test
+     */
+    public function testHandlingOfResponseWithoutContent()
+    {
+        $content = '';
+        $statusCode = 204;
+        $contentType = null;
+
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn('');
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, $statusCode],
+            [$curl, CURLINFO_CONTENT_TYPE, $contentType],
+        ])));
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->assertSame(true, $client->requestPut('/path', '{"foo":"bar"}'));
+        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
+        $this->assertSame('', $client->getLastResponseContentType());
+        $this->assertSame($content, $client->getLastResponseBody());
+    }
+
+    /**
      * @covers \Redmine\NativeCurlClient
      * @test
      */
