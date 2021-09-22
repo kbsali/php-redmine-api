@@ -232,9 +232,10 @@ final class NativeCurlClient implements Client
 
         $this->lastResponseBody = (false === $response) ? '' : $response;
         $this->lastResponseStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $result = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
-        if(is_string($result)){    
-            $this->lastResponseContentType =  $result;
+        $possibleContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+
+        if (is_string($possibleContentType)) {
+            $this->lastResponseContentType = $possibleContentType;
         }
 
         curl_close($curl);
