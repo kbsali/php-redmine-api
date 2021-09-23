@@ -199,6 +199,8 @@ $client->stopImpersonateUser();
 
 You can now use the `getApi()` method to create and get a specific Redmine API.
 
+To check for failed requests you can afterwards check the status code via `$client->getLastResponseStatusCode()`.
+
 ```php
 // ----------------------------
 // Trackers

@@ -28,9 +28,14 @@ abstract class AbstractApi implements Api
      * Returns whether or not the last api call failed.
      *
      * @return bool
+     *
+     * @deprecated This method does not correctly handle 2xx codes that are not 200 or 201, use \Redmine\Client\Client::getLastResponseStatusCode() instead
+     * @see Client::getLastResponseStatusCode() for checking the status code directly
      */
     public function lastCallFailed()
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+
         $code = $this->client->getLastResponseStatusCode();
 
         return 200 !== $code && 201 !== $code;
