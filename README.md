@@ -331,7 +331,7 @@ $client->getApi('issue')->create([
     'project_id'  => 'test',
     'subject'     => 'some subject',
     'description' => 'a long description blablabla',
-    'assigned_to_id' => 123, // or 'assigned_to' => 'user1'
+    'assigned_to_id' => 123, // or 'assigned_to' => 'user1' OR 'groupXX'
 ]);
 $client->getApi('issue')->all([
     'limit' => 1000
