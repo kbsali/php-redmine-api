@@ -16,7 +16,7 @@ use Redmine\Client\Psr18Client;
 class Psr18ClientTest extends TestCase
 {
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function shouldPassApiKeyToConstructor()
@@ -34,7 +34,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function shouldPassUsernameAndPasswordToConstructor()
@@ -53,7 +53,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function testGetLastResponseStatusCodeIsInitialNull()
@@ -70,7 +70,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function testGetLastResponseContentTypeIsInitialEmpty()
@@ -87,7 +87,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function testGetLastResponseBodyIsInitialEmpty()
@@ -104,7 +104,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function testStartAndStopImpersonateUser()
@@ -139,7 +139,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function testRequestGetReturnsFalse()
@@ -168,7 +168,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      * @dataProvider getRequestReponseData
      */
@@ -233,7 +233,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      *
      * @param string $apiName
@@ -279,7 +279,7 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      */
     public function getApiShouldThrowException()
