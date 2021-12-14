@@ -17,7 +17,7 @@ use Redmine\Client\Psr18Client;
 class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
-     * @covers \Redmine\Psr18Client
+     * @covers \Redmine\Client\Psr18Client
      * @test
      *
      * @dataProvider createdGetRequestsData
