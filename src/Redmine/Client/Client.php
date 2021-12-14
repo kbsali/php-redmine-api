@@ -2,8 +2,8 @@
 
 namespace Redmine\Client;
 
-use InvalidArgumentException;
 use Redmine\Api;
+use Redmine\Exception\InvalidApiNameException;
 
 /**
  * client interface.
@@ -11,7 +11,7 @@ use Redmine\Api;
 interface Client
 {
     /**
-     * @throws InvalidArgumentException if $name is not a valid api name
+     * @throws InvalidApiNameException if $name is not a valid api name
      */
     public function getApi(string $name): Api;
 
