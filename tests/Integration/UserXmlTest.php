@@ -5,6 +5,7 @@ namespace Redmine\Tests\Integration;
 use DOMDocument;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
@@ -25,8 +26,8 @@ class UserXmlTest extends TestCase
         $api = $this->client->getApi('user');
         $this->assertInstanceOf('Redmine\Api\User', $api);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
 
         $api->create();
     }

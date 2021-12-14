@@ -53,7 +53,7 @@ class Membership extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         if (!isset($params['user_id']) || !isset($params['role_ids'])) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
         }
 
         $xml = $this->buildXML($params);

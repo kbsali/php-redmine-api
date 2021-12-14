@@ -117,7 +117,7 @@ class Project extends AbstractApi
             !isset($params['name'])
          || !isset($params['identifier'])
         ) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `name`, `identifier`');
         }
 
         $xml = $this->prepareParamsXml($params);

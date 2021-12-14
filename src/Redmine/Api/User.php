@@ -152,7 +152,7 @@ class User extends AbstractApi
          || !isset($params['firstname'])
          || !isset($params['mail'])
         ) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
         }
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
         foreach ($params as $k => $v) {

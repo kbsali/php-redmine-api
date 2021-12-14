@@ -72,7 +72,7 @@ class TimeEntry extends AbstractApi
             (!isset($params['issue_id']) && !isset($params['project_id']))
          || !isset($params['hours'])
         ) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
         }
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');

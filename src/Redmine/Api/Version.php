@@ -115,7 +115,7 @@ class Version extends AbstractApi
         if (
             !isset($params['name'])
         ) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
         $this->validateStatus($params);
         $this->validateSharing($params);

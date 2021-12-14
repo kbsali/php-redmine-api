@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Client\Client;
+use Redmine\Exception\MissingParameterException;
 
 /**
  * @coversDefaultClass \Redmine\Api\Group
@@ -341,7 +342,7 @@ class GroupTest extends TestCase
      *
      * @test
      */
-    public function testCreateThrowsExceptionIsNameIsMissing()
+    public function testCreateThrowsExceptionIfNameIsMissing()
     {
         // Test values
         $postParameter = [];
@@ -352,8 +353,8 @@ class GroupTest extends TestCase
         // Create the object under test
         $api = new Group($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `name`');
 
         // Perform the tests
         $api->create($postParameter);

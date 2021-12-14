@@ -108,7 +108,7 @@ class IssueCategory extends AbstractApi
         if (
             !isset($params['name'])
         ) {
-            throw new MissingParameterException('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
