@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.0.1...v2.x)
 
+### Changed
+
+- Switched from Travis-CI to Github Actions
+
 ### Deprecated
 
 - `Redmine\Api\AbstractApi::lastCallFailed()` is deprecated, use `Redmine\Client\Client::getLastResponseStatusCode()` instead
