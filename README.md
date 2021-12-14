@@ -1,5 +1,10 @@
 # PHP Redmine API
 
+[![Latest Version](https://img.shields.io/github/release/kbsali/php-redmine-api.svg)](https://github.com/kbsali/php-redmine-api/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-blueviolet.svg)](LICENSE)
+[![Build Status](https://github.com/kbsali/php-redmine-api/actions/workflows/tests.yml/badge.svg?branch=v2.x)](https://github.com/kbsali/php-redmine-api/actions)
+[![Total Downloads](https://img.shields.io/packagist/dt/kbsali/redmine-api.svg)](https://packagist.org/packages/kbsali/redmine-api)
+
 A simple PHP Object Oriented wrapper for Redmine API.
 
 Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
@@ -11,25 +16,25 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 [PSR-18](https://www.php-fig.org/psr/psr-18/) http client like
 [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
 * API entry points implementation state:
-  * OK Attachments
-  * OK Groups
-  * OK Custom Fields
-  * OK Issues
-  * OK Issue Categories
-  * OK Issue Priorities
-  * *NOK Issue Relations - only partially implemented*
-  * OK Issue Statuses
-  * OK News
-  * OK Projects
-  * OK Project Memberships
-  * OK Queries
-  * OK Roles
-  * OK Time Entries
-  * OK Time Entry Activities
-  * OK Trackers
-  * OK Users
-  * OK Versions
-  * OK Wiki
+  * :heavy_check_mark: Attachments
+  * :heavy_check_mark: Groups
+  * :heavy_check_mark: Custom Fields
+  * :heavy_check_mark: Issues
+  * :heavy_check_mark: Issue Categories
+  * :heavy_check_mark: Issue Priorities
+  * :x: *Issue Relations - only partially implemented*
+  * :heavy_check_mark: Issue Statuses
+  * :heavy_check_mark: News
+  * :heavy_check_mark: Projects
+  * :heavy_check_mark: Project Memberships
+  * :heavy_check_mark: Queries
+  * :heavy_check_mark: Roles
+  * :heavy_check_mark: Time Entries
+  * :heavy_check_mark: Time Entry Activities
+  * :heavy_check_mark: Trackers
+  * :heavy_check_mark: Users
+  * :heavy_check_mark: Versions
+  * :heavy_check_mark: Wiki
 
 ## Todo
 
