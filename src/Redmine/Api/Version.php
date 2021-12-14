@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\InvalidParameterException;
+use Redmine\Exception\MissingParameterException;
+
 /**
  * Listing versions, creating, editing.
  *
@@ -94,7 +97,7 @@ class Version extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new issue category data
      *
-     * @throws \Exception Missing mandatory parameters
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return string|false
      */
@@ -112,7 +115,7 @@ class Version extends AbstractApi
         if (
             !isset($params['name'])
         ) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Missing mandatory parameters');
         }
         $this->validateStatus($params);
         $this->validateSharing($params);
@@ -171,7 +174,7 @@ class Version extends AbstractApi
             'closed',
         ];
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
-            throw new \Exception('Possible values for status : '.implode(', ', $arrStatus));
+            throw new InvalidParameterException('Possible values for status : '.implode(', ', $arrStatus));
         }
     }
 
@@ -185,7 +188,7 @@ class Version extends AbstractApi
             'system' => 'With all projects',
         ];
         if (isset($params['sharing']) && !isset($arrSharing[$params['sharing']])) {
-            throw new \Exception('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));
+            throw new InvalidParameterException('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));
         }
     }
 

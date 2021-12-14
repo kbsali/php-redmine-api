@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Exception;
+use Redmine\Exception\MissingParameterException;
+
 /**
  * Handling of groups.
  *
@@ -56,7 +59,7 @@ class Group extends AbstractApi
      *
      * @param array $params the new group data
      *
-     * @throws \Exception Missing mandatory parameters
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return \SimpleXMLElement
      */
@@ -71,7 +74,7 @@ class Group extends AbstractApi
         if (
             !isset($params['name'])
         ) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Missing mandatory parameters');
         }
 
         $xml = $this->buildXML($params);
@@ -86,11 +89,11 @@ class Group extends AbstractApi
      *
      * @param int $id
      *
-     * @throws \Exception Not implemented
+     * @throws Exception Not implemented
      */
     public function update($id, array $params = [])
     {
-        throw new \Exception('Not implemented');
+        throw new Exception('Not implemented');
     }
 
     /**
