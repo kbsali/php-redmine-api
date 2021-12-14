@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.0.1...v2.x)
 
+### Added
+
+- New interface `Redmine\Exception` that is implemented by every library-related exception
+- New exception `Redmine\Exception\ClientException` for client related exceptions
+- New exception `Redmine\Exception\InvalidApiNameException` if an invalid API instance is requested
+- New exception `Redmine\Exception\InvalidParameterException` for invalid parameter provided to an API instance
+- New exception `Redmine\Exception\MissingParameterException` for missing parameter while using an API instance
+
 ### Changed
 
 - Switched from Travis-CI to Github Actions
