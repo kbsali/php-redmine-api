@@ -201,7 +201,7 @@ $client->stopImpersonateUser();
 
 ## Error handling
 
-Every thrown exception will implement the interface `Redmine\Exception`. This way you can catch all Redmine specific exceptions.
+Every exception implement the interface `Redmine\Exception` making it easy to catch Redmine specific issues.
 
 > :bulb: The `Redmine\Exception` interface was introduced in `v2.1.0`.
 
