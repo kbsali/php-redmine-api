@@ -6,6 +6,8 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Client\Client;
+use Redmine\Exception\InvalidParameterException;
+use Redmine\Exception\MissingParameterException;
 
 /**
  * @coversDefaultClass \Redmine\Api\Version
@@ -211,8 +213,8 @@ class VersionTest extends TestCase
         // Create the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `name`');
 
         // Perform the tests
         $api->create(5);
@@ -238,8 +240,8 @@ class VersionTest extends TestCase
         // Create the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `name`');
 
         // Perform the tests
         $api->create(5, $parameters);
@@ -267,8 +269,8 @@ class VersionTest extends TestCase
         // Create the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `name`');
 
         // Perform the tests
         $api->create('test', $parameters);
@@ -377,7 +379,7 @@ class VersionTest extends TestCase
         // Create the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
+        $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Possible values for status : open, locked, closed');
 
         // Perform the tests
@@ -757,7 +759,7 @@ class VersionTest extends TestCase
         // Create the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
+        $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Possible values for sharing : none, descendants, hierarchy, tree, system');
 
         // Perform the tests
@@ -880,7 +882,7 @@ class VersionTest extends TestCase
         // Update the object under test
         $api = new Version($client);
 
-        $this->expectException(Exception::class);
+        $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Possible values for sharing : none, descendants, hierarchy, tree, system');
 
         // Perform the tests

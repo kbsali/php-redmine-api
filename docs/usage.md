@@ -51,6 +51,8 @@ client.
 
 #### Native cURL Client `Redmine\Client\NativeCurlClient`
 
+> :bulb: The `Redmine\Client\NativeCurlClient` class was introduced in `v1.8.0`.
+
 Every client requires a URL to your Redmine instance and either a valid
 Apikey...
 
@@ -100,6 +102,8 @@ $client = new \Redmine\Client('https://redmine.example.com', '1234567890abcdfgh'
 
 #### Psr-18 compatible Client `Redmine\Client\Psr18Client`
 
+> :bulb: The `Redmine\Client\Psr18Client` class was introduced in `v1.7.0`.
+
 The `Psr18Client` requires
 
 - a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle) ([possible implementations](https://packagist.org/providers/psr/http-client-implementation))
@@ -117,7 +121,7 @@ The `Psr18Client` requires
 require_once 'vendor/autoload.php';
 +
 +$guzzle = \GuzzleHttp\Client();
-+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
++$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
 +
 +// Instantiate with ApiKey
 +$client = new Redmine\Client\Prs18Client($guzzle, $psr17Factory, $psr17Factory, 'https://redmine.example.com', '1234567890abcdfgh');
@@ -147,7 +151,7 @@ require_once 'vendor/autoload.php';
 +use Psr\Http\Message\ResponseInterface;
 +
 $guzzle = \GuzzleHttp\Client();
-$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
 
 +$guzzleWrapper = new class(\GuzzleHttp\Client $guzzle) implements ClientInterface
 +{
@@ -193,6 +197,22 @@ $client->startImpersonateUser('kim');
 
 // To stop impersonation
 $client->stopImpersonateUser();
+```
+
+## Error handling
+
+Every exception implement the interface `Redmine\Exception` making it easy to catch Redmine specific issues.
+
+> :bulb: The `Redmine\Exception` interface was introduced in `v2.1.0`.
+
+```php
+try {
+    $client->getApi('issue')->create($data);
+} catch (\Redmine\Exception $e) {
+    // exceptions from kbsali/redmine-api
+} catch (\Throwable $e) {
+    // other errors
+}
 ```
 
 ## API

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Redmine\Client;
 
-use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Redmine\Exception\ClientException;
 
 /**
  * Psr18 client.
@@ -136,7 +136,7 @@ final class Psr18Client implements Client
     /**
      * Create and run a request.
      *
-     * @throws Exception If anything goes wrong on the request
+     * @throws ClientException If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
@@ -149,7 +149,7 @@ final class Psr18Client implements Client
         try {
             $this->lastResponse = $this->httpClient->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $this->lastResponse->getStatusCode() < 400;

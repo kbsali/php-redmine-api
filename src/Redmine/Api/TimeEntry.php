@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\MissingParameterException;
+
 /**
  * Listing time entries, creating, editing.
  *
@@ -50,7 +52,7 @@ class TimeEntry extends AbstractApi
      *
      * @param array $params the new time entry data
      *
-     * @throws \Exception Missing mandatory parameters
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return string|false
      */
@@ -70,7 +72,7 @@ class TimeEntry extends AbstractApi
             (!isset($params['issue_id']) && !isset($params['project_id']))
          || !isset($params['hours'])
         ) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
         }
 
         $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');

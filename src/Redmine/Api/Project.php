@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\MissingParameterException;
+
 /**
  * Listing projects, creating, editing.
  *
@@ -98,7 +100,7 @@ class Project extends AbstractApi
      *
      * @param array $params the new project data
      *
-     * @throws \Exception
+     * @throws MissingParameterException
      *
      * @return \SimpleXMLElement
      */
@@ -115,7 +117,7 @@ class Project extends AbstractApi
             !isset($params['name'])
          || !isset($params['identifier'])
         ) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `name`, `identifier`');
         }
 
         $xml = $this->prepareParamsXml($params);

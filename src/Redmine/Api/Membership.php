@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\MissingParameterException;
+
 /**
  * Handling project memberships.
  *
@@ -38,7 +40,7 @@ class Membership extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  the new membership data
      *
-     * @throws \Exception Missing mandatory parameters
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return string|false
      */
@@ -51,7 +53,7 @@ class Membership extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         if (!isset($params['user_id']) || !isset($params['role_ids'])) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
         }
 
         $xml = $this->buildXML($params);
@@ -67,7 +69,7 @@ class Membership extends AbstractApi
      * @param int   $id     id of the membership
      * @param array $params the new membership data
      *
-     * @throws \Exception Missing mandatory parameters
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return string|false
      */
@@ -79,7 +81,7 @@ class Membership extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         if (!isset($params['role_ids'])) {
-            throw new \Exception('Missing mandatory parameters');
+            throw new MissingParameterException('Missing mandatory parameters');
         }
 
         $xml = $this->buildXML($params);

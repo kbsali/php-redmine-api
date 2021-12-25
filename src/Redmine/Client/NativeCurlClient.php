@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Client;
 
-use Exception;
 use Redmine\Api;
+use Redmine\Exception\ClientException;
 
 /**
  * Native cURL client.
@@ -210,7 +210,7 @@ final class NativeCurlClient implements Client
     }
 
     /**
-     * @throws Exception If anything goes wrong on curl request
+     * @throws ClientException If anything goes wrong on curl request
      */
     private function request(string $method, string $path, string $body = ''): bool
     {
@@ -225,7 +225,7 @@ final class NativeCurlClient implements Client
         $curlErrorNumber = curl_errno($curl);
 
         if (CURLE_OK !== $curlErrorNumber) {
-            $e = new Exception(curl_error($curl), $curlErrorNumber);
+            $e = new ClientException(curl_error($curl), $curlErrorNumber);
             curl_close($curl);
             throw $e;
         }

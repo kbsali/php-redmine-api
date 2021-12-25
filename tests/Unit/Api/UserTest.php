@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Client\Client;
+use Redmine\Exception\MissingParameterException;
 
 /**
  * @coversDefaultClass \Redmine\Api\User
@@ -263,8 +264,8 @@ class UserTest extends TestCase
         // Create the object under test
         $api = new User($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
 
         // Perform the tests
         $this->assertSame($response, $api->create());
@@ -288,8 +289,8 @@ class UserTest extends TestCase
         // Create the object under test
         $api = new User($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
 
         // Perform the tests
         $api->create($parameters);

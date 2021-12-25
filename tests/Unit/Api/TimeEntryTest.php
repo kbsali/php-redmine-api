@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Client\Client;
+use Redmine\Exception\MissingParameterException;
 
 /**
  * @coversDefaultClass \Redmine\Api\TimeEntry
@@ -158,8 +159,8 @@ class TimeEntryTest extends TestCase
         // Create the object under test
         $api = new TimeEntry($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
 
         // Perform the tests
         $this->assertSame($response, $api->create(['id' => 5]));
@@ -186,8 +187,8 @@ class TimeEntryTest extends TestCase
         // Create the object under test
         $api = new TimeEntry($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
 
         // Perform the tests
         $this->assertSame($response, $api->create($parameters));
@@ -215,8 +216,8 @@ class TimeEntryTest extends TestCase
         // Create the object under test
         $api = new TimeEntry($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
 
         // Perform the tests
         $this->assertSame($response, $api->create($parameters));

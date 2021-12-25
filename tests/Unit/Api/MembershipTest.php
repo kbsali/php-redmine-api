@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
+use Redmine\Exception\MissingParameterException;
 
 /**
  * @coversDefaultClass \Redmine\Api\Membership
@@ -133,8 +134,8 @@ class MembershipTest extends TestCase
         // Create the object under test
         $api = new Membership($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');
 
         // Perform the tests
         $this->assertSame($response, $api->create(5));
@@ -158,8 +159,8 @@ class MembershipTest extends TestCase
         // Create the object under test
         $api = new Membership($client);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Missing mandatory parameters');
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');
 
         // Perform the tests
         $this->assertSame($response, $api->create(5, ['user_id' => 4]));
