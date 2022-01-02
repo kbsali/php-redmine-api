@@ -181,7 +181,7 @@ final class Psr18Client implements Client
 
         switch ($method) {
             case 'POST':
-                if ($this->isUploadCall($path, $body)) {
+                if ($this->isUploadCallAndFilepath($path, $body)) {
                     $request = $request->withBody(
                         $this->streamFactory->createStreamFromFile($body)
                     );
@@ -203,7 +203,7 @@ final class Psr18Client implements Client
         // set Content-Type header
         $tmp = parse_url($this->url.$path);
 
-        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
+        if ($this->isUploadCall($path)) {
             $request = $request->withHeader('Content-Type', 'application/octet-stream');
         } elseif ('json' === substr($tmp['path'], -4)) {
             $request = $request->withHeader('Content-Type', 'application/json');
@@ -212,14 +212,5 @@ final class Psr18Client implements Client
         }
 
         return $request;
-    }
-
-    private function isUploadCall(string $path, string $body): bool
-    {
-        return
-            (preg_match('/\/uploads.(json|xml)/i', $path)) &&
-            '' !== $body &&
-            is_file(strval(str_replace("\0", '', $body)))
-        ;
     }
 }
