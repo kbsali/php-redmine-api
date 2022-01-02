@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 - `Redmine\Api\AbstractApi::lastCallFailed()` is deprecated, use `Redmine\Client\Client::getLastResponseStatusCode()` instead
+- Uploading an attachment with method `Redmine\Api\Attachment::upload()` with filepath is deprectead, use `file_get_contents()` to upload the file content instead
 
 ## [v2.0.1](https://github.com/kbsali/php-redmine-api/compare/v2.0.0...v2.0.1) - 2021-09-22
 
