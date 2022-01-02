@@ -66,6 +66,7 @@ trait ClientApiTrait
         return
             $this->isUploadCall($path)
             && '' !== $body
+            && strlen($body) <= \PHP_MAXPATHLEN
             && is_file(strval(str_replace("\0", '', $body)))
         ;
     }

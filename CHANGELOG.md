@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Switched from Travis-CI to Github Actions
 
+### Fixed
+
+- Avoid warning if path of uploaded file is longer than the maximum allowed path length
+
 ### Deprecated
 
 - `Redmine\Api\AbstractApi::lastCallFailed()` is deprecated, use `Redmine\Client\Client::getLastResponseStatusCode()` instead
