@@ -58,7 +58,7 @@ trait ClientApiTrait
     {
         $path = strtolower($path);
 
-        return (false !== strpos($path, '/uploads.json')) or (false !== strpos($path, '/uploads.xml'));
+        return (false !== strpos($path, '/uploads.json')) || (false !== strpos($path, '/uploads.xml'));
     }
 
     private function isUploadCallAndFilepath(string $path, string $body): bool
