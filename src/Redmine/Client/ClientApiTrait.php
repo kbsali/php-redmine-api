@@ -61,11 +61,10 @@ trait ClientApiTrait
         return (false !== strpos($path, '/uploads.json')) || (false !== strpos($path, '/uploads.xml'));
     }
 
-    private function isUploadCallAndFilepath(string $path, string $body): bool
+    private function isValidFilePath(string $body): bool
     {
         return
-            $this->isUploadCall($path)
-            && '' !== $body
+            '' !== $body
             && strlen($body) <= \PHP_MAXPATHLEN
             && is_file(strval(str_replace("\0", '', $body)))
         ;
