@@ -182,7 +182,7 @@ final class Psr18Client implements Client
         switch ($method) {
             case 'POST':
                 if ($this->isUploadCallAndFilepath($path, $body)) {
-                    @trigger_error('Upload an attachment by filepath is deprecated, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
+                    @trigger_error('Uploading an attachment by filepath is deprecated, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
 
                     $request = $request->withBody(
                         $this->streamFactory->createStreamFromFile($body)
