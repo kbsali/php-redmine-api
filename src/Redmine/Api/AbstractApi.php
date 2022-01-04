@@ -51,7 +51,7 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->client->requestGet($path);
+        $this->client->requestGet(strval($path));
 
         $body = $this->client->getLastResponseBody();
         $contentType = $this->client->getLastResponseContentType();
@@ -65,6 +65,7 @@ abstract class AbstractApi implements Api
             try {
                 return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
             } catch (JsonException $e) {
+                // TODO: Throw Exception instead of returning string
                 return 'Error decoding body as JSON: '.$e->getMessage();
             }
         }
@@ -161,6 +162,8 @@ abstract class AbstractApi implements Api
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
+     * @deprecated the `retrieveAll()` method is deprecated, use `retrieveData()` instead.
+     *
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
@@ -168,16 +171,33 @@ abstract class AbstractApi implements Api
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated, use `retrieveData()` instead.', E_USER_DEPRECATED);
+
+        return $this->retrieveData(strval($endpoint), $params);
+    }
+
+    /**
+     * Retrieves all the elements of a given endpoint (even if the
+     * total number of elements is greater than 100).
+     *
+     * @param string $endpoint API end point
+     * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array elements found
+     */
+    protected function retrieveData(string $endpoint, array $params = [])/*: array*/ // TODO: check if return type could be array
+    {
         if (empty($params)) {
             return $this->get($endpoint);
         }
+
         $defaults = [
             'limit' => 25,
             'offset' => 0,
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $ret = [];
+        $data = [];
 
         $limit = $params['limit'];
         $offset = $params['offset'];
@@ -194,7 +214,7 @@ abstract class AbstractApi implements Api
             $params['offset'] = $offset;
 
             $newDataSet = (array) $this->get($endpoint.'?'.preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', http_build_query($params)));
-            $ret = array_merge_recursive($ret, $newDataSet);
+            $data = array_merge_recursive($data, $newDataSet);
 
             $offset += $_limit;
             if (empty($newDataSet) || !isset($newDataSet['limit']) || (
@@ -207,7 +227,7 @@ abstract class AbstractApi implements Api
             }
         }
 
-        return $ret;
+        return $data;
     }
 
     /**

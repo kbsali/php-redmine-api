@@ -25,7 +25,8 @@ class CustomFieldTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -38,12 +39,15 @@ class CustomFieldTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->all());
+        $this->assertSame($expectedResponse, $api->all());
     }
 
     /**
@@ -59,7 +63,8 @@ class CustomFieldTest extends TestCase
     {
         // Test values
         $allParameters = ['not-used'];
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedResponse = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -72,12 +77,15 @@ class CustomFieldTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
-        $this->assertSame([$response], $api->all($allParameters));
+        $this->assertSame($expectedResponse, $api->all($allParameters));
     }
 
     /**
@@ -94,8 +102,8 @@ class CustomFieldTest extends TestCase
         // Test values
         $response = '{"limit":"100","items":[]}';
         $allParameters = ['limit' => 250];
-        $returnDataSet = [
-            'limit' => '100',
+        $expectedResponse = [
+            'limit' => ['100', '100', '100'], // TODO: Check response created by array_merge_recursive()
             'items' => [],
         ];
 
@@ -118,10 +126,7 @@ class CustomFieldTest extends TestCase
         $api = new CustomField($client);
 
         // Perform the tests
-        $retrievedDataSet = $api->all($allParameters);
-        $this->assertTrue(is_array($retrievedDataSet));
-        $this->assertArrayHasKey('limit', $retrievedDataSet);
-        $this->assertArrayHasKey('items', $retrievedDataSet);
+        $this->assertSame($expectedResponse, $api->all($allParameters));
     }
 
     /**
