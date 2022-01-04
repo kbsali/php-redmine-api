@@ -53,4 +53,20 @@ trait ClientApiTrait
 
         return $this->apiInstances[$name];
     }
+
+    private function isUploadCall(string $path): bool
+    {
+        $path = strtolower($path);
+
+        return (false !== strpos($path, '/uploads.json')) || (false !== strpos($path, '/uploads.xml'));
+    }
+
+    private function isValidFilePath(string $body): bool
+    {
+        return
+            '' !== $body
+            && strlen($body) <= \PHP_MAXPATHLEN
+            && is_file(strval(str_replace("\0", '', $body)))
+        ;
+    }
 }

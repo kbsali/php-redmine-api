@@ -271,7 +271,9 @@ final class NativeCurlClient implements Client
         switch ($method) {
             case 'post':
                 $curlOptions[CURLOPT_POST] = 1;
-                if ($this->isUploadCall($path, $body)) {
+                if ($this->isUploadCall($path) && $this->isValidFilePath($body)) {
+                    @trigger_error('Uploading an attachment by filepath is deprecated, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
+
                     $file = fopen($body, 'r');
                     $size = filesize($body);
                     $filedata = fread($file, $size);
@@ -309,15 +311,6 @@ final class NativeCurlClient implements Client
         curl_setopt_array($curl, $curlOptions);
 
         return $curl;
-    }
-
-    private function isUploadCall(string $path, string $body): bool
-    {
-        return
-            (preg_match('/\/uploads.(json|xml)/i', $path)) &&
-            '' !== $body &&
-            is_file(strval(str_replace("\0", '', $body)))
-        ;
     }
 
     private function createHttpHeader(string $path): array
@@ -360,7 +353,7 @@ final class NativeCurlClient implements Client
         // Content type headers
         $tmp = parse_url($this->url.$path);
 
-        if (preg_match('/\/uploads.(json|xml)/i', $path)) {
+        if ($this->isUploadCall($path)) {
             $httpHeaders[] = 'Content-Type: application/octet-stream';
         } elseif ('json' === substr($tmp['path'], -4)) {
             $httpHeaders[] = 'Content-Type: application/json';
