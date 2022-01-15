@@ -15,6 +15,44 @@ use SimpleXMLElement;
 class AbstractApiTest extends TestCase
 {
     /**
+     * @test
+     * @dataProvider getIsNotNullReturnsCorrectBooleanData
+     */
+    public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value)
+    {
+        $client = $this->createMock(Client::class);
+
+        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+
+        $method = new ReflectionMethod($api, 'isNotNull');
+        $method->setAccessible(true);
+
+        $this->assertSame($expected, $method->invoke($api, $value));
+    }
+
+    public function getIsNotNullReturnsCorrectBooleanData()
+    {
+        return [
+            [false, null],
+            [false, false],
+            [false, ''],
+            [false, []],
+            [true, true],
+            [true, 0],
+            [true, 1],
+            [true, 0.0],
+            [true, -0.0],
+            [true, 0.5],
+            [true, '0'],
+            [true, 'string'],
+            [true, [0]],
+            [true, ['0']],
+            [true, ['']],
+            [true, new \stdClass],
+        ];
+    }
+
+    /**
      * @covers \Redmine\Api\AbstractApi
      * @test
      * @dataProvider getLastCallFailedData
