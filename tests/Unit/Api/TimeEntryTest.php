@@ -294,6 +294,7 @@ class TimeEntryTest extends TestCase
         $response = 'API Response';
         $parameters = [
             'hours' => '10.25',
+            'comments' => 'some text with xml entities: & < > " \' ',
             'custom_fields' => [
                 [
                     'id' => 1,
