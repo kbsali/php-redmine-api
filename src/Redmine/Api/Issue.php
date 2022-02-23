@@ -160,9 +160,14 @@ class Issue extends AbstractApi
             'due_date' => null,
         ];
         $params = $this->cleanParams($params);
-        $params = $this->sanitizeParams($defaults, $params);
+        $sanitizedParams = $this->sanitizeParams($defaults, $params);
 
-        $xml = $this->buildXML($params);
+        // Allow assigned_to_id to be `` (empty string) to unassign a user from an issue
+        if (array_key_exists('assigned_to_id', $params) && $params['assigned_to_id'] === '') {
+            $sanitizedParams['assigned_to_id'] = '';
+        }
+
+        $xml = $this->buildXML($sanitizedParams);
 
         return $this->put('/issues/'.$id.'.xml', $xml->asXML());
     }
