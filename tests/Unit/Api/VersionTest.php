@@ -25,7 +25,8 @@ class VersionTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -36,12 +37,15 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->all(5));
+        $this->assertSame($expectedReturn, $api->all(5));
     }
 
     /**
@@ -57,7 +61,8 @@ class VersionTest extends TestCase
             'offset' => 10,
             'limit' => 2,
         ];
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -74,12 +79,15 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame([$response], $api->all(5, $parameters));
+        $this->assertSame($expectedReturn, $api->all(5, $parameters));
     }
 
     /**
@@ -92,7 +100,8 @@ class VersionTest extends TestCase
     public function testShowWithNumericIdReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -103,12 +112,15 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show(5));
+        $this->assertSame($expectedReturn, $api->show(5));
     }
 
     /**
@@ -121,7 +133,8 @@ class VersionTest extends TestCase
     public function testShowWithStringReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -132,12 +145,15 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show('test'));
+        $this->assertSame($expectedReturn, $api->show('test'));
     }
 
     /**

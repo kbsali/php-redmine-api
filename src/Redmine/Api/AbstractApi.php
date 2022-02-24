@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
+use Redmine\Exception\ClientException;
 use SimpleXMLElement;
 
 /**
@@ -173,7 +174,13 @@ abstract class AbstractApi implements Api
     {
         @trigger_error('The '.__METHOD__.' method is deprecated, use `retrieveData()` instead.', E_USER_DEPRECATED);
 
-        return $this->retrieveData(strval($endpoint), $params);
+        $data = $this->retrieveData(strval($endpoint), $params);
+
+        if (! array_key_exists('response', $data)) {
+            return $data;
+        }
+
+        return ('' === $data['response']) ? false : $data['response'];
     }
 
     /**
@@ -181,23 +188,27 @@ abstract class AbstractApi implements Api
      * total number of elements is greater than 100).
      *
      * @param string $endpoint API end point
-     * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
+     * @param array  $params   optional query parameters to be passed to the api (offset, limit, ...)
      *
      * @return array elements found
      */
-    protected function retrieveData(string $endpoint, array $params = [])/*: array*/ // TODO: check if return type could be array
+    protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            return $this->get($endpoint);
+            $this->client->requestGet($endpoint);
+
+            return $this->getLastResponseAsArray();
         }
 
-        $defaults = [
-            'limit' => 25,
-            'offset' => 0,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams(
+            [
+                'limit' => 25,
+                'offset' => 0,
+            ],
+            $params
+        );
 
-        $data = [];
+        $returnData = [];
 
         $limit = $params['limit'];
         $offset = $params['offset'];
@@ -213,10 +224,18 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $newDataSet = (array) $this->get($endpoint.'?'.preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', http_build_query($params)));
-            $data = array_merge_recursive($data, $newDataSet);
+            $queryString = http_build_query($params);
+            // replace every encoded array (`foo[0]=`, `foo[1]=`, `foo[2]=`, etc => `foo[]=`)
+            $queryString = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $queryString);
+
+            $this->client->requestGet($endpoint.'?'.$queryString);
+
+            $newDataSet = $this->getLastResponseAsArray();
+
+            $returnData = array_merge_recursive($returnData, $newDataSet);
 
             $offset += $_limit;
+
             if (empty($newDataSet) || !isset($newDataSet['limit']) || (
                     isset($newDataSet['offset']) &&
                     isset($newDataSet['total_count']) &&
@@ -227,7 +246,7 @@ abstract class AbstractApi implements Api
             }
         }
 
-        return $data;
+        return $returnData;
     }
 
     /**
@@ -273,5 +292,60 @@ abstract class AbstractApi implements Api
         }
 
         return $xml;
+    }
+
+    private function getLastResponseAsArray(): array
+    {
+        $body = $this->client->getLastResponseBody();
+
+        // if body is empty
+        if ($body === '') {
+            return [
+                'response' => '',
+            ];
+        }
+
+        $contentType = $this->client->getLastResponseContentType();
+
+        // parse XML
+        if (0 === strpos($contentType, 'application/xml')) {
+            $returnData = new SimpleXMLElement($body);
+
+            try {
+                $returnData = json_decode(
+                    json_encode($returnData, \JSON_THROW_ON_ERROR),
+                    true,
+                    512,
+                    \JSON_THROW_ON_ERROR
+                );
+            } catch (JsonException $e) {
+                throw new ClientException(
+                    'Error decoding body as JSON: ' . $e->getMessage(),
+                    $e->getCode(),
+                    $e
+                );
+            }
+        } else if (0 === strpos($contentType, 'application/json')) {
+            try {
+                $returnData = json_decode(
+                    $body,
+                    true,
+                    512,
+                    \JSON_THROW_ON_ERROR
+                );
+            } catch (JsonException $e) {
+                throw new ClientException(
+                    'Error decoding body as JSON: ' . $e->getMessage(),
+                    $e->getCode(),
+                    $e
+                );
+            }
+        } else {
+            $returnData = [
+                'response' => $body,
+            ];
+        }
+
+        return $returnData;
     }
 }
