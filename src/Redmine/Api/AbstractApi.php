@@ -5,7 +5,7 @@ namespace Redmine\Api;
 use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
-use Redmine\Exception\ClientException;
+use Redmine\Exception\ConversionException;
 use SimpleXMLElement;
 
 /**
@@ -190,6 +190,8 @@ abstract class AbstractApi implements Api
      * @param string $endpoint API end point
      * @param array  $params   optional query parameters to be passed to the api (offset, limit, ...)
      *
+     * @throws ConversionException if response body could not be converted into array
+     *
      * @return array elements found
      */
     protected function retrieveData(string $endpoint, array $params = []): array
@@ -197,7 +199,7 @@ abstract class AbstractApi implements Api
         if (empty($params)) {
             $this->client->requestGet($endpoint);
 
-            return $this->getLastResponseAsArray();
+            return $this->getLastResponseBodyAsArray();
         }
 
         $params = $this->sanitizeParams(
@@ -230,7 +232,7 @@ abstract class AbstractApi implements Api
 
             $this->client->requestGet($endpoint.'?'.$queryString);
 
-            $newDataSet = $this->getLastResponseAsArray();
+            $newDataSet = $this->getLastResponseBodyAsArray();
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
@@ -294,22 +296,36 @@ abstract class AbstractApi implements Api
         return $xml;
     }
 
-    private function getLastResponseAsArray(): array
+    /**
+     * returns the last response body as array
+     *
+     * @throws ConversionException if response body could not be converted into array
+     */
+    private function getLastResponseBodyAsArray(): array
     {
         $body = $this->client->getLastResponseBody();
+        $returnData = null;
 
         // if body is empty
         if ($body === '') {
-            return [
-                'response' => '',
-            ];
+            throw new ConversionException(
+                'Could not convert empty response body into array'
+            );
         }
 
         $contentType = $this->client->getLastResponseContentType();
 
         // parse XML
         if (0 === strpos($contentType, 'application/xml')) {
-            $returnData = new SimpleXMLElement($body);
+            try {
+                $returnData = new SimpleXMLElement($body);
+            } catch (\Exception $e) {
+                throw new ConversionException(
+                    'Catched error "' . $e->getMessage() . '" while decoding body as XML: ' . $body,
+                    $e->getCode(),
+                    $e
+                );
+            }
 
             try {
                 $returnData = json_decode(
@@ -319,8 +335,8 @@ abstract class AbstractApi implements Api
                     \JSON_THROW_ON_ERROR
                 );
             } catch (JsonException $e) {
-                throw new ClientException(
-                    'Error decoding body as JSON: ' . $e->getMessage(),
+                throw new ConversionException(
+                    'Catched error "' . $e->getMessage() . '" while en- and decoding body as JSON: ' . $body,
                     $e->getCode(),
                     $e
                 );
@@ -334,16 +350,18 @@ abstract class AbstractApi implements Api
                     \JSON_THROW_ON_ERROR
                 );
             } catch (JsonException $e) {
-                throw new ClientException(
-                    'Error decoding body as JSON: ' . $e->getMessage(),
+                throw new ConversionException(
+                    'Catched error "' . $e->getMessage() . '" while decoding body as JSON: ' . $body,
                     $e->getCode(),
                     $e
                 );
             }
-        } else {
-            $returnData = [
-                'response' => $body,
-            ];
+        }
+
+        if (! is_array($returnData)) {
+            throw new ConversionException(
+                'Could not convert response body into array: ' . $body
+            );
         }
 
         return $returnData;
