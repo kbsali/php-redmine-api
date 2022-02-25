@@ -24,7 +24,7 @@ class News extends AbstractApi
     public function all($project = null, array $params = [])
     {
         $path = null === $project ? '/news.json' : '/projects/'.$project.'/news.json';
-        $this->news = $this->retrieveAll($path, $params);
+        $this->news = $this->retrieveData($path, $params);
 
         return $this->news;
     }

@@ -26,7 +26,7 @@ class TimeEntry extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->timeEntries = $this->retrieveAll('/time_entries.json', $params);
+        $this->timeEntries = $this->retrieveData('/time_entries.json', $params);
 
         return $this->timeEntries;
     }

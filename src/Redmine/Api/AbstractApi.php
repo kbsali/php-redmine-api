@@ -176,13 +176,13 @@ abstract class AbstractApi implements Api
     {
         @trigger_error('The '.__METHOD__.' method is deprecated, use `retrieveData()` instead.', E_USER_DEPRECATED);
 
-        $data = $this->retrieveData(strval($endpoint), $params);
-
-        if (! array_key_exists('response', $data)) {
-            return $data;
+        try {
+            $data = $this->retrieveData(strval($endpoint), $params);
+        } catch (SerializerException $e) {
+            $data = false;
         }
 
-        return ('' === $data['response']) ? false : $data['response'];
+        return $data;
     }
 
     /**

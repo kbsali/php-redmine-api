@@ -28,7 +28,7 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->issueCategories = $this->retrieveAll('/projects/'.$project.'/issue_categories.json', $params);
+        $this->issueCategories = $this->retrieveData('/projects/'.$project.'/issue_categories.json', $params);
 
         return $this->issueCategories;
     }

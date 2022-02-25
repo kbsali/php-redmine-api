@@ -27,7 +27,7 @@ class Project extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->projects = $this->retrieveAll('/projects.json', $params);
+        $this->projects = $this->retrieveData('/projects.json', $params);
 
         return $this->projects;
     }

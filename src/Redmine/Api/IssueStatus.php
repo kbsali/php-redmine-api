@@ -24,7 +24,7 @@ class IssueStatus extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->issueStatuses = $this->retrieveAll('/issue_statuses.json', $params);
+        $this->issueStatuses = $this->retrieveData('/issue_statuses.json', $params);
 
         return $this->issueStatuses;
     }

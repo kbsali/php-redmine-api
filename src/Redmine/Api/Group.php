@@ -28,7 +28,7 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->groups = $this->retrieveAll('/groups.json', $params);
+        $this->groups = $this->retrieveData('/groups.json', $params);
 
         return $this->groups;
     }

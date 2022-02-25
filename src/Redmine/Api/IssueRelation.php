@@ -27,7 +27,7 @@ class IssueRelation extends AbstractApi
      */
     public function all($issueId, array $params = [])
     {
-        $this->relations = $this->retrieveAll('/issues/'.urlencode($issueId).'/relations.json', $params);
+        $this->relations = $this->retrieveData('/issues/'.urlencode($issueId).'/relations.json', $params);
 
         return $this->relations;
     }

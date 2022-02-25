@@ -24,7 +24,7 @@ class IssuePriority extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->issuePriorities = $this->retrieveAll('/enumerations/issue_priorities.json', $params);
+        $this->issuePriorities = $this->retrieveData('/enumerations/issue_priorities.json', $params);
 
         return $this->issuePriorities;
     }

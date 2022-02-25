@@ -22,7 +22,7 @@ class Search extends AbstractApi
     public function search($query, array $params = [])
     {
         $params['q'] = $query;
-        $this->results = $this->retrieveAll('/search.json', $params);
+        $this->results = $this->retrieveData('/search.json', $params);
 
         return $this->results;
     }

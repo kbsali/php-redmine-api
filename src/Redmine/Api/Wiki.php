@@ -27,7 +27,7 @@ class Wiki extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->wikiPages = $this->retrieveAll('/projects/'.$project.'/wiki/index.json', $params);
+        $this->wikiPages = $this->retrieveData('/projects/'.$project.'/wiki/index.json', $params);
 
         return $this->wikiPages;
     }

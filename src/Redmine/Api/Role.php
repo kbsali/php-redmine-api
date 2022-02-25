@@ -24,7 +24,7 @@ class Role extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->roles = $this->retrieveAll('/roles.json', $params);
+        $this->roles = $this->retrieveData('/roles.json', $params);
 
         return $this->roles;
     }

@@ -27,7 +27,7 @@ class User extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->users = $this->retrieveAll('/users.json', $params);
+        $this->users = $this->retrieveData('/users.json', $params);
 
         return $this->users;
     }
