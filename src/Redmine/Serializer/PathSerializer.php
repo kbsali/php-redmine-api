@@ -4,6 +4,8 @@ namespace Redmine\Serializer;
 
 /**
  * PathSerializer
+ *
+ * @internal
  */
 final class PathSerializer
 {

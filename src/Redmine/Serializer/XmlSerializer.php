@@ -8,6 +8,8 @@ use SimpleXMLElement;
 
 /**
  * XmlSerializer
+ *
+ * @internal
  */
 final class XmlSerializer
 {

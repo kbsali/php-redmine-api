@@ -170,7 +170,7 @@ abstract class AbstractApi implements Api
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array elements found
+     * @return array|false elements found
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
