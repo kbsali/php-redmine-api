@@ -10,6 +10,9 @@ use Redmine\Exception\SerializerException;
  */
 final class JsonSerializer
 {
+    /**
+     * @throws SerializerException if $data is not valid JSON
+     */
     public static function createFromString(string $data): self
     {
         $serializer = new self();
