@@ -304,16 +304,8 @@ abstract class AbstractApi implements Api
     private function getLastResponseBodyAsArray(): array
     {
         $body = $this->client->getLastResponseBody();
-        $returnData = null;
-
-        // if body is empty
-        if ($body === '') {
-            throw new SerializerException(
-                'Could not convert empty response body into array'
-            );
-        }
-
         $contentType = $this->client->getLastResponseContentType();
+        $returnData = null;
 
         // parse XML
         if (0 === strpos($contentType, 'application/xml')) {
