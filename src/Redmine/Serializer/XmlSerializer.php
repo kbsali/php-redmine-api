@@ -42,7 +42,7 @@ final class XmlSerializer
         return $this->normalized;
     }
 
-    private function deserialize(string $encoded)
+    private function deserialize(string $encoded): void
     {
         $this->encoded = $encoded;
 
@@ -59,7 +59,7 @@ final class XmlSerializer
         $this->normalize($this->deserialized);
     }
 
-    private function normalize(SimpleXMLElement $deserialized)
+    private function normalize(SimpleXMLElement $deserialized): void
     {
         try {
             $serialized = json_encode($deserialized, \JSON_THROW_ON_ERROR);

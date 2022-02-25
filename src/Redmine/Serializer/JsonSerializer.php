@@ -39,7 +39,7 @@ final class JsonSerializer
         return $this->normalized;
     }
 
-    private function decode(string $encoded)
+    private function decode(string $encoded): void
     {
         $this->encoded = $encoded;
 
