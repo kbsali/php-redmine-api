@@ -6,6 +6,7 @@ use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use SimpleXMLElement;
 
@@ -65,10 +66,9 @@ abstract class AbstractApi implements Api
 
         if (true === $decodeIfJson && '' !== $body && 0 === strpos($contentType, 'application/json')) {
             try {
-                return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
-            } catch (JsonException $e) {
-                // TODO: Throw Exception instead of returning string
-                return 'Error decoding body as JSON: '.$e->getMessage();
+                return JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                return 'Error decoding body as JSON: '.$e->getPrevious()->getMessage();
             }
         }
 
@@ -326,35 +326,9 @@ abstract class AbstractApi implements Api
                 );
             }
 
-            try {
-                $returnData = json_decode(
-                    json_encode($returnData, \JSON_THROW_ON_ERROR),
-                    true,
-                    512,
-                    \JSON_THROW_ON_ERROR
-                );
-            } catch (JsonException $e) {
-                throw new SerializerException(
-                    'Catched error "' . $e->getMessage() . '" while en- and decoding body as JSON: ' . $body,
-                    $e->getCode(),
-                    $e
-                );
-            }
+            $returnData = JsonSerializer::createFromString(json_encode($returnData, \JSON_THROW_ON_ERROR))->getNormalized();
         } else if (0 === strpos($contentType, 'application/json')) {
-            try {
-                $returnData = json_decode(
-                    $body,
-                    true,
-                    512,
-                    \JSON_THROW_ON_ERROR
-                );
-            } catch (JsonException $e) {
-                throw new SerializerException(
-                    'Catched error "' . $e->getMessage() . '" while decoding body as JSON: ' . $body,
-                    $e->getCode(),
-                    $e
-                );
-            }
+            $returnData = JsonSerializer::createFromString($body)->getNormalized();
         }
 
         if (! is_array($returnData)) {
