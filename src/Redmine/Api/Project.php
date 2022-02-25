@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing projects, creating, editing.
@@ -123,9 +124,11 @@ class Project extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`, `identifier`');
         }
 
-        $xml = $this->prepareParamsXml($params);
-
-        return $this->post('/projects.xml', $xml->asXML());
+        return $this->post(
+            '/projects.xml',
+            // $this->prepareParamsXml($params)->asXml()
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -147,40 +150,27 @@ class Project extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = $this->prepareParamsXml($params);
-
-        return $this->put('/projects/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/projects/'.$id.'.xml',
+            // $this->prepareParamsXml($params)->asXml()
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+        );
     }
 
     /**
+     * @deprecated the `prepareParamsXml()` method is deprecated, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
+     *
      * @param array $params
      *
      * @return \SimpleXMLElement
      */
     protected function prepareParamsXml($params)
     {
-        $_params = [
-            'tracker_ids' => 'tracker',
-            'issue_custom_field_ids' => 'issue_custom_field',
-            'enabled_module_names' => 'enabled_module_names',
-        ];
+        @trigger_error('The '.__METHOD__.' method is deprecated, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><project></project>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } elseif (isset($_params[$k]) && is_array($v)) {
-                $array = $xml->addChild($k, '');
-                $array->addAttribute('type', 'array');
-                foreach ($v as $id) {
-                    $array->addChild($_params[$k], $id);
-                }
-            } else {
-                $xml->addChild($k, htmlspecialchars($v));
-            }
-        }
-
-        return $xml;
+        return new \SimpleXMLElement(
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+        );
     }
 
     /**

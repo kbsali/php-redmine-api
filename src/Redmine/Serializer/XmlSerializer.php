@@ -2,9 +2,9 @@
 
 namespace Redmine\Serializer;
 
-use Exception;
 use Redmine\Exception\SerializerException;
 use SimpleXMLElement;
+use Throwable;
 
 /**
  * XmlSerializer
@@ -64,7 +64,7 @@ final class XmlSerializer
 
         try {
             $this->deserialized = new SimpleXMLElement($encoded);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new SerializerException(
                 'Catched error "' . $e->getMessage() . '" while decoding XML: ' . $encoded,
                 $e->getCode(),
@@ -98,7 +98,7 @@ final class XmlSerializer
 
         try {
             $this->deserialized = $this->createXmlElement($key, $this->normalized[$key]);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new SerializerException(
                 'Could not create XML from array: ' . $e->getMessage(),
                 $e->getCode(),
@@ -122,8 +122,20 @@ final class XmlSerializer
 
     private function addChildToXmlElement(SimpleXMLElement $xml, $k, $v): void
     {
+        $specialParams = [
+            'tracker_ids' => 'tracker',
+            'issue_custom_field_ids' => 'issue_custom_field',
+            'enabled_module_names' => 'enabled_module_names',
+        ];
+
         if ('custom_fields' === $k && is_array($v)) {
             $this->attachCustomFieldXML($xml, $v, 'custom_fields', 'custom_field');
+        } elseif (isset($specialParams[$k]) && is_array($v)) {
+            $array = $xml->addChild($k, '');
+            $array->addAttribute('type', 'array');
+            foreach ($v as $id) {
+                $array->addChild($specialParams[$k], $id);
+            }
         } else {
             $xml->$k = $v;
         }
@@ -150,7 +162,9 @@ final class XmlSerializer
             if (isset($field['field_format'])) {
                 $_field->addAttribute('field_format', $field['field_format']);
             }
-            $_field->addAttribute('id', $field['id']);
+            if (isset($field['id'])) {
+                $_field->addAttribute('id', $field['id']);
+            }
             if (array_key_exists('value', $field) && is_array($field['value'])) {
                 $_field->addAttribute('multiple', 'true');
                 $_values = $_field->addChild('value');
