@@ -71,6 +71,45 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
+    public function getInvalidEncodedData()
+    {
+        return [
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: ',
+                '',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+                '<?xml version="1.0" encoding="UTF-8"?>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                '<?xml version="1.0" encoding="UTF-8"?><>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                '<?xml version="1.0" encoding="UTF-8"?><a>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                '<?xml version="1.0" encoding="UTF-8"?></>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getInvalidEncodedData
+     */
+    public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
+    {
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
+
+        $serializer = XmlSerializer::createFromString($data);
+    }
+
     public function getNormalizedToEncodedData()
     {
         return [
@@ -80,6 +119,27 @@ class XmlSerializerTest extends TestCase
                         'project_id' => 1,
                         'subject' => 'Example',
                         'priority_id' => 4,
+                    ],
+                ],
+                <<< END
+                <?xml version="1.0"?>
+                <issue>
+                  <project_id>1</project_id>
+                  <subject>Example</subject>
+                  <priority_id>4</priority_id>
+                </issue>
+
+                END,
+            ],
+            [
+                [
+                    'issue' => [
+                        'project_id' => 1,
+                        'subject' => 'Example',
+                        'priority_id' => 4,
+                    ],
+                    'ignored' => [
+                        'only the first element of the array will be used',
                     ],
                 ],
                 <<< END
@@ -111,26 +171,30 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, $dom->saveXML());
     }
 
-    public function getInvalidEncodedData()
+    public function getInvalidSerializedData()
     {
         return [
-            [''],
-            ['<?xml version="1.0" encoding="UTF-8"?>'],
-            ['<?xml version="1.0" encoding="UTF-8"?><>'],
-            ['<?xml version="1.0" encoding="UTF-8"?><a>'],
-            ['<?xml version="1.0" encoding="UTF-8"?></>'],
+            [
+                'Could not create XML from array: Undefined array key ""',
+                [],
+            ],
+            [
+                'Could not create XML from array: String could not be parsed as XML',
+                ['0' => ['foobar']],
+            ],
         ];
     }
 
     /**
      * @test
      *
-     * @dataProvider getInvalidEncodedData
+     * @dataProvider getInvalidSerializedData
      */
-    public function createFromStringWithInvalidStringThrowsException(string $data)
+    public function createFromArrayWithInvalidDataThrowsException(string $message, array $data)
     {
         $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
 
-        $serializer = XmlSerializer::createFromString($data);
+        $serializer = XmlSerializer::createFromArray($data);
     }
 }

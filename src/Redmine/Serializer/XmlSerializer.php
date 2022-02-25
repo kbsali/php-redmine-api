@@ -96,7 +96,15 @@ final class XmlSerializer
 
         $key = array_key_first($this->normalized);
 
-        $this->deserialized = $this->createXmlElement($key, $this->normalized[$key]);
+        try {
+            $this->deserialized = $this->createXmlElement($key, $this->normalized[$key]);
+        } catch (Exception $e) {
+            throw new SerializerException(
+                'Could not create XML from array: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
 
         $this->encoded = $this->deserialized->asXml();
     }
