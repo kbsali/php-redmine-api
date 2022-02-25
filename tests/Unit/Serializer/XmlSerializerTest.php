@@ -10,7 +10,7 @@ use Redmine\Serializer\XmlSerializer;
 
 class XmlSerializerTest extends TestCase
 {
-    public function getNormalizedAndEncodedData()
+    public function getEncodedToNormalizedData()
     {
         return [
             [
@@ -62,13 +62,53 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getNormalizedAndEncodedData
+     * @dataProvider getEncodedToNormalizedData
      */
     public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
     {
         $serializer = XmlSerializer::createFromString($data);
 
         $this->assertSame($expected, $serializer->getNormalized());
+    }
+
+    public function getNormalizedToEncodedData()
+    {
+        return [
+            [
+                [
+                    'issue' => [
+                        'project_id' => 1,
+                        'subject' => 'Example',
+                        'priority_id' => 4,
+                    ],
+                ],
+                <<< END
+                <?xml version="1.0"?>
+                <issue>
+                  <project_id>1</project_id>
+                  <subject>Example</subject>
+                  <priority_id>4</priority_id>
+                </issue>
+
+                END,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getNormalizedToEncodedData
+     */
+    public function createFromArrayDecodesToExpectedString(array $data, $expected)
+    {
+        $serializer = XmlSerializer::createFromArray($data);
+
+        // Load the encoded string into a DOMDocument, so we can compare the formated output
+        $dom = dom_import_simplexml(new \SimpleXMLElement($serializer->getEncoded()))->ownerDocument;
+        $dom->formatOutput = true;
+
+        $this->assertSame($expected, $dom->saveXML());
     }
 
     public function getInvalidEncodedData()

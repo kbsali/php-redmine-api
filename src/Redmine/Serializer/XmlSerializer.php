@@ -22,6 +22,17 @@ final class XmlSerializer
         return $serializer;
     }
 
+    /**
+     * @throws SerializerException if $data could not be serialized to XML
+     */
+    public static function createFromArray(array $data): self
+    {
+        $serializer = new self();
+        $serializer->denormalize($data);
+
+        return $serializer;
+    }
+
     private string $encoded;
 
     /** @var mixed $normalized */
@@ -40,6 +51,11 @@ final class XmlSerializer
     public function getNormalized()
     {
         return $this->normalized;
+    }
+
+    public function getEncoded(): string
+    {
+        return $this->encoded;
     }
 
     private function deserialize(string $encoded): void
@@ -72,5 +88,27 @@ final class XmlSerializer
         }
 
         $this->normalized = JsonSerializer::createFromString($serialized)->getNormalized();
+    }
+
+    private function denormalize(array $normalized): void
+    {
+        $this->normalized = $normalized;
+
+        $key = array_key_first($this->normalized);
+
+        $this->deserialized = $this->createXmlElement($key, $this->normalized[$key]);
+
+        $this->encoded = $this->deserialized->asXml();
+    }
+
+    private function createXmlElement(string $key, array $params): SimpleXMLElement
+    {
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><'.$key.'></'.$key.'>');
+
+        foreach ($params as $k => $v) {
+            $xml->$k = $v;
+        }
+
+        return $xml;
     }
 }

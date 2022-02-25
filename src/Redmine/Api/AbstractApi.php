@@ -186,7 +186,7 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * Retrieves all the elements of a given endpoint (even if the
+     * Retrieves as many elements as you want of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
      * @param string $endpoint API end point
