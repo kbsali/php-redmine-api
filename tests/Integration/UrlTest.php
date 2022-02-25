@@ -169,7 +169,13 @@ class UrlTest extends TestCase
         $res = $api->remove(1);
         $res = json_decode($res, true);
 
-        $this->assertEquals('/issue_categories/1.xml?', $res['path']);
+        $this->assertEquals('/issue_categories/1.xml', $res['path']);
+        $this->assertEquals('DELETE', $res['method']);
+
+        $res = $api->remove(1, ['reassign_to_id' => 16]);
+        $res = json_decode($res, true);
+
+        $this->assertEquals('/issue_categories/1.xml?reassign_to_id=16', $res['path']);
         $this->assertEquals('DELETE', $res['method']);
     }
 

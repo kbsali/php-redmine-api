@@ -248,12 +248,9 @@ class IssueCategoryTest extends TestCase
         $client->expects($this->once())
             ->method('requestDelete')
             ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/issue_categories/5'),
-                    $this->logicalXor(
-                        $this->stringContains('.json?'),
-                        $this->stringContains('.xml?')
-                    )
+                $this->logicalXor(
+                    $this->stringStartsWith('/issue_categories/5.json'),
+                    $this->stringStartsWith('/issue_categories/5.xml')
                 )
             )
             ->willReturn(true);
