@@ -128,7 +128,6 @@ class XmlSerializerTest extends TestCase
                   <subject>Example</subject>
                   <priority_id>4</priority_id>
                 </issue>
-
                 END,
             ],
             [
@@ -149,7 +148,6 @@ class XmlSerializerTest extends TestCase
                   <subject>Example</subject>
                   <priority_id>4</priority_id>
                 </issue>
-
                 END,
             ],
         ];
@@ -168,20 +166,27 @@ class XmlSerializerTest extends TestCase
         $dom = dom_import_simplexml(new \SimpleXMLElement($serializer->getEncoded()))->ownerDocument;
         $dom->formatOutput = true;
 
-        $this->assertSame($expected, $dom->saveXML());
+        $this->assertSame($expected, trim($dom->saveXML()));
     }
 
     public function getInvalidSerializedData()
     {
-        return [
-            [
+        if (version_compare(\PHP_VERSION, '8.0.0', '<')) {
+            // old Exception message for PHP 7.4
+            yield [
+                'Could not create XML from array: Undefined index: ',
+                [],
+            ];
+        } else {
+            // new Exeption message for PHP 8.0
+            yield [
                 'Could not create XML from array: Undefined array key ""',
                 [],
-            ],
-            [
-                'Could not create XML from array: String could not be parsed as XML',
-                ['0' => ['foobar']],
-            ],
+            ];
+        }
+        yield [
+            'Could not create XML from array: String could not be parsed as XML',
+            ['0' => ['foobar']],
         ];
     }
 
