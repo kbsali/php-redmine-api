@@ -6,6 +6,7 @@ use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception\ConversionException;
+use Redmine\Serializer\PathSerializer;
 use SimpleXMLElement;
 
 /**
@@ -226,11 +227,9 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $queryString = http_build_query($params);
-            // replace every encoded array (`foo[0]=`, `foo[1]=`, `foo[2]=`, etc => `foo[]=`)
-            $queryString = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $queryString);
-
-            $this->client->requestGet($endpoint.'?'.$queryString);
+            $this->client->requestGet(
+                PathSerializer::create($endpoint, $params)->getPath()
+            );
 
             $newDataSet = $this->getLastResponseBodyAsArray();
 

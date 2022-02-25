@@ -105,6 +105,11 @@ class UrlTest extends TestCase
         $this->assertEquals('/issues.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
+        $res = $api->all(['limit' => 250]);
+
+        $this->assertEquals('/issues.json?limit=100&offset=0', $res['path']);
+        $this->assertEquals('GET', $res['method']);
+
         $res = $api->show(1);
 
         $this->assertEquals('/issues/1.json?', $res['path']);
@@ -332,6 +337,20 @@ class UrlTest extends TestCase
         $res = $api->all();
 
         $this->assertEquals('/time_entries.json', $res['path']);
+        $this->assertEquals('GET', $res['method']);
+
+        // Test for #154: fix http_build_query encoding array values with numeric keys
+        $res = $api->all([
+            "f"  => ["spent_on"],
+            "op" => ["spent_on" => "><"],
+            "v"  => [
+                "spent_on" => [
+                    "2016-01-18",
+                    "2016-01-22"
+                ]
+            ],
+        ]);
+        $this->assertEquals('/time_entries.json?limit=25&offset=0&f%5B%5D=spent_on&op%5Bspent_on%5D=%3E%3C&v%5Bspent_on%5D%5B%5D=2016-01-18&v%5Bspent_on%5D%5B%5D=2016-01-22', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
