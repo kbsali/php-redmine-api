@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\PathSerializer;
 
 /**
  * Listing projects, creating, editing.
@@ -90,7 +91,9 @@ class Project extends AbstractApi
             $params['include'] = 'trackers,issue_categories,attachments,relations';
         }
 
-        return $this->get('/projects/'.urlencode($id).'.json?'.http_build_query($params));
+        return $this->get(
+            PathSerializer::create('/projects/'.urlencode($id).'.json', $params)->getPath()
+        );
     }
 
     /**

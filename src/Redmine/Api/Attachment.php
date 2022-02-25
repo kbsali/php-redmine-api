@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Serializer\PathSerializer;
+
 /**
  * Attachment details.
  *
@@ -51,7 +53,10 @@ class Attachment extends AbstractApi
      */
     public function upload($attachment, $params = [])
     {
-        return $this->post('/uploads.json?'.http_build_query($params), $attachment);
+        return $this->post(
+            PathSerializer::create('/uploads.json', $params)->getPath(),
+            $attachment
+        );
     }
 
     /**

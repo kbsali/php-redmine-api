@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Serializer\PathSerializer;
+
 /**
  * Listing Wiki pages.
  *
@@ -44,11 +46,19 @@ class Wiki extends AbstractApi
      */
     public function show($project, $page, $version = null)
     {
-        $path = null === $version
-            ? '/projects/'.$project.'/wiki/'.$page.'.json?include=attachments'
-            : '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json?include=attachments';
+        $params = [
+            'include' => 'attachments',
+        ];
 
-        return $this->get($path);
+        if ($version === null) {
+            $path = '/projects/'.$project.'/wiki/'.$page.'.json';
+        } else {
+            $path = '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json';
+        }
+
+        return $this->get(
+            PathSerializer::create($path, $params)->getPath()
+        );
     }
 
     /**

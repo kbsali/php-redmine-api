@@ -28,7 +28,7 @@ class UrlTest extends TestCase
         $res = $api->upload('asdf');
         $res = json_decode($res, true);
 
-        $this->assertEquals('/uploads.json?', $res['path']);
+        $this->assertEquals('/uploads.json', $res['path']);
         $this->assertEquals('POST', $res['method']);
     }
 
@@ -59,7 +59,7 @@ class UrlTest extends TestCase
 
         $res = $api->show(1);
 
-        $this->assertEquals('/groups/1.json?', $res['path']);
+        $this->assertEquals('/groups/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);
@@ -112,7 +112,7 @@ class UrlTest extends TestCase
 
         $res = $api->show(1);
 
-        $this->assertEquals('/issues/1.json?', $res['path']);
+        $this->assertEquals('/issues/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);

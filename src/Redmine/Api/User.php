@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\PathSerializer;
 
 /**
  * Listing users, creating, editing.
@@ -117,11 +118,9 @@ class User extends AbstractApi
         );
         $params['include'] = implode(',', $params['include']);
 
-        return $this->get(sprintf(
-            '/users/%s.json?%s',
-            urlencode($id),
-            http_build_query($params)
-        ));
+        return $this->get(
+            PathSerializer::create('/users/'.urlencode($id).'.json', $params)->getPath()
+        );
     }
 
     /**
