@@ -5,7 +5,7 @@ namespace Redmine\Api;
 use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
-use Redmine\Exception\ConversionException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\PathSerializer;
 use SimpleXMLElement;
 
@@ -191,7 +191,7 @@ abstract class AbstractApi implements Api
      * @param string $endpoint API end point
      * @param array  $params   optional query parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws ConversionException if response body could not be converted into array
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array elements found
      */
@@ -298,7 +298,7 @@ abstract class AbstractApi implements Api
     /**
      * returns the last response body as array
      *
-     * @throws ConversionException if response body could not be converted into array
+     * @throws SerializerException if response body could not be converted into array
      */
     private function getLastResponseBodyAsArray(): array
     {
@@ -307,7 +307,7 @@ abstract class AbstractApi implements Api
 
         // if body is empty
         if ($body === '') {
-            throw new ConversionException(
+            throw new SerializerException(
                 'Could not convert empty response body into array'
             );
         }
@@ -319,7 +319,7 @@ abstract class AbstractApi implements Api
             try {
                 $returnData = new SimpleXMLElement($body);
             } catch (\Exception $e) {
-                throw new ConversionException(
+                throw new SerializerException(
                     'Catched error "' . $e->getMessage() . '" while decoding body as XML: ' . $body,
                     $e->getCode(),
                     $e
@@ -334,7 +334,7 @@ abstract class AbstractApi implements Api
                     \JSON_THROW_ON_ERROR
                 );
             } catch (JsonException $e) {
-                throw new ConversionException(
+                throw new SerializerException(
                     'Catched error "' . $e->getMessage() . '" while en- and decoding body as JSON: ' . $body,
                     $e->getCode(),
                     $e
@@ -349,7 +349,7 @@ abstract class AbstractApi implements Api
                     \JSON_THROW_ON_ERROR
                 );
             } catch (JsonException $e) {
-                throw new ConversionException(
+                throw new SerializerException(
                     'Catched error "' . $e->getMessage() . '" while decoding body as JSON: ' . $body,
                     $e->getCode(),
                     $e
@@ -358,7 +358,7 @@ abstract class AbstractApi implements Api
         }
 
         if (! is_array($returnData)) {
-            throw new ConversionException(
+            throw new SerializerException(
                 'Could not convert response body into array: ' . $body
             );
         }
