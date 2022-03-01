@@ -5,16 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.1.1...v2.x)
+## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.x)
 
-### Fixed
-
-- Allow unassign user from an issue
+## [v2.2.0](https://github.com/kbsali/php-redmine-api/compare/v2.1.1...v2.2.0) - 2022-03-01
 
 ### Added
 
 - New method `Redmine\Client\AbstractApi::retrieveData()` to retrieve as many elements as you want as array (even if the total number of elements is greater than 100).
 - New exception `Redmine\Client\SerializerException` for JSON/XML serializer related exceptions
+
+### Fixed
+
+- Allow unassign user from an issue
 
 ### Deprecated
 
