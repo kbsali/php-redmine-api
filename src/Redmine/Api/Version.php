@@ -28,7 +28,7 @@ class Version extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->versions = $this->retrieveAll('/projects/'.$project.'/versions.json', $params);
+        $this->versions = $this->retrieveData('/projects/'.$project.'/versions.json', $params);
 
         return $this->versions;
     }

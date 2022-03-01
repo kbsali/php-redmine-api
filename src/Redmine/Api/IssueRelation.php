@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Serializer\JsonSerializer;
+
 /**
  * Handling issue relations.
  *
@@ -25,7 +27,7 @@ class IssueRelation extends AbstractApi
      */
     public function all($issueId, array $params = [])
     {
-        $this->relations = $this->retrieveAll('/issues/'.urlencode($issueId).'/relations.json', $params);
+        $this->relations = $this->retrieveData('/issues/'.urlencode($issueId).'/relations.json', $params);
 
         return $this->relations;
     }
@@ -85,6 +87,8 @@ class IssueRelation extends AbstractApi
 
         $params = json_encode(['relation' => $params]);
 
-        return json_decode($this->post('/issues/'.urlencode($issueId).'/relations.json', $params), true);
+        $response = $this->post('/issues/'.urlencode($issueId).'/relations.json', $params);
+
+        return JsonSerializer::createFromString($response)->getNormalized();
     }
 }

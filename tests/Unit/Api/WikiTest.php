@@ -22,7 +22,8 @@ class WikiTest extends TestCase
     public function testAllReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -33,12 +34,15 @@ class WikiTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->all(5));
+        $this->assertSame($expectedReturn, $api->all(5));
     }
 
     /**
@@ -54,7 +58,8 @@ class WikiTest extends TestCase
             'offset' => 10,
             'limit' => 2,
         ];
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -71,12 +76,15 @@ class WikiTest extends TestCase
         $client->expects($this->once())
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame([$response], $api->all(5, $parameters));
+        $this->assertSame($expectedReturn, $api->all(5, $parameters));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\PathSerializer;
 
 /**
  * Listing issue categories, creating, editing.
@@ -27,7 +28,7 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->issueCategories = $this->retrieveAll('/projects/'.$project.'/issue_categories.json', $params);
+        $this->issueCategories = $this->retrieveData('/projects/'.$project.'/issue_categories.json', $params);
 
         return $this->issueCategories;
     }
@@ -158,6 +159,8 @@ class IssueCategory extends AbstractApi
      */
     public function remove($id, array $params = [])
     {
-        return $this->delete('/issue_categories/'.$id.'.xml?'.http_build_query($params));
+        return $this->delete(
+            PathSerializer::create('/issue_categories/'.$id.'.xml', $params)->getPath()
+        );
     }
 }

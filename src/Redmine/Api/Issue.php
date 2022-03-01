@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Serializer\PathSerializer;
+
 /**
  * Listing issues, searching, editing and closing your projects issues.
  *
@@ -38,7 +40,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = [])
     {
-        return $this->retrieveAll('/issues.json', $params);
+        return $this->retrieveData('/issues.json', $params);
     }
 
     /**
@@ -59,7 +61,9 @@ class Issue extends AbstractApi
             $params['include'] = implode(',', $params['include']);
         }
 
-        return $this->get('/issues/'.urlencode($id).'.json?'.http_build_query($params));
+        return $this->get(
+            PathSerializer::create('/issues/'.urlencode($id).'.json', $params)->getPath()
+        );
     }
 
     /**

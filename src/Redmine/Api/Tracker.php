@@ -24,7 +24,7 @@ class Tracker extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->trackers = $this->retrieveAll('/trackers.json', $params);
+        $this->trackers = $this->retrieveData('/trackers.json', $params);
 
         return $this->trackers;
     }

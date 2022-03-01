@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Allow unassign user from an issue
 
+### Added
+
+- New method `Redmine\Client\AbstractApi::retrieveData()` to retrieve as many elements as you want as array (even if the total number of elements is greater than 100).
+- New exception `Redmine\Client\SerializerException` for JSON/XML serializer related exceptions
+
+### Deprecated
+
+- `Redmine\Api\AbstractApi::retrieveAll()` is deprecated, use `Redmine\Api\AbstractApi::retrieveData()` instead
+
 ## [v2.1.1](https://github.com/kbsali/php-redmine-api/compare/v2.1.0...v2.1.1) - 2022-01-15
 
 ### Fixed

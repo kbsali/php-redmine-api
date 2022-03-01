@@ -139,7 +139,7 @@ class MockClient implements Client
 
         $this->responseBodyMock = json_encode($return);
         $this->responseCodeMock = 200;
-        $this->responseContentType = 'application/json';
+        $this->responseContentTypeMock = 'application/json';
 
         return true;
     }

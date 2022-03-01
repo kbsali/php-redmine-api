@@ -22,7 +22,8 @@ class IssueRelationTest extends TestCase
     public function testAllReturnsClientGetResponseWithProject()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -35,12 +36,15 @@ class IssueRelationTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->all(5));
+        $this->assertSame($expectedReturn, $api->all(5));
     }
 
     /**
@@ -53,7 +57,8 @@ class IssueRelationTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -69,12 +74,15 @@ class IssueRelationTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame([$response], $api->all(5, $parameters));
+        $this->assertSame($expectedReturn, $api->all(5, $parameters));
     }
 
     /**
@@ -121,6 +129,9 @@ class IssueRelationTest extends TestCase
      */
     public function testShowReturnsArrayIfNull()
     {
+        $response = '';
+        $expectedReturn = [];
+
         // Create the used mock objects
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
@@ -129,13 +140,16 @@ class IssueRelationTest extends TestCase
             ->willReturn(false);
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
-            ->willReturn('');
+            ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame([], $api->show(5));
+        $this->assertSame($expectedReturn, $api->show(5));
     }
 
     /**
@@ -148,7 +162,8 @@ class IssueRelationTest extends TestCase
     public function testRemoveCallsDelete()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = '["API Response"]';
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -167,12 +182,15 @@ class IssueRelationTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(0))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->remove(5));
+        $this->assertSame($expectedReturn, $api->remove(5));
     }
 
     /**
@@ -185,31 +203,34 @@ class IssueRelationTest extends TestCase
     public function testCreateCallsPost()
     {
         // Test values
-        $response = '{"test":"response"}';
-        $responseArray = ['test' => 'response'];
         $parameters = [];
+        $response = '{"test":"response"}';
+        $expectedReturn = ['test' => 'response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
-                ->method('requestPost')
-                ->with(
-                    '/issues/1/relations.json',
-                    json_encode([
-                        'relation' => [
-                            'relation_type' => 'relates',
-                        ],
-                    ])
-                )
-                ->willReturn(true);
+            ->method('requestPost')
+            ->with(
+                '/issues/1/relations.json',
+                json_encode([
+                    'relation' => [
+                        'relation_type' => 'relates',
+                    ],
+                ])
+            )
+            ->willReturn(true);
         $client->expects($this->exactly(1))
-                ->method('getLastResponseBody')
-                ->willReturn($response);
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($responseArray, $api->create(1, $parameters));
+        $this->assertSame($expectedReturn, $api->create(1, $parameters));
     }
 }

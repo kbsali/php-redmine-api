@@ -22,7 +22,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->timeEntryActivities = $this->retrieveAll('/enumerations/time_entry_activities.json', $params);
+        $this->timeEntryActivities = $this->retrieveData('/enumerations/time_entry_activities.json', $params);
 
         return $this->timeEntryActivities;
     }

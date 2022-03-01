@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Exception;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\PathSerializer;
 
 /**
  * Handling of groups.
@@ -27,7 +28,7 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->groups = $this->retrieveAll('/groups.json', $params);
+        $this->groups = $this->retrieveData('/groups.json', $params);
 
         return $this->groups;
     }
@@ -110,7 +111,9 @@ class Group extends AbstractApi
      */
     public function show($id, array $params = [])
     {
-        return $this->get('/groups/'.urlencode($id).'.json?'.http_build_query($params));
+        return $this->get(
+            PathSerializer::create('/groups/'.urlencode($id).'.json', $params)->getPath()
+        );
     }
 
     /**

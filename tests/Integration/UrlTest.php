@@ -21,7 +21,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('attachment');
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/attachments/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -29,7 +28,7 @@ class UrlTest extends TestCase
         $res = $api->upload('asdf');
         $res = json_decode($res, true);
 
-        $this->assertEquals('/uploads.json?', $res['path']);
+        $this->assertEquals('/uploads.json', $res['path']);
         $this->assertEquals('POST', $res['method']);
     }
 
@@ -37,7 +36,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('custom_fields');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/custom_fields.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -55,15 +53,13 @@ class UrlTest extends TestCase
         $this->assertEquals('POST', $res['method']);
 
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/groups.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
-        $this->assertEquals('/groups/1.json?', $res['path']);
+        $this->assertEquals('/groups/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);
@@ -105,15 +101,18 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/issues.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
-        $res = $api->show(1);
-        $res = json_decode($res, true);
+        $res = $api->all(['limit' => 250]);
 
-        $this->assertEquals('/issues/1.json?', $res['path']);
+        $this->assertEquals('/issues.json?limit=100&offset=0', $res['path']);
+        $this->assertEquals('GET', $res['method']);
+
+        $res = $api->show(1);
+
+        $this->assertEquals('/issues/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);
@@ -158,13 +157,11 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/issue_categories.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/issue_categories/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -172,7 +169,13 @@ class UrlTest extends TestCase
         $res = $api->remove(1);
         $res = json_decode($res, true);
 
-        $this->assertEquals('/issue_categories/1.xml?', $res['path']);
+        $this->assertEquals('/issue_categories/1.xml', $res['path']);
+        $this->assertEquals('DELETE', $res['method']);
+
+        $res = $api->remove(1, ['reassign_to_id' => 16]);
+        $res = json_decode($res, true);
+
+        $this->assertEquals('/issue_categories/1.xml?reassign_to_id=16', $res['path']);
         $this->assertEquals('DELETE', $res['method']);
     }
 
@@ -180,7 +183,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('issue_priority');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/enumerations/issue_priorities.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -190,7 +192,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('issue_relation');
         $res = $api->all(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/issues/1/relations.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -209,7 +210,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('issue_status');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/issue_statuses.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -237,7 +237,6 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/memberships.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -253,13 +252,11 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('news');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/news.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->all('testProject');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/news.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -286,13 +283,11 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals($res['path'], '/projects/1.json?include='.urlencode('trackers,issue_categories,attachments,relations'));
         $this->assertEquals('GET', $res['method']);
@@ -308,7 +303,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('query');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/queries.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -318,13 +312,11 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('role');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/roles.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/roles/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -349,13 +341,25 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/time_entries.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
+        // Test for #154: fix http_build_query encoding array values with numeric keys
+        $res = $api->all([
+            "f"  => ["spent_on"],
+            "op" => ["spent_on" => "><"],
+            "v"  => [
+                "spent_on" => [
+                    "2016-01-18",
+                    "2016-01-22"
+                ]
+            ],
+        ]);
+        $this->assertEquals('/time_entries.json?limit=25&offset=0&f%5B%5D=spent_on&op%5Bspent_on%5D=%3E%3C&v%5Bspent_on%5D%5B%5D=2016-01-18&v%5Bspent_on%5D%5B%5D=2016-01-22', $res['path']);
+        $this->assertEquals('GET', $res['method']);
+
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/time_entries/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -371,7 +375,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('time_entry_activity');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/enumerations/time_entry_activities.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -381,7 +384,6 @@ class UrlTest extends TestCase
     {
         $api = $this->client->getApi('tracker');
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/trackers.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -408,31 +410,26 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
-        $res = json_decode($res, true);
 
         $this->assertEquals('/users.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['memberships', 'groups']]);
-        $res = json_decode($res, true);
 
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['memberships', 'groups', 'parameter1']]);
-        $res = json_decode($res, true);
 
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups,parameter1'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['parameter1', 'memberships', 'groups']]);
-        $res = json_decode($res, true);
 
         $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('parameter1,memberships,groups'));
         $this->assertEquals('GET', $res['method']);
@@ -462,13 +459,11 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/versions.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1);
-        $res = json_decode($res, true);
 
         $this->assertEquals('/versions/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
@@ -504,19 +499,16 @@ class UrlTest extends TestCase
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/wiki/index.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show('testProject', 'about');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/wiki/about.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show('testProject', 'about', 'v1');
-        $res = json_decode($res, true);
 
         $this->assertEquals('/projects/testProject/wiki/about/v1.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);

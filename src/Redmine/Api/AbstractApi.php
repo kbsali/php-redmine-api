@@ -5,6 +5,10 @@ namespace Redmine\Api;
 use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
+use Redmine\Exception\SerializerException;
+use Redmine\Serializer\JsonSerializer;
+use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
 
 /**
@@ -51,7 +55,7 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->client->requestGet($path);
+        $this->client->requestGet(strval($path));
 
         $body = $this->client->getLastResponseBody();
         $contentType = $this->client->getLastResponseContentType();
@@ -63,9 +67,9 @@ abstract class AbstractApi implements Api
 
         if (true === $decodeIfJson && '' !== $body && 0 === strpos($contentType, 'application/json')) {
             try {
-                return json_decode($body, true, 512, \JSON_THROW_ON_ERROR);
-            } catch (JsonException $e) {
-                return 'Error decoding body as JSON: '.$e->getMessage();
+                return JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                return 'Error decoding body as JSON: '.$e->getPrevious()->getMessage();
             }
         }
 
@@ -161,23 +165,54 @@ abstract class AbstractApi implements Api
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
+     * @deprecated the `retrieveAll()` method is deprecated, use `retrieveData()` instead.
+     *
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array elements found
+     * @return array|false elements found
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
-        if (empty($params)) {
-            return $this->get($endpoint);
-        }
-        $defaults = [
-            'limit' => 25,
-            'offset' => 0,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        @trigger_error('The '.__METHOD__.' method is deprecated, use `retrieveData()` instead.', E_USER_DEPRECATED);
 
-        $ret = [];
+        try {
+            $data = $this->retrieveData(strval($endpoint), $params);
+        } catch (SerializerException $e) {
+            $data = false;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Retrieves all the elements of a given endpoint (even if the
+     * total number of elements is greater than 100).
+     *
+     * @param string $endpoint API end point
+     * @param array  $params   optional query parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
+     *
+     * @return array elements found
+     */
+    protected function retrieveData(string $endpoint, array $params = []): array
+    {
+        if (empty($params)) {
+            $this->client->requestGet($endpoint);
+
+            return $this->getLastResponseBodyAsArray();
+        }
+
+        $params = $this->sanitizeParams(
+            [
+                'limit' => 25,
+                'offset' => 0,
+            ],
+            $params
+        );
+
+        $returnData = [];
 
         $limit = $params['limit'];
         $offset = $params['offset'];
@@ -193,10 +228,16 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $newDataSet = (array) $this->get($endpoint.'?'.preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', http_build_query($params)));
-            $ret = array_merge_recursive($ret, $newDataSet);
+            $this->client->requestGet(
+                PathSerializer::create($endpoint, $params)->getPath()
+            );
+
+            $newDataSet = $this->getLastResponseBodyAsArray();
+
+            $returnData = array_merge_recursive($returnData, $newDataSet);
 
             $offset += $_limit;
+
             if (empty($newDataSet) || !isset($newDataSet['limit']) || (
                     isset($newDataSet['offset']) &&
                     isset($newDataSet['total_count']) &&
@@ -207,7 +248,7 @@ abstract class AbstractApi implements Api
             }
         }
 
-        return $ret;
+        return $returnData;
     }
 
     /**
@@ -253,5 +294,32 @@ abstract class AbstractApi implements Api
         }
 
         return $xml;
+    }
+
+    /**
+     * returns the last response body as array
+     *
+     * @throws SerializerException if response body could not be converted into array
+     */
+    private function getLastResponseBodyAsArray(): array
+    {
+        $body = $this->client->getLastResponseBody();
+        $contentType = $this->client->getLastResponseContentType();
+        $returnData = null;
+
+        // parse XML
+        if (0 === strpos($contentType, 'application/xml')) {
+            $returnData = XmlSerializer::createFromString($body)->getNormalized();
+        } else if (0 === strpos($contentType, 'application/json')) {
+            $returnData = JsonSerializer::createFromString($body)->getNormalized();
+        }
+
+        if (! is_array($returnData)) {
+            throw new SerializerException(
+                'Could not convert response body into array: ' . $body
+            );
+        }
+
+        return $returnData;
     }
 }

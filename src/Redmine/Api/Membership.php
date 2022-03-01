@@ -27,7 +27,7 @@ class Membership extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->memberships = $this->retrieveAll('/projects/'.$project.'/memberships.json', $params);
+        $this->memberships = $this->retrieveData('/projects/'.$project.'/memberships.json', $params);
 
         return $this->memberships;
     }

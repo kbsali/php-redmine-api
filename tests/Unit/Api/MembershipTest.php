@@ -24,7 +24,8 @@ class MembershipTest extends TestCase
     public function testAllReturnsClientGetResponseWithProject()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -37,12 +38,15 @@ class MembershipTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->all(5));
+        $this->assertSame($expectedReturn, $api->all(5));
     }
 
     /**
@@ -55,7 +59,8 @@ class MembershipTest extends TestCase
     {
         // Test values
         $parameters = ['not-used'];
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -71,12 +76,15 @@ class MembershipTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
 
         // Create the object under test
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame([$response], $api->all(5, $parameters));
+        $this->assertSame($expectedReturn, $api->all(5, $parameters));
     }
 
     /**

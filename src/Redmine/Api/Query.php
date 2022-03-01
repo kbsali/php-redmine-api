@@ -24,7 +24,7 @@ class Query extends AbstractApi
      */
     public function all(array $params = [])
     {
-        $this->query = $this->retrieveAll('/queries.json', $params);
+        $this->query = $this->retrieveData('/queries.json', $params);
 
         return $this->query;
     }
