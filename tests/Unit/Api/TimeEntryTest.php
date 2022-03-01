@@ -2,7 +2,6 @@
 
 namespace Redmine\Tests\Unit\Api;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Client\Client;

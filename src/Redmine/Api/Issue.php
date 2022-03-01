@@ -167,7 +167,7 @@ class Issue extends AbstractApi
         $sanitizedParams = $this->sanitizeParams($defaults, $params);
 
         // Allow assigned_to_id to be `` (empty string) to unassign a user from an issue
-        if (array_key_exists('assigned_to_id', $params) && $params['assigned_to_id'] === '') {
+        if (array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
             $sanitizedParams['assigned_to_id'] = '';
         }
 

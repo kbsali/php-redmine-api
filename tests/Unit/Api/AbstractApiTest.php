@@ -48,7 +48,7 @@ class AbstractApiTest extends TestCase
             [true, [0]],
             [true, ['0']],
             [true, ['']],
-            [true, new \stdClass],
+            [true, new \stdClass()],
         ];
     }
 

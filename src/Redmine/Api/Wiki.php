@@ -50,7 +50,7 @@ class Wiki extends AbstractApi
             'include' => 'attachments',
         ];
 
-        if ($version === null) {
+        if (null === $version) {
             $path = '/projects/'.$project.'/wiki/'.$page.'.json';
         } else {
             $path = '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json';

@@ -47,7 +47,7 @@ class JsonSerializerTest extends TestCase
             ],
             [
                 '["foo","bar"]',
-                ['foo','bar'],
+                ['foo', 'bar'],
             ],
             [
                 '{"foo":"bar"}',

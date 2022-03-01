@@ -23,6 +23,7 @@ class IssueTest extends TestCase
             [5, Issue::PRIO_IMMEDIATE],
         ];
     }
+
     /**
      * Test the constants.
      *
@@ -917,7 +918,7 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test assign an user to an issue
+     * Test assign an user to an issue.
      *
      * @test
      */
@@ -938,7 +939,6 @@ class IssueTest extends TestCase
                     $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
                     $this->stringContains('<assigned_to_id>5</assigned_to_id>'),
                     $this->stringEndsWith('</issue>'."\n"),
-
                 )
             );
 
@@ -950,7 +950,7 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test unassign an user from an issue
+     * Test unassign an user from an issue.
      *
      * @test
      */
@@ -958,7 +958,7 @@ class IssueTest extends TestCase
     {
         // Test values
         $parameters = [
-            'assigned_to_id' => "",
+            'assigned_to_id' => '',
         ];
 
         // Create the used mock objects
@@ -971,7 +971,6 @@ class IssueTest extends TestCase
                     $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
                     $this->stringContains('<assigned_to_id></assigned_to_id>'),
                     $this->stringEndsWith('</issue>'."\n"),
-
                 )
             );
 

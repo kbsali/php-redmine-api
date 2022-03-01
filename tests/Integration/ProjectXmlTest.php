@@ -3,7 +3,6 @@
 namespace Redmine\Tests\Integration;
 
 use DOMDocument;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
