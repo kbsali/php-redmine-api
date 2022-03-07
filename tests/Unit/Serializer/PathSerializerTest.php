@@ -33,12 +33,12 @@ class PathSerializerTest extends TestCase
             [
                 '/time_entries.json',
                 [
-                    'f'  => ['spent_on'],
+                    'f' => ['spent_on'],
                     'op' => ['spent_on' => '><'],
-                    'v'  => [
+                    'v' => [
                         'spent_on' => [
                             '2016-01-18',
-                            '2016-01-22'
+                            '2016-01-22',
                         ],
                     ],
                 ],

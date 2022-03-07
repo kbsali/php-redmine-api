@@ -6,7 +6,9 @@ use JsonException;
 use Redmine\Exception\SerializerException;
 
 /**
- * JsonSerializer
+ * JsonSerializer.
+ *
+ * @internal
  */
 final class JsonSerializer
 {
@@ -23,7 +25,7 @@ final class JsonSerializer
 
     private string $encoded;
 
-    /** @var mixed $normalized */
+    /** @var mixed */
     private $normalized;
 
     private function __construct()
@@ -51,11 +53,7 @@ final class JsonSerializer
                 \JSON_THROW_ON_ERROR
             );
         } catch (JsonException $e) {
-            throw new SerializerException(
-                'Catched error "' . $e->getMessage() . '" while decoding JSON: ' . $encoded,
-                $e->getCode(),
-                $e
-            );
+            throw new SerializerException('Catched error "'.$e->getMessage().'" while decoding JSON: '.$encoded, $e->getCode(), $e);
         }
     }
 }

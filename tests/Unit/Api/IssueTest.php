@@ -23,6 +23,7 @@ class IssueTest extends TestCase
             [5, Issue::PRIO_IMMEDIATE],
         ];
     }
+
     /**
      * Test the constants.
      *
@@ -914,5 +915,69 @@ class IssueTest extends TestCase
 
         // Perform the tests
         $api->create($parameters);
+    }
+
+    /**
+     * Test assign an user to an issue.
+     *
+     * @test
+     */
+    public function testAssignUserToAnIssue()
+    {
+        // Test values
+        $parameters = [
+            'assigned_to_id' => 5,
+        ];
+
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('requestPut')
+            ->with(
+                '/issues/5.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringContains('<assigned_to_id>5</assigned_to_id>'),
+                    $this->stringEndsWith('</issue>'."\n"),
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->update(5, $parameters);
+    }
+
+    /**
+     * Test unassign an user from an issue.
+     *
+     * @test
+     */
+    public function testUnassignUserFromAnIssue()
+    {
+        // Test values
+        $parameters = [
+            'assigned_to_id' => '',
+        ];
+
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('requestPut')
+            ->with(
+                '/issues/5.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringContains('<assigned_to_id></assigned_to_id>'),
+                    $this->stringEndsWith('</issue>'."\n"),
+                )
+            );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $api->update(5, $parameters);
     }
 }

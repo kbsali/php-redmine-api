@@ -2,7 +2,6 @@
 
 namespace Redmine\Api;
 
-use JsonException;
 use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
@@ -165,12 +164,12 @@ abstract class AbstractApi implements Api
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
-     * @deprecated the `retrieveAll()` method is deprecated, use `retrieveData()` instead.
+     * @deprecated the `retrieveAll()` method is deprecated, use `retrieveData()` instead
      *
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array elements found
+     * @return array|false elements found
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
@@ -297,7 +296,7 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * returns the last response body as array
+     * returns the last response body as array.
      *
      * @throws SerializerException if response body could not be converted into array
      */
@@ -310,14 +309,12 @@ abstract class AbstractApi implements Api
         // parse XML
         if (0 === strpos($contentType, 'application/xml')) {
             $returnData = XmlSerializer::createFromString($body)->getNormalized();
-        } else if (0 === strpos($contentType, 'application/json')) {
+        } elseif (0 === strpos($contentType, 'application/json')) {
             $returnData = JsonSerializer::createFromString($body)->getNormalized();
         }
 
-        if (! is_array($returnData)) {
-            throw new SerializerException(
-                'Could not convert response body into array: ' . $body
-            );
+        if (!is_array($returnData)) {
+            throw new SerializerException('Could not convert response body into array: '.$body);
         }
 
         return $returnData;

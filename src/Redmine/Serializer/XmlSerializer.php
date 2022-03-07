@@ -7,7 +7,9 @@ use SimpleXMLElement;
 use Throwable;
 
 /**
- * XmlSerializer
+ * XmlSerializer.
+ *
+ * @internal
  */
 final class XmlSerializer
 {
@@ -35,7 +37,7 @@ final class XmlSerializer
 
     private string $encoded;
 
-    /** @var mixed $normalized */
+    /** @var mixed */
     private $normalized;
 
     private SimpleXMLElement $deserialized;
@@ -80,11 +82,7 @@ final class XmlSerializer
         try {
             $serialized = json_encode($deserialized, \JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw new SerializerException(
-                'Catched error "' . $e->getMessage() . '" while encoding SimpleXMLElement',
-                $e->getCode(),
-                $e
-            );
+            throw new SerializerException('Catched error "'.$e->getMessage().'" while encoding SimpleXMLElement', $e->getCode(), $e);
         }
 
         $this->normalized = JsonSerializer::createFromString($serialized)->getNormalized();
