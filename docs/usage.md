@@ -9,11 +9,11 @@ content!**
 
 ### With Composer
 
-Please make sure you install `php-remine-api` with a PSR-4 autoloader like
+Please make sure you install the package `kbsali/redmine-api` with a PSR-4 autoloader like
 [Composer](https://getcomposer.org/).
 
 ```bash
-php composer.phar require kbsali/php-redmine-api
+php composer.phar require kbsali/redmine-api
 ```
 
 This will create a new entry in your `composer.json`.
@@ -21,7 +21,7 @@ This will create a new entry in your `composer.json`.
 ```diff
 {
     "require": {
-+        "kbsali/php-redmine-api": "^1.6"
++        "kbsali/redmine-api": "^2.2"
     }
 }
 ```
