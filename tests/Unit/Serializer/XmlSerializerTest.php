@@ -30,7 +30,7 @@ class XmlSerializerTest extends TestCase
                 ['1'],
             ],
             [
-                <<< END
+                <<< XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issues type="array" count="1640">
                   <issue>
@@ -40,7 +40,7 @@ class XmlSerializerTest extends TestCase
                     <id>4325</id>
                   </issue>
                 </issues>
-                END,
+                XML,
                 [
                     '@attributes' => [
                         'type' => 'array',
@@ -121,14 +121,14 @@ class XmlSerializerTest extends TestCase
                         'priority_id' => 4,
                     ],
                 ],
-                <<< END
+                <<< XML
                 <?xml version="1.0"?>
                 <issue>
                   <project_id>1</project_id>
                   <subject>Example</subject>
                   <priority_id>4</priority_id>
                 </issue>
-                END,
+                XML,
             ],
             [
                 [
@@ -141,14 +141,14 @@ class XmlSerializerTest extends TestCase
                         'only the first element of the array will be used',
                     ],
                 ],
-                <<< END
+                <<< XML
                 <?xml version="1.0"?>
                 <issue>
                   <project_id>1</project_id>
                   <subject>Example</subject>
                   <priority_id>4</priority_id>
                 </issue>
-                END,
+                XML,
             ],
             [
                 [
@@ -165,7 +165,7 @@ class XmlSerializerTest extends TestCase
                         ],
                     ],
                 ],
-                <<< END
+                <<< XML
                 <?xml version="1.0"?>
                 <project>
                   <name>some name</name>
@@ -180,7 +180,7 @@ class XmlSerializerTest extends TestCase
                     </custom_field>
                   </custom_fields>
                 </project>
-                END,
+                XML,
             ],
         ];
     }

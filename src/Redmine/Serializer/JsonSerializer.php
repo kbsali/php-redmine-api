@@ -23,6 +23,17 @@ final class JsonSerializer
         return $serializer;
     }
 
+    /**
+     * @throws SerializerException if $data could not be serialized to JSON
+     */
+    public static function createFromArray(array $data): self
+    {
+        $serializer = new self();
+        $serializer->encode($data);
+
+        return $serializer;
+    }
+
     private string $encoded;
 
     /** @var mixed */
@@ -41,6 +52,11 @@ final class JsonSerializer
         return $this->normalized;
     }
 
+    public function getEncoded(): string
+    {
+        return $this->encoded;
+    }
+
     private function decode(string $encoded): void
     {
         $this->encoded = $encoded;
@@ -54,6 +70,25 @@ final class JsonSerializer
             );
         } catch (JsonException $e) {
             throw new SerializerException('Catched error "'.$e->getMessage().'" while decoding JSON: '.$encoded, $e->getCode(), $e);
+        }
+    }
+
+    private function encode(array $normalized): void
+    {
+        $this->normalized = $normalized;
+
+        try {
+            $this->encoded = json_encode(
+                $normalized,
+                \JSON_THROW_ON_ERROR,
+                512
+            );
+        } catch (JsonException $e) {
+            throw new SerializerException(
+                'Could not encode JSON from array: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 }
