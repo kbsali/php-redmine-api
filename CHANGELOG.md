@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.x)
 
+### Deprecated
+
+- `Redmine\Api\AbstractApi::attachCustomFieldXML()` is deprecated
+- `Redmine\Api\Project::prepareParamsXml()` is deprecated
+
 ## [v2.2.0](https://github.com/kbsali/php-redmine-api/compare/v2.1.1...v2.2.0) - 2022-03-01
 
 ### Added
