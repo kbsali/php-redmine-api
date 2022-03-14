@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -266,13 +267,15 @@ class Issue extends AbstractApi
      */
     public function attachMany($id, array $attachments)
     {
-        $request = [];
-        $request['issue'] = [
+        $params = [
             'id' => $id,
             'uploads' => $attachments,
         ];
 
-        return $this->put('/issues/'.$id.'.json', json_encode($request));
+        return $this->put(
+            '/issues/'.$id.'.json',
+            JsonSerializer::createFromArray(['issue' => $params])->getEncoded()
+        );
     }
 
     /**
