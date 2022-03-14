@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing Wiki pages.
@@ -79,23 +80,10 @@ class Wiki extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><wiki_page></wiki_page>');
-        foreach ($params as $k => $v) {
-            if ('uploads' === $k && is_array($v)) {
-                $item = $xml->addChild('uploads', '');
-                $item->addAttribute('type', 'array');
-                foreach ($v as $upload) {
-                    $uploadItem = $item->addChild('upload', '');
-                    foreach ($upload as $uploadK => $uploadV) {
-                        $uploadItem->addChild($uploadK, $uploadV);
-                    }
-                }
-            } else {
-                $xml->addChild($k, htmlspecialchars($v));
-            }
-        }
-
-        return $this->put('/projects/'.$project.'/wiki/'.$page.'.xml', $xml->asXML());
+        return $this->put(
+            '/projects/'.$project.'/wiki/'.$page.'.xml',
+            XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
+        );
     }
 
     /**

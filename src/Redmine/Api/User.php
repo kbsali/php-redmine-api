@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing users, creating, editing.
@@ -153,16 +154,11 @@ class User extends AbstractApi
         ) {
             throw new MissingParameterException('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
         }
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
 
-        return $this->post('/users.xml', $xml->asXML());
+        return $this->post(
+            '/users.xml',
+            XmlSerializer::createFromArray(['user' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -186,16 +182,10 @@ class User extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user></user>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
-
-        return $this->put('/users/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/users/'.$id.'.xml',
+            XmlSerializer::createFromArray(['user' => $params])->getEncoded()
+        );
     }
 
     /**
