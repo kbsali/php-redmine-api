@@ -128,6 +128,21 @@ final class XmlSerializer
 
         if ('custom_fields' === $k && is_array($v)) {
             $this->attachCustomFieldXML($xml, $v, 'custom_fields', 'custom_field');
+        } elseif ('watcher_user_ids' === $k && is_array($v)) {
+            $watcherUserIds = $xml->addChild('watcher_user_ids', '');
+            $watcherUserIds->addAttribute('type', 'array');
+            foreach ($v as $watcher) {
+                $watcherUserIds->addChild('watcher_user_id', (int) $watcher);
+            }
+        } elseif ('uploads' === $k && is_array($v)) {
+            $uploadsItem = $xml->addChild('uploads', '');
+            $uploadsItem->addAttribute('type', 'array');
+            foreach ($v as $upload) {
+                $upload_item = $uploadsItem->addChild('upload', '');
+                foreach ($upload as $upload_k => $upload_v) {
+                    $upload_item->addChild($upload_k, $upload_v);
+                }
+            }
         } elseif (isset($specialParams[$k]) && is_array($v)) {
             $array = $xml->addChild($k, '');
             $array->addAttribute('type', 'array');

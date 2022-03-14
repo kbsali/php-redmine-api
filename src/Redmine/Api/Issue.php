@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing issues, searching, editing and closing your projects issues.
@@ -67,45 +68,6 @@ class Issue extends AbstractApi
     }
 
     /**
-     * Build the XML for an issue.
-     *
-     * @param array $params for the new/updated issue data
-     *
-     * @return \SimpleXMLElement
-     */
-    private function buildXML(array $params = [])
-    {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue></issue>');
-
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } elseif ('watcher_user_ids' === $k && is_array($v)) {
-                $watcherUserIds = $xml->addChild('watcher_user_ids', '');
-                $watcherUserIds->addAttribute('type', 'array');
-                foreach ($v as $watcher) {
-                    $watcherUserIds->addChild('watcher_user_id', (int) $watcher);
-                }
-            } elseif ('uploads' === $k && is_array($v)) {
-                $uploadsItem = $xml->addChild('uploads', '');
-                $uploadsItem->addAttribute('type', 'array');
-                foreach ($v as $upload) {
-                    $upload_item = $uploadsItem->addChild('upload', '');
-                    foreach ($upload as $upload_k => $upload_v) {
-                        $upload_item->addChild($upload_k, $upload_v);
-                    }
-                }
-            } else {
-                // "addChild" does not escape text for XML value, but the setter does.
-                // http://stackoverflow.com/a/555039/99904
-                $xml->$k = $v;
-            }
-        }
-
-        return $xml;
-    }
-
-    /**
      * Create a new issue given an array of $params
      * The issue is assigned to the authenticated user.
      *
@@ -135,9 +97,10 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = $this->buildXML($params);
-
-        return $this->post('/issues.xml', $xml->asXML());
+        return $this->post(
+            '/issues.xml',
+            XmlSerializer::createFromArray(['issue' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -171,9 +134,10 @@ class Issue extends AbstractApi
             $sanitizedParams['assigned_to_id'] = '';
         }
 
-        $xml = $this->buildXML($sanitizedParams);
-
-        return $this->put('/issues/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/issues/'.$id.'.xml',
+            XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded()
+        );
     }
 
     /**
