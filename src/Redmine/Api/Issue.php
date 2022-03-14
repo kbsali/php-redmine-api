@@ -148,7 +148,10 @@ class Issue extends AbstractApi
      */
     public function addWatcher($id, $watcherUserId)
     {
-        return $this->post('/issues/'.$id.'/watchers.xml', '<user_id>'.$watcherUserId.'</user_id>');
+        return $this->post(
+            '/issues/'.$id.'/watchers.xml',
+            XmlSerializer::createFromArray(['user_id' => $watcherUserId])->getEncoded()
+        );
     }
 
     /**
@@ -171,10 +174,9 @@ class Issue extends AbstractApi
     public function setIssueStatus($id, $status)
     {
         $api = $this->client->getApi('issue_status');
-        $statusId = $api->getIdByName($status);
 
         return $this->update($id, [
-            'status_id' => $statusId,
+            'status_id' => $api->getIdByName($status),
         ]);
     }
 

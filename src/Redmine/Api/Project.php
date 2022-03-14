@@ -126,7 +126,6 @@ class Project extends AbstractApi
 
         return $this->post(
             '/projects.xml',
-            // $this->prepareParamsXml($params)->asXml()
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
     }
@@ -152,7 +151,6 @@ class Project extends AbstractApi
 
         return $this->put(
             '/projects/'.$id.'.xml',
-            // $this->prepareParamsXml($params)->asXml()
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
     }
