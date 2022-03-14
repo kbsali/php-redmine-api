@@ -10,7 +10,7 @@ use Redmine\Serializer\JsonSerializer;
 
 class JsonSerializerTest extends TestCase
 {
-    public function getNormalizedAndEncodedData()
+    public function getEncodedToNormalizedData()
     {
         return [
             [
@@ -59,7 +59,7 @@ class JsonSerializerTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getNormalizedAndEncodedData
+     * @dataProvider getEncodedToNormalizedData
      */
     public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
     {
@@ -71,8 +71,14 @@ class JsonSerializerTest extends TestCase
     public function getInvalidEncodedData()
     {
         return [
-            [''],
-            ['["foo":"bar"]'],
+            [
+                'Catched error "Syntax error" while decoding JSON: ',
+                '',
+            ],
+            [
+                'Catched error "Syntax error" while decoding JSON: ["foo":"bar"]',
+                '["foo":"bar"]',
+            ],
         ];
     }
 
@@ -81,9 +87,10 @@ class JsonSerializerTest extends TestCase
      *
      * @dataProvider getInvalidEncodedData
      */
-    public function createFromStringWithInvalidStringThrowsException(string $data)
+    public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
     {
         $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
 
         $serializer = JsonSerializer::createFromString($data);
     }
