@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Handling of groups.
@@ -78,9 +79,10 @@ class Group extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
-        $xml = $this->buildXML($params);
-
-        return $this->post('/groups.xml', $xml->asXML());
+        return $this->post(
+            '/groups.xml',
+            XmlSerializer::createFromArray(['group' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -142,9 +144,10 @@ class Group extends AbstractApi
      */
     public function addUser($id, $userId)
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><user_id>'.$userId.'</user_id>');
-
-        return $this->post('/groups/'.$id.'/users.xml', $xml->asXML());
+        return $this->post(
+            '/groups/'.$id.'/users.xml',
+            XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded()
+        );
     }
 
     /**
@@ -160,30 +163,5 @@ class Group extends AbstractApi
     public function removeUser($id, $userId)
     {
         return $this->delete('/groups/'.$id.'/users/'.$userId.'.xml');
-    }
-
-    /**
-     * Build the XML for a group.
-     *
-     * @param array $params for the new/updated group data
-     *
-     * @return \SimpleXMLElement
-     */
-    private function buildXML(array $params = [])
-    {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><group></group>');
-
-        foreach ($params as $k => $v) {
-            if ('user_ids' === $k && is_array($v)) {
-                $item = $xml->addChild($k);
-                foreach ($v as $role) {
-                    $item->addChild('user_id', $role);
-                }
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
-
-        return $xml;
     }
 }

@@ -92,10 +92,10 @@ final class XmlSerializer
     {
         $this->normalized = $normalized;
 
-        $key = array_key_first($this->normalized);
+        $rootElementName = array_key_first($this->normalized);
 
         try {
-            $this->deserialized = $this->createXmlElement($key, $this->normalized[$key]);
+            $this->deserialized = $this->createXmlElement($rootElementName, $this->normalized[$rootElementName]);
         } catch (Throwable $e) {
             throw new SerializerException(
                 'Could not create XML from array: ' . $e->getMessage(),
@@ -107,12 +107,19 @@ final class XmlSerializer
         $this->encoded = $this->deserialized->asXml();
     }
 
-    private function createXmlElement(string $key, array $params): SimpleXMLElement
+    private function createXmlElement(string $rootElementName, $params): SimpleXMLElement
     {
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><'.$key.'></'.$key.'>');
+        $value = '';
+        if (! is_array($params)) {
+            $value = $params;
+        }
 
-        foreach ($params as $k => $v) {
-            $this->addChildToXmlElement($xml, $k, $v);
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><'.$rootElementName.'>'.$value.'</'.$rootElementName.'>');
+
+        if (is_array($params)) {
+            foreach ($params as $k => $v) {
+                $this->addChildToXmlElement($xml, $k, $v);
+            }
         }
 
         return $xml;
@@ -142,6 +149,11 @@ final class XmlSerializer
                 foreach ($upload as $upload_k => $upload_v) {
                     $upload_item->addChild($upload_k, $upload_v);
                 }
+            }
+        } elseif ('user_ids' === $k && is_array($v)) {
+            $item = $xml->addChild($k);
+            foreach ($v as $role) {
+                $item->addChild('user_id', $role);
             }
         } elseif (isset($specialParams[$k]) && is_array($v)) {
             $array = $xml->addChild($k, '');
