@@ -128,19 +128,16 @@ final class XmlSerializer
     private function addChildToXmlElement(SimpleXMLElement $xml, $k, $v): void
     {
         $specialParams = [
-            'tracker_ids' => 'tracker',
-            'issue_custom_field_ids' => 'issue_custom_field',
             'enabled_module_names' => 'enabled_module_names',
+            'issue_custom_field_ids' => 'issue_custom_field',
+            'role_ids' => 'role_id',
+            'tracker_ids' => 'tracker',
+            'user_ids' => 'user_id',
+            'watcher_user_ids' => 'watcher_user_id',
         ];
 
         if ('custom_fields' === $k && is_array($v)) {
             $this->attachCustomFieldXML($xml, $v, 'custom_fields', 'custom_field');
-        } elseif ('watcher_user_ids' === $k && is_array($v)) {
-            $watcherUserIds = $xml->addChild('watcher_user_ids', '');
-            $watcherUserIds->addAttribute('type', 'array');
-            foreach ($v as $watcher) {
-                $watcherUserIds->addChild('watcher_user_id', (int) $watcher);
-            }
         } elseif ('uploads' === $k && is_array($v)) {
             $uploadsItem = $xml->addChild('uploads', '');
             $uploadsItem->addAttribute('type', 'array');
@@ -149,11 +146,6 @@ final class XmlSerializer
                 foreach ($upload as $upload_k => $upload_v) {
                     $upload_item->addChild($upload_k, $upload_v);
                 }
-            }
-        } elseif ('user_ids' === $k && is_array($v)) {
-            $item = $xml->addChild($k);
-            foreach ($v as $role) {
-                $item->addChild('user_id', $role);
             }
         } elseif (isset($specialParams[$k]) && is_array($v)) {
             $array = $xml->addChild($k, '');
