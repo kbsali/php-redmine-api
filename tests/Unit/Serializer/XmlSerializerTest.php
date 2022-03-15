@@ -10,7 +10,7 @@ use Redmine\Serializer\XmlSerializer;
 
 class XmlSerializerTest extends TestCase
 {
-    public function getNormalizedAndEncodedData()
+    public function getEncodedToNormalizedData()
     {
         return [
             [
@@ -30,7 +30,7 @@ class XmlSerializerTest extends TestCase
                 ['1'],
             ],
             [
-                <<< END
+                <<< XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issues type="array" count="1640">
                   <issue>
@@ -40,7 +40,7 @@ class XmlSerializerTest extends TestCase
                     <id>4325</id>
                   </issue>
                 </issues>
-                END,
+                XML,
                 [
                     '@attributes' => [
                         'type' => 'array',
@@ -62,7 +62,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getNormalizedAndEncodedData
+     * @dataProvider getEncodedToNormalizedData
      */
     public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
     {
@@ -74,11 +74,26 @@ class XmlSerializerTest extends TestCase
     public function getInvalidEncodedData()
     {
         return [
-            [''],
-            ['<?xml version="1.0" encoding="UTF-8"?>'],
-            ['<?xml version="1.0" encoding="UTF-8"?><>'],
-            ['<?xml version="1.0" encoding="UTF-8"?><a>'],
-            ['<?xml version="1.0" encoding="UTF-8"?></>'],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: ',
+                '',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+                '<?xml version="1.0" encoding="UTF-8"?>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                '<?xml version="1.0" encoding="UTF-8"?><>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                '<?xml version="1.0" encoding="UTF-8"?><a>',
+            ],
+            [
+                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                '<?xml version="1.0" encoding="UTF-8"?></>',
+            ],
         ];
     }
 
@@ -87,10 +102,136 @@ class XmlSerializerTest extends TestCase
      *
      * @dataProvider getInvalidEncodedData
      */
-    public function createFromStringWithInvalidStringThrowsException(string $data)
+    public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
     {
         $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
 
         $serializer = XmlSerializer::createFromString($data);
+    }
+
+    public function getNormalizedToEncodedData()
+    {
+        return [
+            [
+                [
+                    'issue' => [
+                        'project_id' => 1,
+                        'subject' => 'Example',
+                        'priority_id' => 4,
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                  <project_id>1</project_id>
+                  <subject>Example</subject>
+                  <priority_id>4</priority_id>
+                </issue>
+                XML,
+            ],
+            [
+                [
+                    'issue' => [
+                        'project_id' => 1,
+                        'subject' => 'Example',
+                        'priority_id' => 4,
+                    ],
+                    'ignored' => [
+                        'only the first element of the array will be used',
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                  <project_id>1</project_id>
+                  <subject>Example</subject>
+                  <priority_id>4</priority_id>
+                </issue>
+                XML,
+            ],
+            [
+                [
+                    'project' => [
+                        'name' => 'some name',
+                        'identifier' => 'the_identifier',
+                        'custom_fields' => [
+                            [
+                                'id' => 123,
+                                'name' => 'cf_name',
+                                'field_format' => 'string',
+                                'value' => [1, 2, 3],
+                            ],
+                        ],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <project>
+                  <name>some name</name>
+                  <identifier>the_identifier</identifier>
+                  <custom_fields type="array">
+                    <custom_field name="cf_name" field_format="string" id="123" multiple="true">
+                      <value type="array">
+                        <value>1</value>
+                        <value>2</value>
+                        <value>3</value>
+                      </value>
+                    </custom_field>
+                  </custom_fields>
+                </project>
+                XML,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getNormalizedToEncodedData
+     */
+    public function createFromArrayDecodesToExpectedString(array $data, $expected)
+    {
+        $serializer = XmlSerializer::createFromArray($data);
+
+        // Load the encoded string into a DOMDocument, so we can compare the formated output
+        $dom = dom_import_simplexml(new \SimpleXMLElement($serializer->getEncoded()))->ownerDocument;
+        $dom->formatOutput = true;
+
+        $this->assertSame($expected, trim($dom->saveXML()));
+    }
+
+    public function getInvalidSerializedData()
+    {
+        if (version_compare(\PHP_VERSION, '8.0.0', '<')) {
+            // old Exception message for PHP 7.4
+            yield [
+                'Could not create XML from array: Undefined index: ',
+                [],
+            ];
+        } else {
+            // new Exeption message for PHP 8.0
+            yield [
+                'Could not create XML from array: Undefined array key ""',
+                [],
+            ];
+        }
+        yield [
+            'Could not create XML from array: String could not be parsed as XML',
+            ['0' => ['foobar']],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getInvalidSerializedData
+     */
+    public function createFromArrayWithInvalidDataThrowsException(string $message, array $data)
+    {
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
+
+        $serializer = XmlSerializer::createFromArray($data);
     }
 }

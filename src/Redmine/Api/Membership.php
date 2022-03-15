@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Handling project memberships.
@@ -56,9 +57,10 @@ class Membership extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
         }
 
-        $xml = $this->buildXML($params);
-
-        return $this->post('/projects/'.$project.'/memberships.xml', $xml->asXML());
+        return $this->post(
+            '/projects/'.$project.'/memberships.xml',
+            XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -84,9 +86,10 @@ class Membership extends AbstractApi
             throw new MissingParameterException('Missing mandatory parameters');
         }
 
-        $xml = $this->buildXML($params);
-
-        return $this->put('/memberships/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/memberships/'.$id.'.xml',
+            XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -128,31 +131,5 @@ class Membership extends AbstractApi
         }
 
         return $removed;
-    }
-
-    /**
-     * Build the XML for a membership.
-     *
-     * @param array $params for the new/updated membership data
-     *
-     * @return \SimpleXMLElement
-     */
-    private function buildXML(array $params = [])
-    {
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><membership></membership>');
-
-        foreach ($params as $k => $v) {
-            if ('role_ids' === $k && is_array($v)) {
-                $item = $xml->addChild($k);
-                $item->addAttribute('type', 'array');
-                foreach ($v as $role) {
-                    $item->addChild('role_id', $role);
-                }
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
-
-        return $xml;
     }
 }

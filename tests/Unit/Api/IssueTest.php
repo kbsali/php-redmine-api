@@ -320,7 +320,7 @@ class IssueTest extends TestCase
             ->method('requestPost')
             ->with(
                 $this->stringStartsWith('/issues/5/watchers.xml'),
-                $this->stringEndsWith('<user_id>10</user_id>')
+                $this->stringEndsWith('<user_id>10</user_id>'."\n")
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing versions, creating, editing.
@@ -120,16 +121,10 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
-
-        return $this->post('/projects/'.$project.'/versions.xml', $xml->asXML());
+        return $this->post(
+            '/projects/'.$project.'/versions.xml',
+            XmlSerializer::createFromArray(['version' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -154,16 +149,10 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><version></version>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, $v);
-            }
-        }
-
-        return $this->put('/versions/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/versions/'.$id.'.xml',
+            XmlSerializer::createFromArray(['version' => $params])->getEncoded()
+        );
     }
 
     private function validateStatus(array $params = [])

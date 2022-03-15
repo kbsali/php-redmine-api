@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing time entries, creating, editing.
@@ -75,16 +76,10 @@ class TimeEntry extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, htmlspecialchars($v));
-            }
-        }
-
-        return $this->post('/time_entries.xml', $xml->asXML());
+        return $this->post(
+            '/time_entries.xml',
+            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -109,16 +104,10 @@ class TimeEntry extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><time_entry></time_entry>');
-        foreach ($params as $k => $v) {
-            if ('custom_fields' === $k && is_array($v)) {
-                $this->attachCustomFieldXML($xml, $v);
-            } else {
-                $xml->addChild($k, htmlspecialchars($v));
-            }
-        }
-
-        return $this->put('/time_entries/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/time_entries/'.$id.'.xml',
+            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
+        );
     }
 
     /**

@@ -43,7 +43,7 @@ class GroupXmlTest extends TestCase
         $xml = '<?xml version="1.0"?>
 <group>
     <name>Developers</name>
-    <user_ids>
+    <user_ids type="array">
         <user_id>3</user_id>
         <user_id>5</user_id>
     </user_ids>

@@ -185,7 +185,7 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * Retrieves all the elements of a given endpoint (even if the
+     * Retrieves as many elements as you want of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
      * @param string $endpoint API end point
@@ -253,6 +253,8 @@ abstract class AbstractApi implements Api
     /**
      * Attaches Custom Fields to a create/update query.
      *
+     * @deprecated the `attachCustomFieldXML()` method is deprecated.
+     *
      * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param array            $fields array of fields to attach, each field needs name, id and value set
      *
@@ -262,6 +264,8 @@ abstract class AbstractApi implements Api
      */
     protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+
         $_fields = $xml->addChild('custom_fields');
         $_fields->addAttribute('type', 'array');
         foreach ($fields as $field) {

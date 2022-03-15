@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
+use Redmine\Serializer\XmlSerializer;
 
 /**
  * Listing issue categories, creating, editing.
@@ -112,12 +113,10 @@ class IssueCategory extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
-
-        return $this->post('/projects/'.$project.'/issue_categories.xml', $xml->asXML());
+        return $this->post(
+            '/projects/'.$project.'/issue_categories.xml',
+            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
+        );
     }
 
     /**
@@ -137,12 +136,10 @@ class IssueCategory extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0"?><issue_category></issue_category>');
-        foreach ($params as $k => $v) {
-            $xml->addChild($k, $v);
-        }
-
-        return $this->put('/issue_categories/'.$id.'.xml', $xml->asXML());
+        return $this->put(
+            '/issue_categories/'.$id.'.xml',
+            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
+        );
     }
 
     /**

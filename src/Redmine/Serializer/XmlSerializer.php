@@ -2,9 +2,9 @@
 
 namespace Redmine\Serializer;
 
-use Exception;
 use Redmine\Exception\SerializerException;
 use SimpleXMLElement;
+use Throwable;
 
 /**
  * XmlSerializer.
@@ -20,6 +20,17 @@ final class XmlSerializer
     {
         $serializer = new self();
         $serializer->deserialize($data);
+
+        return $serializer;
+    }
+
+    /**
+     * @throws SerializerException if $data could not be serialized to XML
+     */
+    public static function createFromArray(array $data): self
+    {
+        $serializer = new self();
+        $serializer->denormalize($data);
 
         return $serializer;
     }
@@ -44,14 +55,23 @@ final class XmlSerializer
         return $this->normalized;
     }
 
+    public function getEncoded(): string
+    {
+        return $this->encoded;
+    }
+
     private function deserialize(string $encoded): void
     {
         $this->encoded = $encoded;
 
         try {
             $this->deserialized = new SimpleXMLElement($encoded);
-        } catch (Exception $e) {
-            throw new SerializerException('Catched error "'.$e->getMessage().'" while decoding XML: '.$encoded, $e->getCode(), $e);
+        } catch (Throwable $e) {
+            throw new SerializerException(
+                'Catched error "' . $e->getMessage() . '" while decoding XML: ' . $encoded,
+                $e->getCode(),
+                $e
+            );
         }
 
         $this->normalize($this->deserialized);
@@ -66,5 +86,118 @@ final class XmlSerializer
         }
 
         $this->normalized = JsonSerializer::createFromString($serialized)->getNormalized();
+    }
+
+    private function denormalize(array $normalized): void
+    {
+        $this->normalized = $normalized;
+
+        $rootElementName = array_key_first($this->normalized);
+
+        try {
+            $this->deserialized = $this->createXmlElement($rootElementName, $this->normalized[$rootElementName]);
+        } catch (Throwable $e) {
+            throw new SerializerException(
+                'Could not create XML from array: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->encoded = $this->deserialized->asXml();
+    }
+
+    private function createXmlElement(string $rootElementName, $params): SimpleXMLElement
+    {
+        $value = '';
+        if (! is_array($params)) {
+            $value = $params;
+        }
+
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><'.$rootElementName.'>'.$value.'</'.$rootElementName.'>');
+
+        if (is_array($params)) {
+            foreach ($params as $k => $v) {
+                $this->addChildToXmlElement($xml, $k, $v);
+            }
+        }
+
+        return $xml;
+    }
+
+    private function addChildToXmlElement(SimpleXMLElement $xml, $k, $v): void
+    {
+        $specialParams = [
+            'enabled_module_names' => 'enabled_module_names',
+            'issue_custom_field_ids' => 'issue_custom_field',
+            'role_ids' => 'role_id',
+            'tracker_ids' => 'tracker',
+            'user_ids' => 'user_id',
+            'watcher_user_ids' => 'watcher_user_id',
+        ];
+
+        if ('custom_fields' === $k && is_array($v)) {
+            $this->attachCustomFieldXML($xml, $v, 'custom_fields', 'custom_field');
+        } elseif ('uploads' === $k && is_array($v)) {
+            $uploadsItem = $xml->addChild('uploads', '');
+            $uploadsItem->addAttribute('type', 'array');
+            foreach ($v as $upload) {
+                $upload_item = $uploadsItem->addChild('upload', '');
+                foreach ($upload as $upload_k => $upload_v) {
+                    $upload_item->addChild($upload_k, $upload_v);
+                }
+            }
+        } elseif (isset($specialParams[$k]) && is_array($v)) {
+            $array = $xml->addChild($k, '');
+            $array->addAttribute('type', 'array');
+            foreach ($v as $id) {
+                $array->addChild($specialParams[$k], $id);
+            }
+        } else {
+            $xml->$k = $v;
+        }
+    }
+
+    /**
+     * Attaches Custom Fields to XML element.
+     *
+     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
+     * @param array            $fields array of fields to attach, each field needs name, id and value set
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
+     */
+    private function attachCustomFieldXML(SimpleXMLElement $xml, array $fields, string $fieldsName, string $fieldName): void
+    {
+        $_fields = $xml->addChild($fieldsName);
+        $_fields->addAttribute('type', 'array');
+        foreach ($fields as $field) {
+            $_field = $_fields->addChild($fieldName);
+
+            if (isset($field['name'])) {
+                $_field->addAttribute('name', $field['name']);
+            }
+            if (isset($field['field_format'])) {
+                $_field->addAttribute('field_format', $field['field_format']);
+            }
+            if (isset($field['id'])) {
+                $_field->addAttribute('id', $field['id']);
+            }
+            if (array_key_exists('value', $field) && is_array($field['value'])) {
+                $_field->addAttribute('multiple', 'true');
+                $_values = $_field->addChild('value');
+                if (array_key_exists('token', $field['value'])) {
+                    foreach ($field['value'] as $key => $val) {
+                        $_values->addChild($key, $val);
+                    }
+                } else {
+                    $_values->addAttribute('type', 'array');
+                    foreach ($field['value'] as $val) {
+                        $_values->addChild('value', $val);
+                    }
+                }
+            } else {
+                $_field->value = $field['value'];
+            }
+        }
     }
 }
