@@ -38,5 +38,8 @@
         "psr-4": {
             "Redmine\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
