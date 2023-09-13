@@ -65,14 +65,26 @@ final class XmlSerializer
     {
         $this->encoded = $encoded;
 
+        $prevSetting = libxml_use_internal_errors(true);
+
         try {
             $this->deserialized = new SimpleXMLElement($encoded);
         } catch (Throwable $e) {
+            $errors = [];
+
+            foreach (libxml_get_errors() as $error) {
+                $errors[] = $error->message;
+            }
+
+            libxml_clear_errors();
+
             throw new SerializerException(
-                'Catched error "' . $e->getMessage() . '" while decoding XML: ' . $encoded,
+                'Catched errors: "' . implode('", "', $errors) . '" while decoding XML: ' . $encoded,
                 $e->getCode(),
                 $e
             );
+        } finally {
+            libxml_use_internal_errors($prevSetting);
         }
 
         $this->normalize($this->deserialized);
@@ -95,14 +107,26 @@ final class XmlSerializer
 
         $rootElementName = array_key_first($this->normalized);
 
+        $prevSetting = libxml_use_internal_errors(true);
+
         try {
             $this->deserialized = $this->createXmlElement($rootElementName, $this->normalized[$rootElementName]);
         } catch (Throwable $e) {
+            $errors = [];
+
+            foreach (libxml_get_errors() as $error) {
+                $errors[] = $error->message;
+            }
+
+            libxml_clear_errors();
+
             throw new SerializerException(
-                'Could not create XML from array: ' . $e->getMessage(),
+                'Could not create XML from array: "' . implode('", "', $errors) . '"',
                 $e->getCode(),
                 $e
             );
+        } finally {
+            libxml_use_internal_errors($prevSetting);
         }
 
         $this->encoded = $this->deserialized->asXml();

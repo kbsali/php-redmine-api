@@ -74,24 +74,24 @@ class XmlSerializerTest extends TestCase
     public static function getInvalidEncodedData(): array
     {
         return [
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: ',
+            'empty string' => [
+                'Catched errors: "" while decoding XML: ',
                 '',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+            'wrong start tag' => [
+                'Catched errors: "Start tag expected, \'<\' not found'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
                 '<?xml version="1.0" encoding="UTF-8"?>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+            'invalid element name as start tag' => [
+                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
                 '<?xml version="1.0" encoding="UTF-8"?><>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+            'Premature end of data' => [
+                'Catched errors: "Premature end of data in tag a line 1'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
                 '<?xml version="1.0" encoding="UTF-8"?><a>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+            'invalid element name as start tag 2' => [
+                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
                 '<?xml version="1.0" encoding="UTF-8"?></>',
             ],
         ];
@@ -204,8 +204,8 @@ class XmlSerializerTest extends TestCase
     public static function getInvalidSerializedData(): array
     {
         return[
-            [
-                'Could not create XML from array: String could not be parsed as XML',
+            'invalid element name as start tag' => [
+                'Could not create XML from array: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'"',
                 ['0' => ['foobar']],
             ]
         ];
