@@ -475,7 +475,6 @@ class IssueTest extends TestCase
      * Test create() and buildXML().
      *
      * @covers ::create
-     * @covers ::buildXML
      * @covers ::attachCustomFieldXML
      * @test
      */
@@ -719,7 +718,6 @@ class IssueTest extends TestCase
     /**
      * Test buildXML().
      *
-     * @covers ::buildXML
      * @test
      */
     public function testBuildXmlWithCustomFields()
@@ -760,7 +758,6 @@ class IssueTest extends TestCase
     /**
      * Test buildXML().
      *
-     * @covers ::buildXML
      * @test
      */
     public function testBuildXmlWithWatchers()
@@ -796,7 +793,6 @@ class IssueTest extends TestCase
     /**
      * Test buildXML().
      *
-     * @covers ::buildXML
      * @test
      */
     public function testBuildXmlWithUploads()
@@ -857,7 +853,6 @@ class IssueTest extends TestCase
     /**
      * Test buildXML().
      *
-     * @covers ::buildXML
      * @test
      */
     public function testBuildXmlWithWatcherAndUploadAndCustomFieldAndStandard()
