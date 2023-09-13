@@ -2,6 +2,7 @@
 
 namespace Redmine\Serializer;
 
+use JsonException;
 use Redmine\Exception\SerializerException;
 use SimpleXMLElement;
 use Throwable;

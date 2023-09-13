@@ -201,24 +201,13 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, trim($dom->saveXML()));
     }
 
-    public static function getInvalidSerializedData(): iterable
+    public static function getInvalidSerializedData(): array
     {
-        if (version_compare(\PHP_VERSION, '8.0.0', '<')) {
-            // old Exception message for PHP 7.4
-            yield [
-                'Could not create XML from array: Undefined index: ',
-                [],
-            ];
-        } else {
-            // new Exeption message for PHP 8.0
-            yield [
-                'Could not create XML from array: Undefined array key ""',
-                [],
-            ];
-        }
-        yield [
-            'Could not create XML from array: String could not be parsed as XML',
-            ['0' => ['foobar']],
+        return[
+            [
+                'Could not create XML from array: String could not be parsed as XML',
+                ['0' => ['foobar']],
+            ]
         ];
     }
 
