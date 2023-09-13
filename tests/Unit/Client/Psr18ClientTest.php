@@ -206,7 +206,7 @@ class Psr18ClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
-    public function getRequestReponseData()
+    public static function getRequestReponseData(): array
     {
         return [
             ['requestGet', '', true, 101, 'text/plain', ''],
@@ -253,7 +253,7 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf($class, $client->getApi($apiName));
     }
 
-    public function getApiClassesProvider()
+    public static function getApiClassesProvider(): array
     {
         return [
             ['attachment', 'Redmine\Api\Attachment'],

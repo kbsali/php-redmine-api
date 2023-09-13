@@ -13,7 +13,7 @@ use Redmine\Client\Client;
  */
 class IssueTest extends TestCase
 {
-    public function getPriorityConstantsData()
+    public static function getPriorityConstantsData(): array
     {
         return [
             [1, Issue::PRIO_LOW],

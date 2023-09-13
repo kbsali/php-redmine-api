@@ -10,7 +10,7 @@ use Redmine\Serializer\XmlSerializer;
 
 class XmlSerializerTest extends TestCase
 {
-    public function getEncodedToNormalizedData()
+    public static function getEncodedToNormalizedData(): array
     {
         return [
             [
@@ -71,7 +71,7 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
-    public function getInvalidEncodedData()
+    public static function getInvalidEncodedData(): array
     {
         return [
             [
@@ -110,7 +110,7 @@ class XmlSerializerTest extends TestCase
         $serializer = XmlSerializer::createFromString($data);
     }
 
-    public function getNormalizedToEncodedData()
+    public static function getNormalizedToEncodedData(): array
     {
         return [
             [
@@ -201,7 +201,7 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, trim($dom->saveXML()));
     }
 
-    public function getInvalidSerializedData()
+    public static function getInvalidSerializedData(): iterable
     {
         if (version_compare(\PHP_VERSION, '8.0.0', '<')) {
             // old Exception message for PHP 7.4

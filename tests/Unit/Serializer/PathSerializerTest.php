@@ -9,7 +9,7 @@ use Redmine\Serializer\PathSerializer;
 
 class PathSerializerTest extends TestCase
 {
-    public function getPathData()
+    public static function getPathData(): array
     {
         return [
             [
