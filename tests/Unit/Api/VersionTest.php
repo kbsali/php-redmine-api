@@ -909,7 +909,7 @@ class VersionTest extends TestCase
      *
      * @return array[]
      */
-    public function validSharingProvider()
+    public static function validSharingProvider(): array
     {
         return [
             ['none', '<sharing>none</sharing>'],
@@ -925,7 +925,7 @@ class VersionTest extends TestCase
      *
      * @return array[]
      */
-    public function validEmptySharingProvider()
+    public static function validEmptySharingProvider(): array
     {
         return [
             [null],
@@ -939,7 +939,7 @@ class VersionTest extends TestCase
      *
      * @return array[]
      */
-    public function invalidSharingProvider()
+    public static function invalidSharingProvider(): array
     {
         return [
             ['all'],

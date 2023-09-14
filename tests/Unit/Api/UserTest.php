@@ -323,7 +323,7 @@ class UserTest extends TestCase
      *
      * @return array[]
      */
-    public function incompleteCreateParameterProvider()
+    public static function incompleteCreateParameterProvider(): array
     {
         return [
             // Missing Login

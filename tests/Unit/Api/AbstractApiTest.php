@@ -30,7 +30,7 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, $value));
     }
 
-    public function getIsNotNullReturnsCorrectBooleanData()
+    public static function getIsNotNullReturnsCorrectBooleanData(): array
     {
         return [
             [false, null],
@@ -67,7 +67,7 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
 
-    public function getLastCallFailedData()
+    public static function getLastCallFailedData(): array
     {
         return [
             [100, true],
@@ -161,7 +161,7 @@ class AbstractApiTest extends TestCase
         }
     }
 
-    public function getJsonDecodingFromGetMethodData()
+    public static function getJsonDecodingFromGetMethodData(): array
     {
         return [
             ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]], // test decode by default
@@ -217,7 +217,7 @@ class AbstractApiTest extends TestCase
         }
     }
 
-    public function getXmlDecodingFromGetMethodData()
+    public static function getXmlDecodingFromGetMethodData(): array
     {
         return [
             ['get', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
