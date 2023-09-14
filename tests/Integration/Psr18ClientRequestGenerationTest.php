@@ -41,16 +41,6 @@ class Psr18ClientRequestGenerationTest extends TestCase
                     $headers .= $k.': '.$request->getHeaderLine($k).\PHP_EOL;
                 }
 
-                $cookies = [];
-
-                foreach ($request->getCookieParams() as $k => $v) {
-                    $cookies[] = $k.'='.$v;
-                }
-
-                if (!empty($cookies)) {
-                    $headers .= 'Cookie: '.implode('; ', $cookies).\PHP_EOL;
-                }
-
                 $fullRequest = sprintf(
                         '%s %s HTTP/%s',
                         $request->getMethod(),
