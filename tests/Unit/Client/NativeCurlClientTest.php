@@ -140,20 +140,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -208,20 +199,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -277,20 +259,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -346,20 +319,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -416,20 +380,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -490,20 +445,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -560,20 +506,11 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
-                [
-                    $this->anything(),
-                    $this->identicalTo(self::DEFAULT_CURL_OPTIONS),
-                ],
-            )
+            ->willReturnMap([
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+                [$this->anything(), $this->identicalTo($expectedOptions), true],
+                [$this->anything(), $this->identicalTo(self::DEFAULT_CURL_OPTIONS), true],
+            ])
         ;
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
@@ -628,11 +565,9 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
+            ->with(
+                $this->anything(),
+                $this->identicalTo($expectedOptions),
             )
         ;
 
@@ -684,11 +619,9 @@ class NativeCurlClientTest extends TestCase
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->identicalTo($expectedOptions),
-                ],
+            ->with(
+                $this->anything(),
+                $this->identicalTo($expectedOptions)
             )
         ;
 
@@ -744,7 +677,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
-    public function getRequestReponseData()
+    public static function getRequestReponseData(): array
     {
         return [
             ['requestGet', '', true, 101, 'text/plain', ''],
@@ -865,7 +798,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf($class, $client->getApi($apiName));
     }
 
-    public function getApiClassesProvider()
+    public static function getApiClassesProvider(): array
     {
         return [
             ['attachment', 'Redmine\Api\Attachment'],

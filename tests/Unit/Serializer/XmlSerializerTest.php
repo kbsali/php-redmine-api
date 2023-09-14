@@ -10,7 +10,7 @@ use Redmine\Serializer\XmlSerializer;
 
 class XmlSerializerTest extends TestCase
 {
-    public function getEncodedToNormalizedData()
+    public static function getEncodedToNormalizedData(): array
     {
         return [
             [
@@ -71,27 +71,27 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
-    public function getInvalidEncodedData()
+    public static function getInvalidEncodedData(): array
     {
         return [
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: ',
+            'empty string' => [
+                'Catched errors: "" while decoding XML: ',
                 '',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+            'wrong start tag' => [
+                'Catched errors: "Start tag expected, \'<\' not found'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
                 '<?xml version="1.0" encoding="UTF-8"?>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+            'invalid element name as start tag' => [
+                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
                 '<?xml version="1.0" encoding="UTF-8"?><>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+            'Premature end of data' => [
+                'Catched errors: "Premature end of data in tag a line 1'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
                 '<?xml version="1.0" encoding="UTF-8"?><a>',
             ],
-            [
-                'Catched error "String could not be parsed as XML" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+            'invalid element name as start tag 2' => [
+                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
                 '<?xml version="1.0" encoding="UTF-8"?></>',
             ],
         ];
@@ -110,7 +110,7 @@ class XmlSerializerTest extends TestCase
         $serializer = XmlSerializer::createFromString($data);
     }
 
-    public function getNormalizedToEncodedData()
+    public static function getNormalizedToEncodedData(): array
     {
         return [
             [
@@ -201,24 +201,13 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, trim($dom->saveXML()));
     }
 
-    public function getInvalidSerializedData()
+    public static function getInvalidSerializedData(): array
     {
-        if (version_compare(\PHP_VERSION, '8.0.0', '<')) {
-            // old Exception message for PHP 7.4
-            yield [
-                'Could not create XML from array: Undefined index: ',
-                [],
-            ];
-        } else {
-            // new Exeption message for PHP 8.0
-            yield [
-                'Could not create XML from array: Undefined array key ""',
-                [],
-            ];
-        }
-        yield [
-            'Could not create XML from array: String could not be parsed as XML',
-            ['0' => ['foobar']],
+        return[
+            'invalid element name as start tag' => [
+                'Could not create XML from array: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'"',
+                ['0' => ['foobar']],
+            ]
         ];
     }
 

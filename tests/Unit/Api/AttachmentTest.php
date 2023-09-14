@@ -44,7 +44,7 @@ class AttachmentTest extends TestCase
      *
      * @return array[]
      */
-    public function responseCodeProvider()
+    public static function responseCodeProvider(): array
     {
         return [
             [199, true],

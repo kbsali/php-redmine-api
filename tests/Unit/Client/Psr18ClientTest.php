@@ -131,13 +131,12 @@ class Psr18ClientTest extends TestCase
         $request = $this->createMock(RequestInterface::class);
         $request->expects($this->exactly(4))
             ->method('withHeader')
-            ->withConsecutive(
-                ['X-Redmine-API-Key', 'access_token'],
-                ['X-Redmine-API-Key', 'access_token'],
-                ['X-Redmine-Switch-User', 'Sam'],
-                ['X-Redmine-API-Key', 'access_token'],
-            )
-            ->willReturn($request);
+            ->willReturnMap([
+                ['X-Redmine-API-Key', 'access_token', $request],
+                ['X-Redmine-API-Key', 'access_token', $request],
+                ['X-Redmine-Switch-User', 'Sam', $request],
+                ['X-Redmine-API-Key', 'access_token', $request],
+            ]);
 
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->method('createRequest')->willReturn($request);
@@ -225,7 +224,7 @@ class Psr18ClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
-    public function getRequestReponseData()
+    public static function getRequestReponseData(): array
     {
         return [
             ['requestGet', '', true, 101, 'text/plain', ''],
@@ -272,7 +271,7 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf($class, $client->getApi($apiName));
     }
 
-    public function getApiClassesProvider()
+    public static function getApiClassesProvider(): array
     {
         return [
             ['attachment', 'Redmine\Api\Attachment'],

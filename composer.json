@@ -24,10 +24,10 @@
         "psr/http-factory": "^1.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "3.11.0",
-        "phpunit/phpunit": "9.5.10",
-        "guzzlehttp/psr7": "2.1.0",
-        "php-mock/php-mock-phpunit": "2.6.0"
+        "friendsofphp/php-cs-fixer": "^3",
+        "phpunit/phpunit": "^9 || 10.2.*",
+        "guzzlehttp/psr7": "^2",
+        "php-mock/php-mock-phpunit": "^2.6"
     },
     "autoload": {
         "psr-4": {
@@ -38,5 +38,9 @@
         "psr-4": {
             "Redmine\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
+        "test": "phpunit"
     }
 }

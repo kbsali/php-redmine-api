@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Allow `Psr\Http\Message\ServerRequestFactoryInterface` as Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()`
+- Added support for PHP 8.2
 
 ### Deprecated
 
@@ -42,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added support for PHP 8.1
 - New interface `Redmine\Exception` that is implemented by every library-related exception
 - New exception `Redmine\Exception\ClientException` for client related exceptions
 - New exception `Redmine\Exception\InvalidApiNameException` if an invalid API instance is requested

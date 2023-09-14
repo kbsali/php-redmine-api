@@ -97,7 +97,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         $client->$method($path, $data);
     }
 
-    public function createdGetRequestsData()
+    public static function createdGetRequestsData(): array
     {
         return [
             [

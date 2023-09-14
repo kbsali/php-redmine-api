@@ -220,7 +220,6 @@ class MembershipTest extends TestCase
      * Test create().
      *
      * @covers ::create
-     * @covers ::buildXML
      * @test
      */
     public function testCreateBuildsXml()

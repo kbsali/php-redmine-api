@@ -10,7 +10,7 @@ use Redmine\Serializer\JsonSerializer;
 
 class JsonSerializerTest extends TestCase
 {
-    public function getEncodedToNormalizedData()
+    public static function getEncodedToNormalizedData(): array
     {
         return [
             [
@@ -68,7 +68,7 @@ class JsonSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
-    public function getInvalidEncodedData()
+    public static function getInvalidEncodedData(): array
     {
         return [
             [
@@ -95,7 +95,7 @@ class JsonSerializerTest extends TestCase
         $serializer = JsonSerializer::createFromString($data);
     }
 
-    public function getNormalizedToEncodedData()
+    public static function getNormalizedToEncodedData(): array
     {
         return [
             [
@@ -197,11 +197,13 @@ class JsonSerializerTest extends TestCase
         $this->assertSame($expected, $encoded);
     }
 
-    public function getInvalidSerializedData()
+    public static function getInvalidSerializedData(): array
     {
-        yield [
-            'Could not encode JSON from array: Type is not supported',
-            [fopen('php://temp', 'r+')],
+        return [
+            [
+                'Could not encode JSON from array: Type is not supported',
+                [fopen('php://temp', 'r+')],
+            ],
         ];
     }
 
