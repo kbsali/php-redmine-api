@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.x)
 
+### Added
+
+- Added support for PHP 8.2
+
 ### Deprecated
 
 - `Redmine\Api\AbstractApi::attachCustomFieldXML()` is deprecated
@@ -37,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added support for PHP 8.1
 - New interface `Redmine\Exception` that is implemented by every library-related exception
 - New exception `Redmine\Exception\ClientException` for client related exceptions
 - New exception `Redmine\Exception\InvalidApiNameException` if an invalid API instance is requested
