@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Integration;
 
-use GuzzleHttp\Psr7\ServerRequest;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Psr18Client;
@@ -57,10 +57,10 @@ class Psr18ClientRequestGenerationTest extends TestCase
             })
         );
 
-        $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
-        $requestFactory->method('createServerRequest')->will(
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->will(
             $this->returnCallback(function ($method, $uri) {
-                return new ServerRequest($method, $uri);
+                return new Request($method, $uri);
             })
         );
 
