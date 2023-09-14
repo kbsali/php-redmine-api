@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Redmine\Client;
 
+use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Redmine\Exception\ClientException;
 
@@ -24,22 +26,45 @@ final class Psr18Client implements Client
     private ?string $password;
     private ?string $impersonateUser = null;
     private ClientInterface $httpClient;
-    private ServerRequestFactoryInterface $requestFactory;
+    private RequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
     private ?ResponseInterface $lastResponse = null;
 
     /**
-     * $apikeyOrUsername should be your ApiKey, but it could also be your username.
-     * $password needs to be set if a username is given (not recommended).
+     * @param RequestFactoryInterface|ServerRequestFactoryInterface $requestFactory
+     * @param string $apikeyOrUsername should be your ApiKey, but it could also be your username.
+     * @param ?string $password needs to be set if a username is given (not recommended).
      */
     public function __construct(
         ClientInterface $httpClient,
-        ServerRequestFactoryInterface $requestFactory,
+        $requestFactory,
         StreamFactoryInterface $streamFactory,
         string $url,
         string $apikeyOrUsername,
         string $password = null
     ) {
+        if ($requestFactory instanceof ServerRequestFactoryInterface) {
+            @trigger_error(
+                sprintf(
+                    '%s(): Providing Argument #2 ($requestFactory) as %s is deprecated since v2.3.0, please provide as %s instead.',
+                    __METHOD__,
+                    ServerRequestFactoryInterface::class,
+                    RequestFactoryInterface::class
+                ),
+                E_USER_DEPRECATED
+            );
+
+            $requestFactory = $this->handleServerRequestFactory($requestFactory);
+        }
+
+        if (! $requestFactory instanceof RequestFactoryInterface) {
+            throw new Exception(sprintf(
+                '%s(): Argument #2 ($requestFactory) must be of type %s',
+                __METHOD__,
+                RequestFactoryInterface::class
+            ));
+        }
+
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
@@ -155,9 +180,9 @@ final class Psr18Client implements Client
         return $this->lastResponse->getStatusCode() < 400;
     }
 
-    private function createRequest(string $method, string $path, string $body = ''): ServerRequestInterface
+    private function createRequest(string $method, string $path, string $body = ''): RequestInterface
     {
-        $request = $this->requestFactory->createServerRequest(
+        $request = $this->requestFactory->createRequest(
             $method,
             $this->url.$path
         );
@@ -214,5 +239,26 @@ final class Psr18Client implements Client
         }
 
         return $request;
+    }
+
+    /**
+     * We accept ServerRequestFactoryInterface for BC
+     */
+    private function handleServerRequestFactory(ServerRequestFactoryInterface $factory): RequestFactoryInterface
+    {
+        return new class($factory) implements RequestFactoryInterface
+        {
+            private ServerRequestFactoryInterface $factory;
+
+            public function __construct(ServerRequestFactoryInterface $factory)
+            {
+                $this->factory = $factory;
+            }
+
+            public function createRequest(string $method, $uri): RequestInterface
+            {
+                return $this->factory->createServerRequest($method, $uri);
+            }
+        };
     }
 }

@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Allow `Psr\Http\Message\ServerRequestFactoryInterface` as Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()`
 - Added support for PHP 8.2
 
 ### Deprecated
 
+- Providing Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()` as type `Psr\Http\Message\ServerRequestFactoryInterface` is deprecated, provide as type `Psr\Http\Message\RequestFactoryInterface` instead
 - `Redmine\Api\AbstractApi::attachCustomFieldXML()` is deprecated
 - `Redmine\Api\Project::prepareParamsXml()` is deprecated
 

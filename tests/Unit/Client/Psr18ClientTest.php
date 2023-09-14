@@ -5,9 +5,10 @@ namespace Redmine\Tests\Unit\Client;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Client;
@@ -20,6 +21,24 @@ class Psr18ClientTest extends TestCase
      * @test
      */
     public function shouldPassApiKeyToConstructor()
+    {
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token'
+        );
+
+        $this->assertInstanceOf(Psr18Client::class, $client);
+        $this->assertInstanceOf(Client::class, $client);
+    }
+
+    /**
+     * @covers \Redmine\Client\Psr18Client
+     * @test
+     */
+    public function acceptServerRequestFactoryInConstructorForBC()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -41,7 +60,7 @@ class Psr18ClientTest extends TestCase
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'username',
@@ -56,11 +75,11 @@ class Psr18ClientTest extends TestCase
      * @covers \Redmine\Client\Psr18Client
      * @test
      */
-    public function testGetLastResponseStatusCodeIsInitialNull()
+    public function testGetLastResponseStatusCodeIsInitialZero()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'
@@ -77,7 +96,7 @@ class Psr18ClientTest extends TestCase
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'
@@ -94,7 +113,7 @@ class Psr18ClientTest extends TestCase
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'
@@ -109,7 +128,7 @@ class Psr18ClientTest extends TestCase
      */
     public function testStartAndStopImpersonateUser()
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = $this->createMock(RequestInterface::class);
         $request->expects($this->exactly(4))
             ->method('withHeader')
             ->willReturnMap([
@@ -119,8 +138,8 @@ class Psr18ClientTest extends TestCase
                 ['X-Redmine-API-Key', 'access_token', $request],
             ]);
 
-        $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
-        $requestFactory->method('createServerRequest')->willReturn($request);
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -149,11 +168,11 @@ class Psr18ClientTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturn($response);
 
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = $this->createMock(RequestInterface::class);
         $request->method('withHeader')->willReturn($request);
 
-        $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
-        $requestFactory->method('createServerRequest')->willReturn($request);
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
             $httpClient,
@@ -184,12 +203,12 @@ class Psr18ClientTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturn($response);
 
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = $this->createMock(RequestInterface::class);
         $request->method('withHeader')->willReturn($request);
         $request->method('withBody')->willReturn($request);
 
-        $requestFactory = $this->createMock(ServerRequestFactoryInterface::class);
-        $requestFactory->method('createServerRequest')->willReturn($request);
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
             $httpClient,
@@ -243,7 +262,7 @@ class Psr18ClientTest extends TestCase
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'
@@ -285,7 +304,7 @@ class Psr18ClientTest extends TestCase
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'

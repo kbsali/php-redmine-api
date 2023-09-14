@@ -130,7 +130,7 @@ After this changes you should be able to test your code without errors.
 The `Redmine\Client\Psr18Client` requires:
 
 - a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle), [see packagist.org](https://packagist.org/providers/psr/http-client-implementation)
-- a `Psr\Http\Message\ServerRequestFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-factory-implementation)
+- a `Psr\Http\Message\RequestFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-factory-implementation)
 - a `Psr\Http\Message\StreamFactoryInterface` implementation (like nyholm/psr7), [see packagist.org](https://packagist.org/providers/psr/http-message-implementation)
 - a URL to your Redmine instance
 - an Apikey or username
@@ -151,20 +151,20 @@ The `Redmine\Client\Psr18Client` requires:
 );
 ```
 
-If you want more control over the PSR-17 ServerRequestFactory you can also create a anonymous class:
+If you want more control over the PSR-17 RequestFactory you can also create a anonymous class:
 
 ```diff
-+use Psr\Http\Message\ServerRequestFactoryInterface;
-+use Psr\Http\Message\ServerRequestInterface;
++use Psr\Http\Message\RequestFactoryInterface;
++use Psr\Http\Message\RequestInterface;
 +use Psr\Http\Message\StreamFactoryInterface;
 +use Psr\Http\Message\StreamInterface;
 +
 $guzzle = new \GuzzleHttp\Client();
 -$psr17Factory = new \GuzzleHttp\Psr7\HttpFactory();
-+$psr17Factory = new class() implements ServerRequestFactoryInterface, StreamFactoryInterface {
-+    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
++$psr17Factory = new class() implements RequestFactoryInterface, StreamFactoryInterface {
++    public function createRequest(string $method, $uri): RequestInterface
 +    {
-+        return new \GuzzleHttp\Psr7\ServerRequest($method, $uri);
++        return new \GuzzleHttp\Psr7\Request($method, $uri);
 +    }
 +
 +    public function createStream(string $content = ''): StreamInterface

@@ -107,7 +107,7 @@ $client = new \Redmine\Client('https://redmine.example.com', '1234567890abcdfgh'
 The `Psr18Client` requires
 
 - a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle) ([possible implementations](https://packagist.org/providers/psr/http-client-implementation))
-- a `Psr\Http\Message\ServerRequestFactoryInterface` implementation (like nyholm/psr7) ([possible implementations](https://packagist.org/providers/psr/http-factory-implementation))
+- a `Psr\Http\Message\RequestFactoryInterface` implementation (like nyholm/psr7) ([possible implementations](https://packagist.org/providers/psr/http-factory-implementation))
 - a `Psr\Http\Message\StreamFactoryInterface` implementation (like nyholm/psr7) ([possible implementations](https://packagist.org/providers/psr/http-message-implementation))
 - a URL to your Redmine instance
 - an Apikey or username
