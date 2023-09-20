@@ -4,11 +4,12 @@ namespace Redmine\Serializer;
 
 use JsonException;
 use Redmine\Exception\SerializerException;
+use Stringable;
 
 /**
  * JsonSerializer.
  */
-final class JsonSerializer
+final class JsonSerializer implements Stringable
 {
     /**
      * @throws SerializerException if $data is not valid JSON
@@ -53,6 +54,11 @@ final class JsonSerializer
     public function getEncoded(): string
     {
         return $this->encoded;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getEncoded();
     }
 
     private function decode(string $encoded): void

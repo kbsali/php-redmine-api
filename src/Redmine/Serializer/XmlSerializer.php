@@ -5,12 +5,13 @@ namespace Redmine\Serializer;
 use JsonException;
 use Redmine\Exception\SerializerException;
 use SimpleXMLElement;
+use Stringable;
 use Throwable;
 
 /**
  * XmlSerializer.
  */
-final class XmlSerializer
+final class XmlSerializer implements Stringable
 {
     /**
      * @throws SerializerException if $data is not valid XML
@@ -57,6 +58,11 @@ final class XmlSerializer
     public function getEncoded(): string
     {
         return $this->encoded;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getEncoded();
     }
 
     private function deserialize(string $encoded): void

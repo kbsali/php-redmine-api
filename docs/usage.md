@@ -598,7 +598,7 @@ Using this methods you can use every Redmine API endpoint. The following example
 ```php
 $client->requestPut(
     '/projects/1.xml',
-    \Redmine\Serializer\XmlSerializer::createFromArray([
+    (string) \Redmine\Serializer\XmlSerializer::createFromArray([
         'project' => [
             'name' => 'renamed project',
             'custom_fields' => [
@@ -610,7 +610,7 @@ $client->requestPut(
                 ],
             ],
         ]
-    ])->getEncoded()
+    ])
 );
 ```
 
@@ -620,7 +620,7 @@ Or to fetch data with complex query parameters you can use `requestGet()` with t
 
 ```php
 $client->requestGet(
-    \Redmine\Serializer\PathSerializer::create(
+    (string) \Redmine\Serializer\PathSerializer::create(
         '/time_entries.json',
         [
             'f' => ['spent_on'],
@@ -632,7 +632,7 @@ $client->requestGet(
                 ],
             ],
         ],
-    )->getPath()
+    )
 );
 ```
 
