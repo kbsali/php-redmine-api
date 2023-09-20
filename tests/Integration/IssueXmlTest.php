@@ -2,10 +2,8 @@
 
 namespace Redmine\Tests\Integration;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Tests\Fixtures\MockClient;
-use SimpleXMLElement;
 
 class IssueXmlTest extends TestCase
 {
@@ -24,12 +22,18 @@ class IssueXmlTest extends TestCase
         $api = $this->client->getApi('issue');
         $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
-        $xml = '<?xml version="1.0"?>
-<issue/>';
         $res = $api->create();
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/issues.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue/>
+            XML,
+            $response['data']
+        );
     }
 
     public function testCreateComplexWithUpload()
@@ -48,23 +52,29 @@ class IssueXmlTest extends TestCase
                 ],
             ],
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue>
-    <subject>A test issue</subject>
-    <description>Here goes the issue description</description>
-    <project_id>myproject</project_id>
-    <uploads type="array">
-      <upload>
-        <token>asdfasdfasdfasdf</token>
-        <filename>MyFile.pdf</filename>
-        <description>MyFile is better then YourFile...</description>
-        <content_type>application/pdf</content_type>
-      </upload>
-    </uploads>
-</issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/issues.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue>
+                <subject>A test issue</subject>
+                <description>Here goes the issue description</description>
+                <project_id>myproject</project_id>
+                <uploads type="array">
+                    <upload>
+                        <token>asdfasdfasdfasdf</token>
+                        <filename>MyFile.pdf</filename>
+                        <description>MyFile is better then YourFile...</description>
+                        <content_type>application/pdf</content_type>
+                    </upload>
+                </uploads>
+            </issue>
+            XML,
+            $response['data']
+        );
     }
 
     public function testCreateComplex()
@@ -94,21 +104,27 @@ class IssueXmlTest extends TestCase
             ],
             'watcher_user_ids' => [],
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue>
-    <subject>test api (xml) 3</subject>
-    <description>test api</description>
-    <project_id>test</project_id>
-    <assigned_to_id>1</assigned_to_id>
-    <custom_fields type="array">
-        <custom_field name="Issuer" id="2"><value>asdf</value></custom_field>
-        <custom_field name="Phone" id="5"><value>9939494</value></custom_field>
-        <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
-    </custom_fields>
-</issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/issues.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue>
+                <subject>test api (xml) 3</subject>
+                <description>test api</description>
+                <project_id>test</project_id>
+                <assigned_to_id>1</assigned_to_id>
+                <custom_fields type="array">
+                    <custom_field name="Issuer" id="2"><value>asdf</value></custom_field>
+                    <custom_field name="Phone" id="5"><value>9939494</value></custom_field>
+                    <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
+                </custom_fields>
+            </issue>
+            XML,
+            $response['data']
+        );
     }
 
     public function testCreateComplexWithLineBreakInDescription()
@@ -138,22 +154,28 @@ class IssueXmlTest extends TestCase
             ],
             'watcher_user_ids' => [],
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue>
-    <subject>test api (xml) 3</subject>
-    <description>line1
-line2</description>
-    <project_id>test</project_id>
-    <assigned_to_id>1</assigned_to_id>
-    <custom_fields type="array">
-        <custom_field name="Issuer" id="2"><value>asdf</value></custom_field>
-        <custom_field name="Phone" id="5"><value>9939494</value></custom_field>
-        <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
-    </custom_fields>
-</issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/issues.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue>
+                <subject>test api (xml) 3</subject>
+                <description>line1
+            line2</description>
+                <project_id>test</project_id>
+                <assigned_to_id>1</assigned_to_id>
+                <custom_fields type="array">
+                    <custom_field name="Issuer" id="2"><value>asdf</value></custom_field>
+                    <custom_field name="Phone" id="5"><value>9939494</value></custom_field>
+                    <custom_field name="Email" id="8"><value>asdf@asdf.com</value></custom_field>
+                </custom_fields>
+            </issue>
+            XML,
+            $response['data']
+        );
     }
 
     public function testUpdateIssue()
@@ -170,42 +192,44 @@ line2</description>
             // not testable because this will trigger a status name to id resolving
             // 'status' => 'Resolved',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue>
-    <id>1</id>
-    <subject>test note (xml) 1</subject>
-    <notes>test note api</notes>
-    <priority_id>5</priority_id>
-    <status_id>2</status_id>
-    <assigned_to_id>1</assigned_to_id>
-    <due_date>2014-05-13</due_date>
-</issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/issues/1.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue>
+                <id>1</id>
+                <subject>test note (xml) 1</subject>
+                <notes>test note api</notes>
+                <priority_id>5</priority_id>
+                <status_id>2</status_id>
+                <assigned_to_id>1</assigned_to_id>
+                <due_date>2014-05-13</due_date>
+            </issue>
+            XML,
+            $response['data']
+        );
     }
 
     public function testAddNoteToIssue()
     {
         $api = $this->client->getApi('issue');
         $res = $api->addNoteToIssue(1, 'some comment');
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue>
-    <id>1</id>
-    <notes>some comment</notes>
-</issue>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
-    }
-
-    private function formatXml($xml)
-    {
-        $dom = new DOMDocument('1.0');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dom->loadXML((new SimpleXMLElement($xml))->asXML());
-
-        return $dom->saveXML();
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/issues/1.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue>
+                <id>1</id>
+                <notes>some comment</notes>
+            </issue>
+            XML,
+            $response['data']
+        );
     }
 }
