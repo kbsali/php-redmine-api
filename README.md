@@ -27,7 +27,6 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 Redmine is missing some APIs for a full remote management of the data:
 * List of activities & roles: http://www.redmine.org/issues/11464
-* Closing a project: https://www.redmine.org/issues/13725
 
 A possible solution to this would be to create an extra APIs implementing the
 missing entry points. See existing effort in doing so:
