@@ -217,7 +217,9 @@ try {
 
 ## API
 
-You can now use the `getApi()` method to create and get a specific Redmine API.
+### Mid-level API
+
+You can now use the `getApi()` method to create and get a specific Redmine API. This simplifies common use-cases and gives you some features like caching and assigning a user to an issue by username instead of the user ID.
 
 To check for failed requests you can afterwards check the status code via `$client->getLastResponseStatusCode()`.
 
@@ -553,3 +555,101 @@ Array
 // Search
 $client->getApi('search')->search('Myproject', ['limit' => 100]);
 ```
+
+#### API entry points implementation state:
+
+* :heavy_check_mark: Attachments
+* :heavy_check_mark: Groups
+* :heavy_check_mark: Custom Fields
+* :heavy_check_mark: Issues
+* :heavy_check_mark: Issue Categories
+* :heavy_check_mark: Issue Priorities
+* :x: *Issue Relations - only partially implemented*
+* :heavy_check_mark: Issue Statuses
+* :heavy_check_mark: News
+* :heavy_check_mark: Projects
+* :heavy_check_mark: Project Memberships
+* :heavy_check_mark: Queries
+* :heavy_check_mark: Roles
+* :heavy_check_mark: Time Entries
+* :heavy_check_mark: Time Entry Activities
+* :heavy_check_mark: Trackers
+* :heavy_check_mark: Users
+* :heavy_check_mark: Versions
+* :heavy_check_mark: Wiki
+
+If some features are missing in `getApi()` you are welcome to create a PR. Besides, it is always possible to use the low-level API.
+
+### Low-level API
+
+The low-level API allows you to send highly customized requests to the Redmine server.
+
+> :bulb: See the [Redmine REST-API docs](https://www.redmine.org/projects/redmine/wiki/Rest_api) for available endpoints and required parameters.
+
+The client has 4 methods for requests:
+
+- `requestGet()`
+- `requestPost()`
+- `requestPut()`
+- `requestDelete()`
+
+Using this methods you can use every Redmine API endpoint. The following example shows you how to rename a project and add a custom field. To build the XML body you can use the `XmlSerializer`.
+
+```php
+$client->requestPut(
+    '/projects/1.xml',
+    \Redmine\Serializer\XmlSerializer::createFromArray([
+        'project' => [
+            'name' => 'renamed project',
+            'custom_fields' => [
+                [
+                    'id' => 123,
+                    'name' => 'cf_name',
+                    'field_format' => 'string',
+                    'value' => [1, 2, 3],
+                ],
+            ],
+        ]
+    ])->getEncoded()
+);
+```
+
+> :bulb: Use `\Redmine\Serializer\JsonSerializer` if you want to use the JSON endpoint.
+
+Or to fetch data with complex query parameters you can use `requestGet()` with the `PathSerializer`:
+
+```php
+$client->requestGet(
+    \Redmine\Serializer\PathSerializer::create(
+        '/time_entries.json',
+        [
+            'f' => ['spent_on'],
+            'op' => ['spent_on' => '><'],
+            'v' => [
+                'spent_on' => [
+                    '2016-01-18',
+                    '2016-01-22',
+                ],
+            ],
+        ],
+    )->getPath()
+);
+```
+
+After the request you can use these 3 methods to work with the response:
+
+- `getLastResponseStatusCode()`
+- `getLastResponseContentType()`
+- `getLastResponseBody()`
+
+To parse the response body from the last example to an array you can use `XmlSerializer`:
+
+```php
+if ($client->getLastResponseStatusCode() === 200) {
+    $responseAsArray = \Redmine\Serializer\XmlSerializer::createFromString(
+        $client->getLastResponseBody()
+    )->getNormalized();
+}
+```
+
+> :bulb: Use `\Redmine\Serializer\JsonSerializer` if you have send the request as JSON.

@@ -15,26 +15,8 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Choose between using native `cURL` function or any
 [PSR-18](https://www.php-fig.org/psr/psr-18/) http client like
 [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
-* API entry points implementation state:
-  * :heavy_check_mark: Attachments
-  * :heavy_check_mark: Groups
-  * :heavy_check_mark: Custom Fields
-  * :heavy_check_mark: Issues
-  * :heavy_check_mark: Issue Categories
-  * :heavy_check_mark: Issue Priorities
-  * :x: *Issue Relations - only partially implemented*
-  * :heavy_check_mark: Issue Statuses
-  * :heavy_check_mark: News
-  * :heavy_check_mark: Projects
-  * :heavy_check_mark: Project Memberships
-  * :heavy_check_mark: Queries
-  * :heavy_check_mark: Roles
-  * :heavy_check_mark: Time Entries
-  * :heavy_check_mark: Time Entry Activities
-  * :heavy_check_mark: Trackers
-  * :heavy_check_mark: Users
-  * :heavy_check_mark: Versions
-  * :heavy_check_mark: Wiki
+* [mid-level API](https://github.com/kbsali/php-redmine-api/blob/v2.x/docs/usage.md#mid-level-api) e.g. `$client->getApi('issue')->create($data)`
+* [low-level API](https://github.com/kbsali/php-redmine-api/blob/v2.x/docs/usage.md#low-level-api) e.g. `$client->requestPost('/issues.json', $data)`
 
 ## Todo
 
