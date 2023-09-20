@@ -7,8 +7,6 @@ use Redmine\Exception\SerializerException;
 
 /**
  * JsonSerializer.
- *
- * @internal
  */
 final class JsonSerializer
 {

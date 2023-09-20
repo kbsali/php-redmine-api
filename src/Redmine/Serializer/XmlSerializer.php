@@ -9,8 +9,6 @@ use Throwable;
 
 /**
  * XmlSerializer.
- *
- * @internal
  */
 final class XmlSerializer
 {
