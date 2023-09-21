@@ -39,7 +39,7 @@ final class MockClient implements Client
     public $responseCodeMock;
     public $responseContentTypeMock;
 
-    private function __csontruct() {
+    private function __construct() {
     }
 
     /**
