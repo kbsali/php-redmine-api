@@ -11,20 +11,10 @@ use SimpleXMLElement;
 
 class GroupXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
         /** @var \Redmine\Api\Group */
-        $api = $this->client->getApi('group');
+        $api = MockClient::create()->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -36,7 +26,7 @@ class GroupXmlTest extends TestCase
     public function testCreateComplex()
     {
         /** @var \Redmine\Api\Group */
-        $api = $this->client->getApi('group');
+        $api = MockClient::create()->getApi('group');
         $res = $api->create([
             'name' => 'Developers',
             'user_ids' => [3, 5],
@@ -58,7 +48,7 @@ class GroupXmlTest extends TestCase
     public function testUpdateNotImplemented()
     {
         /** @var \Redmine\Api\Group */
-        $api = $this->client->getApi('group');
+        $api = MockClient::create()->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $this->expectException(Exception::class);

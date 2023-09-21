@@ -10,20 +10,10 @@ use SimpleXMLElement;
 
 class IssueCategoryXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
         /** @var \Redmine\Api\IssueCategory */
-        $api = $this->client->getApi('issue_category');
+        $api = MockClient::create()->getApi('issue_category');
         $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -35,7 +25,7 @@ class IssueCategoryXmlTest extends TestCase
     public function testCreateComplex()
     {
         /** @var \Redmine\Api\IssueCategory */
-        $api = $this->client->getApi('issue_category');
+        $api = MockClient::create()->getApi('issue_category');
         $res = $api->create('otherProject', [
             'name' => 'test category',
         ]);
@@ -51,7 +41,7 @@ class IssueCategoryXmlTest extends TestCase
     public function testUpdate()
     {
         /** @var \Redmine\Api\IssueCategory */
-        $api = $this->client->getApi('issue_category');
+        $api = MockClient::create()->getApi('issue_category');
         $res = $api->update(1, [
             'name' => 'new category name',
         ]);

@@ -10,20 +10,10 @@ use SimpleXMLElement;
 
 class MembershipXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
         /** @var \Redmine\Api\Membership */
-        $api = $this->client->getApi('membership');
+        $api = MockClient::create()->getApi('membership');
         $this->assertInstanceOf('Redmine\Api\Membership', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -35,7 +25,7 @@ class MembershipXmlTest extends TestCase
     public function testCreateComplex()
     {
         /** @var \Redmine\Api\Membership */
-        $api = $this->client->getApi('membership');
+        $api = MockClient::create()->getApi('membership');
         $res = $api->create('otherProject', [
             'user_id' => 1,
             'role_ids' => [1, 2],
@@ -56,7 +46,7 @@ class MembershipXmlTest extends TestCase
     public function testUpdate()
     {
         /** @var \Redmine\Api\Membership */
-        $api = $this->client->getApi('membership');
+        $api = MockClient::create()->getApi('membership');
         $res = $api->update(1, [
             'role_ids' => [1, 2],
         ]);

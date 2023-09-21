@@ -245,7 +245,9 @@ final class NativeCurlClient implements Client
     /**
      * Prepare the request by setting the cURL options.
      *
-     * @return resource|\CurlHandle a cURL handle on success, <b>FALSE</b> on errors
+     * BC for PHP 7.4: Do not add the return type because CurlHandle was introduced in PHP 8.0
+     *
+     * @return \CurlHandle a cURL handle on success, <b>FALSE</b> on errors
      */
     private function createCurl(string $method, string $path, string $body = '')
     {

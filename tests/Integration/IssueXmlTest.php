@@ -9,20 +9,10 @@ use SimpleXMLElement;
 
 class IssueXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
         $xml = '<?xml version="1.0"?>
@@ -36,7 +26,7 @@ class IssueXmlTest extends TestCase
     public function testCreateComplexWithUpload()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $res = $api->create([
             'project_id' => 'myproject',
             'subject' => 'A test issue',
@@ -72,7 +62,7 @@ class IssueXmlTest extends TestCase
     public function testCreateComplex()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -117,7 +107,7 @@ class IssueXmlTest extends TestCase
     public function testCreateComplexWithLineBreakInDescription()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
             'subject' => 'test api (xml) 3',
@@ -163,7 +153,7 @@ line2</description>
     public function testUpdateIssue()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $res = $api->update(1, [
             'subject' => 'test note (xml) 1',
             'notes' => 'test note api',
@@ -193,7 +183,7 @@ line2</description>
     public function testAddNoteToIssue()
     {
         /** @var \Redmine\Api\Issue */
-        $api = $this->client->getApi('issue');
+        $api = MockClient::create()->getApi('issue');
         $res = $api->addNoteToIssue(1, 'some comment');
         $res = json_decode($res, true);
 

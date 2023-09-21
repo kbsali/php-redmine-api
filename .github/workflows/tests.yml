@@ -41,6 +41,7 @@ jobs:
         run: composer run phpstan -- --error-format=github
 
       - name: Run tests
+        if: ${{ matrix.php-versions >= '8.0' }}
         run: vendor/bin/phpunit --coverage-text
 
       - name: Upload coverage reports to Codecov

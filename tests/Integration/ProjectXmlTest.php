@@ -10,20 +10,10 @@ use SimpleXMLElement;
 
 class ProjectXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
         /** @var \Redmine\Api\Project */
-        $api = $this->client->getApi('project');
+        $api = MockClient::create()->getApi('project');
         $this->assertInstanceOf('Redmine\Api\Project', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -35,7 +25,7 @@ class ProjectXmlTest extends TestCase
     public function testCreateComplex()
     {
         /** @var \Redmine\Api\Project */
-        $api = $this->client->getApi('project');
+        $api = MockClient::create()->getApi('project');
         $res = $api->create([
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -70,7 +60,7 @@ class ProjectXmlTest extends TestCase
     public function testCreateComplexWithTrackerIds()
     {
         /** @var \Redmine\Api\Project */
-        $api = $this->client->getApi('project');
+        $api = MockClient::create()->getApi('project');
         $res = $api->create([
             'name' => 'some name',
             'identifier' => 'the_identifier',
@@ -96,7 +86,7 @@ class ProjectXmlTest extends TestCase
     public function testUpdate()
     {
         /** @var \Redmine\Api\Project */
-        $api = $this->client->getApi('project');
+        $api = MockClient::create()->getApi('project');
         $res = $api->update(1, [
             'name' => 'different name',
         ]);
