@@ -2,10 +2,8 @@
 
 namespace Redmine\Tests\Integration;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Tests\Fixtures\MockClient;
-use SimpleXMLElement;
 
 class WikiXmlTest extends TestCase
 {
@@ -27,15 +25,21 @@ class WikiXmlTest extends TestCase
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<wiki_page>
-    <text>asdf</text>
-    <comments>asdf</comments>
-    <version>asdf</version>
-</wiki_page>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/projects/testProject/wiki/about.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <wiki_page>
+                <text>asdf</text>
+                <comments>asdf</comments>
+                <version>asdf</version>
+            </wiki_page>
+            XML,
+            $response['data']
+        );
     }
 
     public function testUpdate()
@@ -46,24 +50,20 @@ class WikiXmlTest extends TestCase
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<wiki_page>
-    <text>asdf</text>
-    <comments>asdf</comments>
-    <version>asdf</version>
-</wiki_page>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
-    }
-
-    private function formatXml($xml)
-    {
-        $dom = new DOMDocument('1.0');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dom->loadXML((new SimpleXMLElement($xml))->asXML());
-
-        return $dom->saveXML();
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/projects/testProject/wiki/about.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <wiki_page>
+                <text>asdf</text>
+                <comments>asdf</comments>
+                <version>asdf</version>
+            </wiki_page>
+            XML,
+            $response['data']
+        );
     }
 }
