@@ -2,11 +2,9 @@
 
 namespace Redmine\Tests\Integration;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
-use SimpleXMLElement;
 
 class UserXmlTest extends TestCase
 {
@@ -32,16 +30,22 @@ class UserXmlTest extends TestCase
             'lastname' => 'test',
             'mail' => 'test@example.com',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<user>
-    <login>test</login>
-    <lastname>test</lastname>
-    <firstname>test</firstname>
-    <mail>test@example.com</mail>
-</user>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/users.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <user>
+                <login>test</login>
+                <lastname>test</lastname>
+                <firstname>test</firstname>
+                <mail>test@example.com</mail>
+            </user>
+            XML,
+            $response['data']
+        );
     }
 
     public function testUpdate()
@@ -51,23 +55,19 @@ class UserXmlTest extends TestCase
         $res = $api->update(1, [
             'firstname' => 'Raul',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<user>
-    <id>1</id>
-    <firstname>Raul</firstname>
-</user>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
-    }
-
-    private function formatXml($xml)
-    {
-        $dom = new DOMDocument('1.0');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dom->loadXML((new SimpleXMLElement($xml))->asXML());
-
-        return $dom->saveXML();
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/users/1.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <user>
+                <id>1</id>
+                <firstname>Raul</firstname>
+            </user>
+            XML,
+            $response['data']
+        );
     }
 }

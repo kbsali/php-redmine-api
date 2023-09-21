@@ -2,11 +2,9 @@
 
 namespace Redmine\Tests\Integration;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
-use SimpleXMLElement;
 
 class IssueCategoryXmlTest extends TestCase
 {
@@ -29,13 +27,19 @@ class IssueCategoryXmlTest extends TestCase
         $res = $api->create('otherProject', [
             'name' => 'test category',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue_category>
-    <name>test category</name>
-</issue_category>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
+        $this->assertEquals('POST', $response['method']);
+        $this->assertEquals('/projects/otherProject/issue_categories.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue_category>
+                <name>test category</name>
+            </issue_category>
+            XML,
+            $response['data']
+        );
     }
 
     public function testUpdate()
@@ -45,22 +49,18 @@ class IssueCategoryXmlTest extends TestCase
         $res = $api->update(1, [
             'name' => 'new category name',
         ]);
-        $res = json_decode($res, true);
+        $response = json_decode($res, true);
 
-        $xml = '<?xml version="1.0"?>
-<issue_category>
-    <name>new category name</name>
-</issue_category>';
-        $this->assertEquals($this->formatXml($xml), $this->formatXml($res['data']));
-    }
-
-    private function formatXml($xml)
-    {
-        $dom = new DOMDocument('1.0');
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        $dom->loadXML((new SimpleXMLElement($xml))->asXML());
-
-        return $dom->saveXML();
+        $this->assertEquals('PUT', $response['method']);
+        $this->assertEquals('/issue_categories/1.xml', $response['path']);
+        $this->assertXmlStringEqualsXmlString(
+            <<< XML
+            <?xml version="1.0"?>
+            <issue_category>
+                <name>new category name</name>
+            </issue_category>
+            XML,
+            $response['data']
+        );
     }
 }

@@ -13,6 +13,11 @@
             "name": "Kevin Saliou",
             "email": "kevin@saliou.name",
             "homepage": "http://kevin.saliou.name"
+        },
+        {
+            "name": "Artur Weigandt",
+            "email": "artur@wlabs.de",
+            "homepage": "https://wlabs.de"
         }
     ],
     "require": {
