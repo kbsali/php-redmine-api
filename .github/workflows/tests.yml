@@ -40,8 +40,11 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover coverage.xml .
 
       - name: Upload coverage reports to Codecov
+        if: ${{ success() && matrix.matrix.php-versions == '8.2' }}
         uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./.phpunit.cache/clover.xml
+          fail_ci_if_error: true
+          verbose: true
 
       - run: echo '🍏 This job's status is ${{ job.status }}.'
