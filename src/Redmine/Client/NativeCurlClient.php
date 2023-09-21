@@ -281,13 +281,13 @@ final class NativeCurlClient implements Client
                     $curlOptions[CURLOPT_POSTFIELDS] = $filedata;
                     $curlOptions[CURLOPT_INFILE] = $file;
                     $curlOptions[CURLOPT_INFILESIZE] = $size;
-                } elseif (isset($body)) {
+                } elseif ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
             case 'put':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                if (isset($body)) {
+                if ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
