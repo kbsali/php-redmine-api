@@ -21,6 +21,7 @@ class WikiXmlTest extends TestCase
 
     public function testCreateComplex()
     {
+        /** @var \Redmine\Api\Wiki */
         $api = $this->client->getApi('wiki');
         $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
@@ -40,6 +41,7 @@ class WikiXmlTest extends TestCase
 
     public function testUpdate()
     {
+        /** @var \Redmine\Api\Wiki */
         $api = $this->client->getApi('wiki');
         $res = $api->update('testProject', 'about', [
             'text' => 'asdf',

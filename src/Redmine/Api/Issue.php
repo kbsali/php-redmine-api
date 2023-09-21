@@ -76,7 +76,7 @@ class Issue extends AbstractApi
      *
      * @param array $params the new issue data
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function create(array $params = [])
     {
@@ -174,6 +174,7 @@ class Issue extends AbstractApi
      */
     public function setIssueStatus($id, $status)
     {
+        /** @var IssueStatus */
         $api = $this->client->getApi('issue_status');
 
         return $this->update($id, [
@@ -204,31 +205,37 @@ class Issue extends AbstractApi
     private function cleanParams(array $params = [])
     {
         if (isset($params['project'])) {
+            /** @var Project */
             $apiProject = $this->client->getApi('project');
             $params['project_id'] = $apiProject->getIdByName($params['project']);
             unset($params['project']);
             if (isset($params['category'])) {
+                /** @var IssueCategory */
                 $apiIssueCategory = $this->client->getApi('issue_category');
                 $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
                 unset($params['category']);
             }
         }
         if (isset($params['status'])) {
+            /** @var IssueStatus */
             $apiIssueStatus = $this->client->getApi('issue_status');
             $params['status_id'] = $apiIssueStatus->getIdByName($params['status']);
             unset($params['status']);
         }
         if (isset($params['tracker'])) {
+            /** @var Tracker */
             $apiTracker = $this->client->getApi('tracker');
             $params['tracker_id'] = $apiTracker->getIdByName($params['tracker']);
             unset($params['tracker']);
         }
         if (isset($params['assigned_to'])) {
+            /** @var User */
             $apiUser = $this->client->getApi('user');
             $params['assigned_to_id'] = $apiUser->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
         if (isset($params['author'])) {
+            /** @var User */
             $apiUser = $this->client->getApi('user');
             $params['author_id'] = $apiUser->getIdByUsername($params['author']);
             unset($params['author']);

@@ -22,6 +22,7 @@ class UserXmlTest extends TestCase
 
     public function testCreateBlank()
     {
+        /** @var \Redmine\Api\User */
         $api = $this->client->getApi('user');
         $this->assertInstanceOf('Redmine\Api\User', $api);
 
@@ -33,6 +34,7 @@ class UserXmlTest extends TestCase
 
     public function testCreateComplex()
     {
+        /** @var \Redmine\Api\User */
         $api = $this->client->getApi('user');
         $res = $api->create([
             'login' => 'test',
@@ -54,6 +56,7 @@ class UserXmlTest extends TestCase
 
     public function testUpdate()
     {
+        /** @var \Redmine\Api\User */
         $api = $this->client->getApi('user');
         $res = $api->update(1, [
             'firstname' => 'Raul',

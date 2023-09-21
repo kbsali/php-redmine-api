@@ -22,6 +22,7 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testCreateBlank()
     {
+        /** @var \Redmine\Api\IssueCategory */
         $api = $this->client->getApi('issue_category');
         $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
 
@@ -33,6 +34,7 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testCreateComplex()
     {
+        /** @var \Redmine\Api\IssueCategory */
         $api = $this->client->getApi('issue_category');
         $res = $api->create('otherProject', [
             'name' => 'test category',
@@ -48,6 +50,7 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testUpdate()
     {
+        /** @var \Redmine\Api\IssueCategory */
         $api = $this->client->getApi('issue_category');
         $res = $api->update(1, [
             'name' => 'new category name',

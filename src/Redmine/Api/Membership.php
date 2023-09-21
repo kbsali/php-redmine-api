@@ -121,7 +121,7 @@ class Membership extends AbstractApi
     {
         $memberships = $this->all($projectId, $params);
         if (!isset($memberships['memberships']) || !is_array($memberships['memberships'])) {
-            return;
+            return false;
         }
         $removed = false;
         foreach ($memberships['memberships'] as $membership) {

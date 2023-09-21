@@ -21,6 +21,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateBlank()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $this->assertInstanceOf('Redmine\Api\Issue', $api);
 
@@ -34,6 +35,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateComplexWithUpload()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'myproject',
@@ -69,6 +71,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateComplex()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
@@ -113,6 +116,7 @@ class IssueXmlTest extends TestCase
 
     public function testCreateComplexWithLineBreakInDescription()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->create([
             'project_id' => 'test',
@@ -158,6 +162,7 @@ line2</description>
 
     public function testUpdateIssue()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->update(1, [
             'subject' => 'test note (xml) 1',
@@ -187,6 +192,7 @@ line2</description>
 
     public function testAddNoteToIssue()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->addNoteToIssue(1, 'some comment');
         $res = json_decode($res, true);

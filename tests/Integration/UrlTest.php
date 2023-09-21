@@ -19,6 +19,7 @@ class UrlTest extends TestCase
 
     public function testAttachment()
     {
+        /** @var \Redmine\Api\Attachment */
         $api = $this->client->getApi('attachment');
         $res = $api->show(1);
 
@@ -34,6 +35,7 @@ class UrlTest extends TestCase
 
     public function testCustomFields()
     {
+        /** @var \Redmine\Api\CustomField */
         $api = $this->client->getApi('custom_fields');
         $res = $api->all();
 
@@ -43,6 +45,7 @@ class UrlTest extends TestCase
 
     public function testGroup()
     {
+        /** @var \Redmine\Api\Group */
         $api = $this->client->getApi('group');
         $res = $api->create([
             'name' => 'asdf',
@@ -83,6 +86,7 @@ class UrlTest extends TestCase
 
     public function testIssue()
     {
+        /** @var \Redmine\Api\Issue */
         $api = $this->client->getApi('issue');
         $res = $api->create([
             'name' => 'asdf',
@@ -139,6 +143,7 @@ class UrlTest extends TestCase
 
     public function testIssueCategory()
     {
+        /** @var \Redmine\Api\IssueCategory */
         $api = $this->client->getApi('issue_category');
         $res = $api->create('testProject', [
             'name' => 'asdf',
@@ -181,6 +186,7 @@ class UrlTest extends TestCase
 
     public function testIssuePriority()
     {
+        /** @var \Redmine\Api\IssuePriority */
         $api = $this->client->getApi('issue_priority');
         $res = $api->all();
 
@@ -190,6 +196,7 @@ class UrlTest extends TestCase
 
     public function testIssueRelation()
     {
+        /** @var \Redmine\Api\IssueRelation */
         $api = $this->client->getApi('issue_relation');
         $res = $api->all(1);
 
@@ -208,6 +215,7 @@ class UrlTest extends TestCase
 
     public function testIssueStatus()
     {
+        /** @var \Redmine\Api\IssueStatus */
         $api = $this->client->getApi('issue_status');
         $res = $api->all();
 
@@ -217,6 +225,7 @@ class UrlTest extends TestCase
 
     public function testMembership()
     {
+        /** @var \Redmine\Api\Membership */
         $api = $this->client->getApi('membership');
         $res = $api->create('testProject', [
             'user_id' => 1,
@@ -250,6 +259,7 @@ class UrlTest extends TestCase
 
     public function testNews()
     {
+        /** @var \Redmine\Api\News */
         $api = $this->client->getApi('news');
         $res = $api->all();
 
@@ -264,6 +274,7 @@ class UrlTest extends TestCase
 
     public function testProject()
     {
+        /** @var \Redmine\Api\Project */
         $api = $this->client->getApi('project');
         $res = $api->create([
             'name' => 'asdf',
@@ -301,6 +312,7 @@ class UrlTest extends TestCase
 
     public function testQuery()
     {
+        /** @var \Redmine\Api\Query */
         $api = $this->client->getApi('query');
         $res = $api->all();
 
@@ -310,6 +322,7 @@ class UrlTest extends TestCase
 
     public function testRole()
     {
+        /** @var \Redmine\Api\Role */
         $api = $this->client->getApi('role');
         $res = $api->all();
 
@@ -324,6 +337,7 @@ class UrlTest extends TestCase
 
     public function testTimeEntry()
     {
+        /** @var \Redmine\Api\TimeEntry */
         $api = $this->client->getApi('time_entry');
         $res = $api->create([
             'issue_id' => 1,
@@ -373,6 +387,7 @@ class UrlTest extends TestCase
 
     public function testTimeEntryActivity()
     {
+        /** @var \Redmine\Api\TimeEntryActivity */
         $api = $this->client->getApi('time_entry_activity');
         $res = $api->all();
 
@@ -382,6 +397,7 @@ class UrlTest extends TestCase
 
     public function testTracker()
     {
+        /** @var \Redmine\Api\Tracker */
         $api = $this->client->getApi('tracker');
         $res = $api->all();
 
@@ -391,6 +407,7 @@ class UrlTest extends TestCase
 
     public function testUser()
     {
+        /** @var \Redmine\Api\User */
         $api = $this->client->getApi('user');
         $res = $api->create([
             'login' => 'asdf',
@@ -443,6 +460,7 @@ class UrlTest extends TestCase
 
     public function testVersion()
     {
+        /** @var \Redmine\Api\Version */
         $api = $this->client->getApi('version');
         $res = $api->create('testProject', [
             'name' => 'asdf',
@@ -477,6 +495,7 @@ class UrlTest extends TestCase
 
     public function testWiki()
     {
+        /** @var \Redmine\Api\Wiki */
         $api = $this->client->getApi('wiki');
         $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
