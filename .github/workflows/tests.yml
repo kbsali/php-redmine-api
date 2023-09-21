@@ -37,14 +37,12 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: Run tests
-        run: vendor/bin/phpunit --coverage-clover coverage.xml .
+        run: vendor/bin/phpunit --coverage-clover .phpunit.cache/clover.xml
 
       - name: Upload coverage reports to Codecov
-        if: ${{ success() && matrix.matrix.php-versions == '8.2' }}
+        if: ${{ success() && matrix.php-versions == '8.2' }}
         uses: codecov/codecov-action@v3
         with:
           files: ./.phpunit.cache/clover.xml
           fail_ci_if_error: true
           verbose: true
-
-      - run: echo '🍏 This job's status is ${{ job.status }}.'
