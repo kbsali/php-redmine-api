@@ -15,22 +15,8 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Choose between using native `cURL` function or any
 [PSR-18](https://www.php-fig.org/psr/psr-18/) http client like
 [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
-* [mid-level API](https://github.com/kbsali/php-redmine-api/blob/v2.x/docs/usage.md#mid-level-api) e.g. `$client->getApi('issue')->create($data)`
-* [low-level API](https://github.com/kbsali/php-redmine-api/blob/v2.x/docs/usage.md#low-level-api) e.g. `$client->requestPost('/issues.json', $data)`
-
-## Todo
-
-* Check header's response code (especially for POST/PUT/DELETE requests)
-* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
-
-## Limitations / Missing Redmine-API
-
-Redmine is missing some APIs for a full remote management of the data:
-* List of activities & roles: http://www.redmine.org/issues/11464
-
-A possible solution to this would be to create an extra APIs implementing the
-missing entry points. See existing effort in doing so:
-https://github.com/rschobbert/redmine-miss-api
+* [mid-level API](docs/usage.md#mid-level-api) e.g. `$client->getApi('issue')->create($data)`
+* [low-level API](docs/usage.md#low-level-api) e.g. `$client->requestPost('/issues.json', $data)`
 
 ## Requirements
 
@@ -45,6 +31,20 @@ https://github.com/rschobbert/redmine-miss-api
 
 * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension if you want to use the native `cURL` functions.
 * [PHPUnit](https://phpunit.de/) >= 9.0 (optional) to run the test suite
+
+## Todo
+
+* Check header's response code (especially for POST/PUT/DELETE requests)
+* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
+
+## Limitations / Missing Redmine-API
+
+Redmine is missing some APIs for a full remote management of the data:
+* List of activities & roles: http://www.redmine.org/issues/11464
+
+A possible solution to this would be to create an extra APIs implementing the
+missing entry points. See existing effort in doing so:
+https://github.com/rschobbert/redmine-miss-api
 
 ## Install
 
