@@ -8,19 +8,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class IssueCategoryXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
-        $api = $this->client->getApi('issue_category');
+        /** @var \Redmine\Api\IssueCategory */
+        $api = MockClient::create()->getApi('issue_category');
         $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -31,7 +22,8 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->getApi('issue_category');
+        /** @var \Redmine\Api\IssueCategory */
+        $api = MockClient::create()->getApi('issue_category');
         $res = $api->create('otherProject', [
             'name' => 'test category',
         ]);
@@ -52,7 +44,8 @@ class IssueCategoryXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->getApi('issue_category');
+        /** @var \Redmine\Api\IssueCategory */
+        $api = MockClient::create()->getApi('issue_category');
         $res = $api->update(1, [
             'name' => 'new category name',
         ]);

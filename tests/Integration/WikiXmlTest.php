@@ -7,19 +7,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class WikiXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateComplex()
     {
-        $api = $this->client->getApi('wiki');
+        /** @var \Redmine\Api\Wiki */
+        $api = MockClient::create()->getApi('wiki');
         $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',
@@ -44,7 +35,8 @@ class WikiXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->getApi('wiki');
+        /** @var \Redmine\Api\Wiki */
+        $api = MockClient::create()->getApi('wiki');
         $res = $api->update('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',

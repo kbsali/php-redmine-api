@@ -8,19 +8,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class UserXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
-        $api = $this->client->getApi('user');
+        /** @var \Redmine\Api\User */
+        $api = MockClient::create()->getApi('user');
         $this->assertInstanceOf('Redmine\Api\User', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -31,7 +22,8 @@ class UserXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->getApi('user');
+        /** @var \Redmine\Api\User */
+        $api = MockClient::create()->getApi('user');
         $res = $api->create([
             'login' => 'test',
             'firstname' => 'test',
@@ -58,7 +50,8 @@ class UserXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->getApi('user');
+        /** @var \Redmine\Api\User */
+        $api = MockClient::create()->getApi('user');
         $res = $api->update(1, [
             'firstname' => 'Raul',
         ]);

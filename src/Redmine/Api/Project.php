@@ -106,7 +106,7 @@ class Project extends AbstractApi
      *
      * @throws MissingParameterException
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function create(array $params = [])
     {

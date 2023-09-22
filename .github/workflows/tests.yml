@@ -36,6 +36,10 @@ jobs:
       - name: "Install Composer dependencies"
         uses: "ramsey/composer-install@v2"
 
+      - name: Run static code analysis
+        if: ${{ matrix.php-versions == '8.2' }}
+        run: composer run phpstan -- --error-format=github
+
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover .phpunit.cache/clover.xml
 

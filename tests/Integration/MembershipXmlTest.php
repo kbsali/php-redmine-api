@@ -8,19 +8,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class MembershipXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
-        $api = $this->client->getApi('membership');
+        /** @var \Redmine\Api\Membership */
+        $api = MockClient::create()->getApi('membership');
         $this->assertInstanceOf('Redmine\Api\Membership', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -31,7 +22,8 @@ class MembershipXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $api = $this->client->getApi('membership');
+        /** @var \Redmine\Api\Membership */
+        $api = MockClient::create()->getApi('membership');
         $res = $api->create('otherProject', [
             'user_id' => 1,
             'role_ids' => [1, 2],
@@ -57,7 +49,8 @@ class MembershipXmlTest extends TestCase
 
     public function testUpdate()
     {
-        $api = $this->client->getApi('membership');
+        /** @var \Redmine\Api\Membership */
+        $api = MockClient::create()->getApi('membership');
         $res = $api->update(1, [
             'role_ids' => [1, 2],
         ]);

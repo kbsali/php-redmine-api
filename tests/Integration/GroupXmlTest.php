@@ -9,19 +9,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class GroupXmlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testCreateBlank()
     {
-        $api = $this->client->getApi('group');
+        /** @var \Redmine\Api\Group */
+        $api = MockClient::create()->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $this->expectException(MissingParameterException::class);
@@ -32,7 +23,9 @@ class GroupXmlTest extends TestCase
 
     public function testCreateComplex()
     {
-        $res = $this->client->getApi('group')->create([
+        /** @var \Redmine\Api\Group */
+        $api = MockClient::create()->getApi('group');
+        $res = $api->create([
             'name' => 'Developers',
             'user_ids' => [3, 5],
         ]);
@@ -57,7 +50,8 @@ class GroupXmlTest extends TestCase
 
     public function testUpdateNotImplemented()
     {
-        $api = $this->client->getApi('group');
+        /** @var \Redmine\Api\Group */
+        $api = MockClient::create()->getApi('group');
         $this->assertInstanceOf('Redmine\Api\Group', $api);
 
         $this->expectException(Exception::class);
