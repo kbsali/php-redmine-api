@@ -13,6 +13,11 @@
             "name": "Kevin Saliou",
             "email": "kevin@saliou.name",
             "homepage": "http://kevin.saliou.name"
+        },
+        {
+            "name": "Artur Weigandt",
+            "email": "artur@wlabs.de",
+            "homepage": "https://wlabs.de"
         }
     ],
     "require": {
@@ -27,7 +32,8 @@
         "friendsofphp/php-cs-fixer": "^3",
         "phpunit/phpunit": "^9 || 10.2.*",
         "guzzlehttp/psr7": "^2",
-        "php-mock/php-mock-phpunit": "^2.6"
+        "php-mock/php-mock-phpunit": "^2.6",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
@@ -41,6 +47,7 @@
     },
     "scripts": {
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
+        "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
         "test": "phpunit"
     }
 }

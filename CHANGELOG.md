@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New class `Redmine\Serializer\PathSerializer` to build an URL path with query parameters.
 - New class `Redmine\Serializer\JsonSerializer` to encode or normalize JSON data.
 - New class `Redmine\Serializer\XmlSerializer` to encode or normalize XML data.
-- Allow `Psr\Http\Message\ServerRequestFactoryInterface` as Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()`
+- Allow `Psr\Http\Message\RequestFactoryInterface` as Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()`
 - Added support for PHP 8.2
 
 ### Deprecated

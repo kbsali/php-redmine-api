@@ -5,7 +5,6 @@ on:
   pull_request:
 
 jobs:
-
   tests:
     name: Tests (PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }})
     runs-on: ubuntu-latest
@@ -13,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['7.4', '8.0', '8.1', '8.2']
+        operating-system: ["ubuntu-latest"]
+        php-versions: ["7.4", "8.0", "8.1", "8.2"]
 
     steps:
       - name: Checkout
@@ -22,7 +21,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo '💡 The ${{ github.repository }} repository has been cloned to the runner.'
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -37,7 +36,17 @@ jobs:
       - name: "Install Composer dependencies"
         uses: "ramsey/composer-install@v2"
 
-      - name: Run tests
-        run: vendor/bin/phpunit --coverage-text
+      - name: Run static code analysis
+        if: ${{ matrix.php-versions == '8.2' }}
+        run: composer run phpstan -- --error-format=github
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Run tests
+        run: vendor/bin/phpunit --coverage-clover .phpunit.cache/clover.xml
+
+      - name: Upload coverage reports to Codecov
+        if: ${{ success() && matrix.php-versions == '8.2' }}
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./.phpunit.cache/clover.xml
+          fail_ci_if_error: true
+          verbose: true

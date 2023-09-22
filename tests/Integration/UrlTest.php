@@ -7,19 +7,10 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class UrlTest extends TestCase
 {
-    /**
-     * @var MockClient
-     */
-    private $client;
-
-    public function setup(): void
-    {
-        $this->client = new MockClient('http://test.local', 'asdf');
-    }
-
     public function testAttachment()
     {
-        $api = $this->client->getApi('attachment');
+        /** @var \Redmine\Api\Attachment */
+        $api = MockClient::create()->getApi('attachment');
         $res = $api->show(1);
 
         $this->assertEquals('/attachments/1.json', $res['path']);
@@ -34,7 +25,8 @@ class UrlTest extends TestCase
 
     public function testCustomFields()
     {
-        $api = $this->client->getApi('custom_fields');
+        /** @var \Redmine\Api\CustomField */
+        $api = MockClient::create()->getApi('custom_fields');
         $res = $api->all();
 
         $this->assertEquals('/custom_fields.json', $res['path']);
@@ -43,7 +35,8 @@ class UrlTest extends TestCase
 
     public function testGroup()
     {
-        $api = $this->client->getApi('group');
+        /** @var \Redmine\Api\Group */
+        $api = MockClient::create()->getApi('group');
         $res = $api->create([
             'name' => 'asdf',
         ]);
@@ -83,7 +76,8 @@ class UrlTest extends TestCase
 
     public function testIssue()
     {
-        $api = $this->client->getApi('issue');
+        /** @var \Redmine\Api\Issue */
+        $api = MockClient::create()->getApi('issue');
         $res = $api->create([
             'name' => 'asdf',
         ]);
@@ -139,7 +133,8 @@ class UrlTest extends TestCase
 
     public function testIssueCategory()
     {
-        $api = $this->client->getApi('issue_category');
+        /** @var \Redmine\Api\IssueCategory */
+        $api = MockClient::create()->getApi('issue_category');
         $res = $api->create('testProject', [
             'name' => 'asdf',
         ]);
@@ -181,7 +176,8 @@ class UrlTest extends TestCase
 
     public function testIssuePriority()
     {
-        $api = $this->client->getApi('issue_priority');
+        /** @var \Redmine\Api\IssuePriority */
+        $api = MockClient::create()->getApi('issue_priority');
         $res = $api->all();
 
         $this->assertEquals('/enumerations/issue_priorities.json', $res['path']);
@@ -190,7 +186,8 @@ class UrlTest extends TestCase
 
     public function testIssueRelation()
     {
-        $api = $this->client->getApi('issue_relation');
+        /** @var \Redmine\Api\IssueRelation */
+        $api = MockClient::create()->getApi('issue_relation');
         $res = $api->all(1);
 
         $this->assertEquals('/issues/1/relations.json', $res['path']);
@@ -208,7 +205,8 @@ class UrlTest extends TestCase
 
     public function testIssueStatus()
     {
-        $api = $this->client->getApi('issue_status');
+        /** @var \Redmine\Api\IssueStatus */
+        $api = MockClient::create()->getApi('issue_status');
         $res = $api->all();
 
         $this->assertEquals('/issue_statuses.json', $res['path']);
@@ -217,7 +215,8 @@ class UrlTest extends TestCase
 
     public function testMembership()
     {
-        $api = $this->client->getApi('membership');
+        /** @var \Redmine\Api\Membership */
+        $api = MockClient::create()->getApi('membership');
         $res = $api->create('testProject', [
             'user_id' => 1,
             'role_ids' => [1],
@@ -250,7 +249,8 @@ class UrlTest extends TestCase
 
     public function testNews()
     {
-        $api = $this->client->getApi('news');
+        /** @var \Redmine\Api\News */
+        $api = MockClient::create()->getApi('news');
         $res = $api->all();
 
         $this->assertEquals('/news.json', $res['path']);
@@ -264,7 +264,8 @@ class UrlTest extends TestCase
 
     public function testProject()
     {
-        $api = $this->client->getApi('project');
+        /** @var \Redmine\Api\Project */
+        $api = MockClient::create()->getApi('project');
         $res = $api->create([
             'name' => 'asdf',
             'identifier' => 'asdf',
@@ -301,7 +302,8 @@ class UrlTest extends TestCase
 
     public function testQuery()
     {
-        $api = $this->client->getApi('query');
+        /** @var \Redmine\Api\Query */
+        $api = MockClient::create()->getApi('query');
         $res = $api->all();
 
         $this->assertEquals('/queries.json', $res['path']);
@@ -310,7 +312,8 @@ class UrlTest extends TestCase
 
     public function testRole()
     {
-        $api = $this->client->getApi('role');
+        /** @var \Redmine\Api\Role */
+        $api = MockClient::create()->getApi('role');
         $res = $api->all();
 
         $this->assertEquals('/roles.json', $res['path']);
@@ -324,7 +327,8 @@ class UrlTest extends TestCase
 
     public function testTimeEntry()
     {
-        $api = $this->client->getApi('time_entry');
+        /** @var \Redmine\Api\TimeEntry */
+        $api = MockClient::create()->getApi('time_entry');
         $res = $api->create([
             'issue_id' => 1,
             'hours' => 12,
@@ -373,7 +377,8 @@ class UrlTest extends TestCase
 
     public function testTimeEntryActivity()
     {
-        $api = $this->client->getApi('time_entry_activity');
+        /** @var \Redmine\Api\TimeEntryActivity */
+        $api = MockClient::create()->getApi('time_entry_activity');
         $res = $api->all();
 
         $this->assertEquals('/enumerations/time_entry_activities.json', $res['path']);
@@ -382,7 +387,8 @@ class UrlTest extends TestCase
 
     public function testTracker()
     {
-        $api = $this->client->getApi('tracker');
+        /** @var \Redmine\Api\Tracker */
+        $api = MockClient::create()->getApi('tracker');
         $res = $api->all();
 
         $this->assertEquals('/trackers.json', $res['path']);
@@ -391,7 +397,8 @@ class UrlTest extends TestCase
 
     public function testUser()
     {
-        $api = $this->client->getApi('user');
+        /** @var \Redmine\Api\User */
+        $api = MockClient::create()->getApi('user');
         $res = $api->create([
             'login' => 'asdf',
             'lastname' => 'asdf',
@@ -443,7 +450,8 @@ class UrlTest extends TestCase
 
     public function testVersion()
     {
-        $api = $this->client->getApi('version');
+        /** @var \Redmine\Api\Version */
+        $api = MockClient::create()->getApi('version');
         $res = $api->create('testProject', [
             'name' => 'asdf',
         ]);
@@ -477,7 +485,8 @@ class UrlTest extends TestCase
 
     public function testWiki()
     {
-        $api = $this->client->getApi('wiki');
+        /** @var \Redmine\Api\Wiki */
+        $api = MockClient::create()->getApi('wiki');
         $res = $api->create('testProject', 'about', [
             'text' => 'asdf',
             'comments' => 'asdf',

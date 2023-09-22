@@ -63,7 +63,7 @@ class Group extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return \SimpleXMLElement
+     * @return string|false
      */
     public function create(array $params = [])
     {

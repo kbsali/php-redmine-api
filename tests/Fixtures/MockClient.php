@@ -12,9 +12,14 @@ use Redmine\Client\ClientApiTrait;
  * The runRequest method of this client class just returns the value of
  * the path, method and data or the $runRequestReturnValue value if set.
  */
-class MockClient implements Client
+final class MockClient implements Client
 {
     use ClientApiTrait;
+
+    public static function create()
+    {
+        return new self();
+    }
 
     /**
      * Return value the mocked runRequest method should return.
@@ -34,22 +39,7 @@ class MockClient implements Client
     public $responseCodeMock;
     public $responseContentTypeMock;
 
-    private string $url;
-    private string $apikeyOrUsername;
-    private ?string $password;
-
-    /**
-     * $apikeyOrUsername should be your ApiKey, but it could also be your username.
-     * $password needs to be set if a username is given (not recommended).
-     */
-    public function __construct(
-        string $url,
-        string $apikeyOrUsername,
-        string $password = null
-    ) {
-        $this->url = $url;
-        $this->apikeyOrUsername = $apikeyOrUsername;
-        $this->password = $password;
+    private function __construct() {
     }
 
     /**

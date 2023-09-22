@@ -125,6 +125,109 @@ class MembershipTest extends TestCase
     }
 
     /**
+     * Test removeMember().
+     *
+     * @covers ::removeMember
+     * @test
+     */
+    public function testRemoveMemberCallsDelete()
+    {
+        if (version_compare(\PHPUnit\Runner\Version::id(), '10.0.0', '<')) {
+            $this->markTestSkipped('This test only runs with PHPUnit 10');
+        }
+
+        // Test values
+        $response = 'API Response';
+
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('requestGet')
+            ->with($this->stringContains('/projects/1/memberships.json'))
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('requestDelete')
+            ->with($this->stringContains('/memberships/5.xml'))
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+        $matcher = $this->exactly(2);
+        $client->expects($matcher)
+            ->method('getLastResponseBody')
+            ->willReturnCallback(function () use ($matcher, $response) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    return '{"memberships":[{"id":5,"user":{"id":2}}]}';
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    return $response;
+                }
+            });
+
+        // Create the object under test
+        $api = new Membership($client);
+
+        // Perform the tests
+        $this->assertSame($response, $api->removeMember(1, 2));
+    }
+
+    /**
+     * Test removeMember().
+     *
+     * @covers ::removeMember
+     * @test
+     */
+    public function testRemoveMemberReturnsFalseIfUserIsNotMemberOfProject()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('requestGet')
+            ->with($this->stringContains('/projects/1/memberships.json'))
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn('{"memberships":[{"id":5,"user":{"id":404}}]}');
+
+        // Create the object under test
+        $api = new Membership($client);
+
+        // Perform the tests
+        $this->assertFalse($api->removeMember(1, 2));
+    }
+
+    /**
+     * Test removeMember().
+     *
+     * @covers ::removeMember
+     * @test
+     */
+    public function testRemoveMemberReturnsFalseIfMemberlistIsMissing()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('requestGet')
+            ->with($this->stringContains('/projects/1/memberships.json'))
+            ->willReturn(true);
+        $client->expects($this->once())
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+        $client->expects($this->once())
+            ->method('getLastResponseBody')
+            ->willReturn('{"error":"this response is invalid"}');
+
+        // Create the object under test
+        $api = new Membership($client);
+
+        // Perform the tests
+        $this->assertFalse($api->removeMember(1, 2));
+    }
+
+    /**
      * Test create().
      *
      * @covers ::create

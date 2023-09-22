@@ -43,7 +43,7 @@ final class Psr18Client implements Client
         string $apikeyOrUsername,
         string $password = null
     ) {
-        if ($requestFactory instanceof ServerRequestFactoryInterface) {
+        if (! $requestFactory instanceof RequestFactoryInterface && $requestFactory instanceof ServerRequestFactoryInterface) {
             @trigger_error(
                 sprintf(
                     '%s(): Providing Argument #2 ($requestFactory) as %s is deprecated since v2.3.0, please provide as %s instead.',

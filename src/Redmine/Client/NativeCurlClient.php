@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Client;
 
-use Redmine\Api;
 use Redmine\Exception\ClientException;
 
 /**
@@ -246,7 +245,9 @@ final class NativeCurlClient implements Client
     /**
      * Prepare the request by setting the cURL options.
      *
-     * @return resource a cURL handle on success, <b>FALSE</b> on errors
+     * BC for PHP 7.4: Do not add the return type because CurlHandle was introduced in PHP 8.0
+     *
+     * @return \CurlHandle a cURL handle on success, <b>FALSE</b> on errors
      */
     private function createCurl(string $method, string $path, string $body = '')
     {
@@ -281,13 +282,13 @@ final class NativeCurlClient implements Client
                     $curlOptions[CURLOPT_POSTFIELDS] = $filedata;
                     $curlOptions[CURLOPT_INFILE] = $file;
                     $curlOptions[CURLOPT_INFILESIZE] = $size;
-                } elseif (isset($body)) {
+                } elseif ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
             case 'put':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                if (isset($body)) {
+                if ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
