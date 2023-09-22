@@ -156,7 +156,7 @@ class Project extends AbstractApi
     }
 
     /**
-     * @deprecated the `prepareParamsXml()` method is deprecated, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
+     * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
      *
      * @param array $params
      *
@@ -164,7 +164,7 @@ class Project extends AbstractApi
      */
     protected function prepareParamsXml($params)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
         return new \SimpleXMLElement(
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
