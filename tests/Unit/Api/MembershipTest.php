@@ -132,6 +132,11 @@ class MembershipTest extends TestCase
      */
     public function testRemoveMemberCallsDelete()
     {
+        if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+            $this->markTestSkipped('This test only runs with PHPUnit 10');
+
+            return;
+        }
         // Test values
         $response = 'API Response';
 
