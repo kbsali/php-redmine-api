@@ -48,6 +48,8 @@ class PathSerializerTest extends TestCase
     }
 
     /**
+     * @covers \Redmine\Serializer\PathSerializer::getPath
+     * @covers \Redmine\Serializer\PathSerializer::__toString
      * @test
      *
      * @dataProvider getPathData
@@ -56,6 +58,6 @@ class PathSerializerTest extends TestCase
     {
         $serializer = PathSerializer::create($path, $params);
 
-        $this->assertSame($expected, $serializer->getPath());
+        $this->assertSame($expected, $serializer->__toString());
     }
 }
