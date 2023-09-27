@@ -2,7 +2,6 @@
 
 namespace Redmine\Tests\Unit\Api;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -180,16 +179,6 @@ class AbstractApiTest extends TestCase
      */
     public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
     {
-        $xmlToString = function (SimpleXMLElement $xmlElement) {
-            $dom = new DOMDocument('1.0');
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = false;
-            $dom->loadXML($xmlElement->asXML());
-
-            // Remove line breaks
-            return preg_replace("/\r|\n/", '', $dom->saveXML());
-        };
-
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
@@ -204,7 +193,7 @@ class AbstractApiTest extends TestCase
             $return = $method->invoke($api, 'path', $decode);
 
             $this->assertInstanceOf(SimpleXMLElement::class, $return);
-            $this->assertSame($expected, $xmlToString($return));
+            $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
         } elseif ('delete' === $methodName) {
             $return = $method->invoke($api, 'path');
 
@@ -213,7 +202,7 @@ class AbstractApiTest extends TestCase
             $return = $method->invoke($api, 'path', '');
 
             $this->assertInstanceOf(SimpleXMLElement::class, $return);
-            $this->assertSame($expected, $xmlToString($return));
+            $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
         }
     }
 
@@ -227,5 +216,24 @@ class AbstractApiTest extends TestCase
             ['put', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
             ['delete', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
         ];
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::retrieveAll
+     */
+    public function testDeprecatedRetrieveAll()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')->willReturn(true);
+        $client->method('getLastResponseBody')->willReturn('<?xml version="1.0"?><issue/>');
+        $client->method('getLastResponseContentType')->willReturn('application/xml');
+
+        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+
+        $method = new ReflectionMethod($api, 'retrieveAll');
+        $method->setAccessible(true);
+
+        $this->assertSame([], $method->invoke($api, '/issues.xml'));
+
     }
 }
