@@ -236,4 +236,21 @@ class AbstractApiTest extends TestCase
         $this->assertSame([], $method->invoke($api, '/issues.xml'));
 
     }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::attachCustomFieldXML
+     */
+    public function testDeprecatedAttachCustomFieldXML()
+    {
+        $client = $this->createMock(Client::class);
+
+        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+
+        $method = new ReflectionMethod($api, 'attachCustomFieldXML');
+        $method->setAccessible(true);
+
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue/>');
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $method->invoke($api, $xml, []));
+    }
 }
