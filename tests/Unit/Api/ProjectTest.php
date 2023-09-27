@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
+use ReflectionMethod;
+use SimpleXMLElement;
 
 /**
  * @coversDefaultClass \Redmine\Api\Project
@@ -533,5 +535,20 @@ class ProjectTest extends TestCase
 
         // Perform the tests
         $this->assertSame($response, $api->update(5, $parameters));
+    }
+
+    /**
+     * @covers \Redmine\Api\Project::prepareParamsXml
+     */
+    public function testDeprecatedPrepareParamsXml()
+    {
+        $client = $this->createMock(Client::class);
+
+        $api = new Project($client);
+
+        $method = new ReflectionMethod($api, 'prepareParamsXml');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $method->invoke($api, ['id' => 1]));
     }
 }
