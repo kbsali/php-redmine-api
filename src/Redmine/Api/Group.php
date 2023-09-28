@@ -62,7 +62,7 @@ class Group extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->groups) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->groups['groups'] as $e) {
