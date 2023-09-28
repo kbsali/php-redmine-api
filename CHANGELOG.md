@@ -10,12 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Allow `Psr\Http\Message\RequestFactoryInterface` as Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()`
+- New method `Redmine\Api\CustomField::list()` to list custom fields.
 - Added support for PHP 8.2
 
 ### Deprecated
 
 - Providing Argument #2 ($requestFactory) in `Redmine\Client\Psr18Client::__construct()` as type `Psr\Http\Message\ServerRequestFactoryInterface` is deprecated, provide as type `Psr\Http\Message\RequestFactoryInterface` instead
 - `Redmine\Api\AbstractApi::attachCustomFieldXML()` is deprecated
+- `Redmine\Api\CustomField::all()` is deprecated, use `Redmine\Api\CustomField::list()` instead
 - `Redmine\Api\Project::prepareParamsXml()` is deprecated
 
 ## [v2.2.0](https://github.com/kbsali/php-redmine-api/compare/v2.1.1...v2.2.0) - 2022-03-01
