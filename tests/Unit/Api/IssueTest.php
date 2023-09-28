@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Client\Client;
+use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @coversDefaultClass \Redmine\Api\Issue
@@ -34,6 +35,32 @@ class IssueTest extends TestCase
     public function testPriorityConstants($expected, $value)
     {
         $this->assertSame($expected, $value);
+    }
+
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new Issue(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\Issue::all()` is deprecated since v2.4.0, use `Redmine\Api\Issue::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
     }
 
     /**

@@ -1,18 +1,18 @@
 <?php
 
-namespace Redmine\Tests\Unit\Api\Group;
+namespace Redmine\Tests\Unit\Api\Issue;
 
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Group;
+use Redmine\Api\Issue;
 use Redmine\Client\Client;
 
 /**
- * Tests for Group::list()
+ * Tests for Issue::list()
  */
 class ListTest extends TestCase
 {
     /**
-     * @covers \Redmine\Api\Group::list
+     * @covers \Redmine\Api\Issue::list
      */
     public function testListWithoutParametersReturnsResponse()
     {
@@ -25,7 +25,7 @@ class ListTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/groups.json')
+                $this->stringStartsWith('/issues.json')
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -36,16 +36,16 @@ class ListTest extends TestCase
             ->willReturn('application/json');
 
         // Create the object under test
-        $api = new Group($client);
+        $api = new Issue($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list());
     }
 
     /**
-     * @covers \Redmine\Api\Group::all
+     * @covers \Redmine\Api\Issue::list
      */
-    public function testListeWithParametersReturnsResponse()
+    public function testListWithParametersReturnsResponse()
     {
         // Test values
         $parameters = ['not-used'];
@@ -58,7 +58,7 @@ class ListTest extends TestCase
             ->method('requestGet')
             ->with(
                 $this->logicalAnd(
-                    $this->stringStartsWith('/groups.json'),
+                    $this->stringStartsWith('/issues.json'),
                     $this->stringContains('not-used')
                 )
             )
@@ -71,7 +71,7 @@ class ListTest extends TestCase
             ->willReturn('application/json');
 
         // Create the object under test
-        $api = new Group($client);
+        $api = new Issue($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list($parameters));

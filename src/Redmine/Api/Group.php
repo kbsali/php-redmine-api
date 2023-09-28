@@ -37,7 +37,7 @@ class Group extends AbstractApi
     /**
      * List groups.
      *
-     * @deprecated sind v2.4.0, use list() instead.
+     * @deprecated since v2.4.0, use list() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
