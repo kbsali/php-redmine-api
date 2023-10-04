@@ -180,21 +180,17 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
+     * @covers \Redmine\Serializer\JsonSerializer::getEncoded
+     * @covers \Redmine\Serializer\JsonSerializer::__toString
      * @test
      *
      * @dataProvider getNormalizedToEncodedData
      */
-    public function createFromArrayDecodesToExpectedString(array $data, $expected)
+    public function createFromArrayEncodesToExpectedString(array $data, $expected)
     {
         $serializer = JsonSerializer::createFromArray($data);
 
-        // decode the result, so we encode again with JSON_PRETTY_PRINT to compare the formated output
-        $encoded = json_encode(
-            json_decode($serializer->getEncoded(), true, 512, \JSON_THROW_ON_ERROR),
-            \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT
-        );
-
-        $this->assertSame($expected, $encoded);
+        $this->assertJsonStringEqualsJsonString($expected, $serializer->__toString());
     }
 
     public static function getInvalidSerializedData(): array

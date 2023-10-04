@@ -32,12 +32,12 @@ abstract class AbstractApi implements Api
      *
      * @return bool
      *
-     * @deprecated This method does not correctly handle 2xx codes that are not 200 or 201, use \Redmine\Client\Client::getLastResponseStatusCode() instead
+     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use \Redmine\Client\Client::getLastResponseStatusCode() instead
      * @see Client::getLastResponseStatusCode() for checking the status code directly
      */
     public function lastCallFailed()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
 
         $code = $this->client->getLastResponseStatusCode();
 
@@ -164,7 +164,7 @@ abstract class AbstractApi implements Api
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
-     * @deprecated the `retrieveAll()` method is deprecated, use `retrieveData()` instead
+     * @deprecated since v2.2.0, use `retrieveData()` instead
      *
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
@@ -173,7 +173,7 @@ abstract class AbstractApi implements Api
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated, use `retrieveData()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.2.0, use `retrieveData()` instead.', E_USER_DEPRECATED);
 
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
@@ -253,7 +253,7 @@ abstract class AbstractApi implements Api
     /**
      * Attaches Custom Fields to a create/update query.
      *
-     * @deprecated the `attachCustomFieldXML()` method is deprecated.
+     * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead
      *
      * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param array            $fields array of fields to attach, each field needs name, id and value set
@@ -264,7 +264,7 @@ abstract class AbstractApi implements Api
      */
     protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
         $_fields = $xml->addChild('custom_fields');
         $_fields->addAttribute('type', 'array');
