@@ -186,19 +186,17 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
+     * @covers \Redmine\Serializer\XmlSerializer::getEncoded
+     * @covers \Redmine\Serializer\XmlSerializer::__toString
      * @test
      *
      * @dataProvider getNormalizedToEncodedData
      */
-    public function createFromArrayDecodesToExpectedString(array $data, $expected)
+    public function createFromArrayEncodesToExpectedString(array $data, $expected)
     {
         $serializer = XmlSerializer::createFromArray($data);
 
-        // Load the encoded string into a DOMDocument, so we can compare the formated output
-        $dom = dom_import_simplexml(new \SimpleXMLElement($serializer->getEncoded()))->ownerDocument;
-        $dom->formatOutput = true;
-
-        $this->assertSame($expected, trim($dom->saveXML()));
+        $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
     }
 
     public static function getInvalidSerializedData(): array

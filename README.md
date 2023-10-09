@@ -15,41 +15,8 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 * Choose between using native `cURL` function or any
 [PSR-18](https://www.php-fig.org/psr/psr-18/) http client like
 [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
-* API entry points implementation state:
-  * :heavy_check_mark: Attachments
-  * :heavy_check_mark: Groups
-  * :heavy_check_mark: Custom Fields
-  * :heavy_check_mark: Issues
-  * :heavy_check_mark: Issue Categories
-  * :heavy_check_mark: Issue Priorities
-  * :x: *Issue Relations - only partially implemented*
-  * :heavy_check_mark: Issue Statuses
-  * :heavy_check_mark: News
-  * :heavy_check_mark: Projects
-  * :heavy_check_mark: Project Memberships
-  * :heavy_check_mark: Queries
-  * :heavy_check_mark: Roles
-  * :heavy_check_mark: Time Entries
-  * :heavy_check_mark: Time Entry Activities
-  * :heavy_check_mark: Trackers
-  * :heavy_check_mark: Users
-  * :heavy_check_mark: Versions
-  * :heavy_check_mark: Wiki
-
-## Todo
-
-* Check header's response code (especially for POST/PUT/DELETE requests)
-* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
-
-## Limitations / Missing Redmine-API
-
-Redmine is missing some APIs for a full remote management of the data:
-* List of activities & roles: http://www.redmine.org/issues/11464
-* Closing a project: https://www.redmine.org/issues/13725
-
-A possible solution to this would be to create an extra APIs implementing the
-missing entry points. See existing effort in doing so:
-https://github.com/rschobbert/redmine-miss-api
+* [mid-level API](docs/usage.md#mid-level-api) e.g. `$client->getApi('issue')->create($data)`
+* [low-level API](docs/usage.md#low-level-api) e.g. `$client->requestPost('/issues.json', $data)`
 
 ## Requirements
 
@@ -64,6 +31,20 @@ https://github.com/rschobbert/redmine-miss-api
 
 * The PHP [cURL](http://php.net/manual/en/book.curl.php) extension if you want to use the native `cURL` functions.
 * [PHPUnit](https://phpunit.de/) >= 9.0 (optional) to run the test suite
+
+## Todo
+
+* Check header's response code (especially for POST/PUT/DELETE requests)
+* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
+
+## Limitations / Missing Redmine-API
+
+Redmine is missing some APIs for a full remote management of the data:
+* List of activities & roles: http://www.redmine.org/issues/11464
+
+A possible solution to this would be to create an extra APIs implementing the
+missing entry points. See existing effort in doing so:
+https://github.com/rschobbert/redmine-miss-api
 
 ## Install
 
