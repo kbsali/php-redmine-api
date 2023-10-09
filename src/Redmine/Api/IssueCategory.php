@@ -74,7 +74,7 @@ class IssueCategory extends AbstractApi
     public function listing($project, $forceUpdate = false)
     {
         if (true === $forceUpdate || empty($this->issueCategories)) {
-            $this->all($project);
+            $this->list($project);
         }
         $ret = [];
         foreach ($this->issueCategories['issue_categories'] as $e) {

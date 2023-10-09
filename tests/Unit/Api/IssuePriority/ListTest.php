@@ -1,52 +1,20 @@
 <?php
 
-namespace Redmine\Tests\Unit\Api;
+namespace Redmine\Tests\Unit\Api\IssuePriority;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssuePriority;
 use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\IssuePriority
- *
- * @author     Malte Gerth <mail@malte-gerth.de>
+ * Tests for IssuePriority::list()
  */
-class IssuePriorityTest extends TestCase
+class ListTest extends TestCase
 {
     /**
-     * Test all().
-     *
-     * @covers ::all
+     * @covers \Redmine\Api\IssuePriority::list
      */
-    public function testAllTriggersDeprecationWarning()
-    {
-        $api = new IssuePriority(MockClient::create());
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\IssuePriority::all()` is deprecated since v2.4.0, use `Redmine\Api\IssuePriority::list()` instead.',
-                    $errstr
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED
-        );
-
-        $api->all();
-    }
-
-    /**
-     * Test all().
-     *
-     * @covers ::all
-     * @test
-     */
-    public function testAllReturnsClientGetResponse()
+    public function testListWithoutParametersReturnsResponse()
     {
         // Test values
         $response = '["API Response"]';
@@ -71,16 +39,13 @@ class IssuePriorityTest extends TestCase
         $api = new IssuePriority($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->all());
+        $this->assertSame($expectedReturn, $api->list());
     }
 
     /**
-     * Test all().
-     *
-     * @covers ::all
-     * @test
+     * @covers \Redmine\Api\IssuePriority::list
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testListWithParametersReturnsResponse()
     {
         // Test values
         $allParameters = ['not-used'];
@@ -106,6 +71,6 @@ class IssuePriorityTest extends TestCase
         $api = new IssuePriority($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->all($allParameters));
+        $this->assertSame($expectedReturn, $api->list($allParameters));
     }
 }

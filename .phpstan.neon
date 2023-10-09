@@ -7,3 +7,5 @@ parameters:
 
     scanDirectories:
         - vendor
+
+    treatPhpDocTypesAsCertain: false
