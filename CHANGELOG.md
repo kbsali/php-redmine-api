@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.3.0...v2.x)
 
-## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
-
 ### Added
 
 - New method `Redmine\Api\CustomField::list()` to list custom fields.
@@ -17,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\IssueCategory::list()` to list issue categories.
 - New method `Redmine\Api\IssuePriority::list()` to list issue priorities.
 - New method `Redmine\Api\IssueRelation::list()` to list issue relations.
+- New method `Redmine\Api\IssueStatus::list()` to list issue statuses.
 
 ### Deprecated
 
@@ -26,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\IssueCategory::all()` is deprecated, use `Redmine\Api\IssueCategory::list()` instead
 - `Redmine\Api\IssuePriority::all()` is deprecated, use `Redmine\Api\IssuePriority::list()` instead
 - `Redmine\Api\IssueRelation::all()` is deprecated, use `Redmine\Api\IssueRelation::list()` instead
+- `Redmine\Api\IssueStatus::all()` is deprecated, use `Redmine\Api\IssueStatus::list()` instead
+
+## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 
 ### Added
 
