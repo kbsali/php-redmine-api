@@ -25,7 +25,7 @@ class IssueRelation extends AbstractApi
      *
      * @return array list of relations found
      */
-    public function list(int $issueId, array $params = []): array
+    final public function list(int $issueId, array $params = []): array
     {
         $this->relations = $this->retrieveData('/issues/'.strval($issueId).'/relations.json', $params);
 

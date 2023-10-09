@@ -40,7 +40,7 @@ class Issue extends AbstractApi
      *
      * @return array list of issues found
      */
-    public function list(array $params = []): array
+    final public function list(array $params = []): array
     {
         return $this->retrieveData('/issues.json', $params);
     }

@@ -30,7 +30,7 @@ class IssueCategory extends AbstractApi
      *
      * @return array list of issue categories found
      */
-    public function list($projectIdentifier, array $params = []): array
+    final public function list($projectIdentifier, array $params = []): array
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(

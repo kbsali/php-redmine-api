@@ -22,7 +22,7 @@ class IssuePriority extends AbstractApi
      *
      * @return array list of issue priorities found
      */
-    public function list(array $params = []): array
+    final public function list(array $params = []): array
     {
         $this->issuePriorities = $this->retrieveData('/enumerations/issue_priorities.json', $params);
 

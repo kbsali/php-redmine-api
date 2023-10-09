@@ -22,7 +22,7 @@ class CustomField extends AbstractApi
      *
      * @return array list of custom fields found
      */
-    public function list(array $params = []): array
+    final public function list(array $params = []): array
     {
         $this->customFields = $this->retrieveData('/custom_fields.json', $params);
 
