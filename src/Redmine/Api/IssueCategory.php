@@ -19,7 +19,7 @@ class IssueCategory extends AbstractApi
     private $issueCategories = [];
 
     /**
-     * List issue categories.
+     * List issue categories for a given project.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
@@ -30,7 +30,7 @@ class IssueCategory extends AbstractApi
      *
      * @return array list of issue categories found
      */
-    final public function list($projectIdentifier, array $params = []): array
+    final public function listByProject($projectIdentifier, array $params = []): array
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
@@ -47,7 +47,7 @@ class IssueCategory extends AbstractApi
     /**
      * List issue categories.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated since v2.4.0, use listByProject() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
@@ -58,9 +58,9 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->list(strval($project), $params);
+        return $this->listByProject(strval($project), $params);
     }
 
     /**
@@ -74,7 +74,7 @@ class IssueCategory extends AbstractApi
     public function listing($project, $forceUpdate = false)
     {
         if (true === $forceUpdate || empty($this->issueCategories)) {
-            $this->list($project);
+            $this->listByProject($project);
         }
         $ret = [];
         foreach ($this->issueCategories['issue_categories'] as $e) {

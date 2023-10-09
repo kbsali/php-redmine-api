@@ -18,7 +18,7 @@ class Membership extends AbstractApi
     private $memberships = [];
 
     /**
-     * List memberships for a given $project.
+     * List memberships for a given project.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
@@ -29,7 +29,7 @@ class Membership extends AbstractApi
      *
      * @return array list of memberships found
      */
-    final public function list($projectIdentifier, array $params = [])
+    final public function listByProject($projectIdentifier, array $params = []): array
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
@@ -46,7 +46,7 @@ class Membership extends AbstractApi
     /**
      * List memberships for a given $project.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated since v2.4.0, use listByProject() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
@@ -57,9 +57,9 @@ class Membership extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->list(strval($project), $params);
+        return $this->listByProject(strval($project), $params);
     }
 
     /**
@@ -148,7 +148,7 @@ class Membership extends AbstractApi
      */
     public function removeMember($projectId, $userId, array $params = [])
     {
-        $memberships = $this->list($projectId, $params);
+        $memberships = $this->listByProject($projectId, $params);
         if (!isset($memberships['memberships']) || !is_array($memberships['memberships'])) {
             return false;
         }

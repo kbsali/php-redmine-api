@@ -25,7 +25,7 @@ class IssueRelation extends AbstractApi
      *
      * @return array list of relations found
      */
-    final public function list(int $issueId, array $params = []): array
+    final public function listByIssueId(int $issueId, array $params = []): array
     {
         $this->relations = $this->retrieveData('/issues/'.strval($issueId).'/relations.json', $params);
 
@@ -33,9 +33,9 @@ class IssueRelation extends AbstractApi
     }
 
     /**
-     * List relations of the given $issueId.
+     * List relations of the given issue.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated since v2.4.0, use listByIssueId() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
@@ -46,9 +46,9 @@ class IssueRelation extends AbstractApi
      */
     public function all($issueId, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByIssueId()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($issueId, $params);
+        return $this->listByIssueId($issueId, $params);
     }
 
     /**
