@@ -28,7 +28,7 @@ class IssueCategoryTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Api\IssueCategory::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueCategory::list()` instead.',
+                    '`Redmine\Api\IssueCategory::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueCategory::listByProject()` instead.',
                     $errstr
                 );
 

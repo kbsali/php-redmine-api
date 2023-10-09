@@ -10,14 +10,14 @@ use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
 /**
- * Tests for Membership::list()
+ * Tests for Membership::listByProject()
  */
-class ListTest extends TestCase
+class ListByProjectTest extends TestCase
 {
     /**
-     * @covers \Redmine\Api\Membership::list
+     * @covers \Redmine\Api\Membership::listByProject
      */
-    public function testListWithoutParametersReturnsResponse()
+    public function testListByProjectWithoutParametersReturnsResponse()
     {
         // Test values
         $response = '["API Response"]';
@@ -42,13 +42,13 @@ class ListTest extends TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list(5));
+        $this->assertSame($expectedReturn, $api->listByProject(5));
     }
 
     /**
-     * @covers \Redmine\Api\Membership::list
+     * @covers \Redmine\Api\Membership::listByProject
      */
-    public function testListWithParametersReturnsResponse()
+    public function testListByProjectWithParametersReturnsResponse()
     {
         // Test values
         $parameters = ['not-used'];
@@ -77,22 +77,22 @@ class ListTest extends TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list('project-slug', $parameters));
+        $this->assertSame($expectedReturn, $api->listByProject('project-slug', $parameters));
     }
 
     /**
-     * @covers \Redmine\Api\Membership::list
+     * @covers \Redmine\Api\Membership::listByProject
      *
      * @dataProvider getInvalidProjectIdentifiers
      */
-    public function testListWithWrongProjectIdentifierThrowsException($projectIdentifier)
+    public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new Membership(MockClient::create());
 
         $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('Redmine\Api\Membership::list(): Argument #1 ($projectIdentifier) must be of type int or string');
+        $this->expectExceptionMessage('Redmine\Api\Membership::listByProject(): Argument #1 ($projectIdentifier) must be of type int or string');
 
-        $api->list($projectIdentifier);
+        $api->listByProject($projectIdentifier);
     }
 
     public static function getInvalidProjectIdentifiers(): array

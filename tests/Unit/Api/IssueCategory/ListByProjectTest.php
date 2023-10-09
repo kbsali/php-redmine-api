@@ -10,14 +10,14 @@ use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
 /**
- * Tests for IssueCategory::list()
+ * Tests for IssueCategory::listByProject()
  */
-class ListTest extends TestCase
+class ListByProjectTest extends TestCase
 {
     /**
-     * @covers \Redmine\Api\IssueCategory::list
+     * @covers \Redmine\Api\IssueCategory::listByProject
      */
-    public function testListWithoutParametersReturnsResponse()
+    public function testListByProjectWithoutParametersReturnsResponse()
     {
         // Test values
         $projectId = 5;
@@ -43,13 +43,13 @@ class ListTest extends TestCase
         $api = new IssueCategory($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list($projectId));
+        $this->assertSame($expectedReturn, $api->listByProject($projectId));
     }
 
     /**
-     * @covers \Redmine\Api\IssueCategory::list
+     * @covers \Redmine\Api\IssueCategory::listByProject
      */
-    public function testListWithParametersReturnsResponse()
+    public function testListByProjectWithParametersReturnsResponse()
     {
         // Test values
         $projectId = 'project-slug';
@@ -79,22 +79,22 @@ class ListTest extends TestCase
         $api = new IssueCategory($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list($projectId, $parameters));
+        $this->assertSame($expectedReturn, $api->listByProject($projectId, $parameters));
     }
 
     /**
-     * @covers \Redmine\Api\IssueCategory::list
+     * @covers \Redmine\Api\IssueCategory::listByProject
      *
      * @dataProvider getInvalidProjectIdentifiers
      */
-    public function testListWithWrongProjectIdentifierThrowsException($projectIdentifier)
+    public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new IssueCategory(MockClient::create());
 
         $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('Redmine\Api\IssueCategory::list(): Argument #1 ($projectIdentifier) must be of type int or string');
+        $this->expectExceptionMessage('Redmine\Api\IssueCategory::listByProject(): Argument #1 ($projectIdentifier) must be of type int or string');
 
-        $api->list($projectIdentifier);
+        $api->listByProject($projectIdentifier);
     }
 
     public static function getInvalidProjectIdentifiers(): array

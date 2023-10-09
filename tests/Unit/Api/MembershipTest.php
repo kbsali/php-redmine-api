@@ -29,7 +29,7 @@ class MembershipTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Api\Membership::all()` is deprecated since v2.4.0, use `Redmine\Api\Membership::list()` instead.',
+                    '`Redmine\Api\Membership::all()` is deprecated since v2.4.0, use `Redmine\Api\Membership::listByProject()` instead.',
                     $errstr
                 );
 

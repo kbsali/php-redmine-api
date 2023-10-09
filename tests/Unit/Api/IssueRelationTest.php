@@ -27,7 +27,7 @@ class IssueRelationTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Api\IssueRelation::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueRelation::list()` instead.',
+                    '`Redmine\Api\IssueRelation::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueRelation::listByIssueId()` instead.',
                     $errstr
                 );
 

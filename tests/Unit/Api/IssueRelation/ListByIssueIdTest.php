@@ -7,14 +7,14 @@ use Redmine\Api\IssueRelation;
 use Redmine\Client\Client;
 
 /**
- * Tests for IssueRelation::list()
+ * Tests for IssueRelation::listByIssueId()
  */
-class ListTest extends TestCase
+class ListByIssueIdTest extends TestCase
 {
     /**
-     * @covers \Redmine\Api\IssueRelation::list
+     * @covers \Redmine\Api\IssueRelation::listByIssueId
      */
-    public function testListWithoutParametersReturnsResponse()
+    public function testListByIssueIdWithoutParametersReturnsResponse()
     {
         // Test values
         $response = '["API Response"]';
@@ -39,13 +39,13 @@ class ListTest extends TestCase
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list(5));
+        $this->assertSame($expectedReturn, $api->listByIssueId(5));
     }
 
     /**
-     * @covers \Redmine\Api\IssuePriority::list
+     * @covers \Redmine\Api\IssueRelation::listByIssueId
      */
-    public function testListWithParametersReturnsResponse()
+    public function testListByIssueIdWithParametersReturnsResponse()
     {
         // Test values
         $parameters = ['not-used'];
@@ -74,6 +74,6 @@ class ListTest extends TestCase
         $api = new IssueRelation($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->list(5, $parameters));
+        $this->assertSame($expectedReturn, $api->listByIssueId(5, $parameters));
     }
 }
