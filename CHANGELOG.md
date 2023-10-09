@@ -11,11 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New method `Redmine\Api\CustomField::list()` to list custom fields.
 - New method `Redmine\Api\Group::list()` to list groups.
+- New method `Redmine\Api\Issue::list()` to list issues.
+- New method `Redmine\Api\IssueCategory::list()` to list issue categories.
 
 ### Deprecated
 
 - `Redmine\Api\CustomField::all()` is deprecated, use `Redmine\Api\CustomField::list()` instead
 - `Redmine\Api\Group::all()` is deprecated, use `Redmine\Api\Group::list()` instead
+- `Redmine\Api\Issue::all()` is deprecated, use `Redmine\Api\Issue::list()` instead
+- `Redmine\Api\IssueCategory::all()` is deprecated, use `Redmine\Api\IssueCategory::list()` instead
 
 ### Added
 

@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -22,6 +23,34 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
+     * @param string|int $projectIdentifier project id or literal identifier
+     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     *
+     * @return array list of issue categories found
+     */
+    public function list($projectIdentifier, array $params = []): array
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidParameterException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->issueCategories = $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
+
+        return $this->issueCategories;
+    }
+
+    /**
+     * List issue categories.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
+     *
      * @param string|int $project project id or literal identifier
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
@@ -29,9 +58,9 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->issueCategories = $this->retrieveData('/projects/'.$project.'/issue_categories.json', $params);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->issueCategories;
+        return $this->list(strval($project), $params);
     }
 
     /**
