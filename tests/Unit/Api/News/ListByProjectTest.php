@@ -5,6 +5,8 @@ namespace Redmine\Tests\Unit\Api\News;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\News;
 use Redmine\Client\Client;
+use Redmine\Tests\Fixtures\MockClient;
+use stdClass;
 
 /**
  * Tests for News::listByProject()
@@ -74,5 +76,32 @@ class ListByProjectTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listByProject($projectId, $parameters));
+    }
+
+    /**
+     * @covers \Redmine\Api\News::listByProject
+     *
+     * @dataProvider getInvalidProjectIdentifiers
+     */
+    public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
+    {
+        $api = new News(MockClient::create());
+
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('Redmine\Api\News::listByProject(): Argument #1 ($projectIdentifier) must be of type int or string');
+
+        $api->listByProject($projectIdentifier);
+    }
+
+    public static function getInvalidProjectIdentifiers(): array
+    {
+        return [
+            'null' => [null],
+            'true' => [true],
+            'false' => [false],
+            'float' => [0.0],
+            'array' => [[]],
+            'object' => [new stdClass()],
+        ];
     }
 }
