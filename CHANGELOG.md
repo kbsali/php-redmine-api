@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Group::list()` to list groups.
 - New method `Redmine\Api\Issue::list()` to list issues.
 - New method `Redmine\Api\IssueCategory::list()` to list issue categories.
+- New method `Redmine\Api\IssuePriority::list()` to list issue priorities.
+- New method `Redmine\Api\IssueRelation::list()` to list issue relations.
 
 ### Deprecated
 
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Group::all()` is deprecated, use `Redmine\Api\Group::list()` instead
 - `Redmine\Api\Issue::all()` is deprecated, use `Redmine\Api\Issue::list()` instead
 - `Redmine\Api\IssueCategory::all()` is deprecated, use `Redmine\Api\IssueCategory::list()` instead
+- `Redmine\Api\IssuePriority::all()` is deprecated, use `Redmine\Api\IssuePriority::list()` instead
+- `Redmine\Api\IssueRelation::all()` is deprecated, use `Redmine\Api\IssueRelation::list()` instead
 
 ### Added
 
