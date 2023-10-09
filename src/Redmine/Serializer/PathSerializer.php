@@ -2,12 +2,12 @@
 
 namespace Redmine\Serializer;
 
+use Stringable;
+
 /**
- * PathSerializer.
- *
- * @internal
+ * PathSerializer to handle query parameters.
  */
-final class PathSerializer
+final class PathSerializer implements Stringable
 {
     public static function create(string $path, array $queryParams = []): self
     {
@@ -39,5 +39,10 @@ final class PathSerializer
         }
 
         return $this->path.$queryString;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getPath();
     }
 }
