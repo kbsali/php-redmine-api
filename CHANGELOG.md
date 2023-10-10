@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\News::list()` to list news from all project.
 - New method `Redmine\Api\News::listByProject()` to list news from a project.
 - New method `Redmine\Api\Project::list()` to list projects.
+- New method `Redmine\Api\Query::list()` to list projects.
 
 ### Deprecated
 
@@ -33,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Membership::all()` is deprecated, use `Redmine\Api\Membership::listByProject()` instead
 - `Redmine\Api\News::all()` is deprecated, use `Redmine\Api\News::list()` or `Redmine\Api\News::listByProject()` instead
 - `Redmine\Api\Project::all()` is deprecated, use `Redmine\Api\Project::list()` instead
+- `Redmine\Api\Query::all()` is deprecated, use `Redmine\Api\Query::list()` instead
 
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 

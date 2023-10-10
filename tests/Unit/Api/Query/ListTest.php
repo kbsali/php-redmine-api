@@ -1,52 +1,17 @@
 <?php
 
-namespace Redmine\Tests\Unit\Api;
+namespace Redmine\Tests\Unit\Api\Query;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Query;
 use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Query
- *
- * @author     Malte Gerth <mail@malte-gerth.de>
+ * @covers \Redmine\Api\Query::list
  */
-class QueryTest extends TestCase
+class ListTest extends TestCase
 {
-    /**
-     * Test all().
-     *
-     * @covers ::all
-     */
-    public function testAllTriggersDeprecationWarning()
-    {
-        $api = new Query(MockClient::create());
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\Query::all()` is deprecated since v2.4.0, use `Redmine\Api\Query::list()` instead.',
-                    $errstr
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED
-        );
-
-        $api->all();
-    }
-
-    /**
-     * Test all().
-     *
-     * @covers ::all
-     * @test
-     */
-    public function testAllReturnsClientGetResponse()
+    public function testListWithoutParametersReturnsResponse()
     {
         // Test values
         $response = '["API Response"]';
@@ -71,16 +36,10 @@ class QueryTest extends TestCase
         $api = new Query($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->all());
+        $this->assertSame($expectedReturn, $api->list());
     }
 
-    /**
-     * Test all().
-     *
-     * @covers ::all
-     * @test
-     */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testListWithParametersReturnsResponse()
     {
         // Test values
         $parameters = ['not-used'];
@@ -109,6 +68,6 @@ class QueryTest extends TestCase
         $api = new Query($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->all($parameters));
+        $this->assertSame($expectedReturn, $api->list($parameters));
     }
 }

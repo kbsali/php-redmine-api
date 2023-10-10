@@ -22,10 +22,28 @@ class Query extends AbstractApi
      *
      * @return array list of queries found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->query = $this->retrieveData('/queries.json', $params);
 
         return $this->query;
+    }
+
+    /**
+     * Returns the list of all custom queries visible by the user (public and private queries) for all projects.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of queries found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 }
