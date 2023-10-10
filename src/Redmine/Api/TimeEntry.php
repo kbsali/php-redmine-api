@@ -25,11 +25,29 @@ class TimeEntry extends AbstractApi
      *
      * @return array list of time entries found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->timeEntries = $this->retrieveData('/time_entries.json', $params);
 
         return $this->timeEntries;
+    }
+
+    /**
+     * List time entries.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of time entries found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
