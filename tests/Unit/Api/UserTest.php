@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @coversDefaultClass \Redmine\Api\User
@@ -86,6 +87,32 @@ class UserTest extends TestCase
         // Perform the tests
         $this->assertFalse($api->getIdByUsername('User 1'));
         $this->assertSame(5, $api->getIdByUsername('User 5'));
+    }
+
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new User(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\User::all()` is deprecated since v2.4.0, use `Redmine\Api\User::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
     }
 
     /**

@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\TimeEntry::list()` to list time entries.
 - New method `Redmine\Api\TimeEntryActivity::list()` to list time entry activities.
 - New method `Redmine\Api\Tracker::list()` to list trackers.
+- New method `Redmine\Api\User::list()` to list users.
 
 ### Deprecated
 
@@ -45,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\TimeEntry::all()` is deprecated, use `Redmine\Api\TimeEntry::list()` instead
 - `Redmine\Api\TimeEntryActivity::all()` is deprecated, use `Redmine\Api\TimeEntryActivity::list()` instead
 - `Redmine\Api\Tracker::all()` is deprecated, use `Redmine\Api\Tracker::list()` instead
+- `Redmine\Api\User::all()` is deprecated, use `Redmine\Api\User::list()` instead
 
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 
