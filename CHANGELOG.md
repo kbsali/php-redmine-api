@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Project::list()` to list projects.
 - New method `Redmine\Api\Query::list()` to list projects.
 - New method `Redmine\Api\Role::list()` to list roles.
+- New method `Redmine\Api\Search::listByQuery()` to list search results by query.
 
 ### Deprecated
 
@@ -37,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Project::all()` is deprecated, use `Redmine\Api\Project::list()` instead
 - `Redmine\Api\Query::all()` is deprecated, use `Redmine\Api\Query::list()` instead
 - `Redmine\Api\Role::all()` is deprecated, use `Redmine\Api\Role::list()` instead
+- `Redmine\Api\Search::search()` is deprecated, use `Redmine\Api\Search::listByQuery()` instead
 
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 
