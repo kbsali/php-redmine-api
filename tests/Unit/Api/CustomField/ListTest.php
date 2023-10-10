@@ -7,16 +7,10 @@ use Redmine\Api\CustomField;
 use Redmine\Client\Client;
 
 /**
- * Tests for CustomField::list()
+ * @covers \Redmine\Api\CustomField::list
  */
 class ListTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\CustomField::list
-     * @covers \Redmine\Api\CustomField::get
-     * @covers \Redmine\Api\CustomField::retrieveAll
-     * @covers \Redmine\Api\CustomField::isNotNull
-     */
     public function testListWithoutParametersReturnsResponse()
     {
         // Test values
@@ -45,12 +39,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list());
     }
 
-    /**
-     * @covers \Redmine\Api\CustomField::list
-     * @covers \Redmine\Api\CustomField::get
-     * @covers \Redmine\Api\CustomField::retrieveAll
-     * @covers \Redmine\Api\CustomField::isNotNull
-     */
     public function testListWithParametersReturnsResponse()
     {
         // Test values
@@ -80,12 +68,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list($allParameters));
     }
 
-    /**
-     * @covers \Redmine\Api\CustomField::list
-     * @covers \Redmine\Api\CustomField::get
-     * @covers \Redmine\Api\CustomField::retrieveAll
-     * @covers \Redmine\Api\CustomField::isNotNull
-     */
     public function testListWithHighLimitParametersReturnsResponse()
     {
         // Test values
@@ -118,14 +100,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list($allParameters));
     }
 
-    /**
-     * Test list().
-     *
-     * @covers \Redmine\Api\CustomField::list
-     * @covers \Redmine\Api\CustomField::get
-     * @covers \Redmine\Api\CustomField::retrieveAll
-     * @covers \Redmine\Api\CustomField::isNotNull
-     */
     public function testListCallsEndpointUntilOffsetIsHigherThanTotalCount()
     {
         // Test values

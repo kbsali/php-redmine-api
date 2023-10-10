@@ -7,13 +7,10 @@ use Redmine\Api\IssueRelation;
 use Redmine\Client\Client;
 
 /**
- * Tests for IssueRelation::listByIssueId()
+ * @covers \Redmine\Api\IssueRelation::listByIssueId
  */
 class ListByIssueIdTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\IssueRelation::listByIssueId
-     */
     public function testListByIssueIdWithoutParametersReturnsResponse()
     {
         // Test values
@@ -42,9 +39,6 @@ class ListByIssueIdTest extends TestCase
         $this->assertSame($expectedReturn, $api->listByIssueId(5));
     }
 
-    /**
-     * @covers \Redmine\Api\IssueRelation::listByIssueId
-     */
     public function testListByIssueIdWithParametersReturnsResponse()
     {
         // Test values

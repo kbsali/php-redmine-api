@@ -7,13 +7,10 @@ use Redmine\Api\IssuePriority;
 use Redmine\Client\Client;
 
 /**
- * Tests for IssuePriority::list()
+ * @covers \Redmine\Api\IssuePriority::list
  */
 class ListTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\IssuePriority::list
-     */
     public function testListWithoutParametersReturnsResponse()
     {
         // Test values
@@ -42,9 +39,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedReturn, $api->list());
     }
 
-    /**
-     * @covers \Redmine\Api\IssuePriority::list
-     */
     public function testListWithParametersReturnsResponse()
     {
         // Test values

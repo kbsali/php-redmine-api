@@ -10,13 +10,10 @@ use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
 /**
- * Tests for Membership::listByProject()
+ * @covers \Redmine\Api\Membership::listByProject
  */
 class ListByProjectTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\Membership::listByProject
-     */
     public function testListByProjectWithoutParametersReturnsResponse()
     {
         // Test values
@@ -45,9 +42,6 @@ class ListByProjectTest extends TestCase
         $this->assertSame($expectedReturn, $api->listByProject(5));
     }
 
-    /**
-     * @covers \Redmine\Api\Membership::listByProject
-     */
     public function testListByProjectWithParametersReturnsResponse()
     {
         // Test values
@@ -81,8 +75,6 @@ class ListByProjectTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\Membership::listByProject
-     *
      * @dataProvider getInvalidProjectIdentifiers
      */
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)

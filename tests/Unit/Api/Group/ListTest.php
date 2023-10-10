@@ -7,13 +7,10 @@ use Redmine\Api\Group;
 use Redmine\Client\Client;
 
 /**
- * Tests for Group::list()
+ * @covers \Redmine\Api\Group::list
  */
 class ListTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\Group::list
-     */
     public function testListWithoutParametersReturnsResponse()
     {
         // Test values
@@ -42,9 +39,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedReturn, $api->list());
     }
 
-    /**
-     * @covers \Redmine\Api\Group::all
-     */
     public function testListeWithParametersReturnsResponse()
     {
         // Test values

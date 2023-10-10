@@ -7,13 +7,10 @@ use Redmine\Api\Issue;
 use Redmine\Client\Client;
 
 /**
- * Tests for Issue::list()
+ * @covers \Redmine\Api\Issue::list
  */
 class ListTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Api\Issue::list
-     */
     public function testListWithoutParametersReturnsResponse()
     {
         // Test values
@@ -42,9 +39,6 @@ class ListTest extends TestCase
         $this->assertSame($expectedReturn, $api->list());
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::list
-     */
     public function testListWithParametersReturnsResponse()
     {
         // Test values
