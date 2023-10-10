@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Role::list()` to list roles.
 - New method `Redmine\Api\Search::listByQuery()` to list search results by query.
 - New method `Redmine\Api\TimeEntry::list()` to list time entries.
+- New method `Redmine\Api\TimeEntryActivity::list()` to list time entries.
 
 ### Deprecated
 
@@ -41,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Role::all()` is deprecated, use `Redmine\Api\Role::list()` instead
 - `Redmine\Api\Search::search()` is deprecated, use `Redmine\Api\Search::listByQuery()` instead
 - `Redmine\Api\TimeEntry::all()` is deprecated, use `Redmine\Api\TimeEntry::list()` instead
+- `Redmine\Api\TimeEntryActivity::all()` is deprecated, use `Redmine\Api\TimeEntryActivity::list()` instead
 
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 

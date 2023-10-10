@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntryActivity;
 use Redmine\Client\Client;
+use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @coversDefaultClass \Redmine\Api\TimeEntryActivity
@@ -13,6 +14,32 @@ use Redmine\Client\Client;
  */
 class TimeEntryActivityTest extends TestCase
 {
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new TimeEntryActivity(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\TimeEntryActivity::all()` is deprecated since v2.4.0, use `Redmine\Api\TimeEntryActivity::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
+    }
+
     /**
      * Test all().
      *
