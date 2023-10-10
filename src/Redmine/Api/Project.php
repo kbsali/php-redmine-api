@@ -26,11 +26,29 @@ class Project extends AbstractApi
      *
      * @return array list of projects found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->projects = $this->retrieveData('/projects.json', $params);
 
         return $this->projects;
+    }
+
+    /**
+     * List projects.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of projects found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -45,7 +63,7 @@ class Project extends AbstractApi
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->projects)) {
-            $this->all($params);
+            $this->list($params);
         }
         $ret = [];
         foreach ($this->projects['projects'] as $e) {

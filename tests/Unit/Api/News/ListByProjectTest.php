@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api\News;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\News;
 use Redmine\Client\Client;
+use Redmine\Exception\InvalidParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 

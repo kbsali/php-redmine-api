@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Tests\Fixtures\MockClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -16,6 +17,32 @@ use SimpleXMLElement;
  */
 class ProjectTest extends TestCase
 {
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new Project(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\Project::all()` is deprecated since v2.4.0, use `Redmine\Api\Project::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
+    }
+
     /**
      * Test all().
      *
