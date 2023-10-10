@@ -25,9 +25,7 @@ class ListByProjectTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/projects/5/news.json')
-            )
+            ->with('/projects/5/news.json')
             ->willReturn(true);
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
@@ -55,9 +53,7 @@ class ListByProjectTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
-            ->with(
-                $this->stringContains('not-used')
-            )
+            ->with('/projects/5/news.json?limit=25&offset=0&0=not-used')
             ->willReturn(true);
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
