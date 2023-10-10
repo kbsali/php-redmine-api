@@ -22,11 +22,29 @@ class Role extends AbstractApi
      *
      * @return array list of roles found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->roles = $this->retrieveData('/roles.json', $params);
 
         return $this->roles;
+    }
+
+    /**
+     * List roles.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of roles found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -39,7 +57,7 @@ class Role extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->roles) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->roles['roles'] as $e) {
