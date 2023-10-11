@@ -310,7 +310,7 @@ You can now use the `getApi()` method to create and get a specific Redmine API.
 ```php
 <?php
 
-$client->getApi('user')->all();
+$client->getApi('user')->list();
 $client->getApi('user')->listing();
 
 $client->getApi('issue')->create([
@@ -319,7 +319,7 @@ $client->getApi('issue')->create([
     'description' => 'a long description blablabla',
     'assigned_to_id' => 123, // or 'assigned_to' => 'user1' OR 'groupXX'
 ]);
-$client->getApi('issue')->all([
+$client->getApi('issue')->list([
     'limit' => 1000
 ]);
 ```

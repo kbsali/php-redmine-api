@@ -226,19 +226,19 @@ To check for failed requests you can afterwards check the status code via `$clie
 ```php
 // ----------------------------
 // Trackers
-$client->getApi('tracker')->all();
+$client->getApi('tracker')->list();
 $client->getApi('tracker')->listing();
 
 // ----------------------------
 // Issue statuses
-$client->getApi('issue_status')->all();
+$client->getApi('issue_status')->list();
 $client->getApi('issue_status')->listing();
 $client->getApi('issue_status')->getIdByName('New');
 
 // ----------------------------
 // Project
-$client->getApi('project')->all();
-$client->getApi('project')->all([
+$client->getApi('project')->list();
+$client->getApi('project')->list([
     'limit' => 10,
 ]);
 $client->getApi('project')->listing();
@@ -257,7 +257,7 @@ $client->getApi('project')->remove($projectId);
 
 // ----------------------------
 // Users
-$client->getApi('user')->all();
+$client->getApi('user')->list();
 $client->getApi('user')->listing();
 $client->getApi('user')->getCurrentUser([
     'include' => [
@@ -290,15 +290,15 @@ $client->getApi('user')->create([
 // ----------------------------
 // Issues
 $client->getApi('issue')->show($issueId);
-$client->getApi('issue')->all([
+$client->getApi('issue')->list([
     'limit' => 100,
 ]);
-$client->getApi('issue')->all(['category_id' => $categoryId]);
-$client->getApi('issue')->all(['tracker_id' => $trackerId]);
-$client->getApi('issue')->all(['status_id' => 'closed']);
-$client->getApi('issue')->all(['assigned_to_id' => $userId]);
-$client->getApi('issue')->all(['project_id' => 'test']);
-$client->getApi('issue')->all([
+$client->getApi('issue')->list(['category_id' => $categoryId]);
+$client->getApi('issue')->list(['tracker_id' => $trackerId]);
+$client->getApi('issue')->list(['status_id' => 'closed']);
+$client->getApi('issue')->list(['assigned_to_id' => $userId]);
+$client->getApi('issue')->list(['project_id' => 'test']);
+$client->getApi('issue')->list([
     'offset' => 100,
     'limit' => 100,
     'sort' => 'id',
@@ -375,7 +375,7 @@ $client->getApi('issue')->create([
 
 // ----------------------------
 // Issue categories
-$client->getApi('issue_category')->all('project1');
+$client->getApi('issue_category')->listByProject('project1');
 $client->getApi('issue_category')->listing($projectId);
 $client->getApi('issue_category')->show($categoryId);
 $client->getApi('issue_category')->getIdByName($projectId, 'Administration');
@@ -392,7 +392,7 @@ $client->getApi('issue_category')->remove($categoryId, [
 
 // ----------------------------
 // Versions
-$client->getApi('version')->all('test');
+$client->getApi('version')->listByProject('test');
 $client->getApi('version')->listing('test');
 $client->getApi('version')->show($versionId);
 $client->getApi('version')->getIdByName('test', 'v2');
@@ -413,24 +413,24 @@ file_put_contents('example.png', $file_content);
 
 // ----------------------------
 // News
-$client->getApi('news')->all('test');
-$client->getApi('news')->all();
+$client->getApi('news')->list();
+$client->getApi('news')->listByProject('test');
 
 // ----------------------------
 // Roles
-$client->getApi('role')->all();
+$client->getApi('role')->list();
 $client->getApi('role')->show(1);
 $client->getApi('role')->listing();
 
 // ----------------------------
 // Queries
-$client->getApi('query')->all();
+$client->getApi('query')->list();
 
 // ----------------------------
 // Time entries
-$client->getApi('time_entry')->all();
+$client->getApi('time_entry')->list();
 $client->getApi('time_entry')->show($timeEntryId);
-$client->getApi('time_entry')->all([
+$client->getApi('time_entry')->list([
     'issue_id' => 1234,
     'project_id' => 1234,
     'spent_on' => '2015-04-13',
@@ -470,17 +470,17 @@ $client->getApi('time_entry')->remove($timeEntryId);
 
 // ----------------------------
 // Time entry activities
-$client->getApi('time_entry_activity')->all();
+$client->getApi('time_entry_activity')->list();
 
 // ----------------------------
 // Issue relations
-$client->getApi('issue_relation')->all($issueId);
+$client->getApi('issue_relation')->listByIssueId($issueId);
 $client->getApi('issue_relation')->show($issueRelationId);
 $client->getApi('issue_relation')->remove($issueRelationId);
 
 // ----------------------------
 // Group (of members)
-$client->getApi('group')->all();
+$client->getApi('group')->list();
 $client->getApi('group')->listing();
 $client->getApi('group')->show($groupId, ['include' => 'users,memberships']);
 $client->getApi('group')->remove($groupId);
@@ -493,7 +493,7 @@ $client->getApi('group')->create([
 
 // ----------------------------
 // Project memberships
-$client->getApi('membership')->all($projectId);
+$client->getApi('membership')->listByProject($projectId);
 $client->getApi('membership')->create($projectId, [
     'user_id' => null,
     'role_ids' => [],
@@ -502,11 +502,11 @@ $client->getApi('membership')->remove($membershipId);
 
 // ----------------------------
 // Issue priorities
-$client->getApi('issue_priority')->all();
+$client->getApi('issue_priority')->list();
 
 // ----------------------------
 // Wiki
-$client->getApi('wiki')->all('testProject');
+$client->getApi('wiki')->listByProject('testProject');
 $client->getApi('wiki')->show('testProject', 'about');
 $client->getApi('wiki')->show('testProject', 'about', $version);
 $client->getApi('wiki')->create('testProject', 'about', [
@@ -523,19 +523,19 @@ $client->getApi('wiki')->remove('testProject', 'about');
 
 // ----------------------------
 // Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
-$issues['all'] = $client->getApi('issue')->all([
+$issues['all'] = $client->getApi('issue')->list([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => '*',
 ])['total_count'];
 
-$issues['opened'] = $client->getApi('issue')->all([
+$issues['opened'] = $client->getApi('issue')->list([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => 'open',
 ])['total_count'];
 
-$issues['closed'] = $client->getApi('issue')->all([
+$issues['closed'] = $client->getApi('issue')->list([
     'limit' => 1,
     'tracker_id' => 1,
     'status_id' => 'closed',

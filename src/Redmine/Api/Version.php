@@ -73,7 +73,7 @@ class Version extends AbstractApi
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->versions)) {
-            $this->all($project, $params);
+            $this->listByProject($project, $params);
         }
         $ret = [];
         foreach ($this->versions['versions'] as $e) {

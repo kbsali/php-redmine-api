@@ -62,7 +62,7 @@ class User extends AbstractApi
     public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->users) || $forceUpdate) {
-            $this->all($params);
+            $this->list($params);
         }
         $ret = [];
         if (is_array($this->users) && isset($this->users['users'])) {
