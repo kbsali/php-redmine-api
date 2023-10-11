@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\InvalidParameterException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -17,7 +18,33 @@ class Wiki extends AbstractApi
     private $wikiPages = [];
 
     /**
+     * List wiki pages of a given project.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
+     *
+     * @param int|string $projectIdentifier project id or slug
+     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of wiki pages found for the given project
+     */
+    final public function listByProject($projectIdentifier, array $params = []): array
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidParameterException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->wikiPages = $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
+
+        return $this->wikiPages;
+    }
+
+    /**
      * List wiki pages of given $project.
+     *
+     * @deprecated since v2.4.0, use listByProject() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
@@ -28,9 +55,9 @@ class Wiki extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->wikiPages = $this->retrieveData('/projects/'.$project.'/wiki/index.json', $params);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->wikiPages;
+        return $this->listByProject(strval($project), $params);
     }
 
     /**

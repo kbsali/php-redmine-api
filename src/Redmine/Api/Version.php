@@ -36,7 +36,7 @@ class Version extends AbstractApi
             ));
         }
 
-        $this->versions = $this->retrieveData('/projects/'.$projectIdentifier.'/versions.json', $params);
+        $this->versions = $this->retrieveData('/projects/'.strval($projectIdentifier).'/versions.json', $params);
 
         return $this->versions;
     }

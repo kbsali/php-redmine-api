@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Tracker::list()` to list trackers.
 - New method `Redmine\Api\User::list()` to list users.
 - New method `Redmine\Api\Version::listByProject()` to list versions from a project.
+- New method `Redmine\Api\Wiki::listByProject()` to list wiki pages from a project.
 
 ### Deprecated
 
@@ -49,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Tracker::all()` is deprecated, use `Redmine\Api\Tracker::list()` instead
 - `Redmine\Api\User::all()` is deprecated, use `Redmine\Api\User::list()` instead
 - `Redmine\Api\Version::all()` is deprecated, use `Redmine\Api\Version::listByProject()` instead
+- `Redmine\Api\Wiki::all()` is deprecated, use `Redmine\Api\Wiki::listByProject()` instead
 
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 
