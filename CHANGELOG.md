@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.3.0...v2.x)
 
+### Added
+
+- New method `Redmine\Api\CustomField::list()` to list custom fields.
+- New method `Redmine\Api\Group::list()` to list groups.
+- New method `Redmine\Api\Issue::list()` to list issues.
+- New method `Redmine\Api\IssueCategory::listByProject()` to list issue categories from a project.
+- New method `Redmine\Api\IssuePriority::list()` to list issue priorities.
+- New method `Redmine\Api\IssueRelation::listByIssueId()` to list relations from an issue.
+- New method `Redmine\Api\IssueStatus::list()` to list issue statuses.
+- New method `Redmine\Api\Membership::listByProject()` to list memberships from a project.
+- New method `Redmine\Api\News::list()` to list news from all project.
+- New method `Redmine\Api\News::listByProject()` to list news from a project.
+- New method `Redmine\Api\Project::list()` to list projects.
+- New method `Redmine\Api\Query::list()` to list projects.
+- New method `Redmine\Api\Role::list()` to list roles.
+- New method `Redmine\Api\Search::listByQuery()` to list search results by query.
+- New method `Redmine\Api\TimeEntry::list()` to list time entries.
+- New method `Redmine\Api\TimeEntryActivity::list()` to list time entry activities.
+- New method `Redmine\Api\Tracker::list()` to list trackers.
+- New method `Redmine\Api\User::list()` to list users.
+- New method `Redmine\Api\Version::listByProject()` to list versions from a project.
+- New method `Redmine\Api\Wiki::listByProject()` to list wiki pages from a project.
+
+### Deprecated
+
+- `Redmine\Api\CustomField::all()` is deprecated, use `Redmine\Api\CustomField::list()` instead
+- `Redmine\Api\Group::all()` is deprecated, use `Redmine\Api\Group::list()` instead
+- `Redmine\Api\Issue::all()` is deprecated, use `Redmine\Api\Issue::list()` instead
+- `Redmine\Api\IssueCategory::all()` is deprecated, use `Redmine\Api\IssueCategory::listByProject()` instead
+- `Redmine\Api\IssuePriority::all()` is deprecated, use `Redmine\Api\IssuePriority::list()` instead
+- `Redmine\Api\IssueRelation::all()` is deprecated, use `Redmine\Api\IssueRelation::listByIssueId()` instead
+- `Redmine\Api\IssueStatus::all()` is deprecated, use `Redmine\Api\IssueStatus::list()` instead
+- `Redmine\Api\Membership::all()` is deprecated, use `Redmine\Api\Membership::listByProject()` instead
+- `Redmine\Api\News::all()` is deprecated, use `Redmine\Api\News::list()` or `Redmine\Api\News::listByProject()` instead
+- `Redmine\Api\Project::all()` is deprecated, use `Redmine\Api\Project::list()` instead
+- `Redmine\Api\Query::all()` is deprecated, use `Redmine\Api\Query::list()` instead
+- `Redmine\Api\Role::all()` is deprecated, use `Redmine\Api\Role::list()` instead
+- `Redmine\Api\Search::search()` is deprecated, use `Redmine\Api\Search::listByQuery()` instead
+- `Redmine\Api\TimeEntry::all()` is deprecated, use `Redmine\Api\TimeEntry::list()` instead
+- `Redmine\Api\TimeEntryActivity::all()` is deprecated, use `Redmine\Api\TimeEntryActivity::list()` instead
+- `Redmine\Api\Tracker::all()` is deprecated, use `Redmine\Api\Tracker::list()` instead
+- `Redmine\Api\User::all()` is deprecated, use `Redmine\Api\User::list()` instead
+- `Redmine\Api\Version::all()` is deprecated, use `Redmine\Api\Version::listByProject()` instead
+- `Redmine\Api\Wiki::all()` is deprecated, use `Redmine\Api\Wiki::listByProject()` instead
+
 ## [v2.3.0](https://github.com/kbsali/php-redmine-api/compare/v2.2.0...v2.3.0) - 2023-10-09
 
 ### Added

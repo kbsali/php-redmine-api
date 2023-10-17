@@ -18,7 +18,33 @@ class Version extends AbstractApi
     private $versions = [];
 
     /**
+     * List versions of a project.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
+     *
+     * @param string|int $projectIdentifier project id or literal identifier
+     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of versions found
+     */
+    final public function listByProject($projectIdentifier, array $params = []): array
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidParameterException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->versions = $this->retrieveData('/projects/'.strval($projectIdentifier).'/versions.json', $params);
+
+        return $this->versions;
+    }
+
+    /**
      * List versions.
+     *
+     * @deprecated since v2.4.0, use listByProject() instead.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *
@@ -29,9 +55,9 @@ class Version extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        $this->versions = $this->retrieveData('/projects/'.$project.'/versions.json', $params);
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->versions;
+        return $this->listByProject(strval($project), $params);
     }
 
     /**
@@ -47,7 +73,7 @@ class Version extends AbstractApi
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->versions)) {
-            $this->all($project, $params);
+            $this->listByProject($project, $params);
         }
         $ret = [];
         foreach ($this->versions['versions'] as $e) {

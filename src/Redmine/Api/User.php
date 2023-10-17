@@ -26,11 +26,29 @@ class User extends AbstractApi
      *
      * @return array list of users found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->users = $this->retrieveData('/users.json', $params);
 
         return $this->users;
+    }
+
+    /**
+     * List users.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
+     *
+     * @param array $params to allow offset/limit (and more) to be passed
+     *
+     * @return array list of users found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -44,7 +62,7 @@ class User extends AbstractApi
     public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->users) || $forceUpdate) {
-            $this->all($params);
+            $this->list($params);
         }
         $ret = [];
         if (is_array($this->users) && isset($this->users['users'])) {

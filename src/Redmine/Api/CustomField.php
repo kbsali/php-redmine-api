@@ -22,11 +22,29 @@ class CustomField extends AbstractApi
      *
      * @return array list of custom fields found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->customFields = $this->retrieveData('/custom_fields.json', $params);
 
         return $this->customFields;
+    }
+
+    /**
+     * List custom fields.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of custom fields found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -40,7 +58,7 @@ class CustomField extends AbstractApi
     public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->customFields) || $forceUpdate) {
-            $this->all($params);
+            $this->list($params);
         }
         $ret = [];
         foreach ($this->customFields['custom_fields'] as $e) {

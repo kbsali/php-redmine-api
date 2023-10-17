@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @coversDefaultClass \Redmine\Api\Group
@@ -14,6 +15,32 @@ use Redmine\Exception\MissingParameterException;
  */
 class GroupTest extends TestCase
 {
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new Group(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\Group::all()` is deprecated since v2.4.0, use `Redmine\Api\Group::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
+    }
+
     /**
      * Test all().
      *

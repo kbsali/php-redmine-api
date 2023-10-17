@@ -20,11 +20,27 @@ class TimeEntryActivity extends AbstractApi
      *
      * @return array list of time entry activities found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->timeEntryActivities = $this->retrieveData('/enumerations/time_entry_activities.json', $params);
 
         return $this->timeEntryActivities;
+    }
+
+    /**
+     * List time entry activities.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of time entry activities found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -37,7 +53,7 @@ class TimeEntryActivity extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->timeEntryActivities) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->timeEntryActivities['time_entry_activities'] as $e) {

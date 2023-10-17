@@ -22,11 +22,29 @@ class Tracker extends AbstractApi
      *
      * @return array list of trackers found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->trackers = $this->retrieveData('/trackers.json', $params);
 
         return $this->trackers;
+    }
+
+    /**
+     * List trackers.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of trackers found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -39,7 +57,7 @@ class Tracker extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->trackers) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->trackers['trackers'] as $e) {

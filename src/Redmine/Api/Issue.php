@@ -40,9 +40,37 @@ class Issue extends AbstractApi
      *
      * @return array list of issues found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         return $this->retrieveData('/issues.json', $params);
+    }
+
+    /**
+     * List issues.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
+     * available $params :
+     * - offset: skip this number of issues in response (optional)
+     * - limit: number of issues per page (optional)
+     * - sort: column to sort with. Append :desc to invert the order.
+     * - project_id: get issues from the project with the given id, where id is either project id or project identifier
+     * - tracker_id: get issues from the tracker with the given id
+     * - status_id: get issues with the given status id only. Possible values: open, closed, * to get open and closed issues, status id
+     * - assigned_to_id: get issues which are assigned to the given user id
+     * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
+     * - query_id : id of the previously saved query
+     *
+     * @param array $params the additional parameters (cf available $params above)
+     *
+     * @return array list of issues found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**

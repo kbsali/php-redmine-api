@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Query;
 use Redmine\Client\Client;
+use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @coversDefaultClass \Redmine\Api\Query
@@ -13,6 +14,32 @@ use Redmine\Client\Client;
  */
 class QueryTest extends TestCase
 {
+    /**
+     * Test all().
+     *
+     * @covers ::all
+     */
+    public function testAllTriggersDeprecationWarning()
+    {
+        $api = new Query(MockClient::create());
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\Query::all()` is deprecated since v2.4.0, use `Redmine\Api\Query::list()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->all();
+    }
+
     /**
      * Test all().
      *

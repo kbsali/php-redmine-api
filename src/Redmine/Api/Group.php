@@ -27,11 +27,29 @@ class Group extends AbstractApi
      *
      * @return array list of groups found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->groups = $this->retrieveData('/groups.json', $params);
 
         return $this->groups;
+    }
+
+    /**
+     * List groups.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of groups found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -44,7 +62,7 @@ class Group extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->groups) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->groups['groups'] as $e) {

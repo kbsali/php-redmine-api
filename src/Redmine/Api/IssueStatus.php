@@ -22,11 +22,29 @@ class IssueStatus extends AbstractApi
      *
      * @return array list of issue statuses found
      */
-    public function all(array $params = [])
+    final public function list(array $params = []): array
     {
         $this->issueStatuses = $this->retrieveData('/issue_statuses.json', $params);
 
         return $this->issueStatuses;
+    }
+
+    /**
+     * List issue statuses.
+     *
+     * @deprecated since v2.4.0, use list() instead.
+     *
+     * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses#GET
+     *
+     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @return array list of issue statuses found
+     */
+    public function all(array $params = [])
+    {
+        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+
+        return $this->list($params);
     }
 
     /**
@@ -39,7 +57,7 @@ class IssueStatus extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->issueStatuses) || $forceUpdate) {
-            $this->all();
+            $this->list();
         }
         $ret = [];
         foreach ($this->issueStatuses['issue_statuses'] as $e) {
