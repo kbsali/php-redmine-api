@@ -307,6 +307,11 @@ abstract class AbstractApi implements Api
     private function getLastResponseBodyAsArray(): array
     {
         $body = $this->client->getLastResponseBody();
+
+        if ($body === '') {
+            return [];
+        }
+
         $contentType = $this->client->getLastResponseContentType();
         $returnData = null;
 
