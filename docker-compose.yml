@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+    php:
+        build: # Info to build the Docker image
+            context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
+            dockerfile: PHP83-Dockerfile # Specify the name of the Dockerfile
+        ports:
+            - 8111:80
+        # environment: # You can use this section to set environment variables. But you can also use the .env file.
+        #     - DATABASE_URL=mysql://root:root@db/youthweb_dev
+        volumes:
+            - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
+

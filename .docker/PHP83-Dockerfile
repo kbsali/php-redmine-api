@@ -1,0 +1,53 @@
+FROM php:8.3-fpm
+
+RUN apt-get update
+RUN apt-get --yes --no-install-recommends install \
+    apt-utils
+RUN apt-get --yes --no-install-recommends install \
+    git \
+    vim \
+    curl \
+    build-essential \
+    locales \
+    zip unzip \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmagickwand-dev \
+    libpng-dev \
+    libzip-dev
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
+RUN docker-php-ext-install -j$(nproc) \
+    pdo \
+    pdo_mysql \
+    mysqli \
+    zip \
+    exif \
+    intl \
+    sockets \
+    gd \
+    bcmath \
+    opcache
+
+COPY build/php/opcache.ini /usr/local/etc/php/conf.d/
+COPY build/php/custom.ini /usr/local/etc/php/conf.d/
+
+RUN pecl install xdebug-3.3.1 && docker-php-ext-enable xdebug
+
+RUN php --version
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+RUN composer --version
+
+RUN usermod -u 1000 www-data
+RUN usermod -a -G www-data root
+RUN mkdir -p /var/www
+RUN chown -R www-data:www-data /var/www
+RUN mkdir -p /var/www/.composer
+RUN chown -R www-data:www-data /var/www/.composer
+
+WORKDIR /var/www/project/
