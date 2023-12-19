@@ -1,6 +1,7 @@
-.php-cs-fixer.cache
-.phpunit.cache
-composer.lock
-composer.phar
-phpunit.xml
-vendor
+/.docker/mariadb_data
+/.docker/redmine_data
+/.php-cs-fixer.cache
+/.phpunit.cache
+/composer.lock
+/phpunit.xml
+/vendor
