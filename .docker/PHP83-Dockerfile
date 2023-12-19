@@ -2,8 +2,7 @@ FROM php:8.3-fpm
 
 RUN apt-get update
 RUN apt-get --yes --no-install-recommends install \
-    apt-utils
-RUN apt-get --yes --no-install-recommends install \
+    apt-utils \
     git \
     vim \
     curl \
