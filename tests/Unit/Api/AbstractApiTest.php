@@ -21,7 +21,7 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(Client::class);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'isNotNull');
         $method->setAccessible(true);
@@ -61,7 +61,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
@@ -147,7 +147,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/json');
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
         $method->setAccessible(true);
@@ -183,7 +183,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, $methodName);
         $method->setAccessible(true);
@@ -230,7 +230,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn($contentType);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
         $method->setAccessible(true);
@@ -257,7 +257,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn('<?xml version="1.0"?><issue/>');
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
         $method->setAccessible(true);
@@ -273,7 +273,7 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(Client::class);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'attachCustomFieldXML');
         $method->setAccessible(true);
