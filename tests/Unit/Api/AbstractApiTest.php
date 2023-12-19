@@ -249,21 +249,30 @@ class AbstractApiTest extends TestCase
 
     /**
      * @covers \Redmine\Api\AbstractApi::retrieveAll
+     *
+     * @dataProvider retrieveAllData
      */
-    public function testDeprecatedRetrieveAll()
+    public function testDeprecatedRetrieveAll($content, $contentType, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
-        $client->method('getLastResponseBody')->willReturn('<?xml version="1.0"?><issue/>');
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
+        $client->method('getLastResponseBody')->willReturn($content);
+        $client->method('getLastResponseContentType')->willReturn($contentType);
 
         $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
         $method->setAccessible(true);
 
-        $this->assertSame([], $method->invoke($api, '/issues.xml'));
+        $this->assertSame($expected, $method->invoke($api, ''));
+    }
 
+    public static function retrieveAllData(): array
+    {
+        return [
+            'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+            'Empty body' => ['', 'application/json', []],
+        ];
     }
 
     /**
