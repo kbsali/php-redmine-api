@@ -45,9 +45,7 @@ RUN composer --version
 
 RUN usermod -u 1000 www-data
 RUN usermod -a -G www-data root
-RUN mkdir -p /var/www
-RUN chown -R www-data:www-data /var/www
 RUN mkdir -p /var/www/.composer
-RUN chown -R www-data:www-data /var/www/.composer
+RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/project/
