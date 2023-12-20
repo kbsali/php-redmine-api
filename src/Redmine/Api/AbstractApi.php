@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Api;
 use Redmine\Client\Client;
+use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
@@ -169,7 +170,7 @@ abstract class AbstractApi implements Api
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|false elements found
+     * @return string|array|false elements found or error message of false
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
@@ -178,6 +179,8 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: '.$e->getPrevious()->getMessage();
+        } catch (Exception $e) {
             $data = false;
         }
 
@@ -307,10 +310,6 @@ abstract class AbstractApi implements Api
     private function getLastResponseBodyAsArray(): array
     {
         $body = $this->client->getLastResponseBody();
-
-        if ($body === '') {
-            return [];
-        }
 
         $contentType = $this->client->getLastResponseContentType();
         $returnData = null;

@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
+use Redmine\Exception\SerializerException;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -236,14 +237,42 @@ class AbstractApiTest extends TestCase
         $method->setAccessible(true);
 
         $this->assertSame($expected, $method->invoke($api, '/issues.json'));
-
     }
 
     public static function retrieveDataData(): array
     {
         return [
             'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
-            'Empty body' => ['', 'application/json', []],
+        ];
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::retrieveData
+     *
+     * @dataProvider retrieveDataToExceptionData
+     */
+    public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage)
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')->willReturn(true);
+        $client->method('getLastResponseBody')->willReturn($response);
+        $client->method('getLastResponseContentType')->willReturn($contentType);
+
+        $api = new class($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'retrieveData');
+        $method->setAccessible(true);
+
+        $this->expectException($expectedException);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $method->invoke($api, '/issues.json');
+    }
+
+    public static function retrieveDataToExceptionData(): array
+    {
+        return [
+            'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '],
         ];
     }
 
@@ -271,7 +300,7 @@ class AbstractApiTest extends TestCase
     {
         return [
             'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
-            'Empty body' => ['', 'application/json', []],
+            'Empty body' => ['', 'application/json', 'Error decoding body as JSON: Syntax error'],
         ];
     }
 
