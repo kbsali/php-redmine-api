@@ -33,30 +33,38 @@ class SearchTest extends TestCase
         $api->search('query');
     }
 
-    public function testSearchReturnsClientGetResponse()
+    /**
+     * @dataProvider getAllData
+     */
+    public function testSearchReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
-        // Test values
-        $response = '["API Response"]';
-        $expectedReturn = ['API Response'];
-
         // Create the used mock objects
         $client = $this->createMock(Client::class);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('requestGet')
             ->with('/search.json?limit=25&offset=0&q=query')
             ->willReturn(true);
-        $client->expects($this->exactly(1))
+        $client->expects($this->atLeast(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
         $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+            ->willReturn($responseType);
 
         // Create the object under test
         $api = new Search($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->search('query'));
+        $this->assertSame($expectedResponse, $api->search('query'));
+    }
+
+    public static function getAllData(): array
+    {
+        return [
+            'array response' => ['["API Response"]', 'application/json', ['API Response']],
+            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'false response' => ['', 'application/json', false],
+        ];
     }
 
     public function testSearchReturnsClientGetResponseWithParameters()

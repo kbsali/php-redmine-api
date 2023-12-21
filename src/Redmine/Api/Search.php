@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
+
 /**
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
  */
@@ -43,6 +45,14 @@ class Search extends AbstractApi
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByQuery()` instead.', E_USER_DEPRECATED);
 
-        return $this->listByQuery($query, $params);
+        try {
+            return $this->listByQuery($query, $params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 }
