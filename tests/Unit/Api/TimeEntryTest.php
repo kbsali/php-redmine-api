@@ -70,6 +70,15 @@ class TimeEntryTest extends TestCase
         $this->assertSame($expectedResponse, $api->all());
     }
 
+    public static function getAllData(): array
+    {
+        return [
+            'array response' => ['["API Response"]', 'application/json', ['API Response']],
+            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'false response' => ['', 'application/json', false],
+        ];
+    }
+
     /**
      * Test all().
      *
