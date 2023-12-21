@@ -299,9 +299,9 @@ class AbstractApiTest extends TestCase
     public static function getRetrieveAllData(): array
     {
         return [
-            'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
-            'String' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
-            'Empty body' => ['', 'application/json', false],
+            'array response' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'false response' => ['', 'application/json', false],
         ];
     }
 

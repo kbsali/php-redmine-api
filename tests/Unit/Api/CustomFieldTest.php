@@ -47,34 +47,38 @@ class CustomFieldTest extends TestCase
      * @covers ::get
      * @covers ::retrieveAll
      * @covers ::isNotNull
+     * @dataProvider getAllData
      * @test
      */
-    public function testAllReturnsClientGetResponse()
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
-        // Test values
-        $response = '["API Response"]';
-        $expectedResponse = ['API Response'];
-
         // Create the used mock objects
         $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json')
-            )
-            ->willReturn(true);
         $client->expects($this->exactly(1))
+            ->method('requestGet')
+            ->with('/custom_fields.json')
+            ->willReturn(true);
+        $client->expects($this->atLeast(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
         $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+            ->willReturn($responseType);
 
         // Create the object under test
         $api = new CustomField($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all());
+    }
+
+    public static function getAllData(): array
+    {
+        return [
+            'array response' => ['["API Response"]', 'application/json', ['API Response']],
+            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'false response' => ['', 'application/json', false],
+        ];
     }
 
     /**
