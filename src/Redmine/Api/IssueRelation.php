@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Serializer\JsonSerializer;
 
 /**
@@ -42,13 +43,21 @@ class IssueRelation extends AbstractApi
      * @param int   $issueId the issue id
      * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of relations found
+     * @return array|string|false list of relations found or error message or false
      */
     public function all($issueId, array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByIssueId()` instead.', E_USER_DEPRECATED);
 
-        return $this->listByIssueId($issueId, $params);
+        try {
+            return $this->listByIssueId($issueId, $params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**

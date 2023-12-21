@@ -40,7 +40,7 @@ class IssuePriority extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of issue priorities found
+     * @return array|string|false list of issue priorities found or error message or false
      */
     public function all(array $params = [])
     {
