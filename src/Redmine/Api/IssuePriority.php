@@ -2,6 +2,8 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
+
 /**
  * Listing issue priorities.
  *
@@ -44,6 +46,14 @@ class IssuePriority extends AbstractApi
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 }
