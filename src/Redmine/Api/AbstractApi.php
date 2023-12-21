@@ -170,7 +170,7 @@ abstract class AbstractApi implements Api
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return string|array|false elements found or error message of false
+     * @return string|array|false elements found or error message or false
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
@@ -178,10 +178,12 @@ abstract class AbstractApi implements Api
 
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
-        } catch (SerializerException $e) {
-            return $e->getMessage();
         } catch (Exception $e) {
-            $data = false;
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
         }
 
         return $data;

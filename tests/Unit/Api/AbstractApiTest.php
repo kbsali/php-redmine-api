@@ -301,7 +301,7 @@ class AbstractApiTest extends TestCase
         return [
             'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
             'String' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
-            'Empty body' => ['', 'application/json', 'Catched error "Syntax error" while decoding JSON: '],
+            'Empty body' => ['', 'application/json', false],
         ];
     }
 
