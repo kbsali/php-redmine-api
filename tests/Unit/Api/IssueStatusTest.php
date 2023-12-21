@@ -53,9 +53,7 @@ class IssueStatusTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->exactly(1))
             ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/issue_statuses.json')
-            )
+            ->with('/issue_statuses.json')
             ->willReturn(true);
         $client->expects($this->atLeast(1))
             ->method('getLastResponseBody')
