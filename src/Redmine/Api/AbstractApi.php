@@ -179,7 +179,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (SerializerException $e) {
-            return 'Error decoding body as JSON: '.$e->getPrevious()->getMessage();
+            return $e->getMessage();
         } catch (Exception $e) {
             $data = false;
         }

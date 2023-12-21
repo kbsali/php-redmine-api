@@ -249,7 +249,7 @@ class AbstractApiTest extends TestCase
     /**
      * @covers \Redmine\Api\AbstractApi::retrieveData
      *
-     * @dataProvider retrieveDataToExceptionData
+     * @dataProvider getRetrieveDataToExceptionData
      */
     public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage)
     {
@@ -269,7 +269,7 @@ class AbstractApiTest extends TestCase
         $method->invoke($api, '/issues.json');
     }
 
-    public static function retrieveDataToExceptionData(): array
+    public static function getRetrieveDataToExceptionData(): array
     {
         return [
             'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '],
@@ -279,7 +279,7 @@ class AbstractApiTest extends TestCase
     /**
      * @covers \Redmine\Api\AbstractApi::retrieveAll
      *
-     * @dataProvider retrieveAllData
+     * @dataProvider getRetrieveAllData
      */
     public function testDeprecatedRetrieveAll($content, $contentType, $expected)
     {
@@ -296,11 +296,12 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, ''));
     }
 
-    public static function retrieveAllData(): array
+    public static function getRetrieveAllData(): array
     {
         return [
             'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
-            'Empty body' => ['', 'application/json', 'Error decoding body as JSON: Syntax error'],
+            'String' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'Empty body' => ['', 'application/json', 'Catched error "Syntax error" while decoding JSON: '],
         ];
     }
 
