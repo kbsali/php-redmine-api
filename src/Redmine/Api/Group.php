@@ -2,7 +2,7 @@
 
 namespace Redmine\Api;
 
-use Exception;
+use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -122,7 +122,7 @@ class Group extends AbstractApi
      */
     public function update($id, array $params = [])
     {
-        throw new Exception('Not implemented');
+        throw new \Exception('Not implemented');
     }
 
     /**

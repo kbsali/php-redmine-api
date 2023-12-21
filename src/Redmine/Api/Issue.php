@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -64,13 +65,21 @@ class Issue extends AbstractApi
      *
      * @param array $params the additional parameters (cf available $params above)
      *
-     * @return array list of issues found
+     * @return array|string|false list of issues found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**
