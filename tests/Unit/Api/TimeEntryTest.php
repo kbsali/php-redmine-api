@@ -45,32 +45,29 @@ class TimeEntryTest extends TestCase
      * Test all().
      *
      * @covers ::all
+     * @dataProvider getAllData
      * @test
      */
-    public function testAllReturnsClientGetResponse()
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
-        // Test values
-        $response = '["API Response"]';
-        $expectedReturn = ['API Response'];
-
         // Create the used mock objects
         $client = $this->createMock(Client::class);
-        $client->expects($this->once())
+        $client->expects($this->exactly(1))
             ->method('requestGet')
             ->with('/time_entries.json')
             ->willReturn(true);
-        $client->expects($this->exactly(1))
+        $client->expects($this->atLeast(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
         $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+            ->willReturn($responseType);
 
         // Create the object under test
         $api = new TimeEntry($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->all());
+        $this->assertSame($expectedResponse, $api->all());
     }
 
     /**

@@ -39,7 +39,7 @@ class Search extends AbstractApi
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of results (projects, issues)
+     * @return array|string|false list of results (projects, issues) found or error message or false
      */
     public function search($query, array $params = [])
     {
