@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api\CustomField;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
 use Redmine\Client\Client;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * @covers \Redmine\Api\CustomField::list
@@ -128,5 +129,30 @@ class ListTest extends TestCase
 
         // Perform the tests
         $this->assertSame($returnDataSet, $api->list($allParameters));
+    }
+
+    public function testListThrowsException()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->exactly(1))
+            ->method('requestGet')
+            ->with('/custom_fields.json')
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn('');
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        // Create the object under test
+        $api = new CustomField($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('Redmine server has delivered an unexpected response.');
+
+        // Perform the tests
+        $api->list();
     }
 }

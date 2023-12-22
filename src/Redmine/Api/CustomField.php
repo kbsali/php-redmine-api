@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * Listing custom fields.
@@ -29,7 +30,11 @@ class CustomField extends AbstractApi
      */
     final public function list(array $params = []): array
     {
-        $this->customFields = $this->retrieveData('/custom_fields.json', $params);
+        try {
+            $this->customFields = $this->retrieveData('/custom_fields.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('Redmine server has delivered an unexpected response.', $th->getCode(), $th);
+        }
 
         return $this->customFields;
     }
@@ -52,6 +57,10 @@ class CustomField extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
+            }
+
             if ($this->client->getLastResponseBody() === '') {
                 return false;
             }
