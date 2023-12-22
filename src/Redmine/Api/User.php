@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -42,13 +43,21 @@ class User extends AbstractApi
      *
      * @param array $params to allow offset/limit (and more) to be passed
      *
-     * @return array list of users found
+     * @return array|string|false list of users found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**
