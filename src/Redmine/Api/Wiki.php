@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -51,13 +52,21 @@ class Wiki extends AbstractApi
      * @param int|string $project project name
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of wiki pages found for the given project
+     * @return array|string|false list of wiki pages found or error message or false
      */
     public function all($project, array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->listByProject(strval($project), $params);
+        try {
+            return $this->listByProject(strval($project), $params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**
