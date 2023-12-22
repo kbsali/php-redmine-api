@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -28,6 +29,7 @@ class IssueCategory extends AbstractApi
      * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of issue categories found
      */

@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -24,6 +25,8 @@ class User extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
      * @param array $params to allow offset/limit (and more) to be passed
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of users found
      */

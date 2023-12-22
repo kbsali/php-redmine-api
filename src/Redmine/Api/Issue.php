@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -38,6 +39,8 @@ class Issue extends AbstractApi
      * - query_id : id of the previously saved query
      *
      * @param array $params the additional parameters (cf available $params above)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of issues found
      */

@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -23,6 +24,8 @@ class TimeEntry extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of time entries found
      */

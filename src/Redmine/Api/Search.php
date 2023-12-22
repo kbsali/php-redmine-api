@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\SerializerException;
 
 /**
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
@@ -18,6 +19,8 @@ class Search extends AbstractApi
      *
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of results (projects, issues)
      */

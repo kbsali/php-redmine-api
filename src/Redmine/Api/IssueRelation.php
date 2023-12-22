@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 
 /**
@@ -23,6 +24,8 @@ class IssueRelation extends AbstractApi
      *
      * @param int   $issueId the issue id
      * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of relations found
      */

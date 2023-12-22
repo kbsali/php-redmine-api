@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\SerializerException;
 
 /**
  * Listing time entry activities.
@@ -19,6 +20,8 @@ class TimeEntryActivity extends AbstractApi
      * List time entry activities.
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of time entry activities found
      */

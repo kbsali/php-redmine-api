@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\SerializerException;
 
 /**
  * Custom queries retrieval.
@@ -21,6 +22,8 @@ class Query extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of queries found
      */
