@@ -6,6 +6,7 @@ use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -29,7 +30,7 @@ class IssueCategory extends AbstractApi
      * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of issue categories found
      */
@@ -42,7 +43,11 @@ class IssueCategory extends AbstractApi
             ));
         }
 
-        $this->issueCategories = $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
+        try {
+            $this->issueCategories = $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->issueCategories;
     }
@@ -68,6 +73,10 @@ class IssueCategory extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();
