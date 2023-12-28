@@ -57,12 +57,12 @@ class CustomField extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
-                $e = $e->getPrevious();
-            }
-
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();
