@@ -150,7 +150,7 @@ class ListTest extends TestCase
         $api = new CustomField($client);
 
         $this->expectException(UnexpectedResponseException::class);
-        $this->expectExceptionMessage('Redmine server has delivered an unexpected response.');
+        $this->expectExceptionMessage('Redmine server has responded with an unexpected body.');
 
         // Perform the tests
         $api->list();
