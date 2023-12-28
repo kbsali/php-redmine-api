@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -26,13 +27,17 @@ class Group extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of groups found
      */
     final public function list(array $params = []): array
     {
-        $this->groups = $this->retrieveData('/groups.json', $params);
+        try {
+            $this->groups = $this->retrieveData('/groups.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->groups;
     }
@@ -55,6 +60,10 @@ class Group extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
+            }
+
             if ($this->client->getLastResponseBody() === '') {
                 return false;
             }
