@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -40,13 +41,17 @@ class Issue extends AbstractApi
      *
      * @param array $params the additional parameters (cf available $params above)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of issues found
      */
     final public function list(array $params = []): array
     {
-        return $this->retrieveData('/issues.json', $params);
+        try {
+            return $this->retrieveData('/issues.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
     }
 
     /**
@@ -77,6 +82,10 @@ class Issue extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
+            }
+
             if ($this->client->getLastResponseBody() === '') {
                 return false;
             }
