@@ -24,7 +24,7 @@ class CustomField extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of custom fields found
      */
@@ -33,7 +33,7 @@ class CustomField extends AbstractApi
         try {
             $this->customFields = $this->retrieveData('/custom_fields.json', $params);
         } catch (SerializerException $th) {
-            throw new UnexpectedResponseException('Redmine server has delivered an unexpected response.', $th->getCode(), $th);
+            throw new UnexpectedResponseException('Redmine server has responded with an unexpected body.', $th->getCode(), $th);
         }
 
         return $this->customFields;
