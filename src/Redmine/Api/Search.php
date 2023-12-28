@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
+use Redmine\Exception\SerializerException;
+
 /**
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
  */
@@ -16,6 +19,8 @@ class Search extends AbstractApi
      *
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of results (projects, issues)
      */
@@ -37,12 +42,20 @@ class Search extends AbstractApi
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of results (projects, issues)
+     * @return array|string|false list of results (projects, issues) found or error message or false
      */
     public function search($query, array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByQuery()` instead.', E_USER_DEPRECATED);
 
-        return $this->listByQuery($query, $params);
+        try {
+            return $this->listByQuery($query, $params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 }

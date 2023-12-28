@@ -2,8 +2,9 @@
 
 namespace Redmine\Api;
 
-use Exception;
+use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -25,6 +26,8 @@ class Group extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
+     * @throws SerializerException if response body could not be converted into array
+     *
      * @return array list of groups found
      */
     final public function list(array $params = []): array
@@ -43,13 +46,21 @@ class Group extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of groups found
+     * @return array|string|false list of groups found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -114,7 +125,7 @@ class Group extends AbstractApi
      */
     public function update($id, array $params = [])
     {
-        throw new Exception('Not implemented');
+        throw new \Exception('Not implemented');
     }
 
     /**

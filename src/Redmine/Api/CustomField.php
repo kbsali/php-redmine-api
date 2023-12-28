@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
+use Redmine\Exception\SerializerException;
+
 /**
  * Listing custom fields.
  *
@@ -19,6 +22,8 @@ class CustomField extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of custom fields found
      */
@@ -38,13 +43,21 @@ class CustomField extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of custom fields found
+     * @return array|string|false list of custom fields found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**

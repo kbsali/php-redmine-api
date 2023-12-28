@@ -2,8 +2,10 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -27,6 +29,7 @@ class IssueCategory extends AbstractApi
      * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of issue categories found
      */
@@ -54,13 +57,21 @@ class IssueCategory extends AbstractApi
      * @param string|int $project project id or literal identifier
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of issue categories found
+     * @return array|string|false list of issue categories found or error message or false
      */
     public function all($project, array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->listByProject(strval($project), $params);
+        try {
+            return $this->listByProject(strval($project), $params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
+use Redmine\Exception\SerializerException;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -21,7 +22,7 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(Client::class);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'isNotNull');
         $method->setAccessible(true);
@@ -61,7 +62,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
@@ -147,7 +148,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/json');
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
         $method->setAccessible(true);
@@ -163,12 +164,12 @@ class AbstractApiTest extends TestCase
     public static function getJsonDecodingFromGetMethodData(): array
     {
         return [
-            ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]], // test decode by default
-            ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
-            ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
+            'test decode by default' => ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]],
+            'test decode by default, JSON decode: false' => ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
+            'test decode by default, JSON decode: true' => ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
             'Empty body, JSON decode: false' => ['', false, false],
             'Empty body, JSON decode: true' => ['', true, false],
-            ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'], // test invalid JSON
+            'test invalid JSON' => ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'],
         ];
     }
 
@@ -183,7 +184,7 @@ class AbstractApiTest extends TestCase
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, $methodName);
         $method->setAccessible(true);
@@ -219,22 +220,89 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveAll
+     * @covers \Redmine\Api\AbstractApi::retrieveData
+     *
+     * @dataProvider retrieveDataData
      */
-    public function testDeprecatedRetrieveAll()
+    public function testRetrieveData($response, $contentType, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
-        $client->method('getLastResponseBody')->willReturn('<?xml version="1.0"?><issue/>');
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
+        $client->method('getLastResponseBody')->willReturn($response);
+        $client->method('getLastResponseContentType')->willReturn($contentType);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'retrieveData');
+        $method->setAccessible(true);
+
+        $this->assertSame($expected, $method->invoke($api, '/issues.json'));
+    }
+
+    public static function retrieveDataData(): array
+    {
+        return [
+            'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+        ];
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::retrieveData
+     *
+     * @dataProvider getRetrieveDataToExceptionData
+     */
+    public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage)
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')->willReturn(true);
+        $client->method('getLastResponseBody')->willReturn($response);
+        $client->method('getLastResponseContentType')->willReturn($contentType);
+
+        $api = new class($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'retrieveData');
+        $method->setAccessible(true);
+
+        $this->expectException($expectedException);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $method->invoke($api, '/issues.json');
+    }
+
+    public static function getRetrieveDataToExceptionData(): array
+    {
+        return [
+            'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '],
+        ];
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::retrieveAll
+     *
+     * @dataProvider getRetrieveAllData
+     */
+    public function testDeprecatedRetrieveAll($content, $contentType, $expected)
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')->willReturn(true);
+        $client->method('getLastResponseBody')->willReturn($content);
+        $client->method('getLastResponseContentType')->willReturn($contentType);
+
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
         $method->setAccessible(true);
 
-        $this->assertSame([], $method->invoke($api, '/issues.xml'));
+        $this->assertSame($expected, $method->invoke($api, ''));
+    }
 
+    public static function getRetrieveAllData(): array
+    {
+        return [
+            'array response' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
+            'false response' => ['', 'application/json', false],
+        ];
     }
 
     /**
@@ -244,7 +312,7 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(Client::class);
 
-        $api = $this->getMockForAbstractClass(AbstractApi::class, [$client]);
+        $api = new class($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'attachCustomFieldXML');
         $method->setAccessible(true);

@@ -2,7 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -23,6 +25,8 @@ class TimeEntry extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
+     * @throws SerializerException if response body could not be converted into array
+     *
      * @return array list of time entries found
      */
     final public function list(array $params = []): array
@@ -41,13 +45,21 @@ class TimeEntry extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of time entries found
+     * @return array|string|false list of time entries found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 
     /**

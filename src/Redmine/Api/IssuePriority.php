@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception;
+use Redmine\Exception\SerializerException;
+
 /**
  * Listing issue priorities.
  *
@@ -19,6 +22,8 @@ class IssuePriority extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     *
+     * @throws SerializerException if response body could not be converted into array
      *
      * @return array list of issue priorities found
      */
@@ -38,12 +43,20 @@ class IssuePriority extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of issue priorities found
+     * @return array|string|false list of issue priorities found or error message or false
      */
     public function all(array $params = [])
     {
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
-        return $this->list($params);
+        try {
+            return $this->list($params);
+        } catch (Exception $e) {
+            if ($this->client->getLastResponseBody() === '') {
+                return false;
+            }
+
+            return $e->getMessage();
+        }
     }
 }
