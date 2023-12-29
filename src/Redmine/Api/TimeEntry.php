@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -25,13 +26,17 @@ class TimeEntry extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of time entries found
      */
     final public function list(array $params = []): array
     {
-        $this->timeEntries = $this->retrieveData('/time_entries.json', $params);
+        try {
+            $this->timeEntries = $this->retrieveData('/time_entries.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->timeEntries;
     }
@@ -56,6 +61,10 @@ class TimeEntry extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();
