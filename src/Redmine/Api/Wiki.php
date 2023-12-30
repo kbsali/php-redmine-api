@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -27,7 +28,7 @@ class Wiki extends AbstractApi
      * @param int|string $projectIdentifier project id or slug
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of wiki pages found for the given project
      */
@@ -40,7 +41,11 @@ class Wiki extends AbstractApi
             ));
         }
 
-        $this->wikiPages = $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
+        try {
+            $this->wikiPages = $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->wikiPages;
     }
@@ -66,6 +71,10 @@ class Wiki extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();
