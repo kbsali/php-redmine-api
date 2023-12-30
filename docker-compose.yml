@@ -30,7 +30,7 @@ services:
             - ./.docker/redmine_data:/usr/src/redmine/files
 
     mariadb:
-        image: mariadb:10.11
+        image: mariadb:11.2
         environment:
             MYSQL_ROOT_PASSWORD: "root"
             MYSQL_DATABASE: "redmine"
