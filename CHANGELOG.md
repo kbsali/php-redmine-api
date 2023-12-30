@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added support for PHP 8.3
 - New method `Redmine\Api\CustomField::list()` to list custom fields.
 - New method `Redmine\Api\Group::list()` to list groups.
 - New method `Redmine\Api\Issue::list()` to list issues.
