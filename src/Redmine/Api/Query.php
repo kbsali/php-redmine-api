@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * Custom queries retrieval.
@@ -23,13 +24,17 @@ class Query extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of queries found
      */
     final public function list(array $params = []): array
     {
-        $this->query = $this->retrieveData('/queries.json', $params);
+        try {
+            $this->query = $this->retrieveData('/queries.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->query;
     }
@@ -54,6 +59,10 @@ class Query extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();

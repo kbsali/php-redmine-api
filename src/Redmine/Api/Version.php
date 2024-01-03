@@ -6,6 +6,7 @@ use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -27,7 +28,7 @@ class Version extends AbstractApi
      * @param string|int $projectIdentifier project id or literal identifier
      * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of versions found
      */
@@ -40,7 +41,11 @@ class Version extends AbstractApi
             ));
         }
 
-        $this->versions = $this->retrieveData('/projects/'.strval($projectIdentifier).'/versions.json', $params);
+        try {
+            $this->versions = $this->retrieveData('/projects/'.strval($projectIdentifier).'/versions.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->versions;
     }
@@ -66,6 +71,10 @@ class Version extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();
