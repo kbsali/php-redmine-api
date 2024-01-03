@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.4.0...v2.x)
 
-## [v2.4.0 - ](https://github.com/kbsali/php-redmine-api/compare/v2.3.0...v2.4.0) - 2024-01-02
+## [v2.4.0](https://github.com/kbsali/php-redmine-api/compare/v2.3.0...v2.4.0) - 2024-01-??
 
 ### Added
 
@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\User::list()` to list users.
 - New method `Redmine\Api\Version::listByProject()` to list versions from a project.
 - New method `Redmine\Api\Wiki::listByProject()` to list wiki pages from a project.
+
+### Fixed
+
+- Restore BC in possible return types in `Redmine\Api\...::all()` methods
 
 ### Deprecated
 
