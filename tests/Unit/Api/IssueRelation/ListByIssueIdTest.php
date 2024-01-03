@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api\IssueRelation;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 use Redmine\Client\Client;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * @covers \Redmine\Api\IssueRelation::listByIssueId
@@ -62,5 +63,30 @@ class ListByIssueIdTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listByIssueId(5, $parameters));
+    }
+
+    public function testListByIssueIdThrowsException()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->exactly(1))
+            ->method('requestGet')
+            ->with('/issues/5/relations.json')
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn('');
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        // Create the object under test
+        $api = new IssueRelation($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+
+        // Perform the tests
+        $api->listByIssueId(5);
     }
 }

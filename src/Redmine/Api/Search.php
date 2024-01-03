@@ -4,6 +4,7 @@ namespace Redmine\Api;
 
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
@@ -20,14 +21,19 @@ class Search extends AbstractApi
      * @param string $query  string to search
      * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of results (projects, issues)
      */
     final public function listByQuery(string $query, array $params = []): array
     {
         $params['q'] = $query;
-        $this->results = $this->retrieveData('/search.json', $params);
+
+        try {
+            $this->results = $this->retrieveData('/search.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->results;
     }
@@ -53,6 +59,10 @@ class Search extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\News;
 use Redmine\Client\Client;
 use Redmine\Exception\InvalidParameterException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
@@ -92,5 +93,30 @@ class ListByProjectTest extends TestCase
             'array' => [[]],
             'object' => [new stdClass()],
         ];
+    }
+
+    public function testListByProjectThrowsException()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->exactly(1))
+            ->method('requestGet')
+            ->with('/projects/5/news.json')
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn('');
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        // Create the object under test
+        $api = new News($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+
+        // Perform the tests
+        $api->listByProject(5);
     }
 }

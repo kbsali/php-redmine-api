@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api\Search;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
 use Redmine\Client\Client;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -63,5 +64,30 @@ class ListByQueryTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listByQuery('query', $parameters));
+    }
+
+    public function testListByQueryThrowsException()
+    {
+        // Create the used mock objects
+        $client = $this->createMock(Client::class);
+        $client->expects($this->exactly(1))
+            ->method('requestGet')
+            ->with('/search.json?limit=25&offset=0&q=query')
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn('');
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        // Create the object under test
+        $api = new Search($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+
+        // Perform the tests
+        $api->listByQuery('query');
     }
 }

@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 
 /**
  * @see   http://www.redmine.org/projects/redmine/wiki/Rest_News
@@ -24,7 +25,7 @@ class News extends AbstractApi
      * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of news found
      */
@@ -37,7 +38,11 @@ class News extends AbstractApi
             ));
         }
 
-        $this->news = $this->retrieveData('/projects/'.strval($projectIdentifier).'/news.json', $params);
+        try {
+            $this->news = $this->retrieveData('/projects/'.strval($projectIdentifier).'/news.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->news;
     }
@@ -49,13 +54,17 @@ class News extends AbstractApi
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @throws SerializerException if response body could not be converted into array
+     * @throws UnexpectedResponseException if response body could not be converted into array
      *
      * @return array list of news found
      */
     final public function list(array $params = []): array
     {
-        $this->news = $this->retrieveData('/news.json', $params);
+        try {
+            $this->news = $this->retrieveData('/news.json', $params);
+        } catch (SerializerException $th) {
+            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+        }
 
         return $this->news;
     }
@@ -85,6 +94,10 @@ class News extends AbstractApi
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
+            }
+
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+                $e = $e->getPrevious();
             }
 
             return $e->getMessage();

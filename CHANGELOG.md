@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\User::list()` to list users.
 - New method `Redmine\Api\Version::listByProject()` to list versions from a project.
 - New method `Redmine\Api\Wiki::listByProject()` to list wiki pages from a project.
+- New exception `Redmine\Exception\UnexpectedResponseException` if the Redmine server responded with an unexpected body.
 
 ### Deprecated
 
