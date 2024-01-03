@@ -30,12 +30,10 @@ class Search extends AbstractApi
         $params['q'] = $query;
 
         try {
-            $this->results = $this->retrieveData('/search.json', $params);
+            return $this->retrieveData('/search.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->results;
     }
 
     /**
@@ -55,7 +53,7 @@ class Search extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByQuery()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->listByQuery($query, $params);
+            $this->results = $this->listByQuery($query, $params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,5 +65,7 @@ class Search extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->results;
     }
 }

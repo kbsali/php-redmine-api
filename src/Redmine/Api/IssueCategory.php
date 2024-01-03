@@ -44,12 +44,10 @@ class IssueCategory extends AbstractApi
         }
 
         try {
-            $this->issueCategories = $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
+            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->issueCategories;
     }
 
     /**
@@ -94,7 +92,7 @@ class IssueCategory extends AbstractApi
     public function listing($project, $forceUpdate = false)
     {
         if (true === $forceUpdate || empty($this->issueCategories)) {
-            $this->listByProject($project);
+            $this->issueCategories = $this->listByProject($project);
         }
         $ret = [];
         foreach ($this->issueCategories['issue_categories'] as $e) {

@@ -31,12 +31,10 @@ class Query extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->query = $this->retrieveData('/queries.json', $params);
+            return $this->retrieveData('/queries.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->query;
     }
 
     /**
@@ -55,7 +53,7 @@ class Query extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->query = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,5 +65,7 @@ class Query extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->query;
     }
 }
