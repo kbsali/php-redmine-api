@@ -99,7 +99,7 @@ final class XmlSerializer implements Stringable
         try {
             $serialized = json_encode($deserialized, \JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw new SerializerException('Catched error "'.$e->getMessage().'" while encoding SimpleXMLElement', $e->getCode(), $e);
+            throw new SerializerException('Catched error "' . $e->getMessage() . '" while encoding SimpleXMLElement', $e->getCode(), $e);
         }
 
         $this->normalized = JsonSerializer::createFromString($serialized)->getNormalized();
@@ -143,7 +143,7 @@ final class XmlSerializer implements Stringable
             $value = $params;
         }
 
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><'.$rootElementName.'>'.$value.'</'.$rootElementName.'>');
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><' . $rootElementName . '>' . $value . '</' . $rootElementName . '>');
 
         if (is_array($params)) {
             foreach ($params as $k => $v) {

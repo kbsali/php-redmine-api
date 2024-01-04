@@ -32,13 +32,13 @@ final class PathSerializer implements Stringable
         $queryString = '';
 
         if (!empty($this->queryParams)) {
-            $queryString = '?'.\http_build_query($this->queryParams);
+            $queryString = '?' . \http_build_query($this->queryParams);
 
             // @see #154: replace every encoded array (`foo[0]=`, `foo[1]=`, etc with `foo[]=`)
             $queryString = preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', $queryString);
         }
 
-        return $this->path.$queryString;
+        return $this->path . $queryString;
     }
 
     public function __toString(): string

@@ -334,8 +334,8 @@ class MembershipTest extends TestCase
                     $this->stringEndsWith('.xml')
                 ),
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<membership>'),
-                    $this->stringEndsWith('</membership>'."\n")
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<membership>'),
+                    $this->stringEndsWith('</membership>' . "\n")
                 )
             )
             ->willReturn(true);
@@ -375,8 +375,8 @@ class MembershipTest extends TestCase
                     $this->stringEndsWith('.xml')
                 ),
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<membership>'),
-                    $this->stringEndsWith('</membership>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<membership>'),
+                    $this->stringEndsWith('</membership>' . "\n"),
                     $this->stringContains('<role_ids type="array">'),
                     $this->stringContains('<role_id>5</role_id>'),
                     $this->stringContains('<role_id>6</role_id>'),

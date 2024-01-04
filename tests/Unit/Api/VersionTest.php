@@ -346,8 +346,8 @@ class VersionTest extends TestCase
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>')
                 )
             )
@@ -387,8 +387,8 @@ class VersionTest extends TestCase
             ->with(
                 '/projects/5/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains('<status>locked</status>')
                 )
@@ -456,8 +456,8 @@ class VersionTest extends TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>')
                 )
             )
@@ -497,8 +497,8 @@ class VersionTest extends TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains('<status>locked</status>')
                 )
@@ -718,8 +718,8 @@ class VersionTest extends TestCase
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains($sharingXmlElement)
                 )
@@ -762,8 +762,8 @@ class VersionTest extends TestCase
             ->with(
                 '/projects/test/versions.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->logicalNot(
                         $this->stringContains('<sharing')
@@ -841,8 +841,8 @@ class VersionTest extends TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->stringContains($sharingXmlElement)
                 )
@@ -885,8 +885,8 @@ class VersionTest extends TestCase
             ->with(
                 '/versions/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<version>'),
-                    $this->stringEndsWith('</version>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
+                    $this->stringEndsWith('</version>' . "\n"),
                     $this->stringContains('<name>Test version</name>'),
                     $this->logicalNot(
                         $this->stringContains('<sharing')

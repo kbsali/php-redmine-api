@@ -39,7 +39,7 @@ class News extends AbstractApi
         }
 
         try {
-            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/news.json', $params);
+            return $this->retrieveData('/projects/' . strval($projectIdentifier) . '/news.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
@@ -79,7 +79,7 @@ class News extends AbstractApi
      */
     public function all($project = null, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` or `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` or `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             if (null === $project) {

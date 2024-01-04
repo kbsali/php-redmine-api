@@ -53,7 +53,7 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->groups = $this->list($params);
@@ -152,7 +152,7 @@ class Group extends AbstractApi
     public function show($id, array $params = [])
     {
         return $this->get(
-            PathSerializer::create('/groups/'.urlencode($id).'.json', $params)->getPath()
+            PathSerializer::create('/groups/' . urlencode($id) . '.json', $params)->getPath()
         );
     }
 
@@ -167,7 +167,7 @@ class Group extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/groups/'.$id.'.xml');
+        return $this->delete('/groups/' . $id . '.xml');
     }
 
     /**
@@ -183,7 +183,7 @@ class Group extends AbstractApi
     public function addUser($id, $userId)
     {
         return $this->post(
-            '/groups/'.$id.'/users.xml',
+            '/groups/' . $id . '/users.xml',
             XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded()
         );
     }
@@ -200,6 +200,6 @@ class Group extends AbstractApi
      */
     public function removeUser($id, $userId)
     {
-        return $this->delete('/groups/'.$id.'/users/'.$userId.'.xml');
+        return $this->delete('/groups/' . $id . '/users/' . $userId . '.xml');
     }
 }

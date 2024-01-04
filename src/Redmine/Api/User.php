@@ -53,7 +53,7 @@ class User extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->users = $this->list($params);
@@ -159,7 +159,7 @@ class User extends AbstractApi
         $params['include'] = implode(',', $params['include']);
 
         return $this->get(
-            PathSerializer::create('/users/'.urlencode($id).'.json', $params)->getPath()
+            PathSerializer::create('/users/' . urlencode($id) . '.json', $params)->getPath()
         );
     }
 
@@ -222,7 +222,7 @@ class User extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/users/'.$id.'.xml',
+            '/users/' . $id . '.xml',
             XmlSerializer::createFromArray(['user' => $params])->getEncoded()
         );
     }
@@ -238,6 +238,6 @@ class User extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/users/'.$id.'.xml');
+        return $this->delete('/users/' . $id . '.xml');
     }
 }

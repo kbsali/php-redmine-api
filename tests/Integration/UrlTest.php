@@ -290,7 +290,7 @@ class UrlTest extends TestCase
 
         $res = $api->show(1);
 
-        $this->assertEquals($res['path'], '/projects/1.json?include='.urlencode('trackers,issue_categories,attachments,relations'));
+        $this->assertEquals($res['path'], '/projects/1.json?include=' . urlencode('trackers,issue_categories,attachments,relations'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);
@@ -423,22 +423,22 @@ class UrlTest extends TestCase
 
         $res = $api->show(1);
 
-        $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
+        $this->assertEquals($res['path'], '/users/1.json?include=' . urlencode('memberships,groups'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['memberships', 'groups']]);
 
-        $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups'));
+        $this->assertEquals($res['path'], '/users/1.json?include=' . urlencode('memberships,groups'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['memberships', 'groups', 'parameter1']]);
 
-        $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('memberships,groups,parameter1'));
+        $this->assertEquals($res['path'], '/users/1.json?include=' . urlencode('memberships,groups,parameter1'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->show(1, ['include' => ['parameter1', 'memberships', 'groups']]);
 
-        $this->assertEquals($res['path'], '/users/1.json?include='.urlencode('parameter1,memberships,groups'));
+        $this->assertEquals($res['path'], '/users/1.json?include=' . urlencode('parameter1,memberships,groups'));
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove(1);

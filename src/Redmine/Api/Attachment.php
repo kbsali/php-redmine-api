@@ -24,7 +24,7 @@ class Attachment extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/attachments/'.urlencode($id).'.json');
+        return $this->get('/attachments/' . urlencode($id) . '.json');
     }
 
     /**
@@ -36,7 +36,7 @@ class Attachment extends AbstractApi
      */
     public function download($id)
     {
-        return $this->get('/attachments/download/'.urlencode($id), false);
+        return $this->get('/attachments/download/' . urlencode($id), false);
     }
 
     /**
@@ -70,6 +70,6 @@ class Attachment extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/attachments/'.$id.'.xml');
+        return $this->delete('/attachments/' . $id . '.xml');
     }
 }

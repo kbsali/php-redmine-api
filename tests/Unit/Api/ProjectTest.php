@@ -137,7 +137,7 @@ class ProjectTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                '/projects/5.json?include='.
+                '/projects/5.json?include=' .
                 urlencode('trackers,issue_categories,attachments,relations')
             )
             ->willReturn(true);
@@ -475,8 +475,8 @@ class ProjectTest extends TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<project>'),
-                    $this->stringEndsWith('</project>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
+                    $this->stringEndsWith('</project>' . "\n"),
                     $this->stringContains('<identifier>test-project</identifier>'),
                     $this->stringContains('<name>Test Project with some xml entities: &amp; &lt; &gt; " \' </name>'),
                     $this->stringContains('<description>Description with some xml entities: &amp; &lt; &gt; " \' </description>')
@@ -518,8 +518,8 @@ class ProjectTest extends TestCase
             ->with(
                 '/projects.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<project>'),
-                    $this->stringEndsWith('</project>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<project>'),
+                    $this->stringEndsWith('</project>' . "\n"),
                     $this->stringContains('<tracker_ids type="array">'),
                     $this->stringContains('<tracker>10</tracker>'),
                     $this->stringContains('<tracker>5</tracker>'),
