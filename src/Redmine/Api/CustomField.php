@@ -31,12 +31,10 @@ class CustomField extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->customFields = $this->retrieveData('/custom_fields.json', $params);
+            return $this->retrieveData('/custom_fields.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->customFields;
     }
 
     /**
@@ -55,7 +53,7 @@ class CustomField extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->customFields = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,6 +65,8 @@ class CustomField extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->customFields;
     }
 
     /**
@@ -80,7 +80,7 @@ class CustomField extends AbstractApi
     public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->customFields) || $forceUpdate) {
-            $this->list($params);
+            $this->customFields = $this->list($params);
         }
         $ret = [];
         foreach ($this->customFields['custom_fields'] as $e) {

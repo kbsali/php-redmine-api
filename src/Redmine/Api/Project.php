@@ -34,12 +34,10 @@ class Project extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->projects = $this->retrieveData('/projects.json', $params);
+            return $this->retrieveData('/projects.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->projects;
     }
 
     /**
@@ -58,7 +56,7 @@ class Project extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->projects = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class Project extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->projects;
     }
 
     /**
@@ -84,7 +84,7 @@ class Project extends AbstractApi
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->projects)) {
-            $this->list($params);
+            $this->projects = $this->list($params);
         }
         $ret = [];
         foreach ($this->projects['projects'] as $e) {

@@ -43,12 +43,10 @@ class Membership extends AbstractApi
         }
 
         try {
-            $this->memberships = $this->retrieveData('/projects/'.strval($projectIdentifier).'/memberships.json', $params);
+            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/memberships.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->memberships;
     }
 
     /**
@@ -68,7 +66,7 @@ class Membership extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->listByProject(strval($project), $params);
+            $this->memberships = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -80,6 +78,8 @@ class Membership extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->memberships;
     }
 
     /**

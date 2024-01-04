@@ -34,12 +34,10 @@ class Group extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->groups = $this->retrieveData('/groups.json', $params);
+            return $this->retrieveData('/groups.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->groups;
     }
 
     /**
@@ -58,7 +56,7 @@ class Group extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->groups = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class Group extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->groups;
     }
 
     /**
@@ -82,7 +82,7 @@ class Group extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->groups) || $forceUpdate) {
-            $this->list();
+            $this->groups = $this->list();
         }
         $ret = [];
         foreach ($this->groups['groups'] as $e) {

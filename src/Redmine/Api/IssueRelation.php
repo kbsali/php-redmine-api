@@ -33,12 +33,10 @@ class IssueRelation extends AbstractApi
     final public function listByIssueId(int $issueId, array $params = []): array
     {
         try {
-            $this->relations = $this->retrieveData('/issues/'.strval($issueId).'/relations.json', $params);
+            return $this->retrieveData('/issues/'.strval($issueId).'/relations.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->relations;
     }
 
     /**
@@ -58,7 +56,7 @@ class IssueRelation extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByIssueId()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->listByIssueId($issueId, $params);
+            $this->relations = $this->listByIssueId($issueId, $params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class IssueRelation extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->relations;
     }
 
     /**

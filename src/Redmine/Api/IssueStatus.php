@@ -31,12 +31,10 @@ class IssueStatus extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->issueStatuses = $this->retrieveData('/issue_statuses.json', $params);
+            return $this->retrieveData('/issue_statuses.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->issueStatuses;
     }
 
     /**
@@ -55,7 +53,7 @@ class IssueStatus extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->issueStatuses = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,6 +65,8 @@ class IssueStatus extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->issueStatuses;
     }
 
     /**
@@ -79,7 +79,7 @@ class IssueStatus extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->issueStatuses) || $forceUpdate) {
-            $this->list();
+            $this->issueStatuses = $this->list();
         }
         $ret = [];
         foreach ($this->issueStatuses['issue_statuses'] as $e) {

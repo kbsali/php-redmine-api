@@ -34,12 +34,10 @@ class User extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->users = $this->retrieveData('/users.json', $params);
+            return $this->retrieveData('/users.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->users;
     }
 
     /**
@@ -58,7 +56,7 @@ class User extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->users = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class User extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->users;
     }
 
     /**
@@ -83,7 +83,7 @@ class User extends AbstractApi
     public function listing($forceUpdate = false, array $params = [])
     {
         if (empty($this->users) || $forceUpdate) {
-            $this->list($params);
+            $this->users = $this->list($params);
         }
         $ret = [];
         if (is_array($this->users) && isset($this->users['users'])) {

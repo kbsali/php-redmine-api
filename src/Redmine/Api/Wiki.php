@@ -42,12 +42,10 @@ class Wiki extends AbstractApi
         }
 
         try {
-            $this->wikiPages = $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
+            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->wikiPages;
     }
 
     /**
@@ -67,7 +65,7 @@ class Wiki extends AbstractApi
         @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->listByProject(strval($project), $params);
+            $this->wikiPages = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -79,6 +77,8 @@ class Wiki extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->wikiPages;
     }
 
     /**

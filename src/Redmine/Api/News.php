@@ -39,12 +39,10 @@ class News extends AbstractApi
         }
 
         try {
-            $this->news = $this->retrieveData('/projects/'.strval($projectIdentifier).'/news.json', $params);
+            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/news.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->news;
     }
 
     /**
@@ -61,12 +59,10 @@ class News extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->news = $this->retrieveData('/news.json', $params);
+            return $this->retrieveData('/news.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->news;
     }
 
     /**
@@ -87,9 +83,9 @@ class News extends AbstractApi
 
         try {
             if (null === $project) {
-                return $this->list($params);
+                $this->news = $this->list($params);
             } else {
-                return $this->listByProject(strval($project), $params);
+                $this->news = $this->listByProject(strval($project), $params);
             }
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
@@ -102,5 +98,7 @@ class News extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->news;
     }
 }
