@@ -42,12 +42,10 @@ class Wiki extends AbstractApi
         }
 
         try {
-            $this->wikiPages = $this->retrieveData('/projects/'.strval($projectIdentifier).'/wiki/index.json', $params);
+            return $this->retrieveData('/projects/' . strval($projectIdentifier) . '/wiki/index.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->wikiPages;
     }
 
     /**
@@ -64,10 +62,10 @@ class Wiki extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->listByProject(strval($project), $params);
+            $this->wikiPages = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -79,6 +77,8 @@ class Wiki extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->wikiPages;
     }
 
     /**
@@ -100,9 +100,9 @@ class Wiki extends AbstractApi
         ];
 
         if (null === $version) {
-            $path = '/projects/'.$project.'/wiki/'.$page.'.json';
+            $path = '/projects/' . $project . '/wiki/' . $page . '.json';
         } else {
-            $path = '/projects/'.$project.'/wiki/'.$page.'/'.$version.'.json';
+            $path = '/projects/' . $project . '/wiki/' . $page . '/' . $version . '.json';
         }
 
         return $this->get(
@@ -129,7 +129,7 @@ class Wiki extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/projects/'.$project.'/wiki/'.$page.'.xml',
+            '/projects/' . $project . '/wiki/' . $page . '.xml',
             XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
         );
     }
@@ -160,6 +160,6 @@ class Wiki extends AbstractApi
      */
     public function remove($project, $page)
     {
-        return $this->delete('/projects/'.$project.'/wiki/'.$page.'.xml');
+        return $this->delete('/projects/' . $project . '/wiki/' . $page . '.xml');
     }
 }

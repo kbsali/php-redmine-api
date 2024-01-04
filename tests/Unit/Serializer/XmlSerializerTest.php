@@ -79,19 +79,19 @@ class XmlSerializerTest extends TestCase
                 '',
             ],
             'wrong start tag' => [
-                'Catched errors: "Start tag expected, \'<\' not found'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+                'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
                 '<?xml version="1.0" encoding="UTF-8"?>',
             ],
             'invalid element name as start tag' => [
-                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
                 '<?xml version="1.0" encoding="UTF-8"?><>',
             ],
             'Premature end of data' => [
-                'Catched errors: "Premature end of data in tag a line 1'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
                 '<?xml version="1.0" encoding="UTF-8"?><a>',
             ],
             'invalid element name as start tag 2' => [
-                'Catched errors: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
                 '<?xml version="1.0" encoding="UTF-8"?></>',
             ],
         ];
@@ -203,7 +203,7 @@ class XmlSerializerTest extends TestCase
     {
         return[
             'invalid element name as start tag' => [
-                'Could not create XML from array: "StartTag: invalid element name'."\n".'", "Extra content at the end of the document'."\n".'"',
+                'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
                 ['0' => ['foobar']],
             ]
         ];

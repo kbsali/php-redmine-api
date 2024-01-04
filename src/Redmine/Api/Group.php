@@ -34,12 +34,10 @@ class Group extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->groups = $this->retrieveData('/groups.json', $params);
+            return $this->retrieveData('/groups.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->groups;
     }
 
     /**
@@ -55,10 +53,10 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->groups = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class Group extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->groups;
     }
 
     /**
@@ -82,7 +82,7 @@ class Group extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->groups) || $forceUpdate) {
-            $this->list();
+            $this->groups = $this->list();
         }
         $ret = [];
         foreach ($this->groups['groups'] as $e) {
@@ -152,7 +152,7 @@ class Group extends AbstractApi
     public function show($id, array $params = [])
     {
         return $this->get(
-            PathSerializer::create('/groups/'.urlencode($id).'.json', $params)->getPath()
+            PathSerializer::create('/groups/' . urlencode($id) . '.json', $params)->getPath()
         );
     }
 
@@ -167,7 +167,7 @@ class Group extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/groups/'.$id.'.xml');
+        return $this->delete('/groups/' . $id . '.xml');
     }
 
     /**
@@ -183,7 +183,7 @@ class Group extends AbstractApi
     public function addUser($id, $userId)
     {
         return $this->post(
-            '/groups/'.$id.'/users.xml',
+            '/groups/' . $id . '/users.xml',
             XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded()
         );
     }
@@ -200,6 +200,6 @@ class Group extends AbstractApi
      */
     public function removeUser($id, $userId)
     {
-        return $this->delete('/groups/'.$id.'/users/'.$userId.'.xml');
+        return $this->delete('/groups/' . $id . '/users/' . $userId . '.xml');
     }
 }

@@ -38,7 +38,7 @@ abstract class AbstractApi implements Api
      */
     public function lastCallFailed()
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
 
         $code = $this->client->getLastResponseStatusCode();
 
@@ -69,7 +69,7 @@ abstract class AbstractApi implements Api
             try {
                 return JsonSerializer::createFromString($body)->getNormalized();
             } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: '.$e->getPrevious()->getMessage();
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
             }
         }
 
@@ -174,7 +174,7 @@ abstract class AbstractApi implements Api
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.2.0, use `retrieveData()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.2.0, use `retrieveData()` instead.', E_USER_DEPRECATED);
 
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
@@ -242,7 +242,8 @@ abstract class AbstractApi implements Api
 
             $offset += $_limit;
 
-            if (empty($newDataSet) || !isset($newDataSet['limit']) || (
+            if (
+                empty($newDataSet) || !isset($newDataSet['limit']) || (
                     isset($newDataSet['offset']) &&
                     isset($newDataSet['total_count']) &&
                     $newDataSet['offset'] >= $newDataSet['total_count']
@@ -269,7 +270,7 @@ abstract class AbstractApi implements Api
      */
     protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
         $_fields = $xml->addChild('custom_fields');
         $_fields->addAttribute('type', 'array');
@@ -324,7 +325,7 @@ abstract class AbstractApi implements Api
         }
 
         if (!is_array($returnData)) {
-            throw new SerializerException('Could not convert response body into array: '.$body);
+            throw new SerializerException('Could not convert response body into array: ' . $body);
         }
 
         return $returnData;

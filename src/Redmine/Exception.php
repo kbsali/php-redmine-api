@@ -4,6 +4,4 @@ namespace Redmine;
 
 use Throwable;
 
-interface Exception extends Throwable
-{
-}
+interface Exception extends Throwable {}

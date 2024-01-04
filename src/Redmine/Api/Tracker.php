@@ -31,12 +31,10 @@ class Tracker extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->trackers = $this->retrieveData('/trackers.json', $params);
+            return $this->retrieveData('/trackers.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->trackers;
     }
 
     /**
@@ -52,10 +50,10 @@ class Tracker extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->trackers = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,6 +65,8 @@ class Tracker extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->trackers;
     }
 
     /**
@@ -79,7 +79,7 @@ class Tracker extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->trackers) || $forceUpdate) {
-            $this->list();
+            $this->trackers = $this->list();
         }
         $ret = [];
         foreach ($this->trackers['trackers'] as $e) {

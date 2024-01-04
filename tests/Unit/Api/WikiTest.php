@@ -283,7 +283,7 @@ class WikiTest extends TestCase
             ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
-                '<?xml version="1.0"?>'."\n".'<wiki_page/>'."\n"
+                '<?xml version="1.0"?>' . "\n" . '<wiki_page/>' . "\n"
             )
             ->willReturn(true);
         $client->expects($this->once())
@@ -321,8 +321,8 @@ class WikiTest extends TestCase
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<wiki_page>'),
-                    $this->stringEndsWith('</wiki_page>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<wiki_page>'),
+                    $this->stringEndsWith('</wiki_page>' . "\n"),
                     $this->stringContains('<title>Test Wikipage with xml entities: &amp; &lt; &gt; " \' </title>'),
                     $this->stringContains('<comments>Initial Edit with xml entities: &amp; &lt; &gt; " \' </comments>'),
                     $this->stringContains('<text>Some page text with xml entities: &amp; &lt; &gt; " \' </text>')
@@ -358,7 +358,7 @@ class WikiTest extends TestCase
             ->method('requestPut')
             ->with(
                 '/projects/5/wiki/test.xml',
-                '<?xml version="1.0"?>'."\n".'<wiki_page/>'."\n"
+                '<?xml version="1.0"?>' . "\n" . '<wiki_page/>' . "\n"
             )
             ->willReturn(true);
         $client->expects($this->once())
@@ -396,8 +396,8 @@ class WikiTest extends TestCase
             ->with(
                 '/projects/5/wiki/test.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<wiki_page>'),
-                    $this->stringEndsWith('</wiki_page>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<wiki_page>'),
+                    $this->stringEndsWith('</wiki_page>' . "\n"),
                     $this->stringContains('<title>Test Wikipage</title>'),
                     $this->stringContains('<comments>Initial Edit</comments>'),
                     $this->stringContains('<text>Some page text</text>')

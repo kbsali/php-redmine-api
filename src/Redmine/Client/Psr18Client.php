@@ -7,9 +7,9 @@ namespace Redmine\Client;
 use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Redmine\Exception\ClientException;
@@ -184,7 +184,7 @@ final class Psr18Client implements Client
     {
         $request = $this->requestFactory->createRequest(
             $method,
-            $this->url.$path
+            $this->url . $path
         );
 
         // Set Authentication header
@@ -192,7 +192,7 @@ final class Psr18Client implements Client
         if (null !== $this->password) {
             $request = $request->withHeader(
                 'Authorization',
-                'Basic '.base64_encode($this->apikeyOrUsername.':'.$this->password)
+                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password)
             );
         } else {
             $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);
@@ -228,7 +228,7 @@ final class Psr18Client implements Client
         }
 
         // set Content-Type header
-        $tmp = parse_url($this->url.$path);
+        $tmp = parse_url($this->url . $path);
 
         if ($this->isUploadCall($path)) {
             $request = $request->withHeader('Content-Type', 'application/octet-stream');
@@ -246,8 +246,7 @@ final class Psr18Client implements Client
      */
     private function handleServerRequestFactory(ServerRequestFactoryInterface $factory): RequestFactoryInterface
     {
-        return new class($factory) implements RequestFactoryInterface
-        {
+        return new class ($factory) implements RequestFactoryInterface {
             private ServerRequestFactoryInterface $factory;
 
             public function __construct(ServerRequestFactoryInterface $factory)

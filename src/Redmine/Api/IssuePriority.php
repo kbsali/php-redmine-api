@@ -31,12 +31,10 @@ class IssuePriority extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->issuePriorities = $this->retrieveData('/enumerations/issue_priorities.json', $params);
+            return $this->retrieveData('/enumerations/issue_priorities.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->issuePriorities;
     }
 
     /**
@@ -52,10 +50,10 @@ class IssuePriority extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->issuePriorities = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -67,5 +65,7 @@ class IssuePriority extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->issuePriorities;
     }
 }

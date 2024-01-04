@@ -29,12 +29,10 @@ class TimeEntryActivity extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->timeEntryActivities = $this->retrieveData('/enumerations/time_entry_activities.json', $params);
+            return $this->retrieveData('/enumerations/time_entry_activities.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->timeEntryActivities;
     }
 
     /**
@@ -48,10 +46,10 @@ class TimeEntryActivity extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->timeEntryActivities = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -63,6 +61,8 @@ class TimeEntryActivity extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->timeEntryActivities;
     }
 
     /**
@@ -75,7 +75,7 @@ class TimeEntryActivity extends AbstractApi
     public function listing($forceUpdate = false)
     {
         if (empty($this->timeEntryActivities) || $forceUpdate) {
-            $this->list();
+            $this->timeEntryActivities = $this->list();
         }
         $ret = [];
         foreach ($this->timeEntryActivities['time_entry_activities'] as $e) {

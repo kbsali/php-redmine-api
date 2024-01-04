@@ -304,8 +304,8 @@ class TimeEntryTest extends TestCase
             ->with(
                 '/time_entries.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<time_entry>'),
-                    $this->stringEndsWith('</time_entry>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
+                    $this->stringEndsWith('</time_entry>' . "\n"),
                     $this->stringContains('<issue_id>15</issue_id>'),
                     $this->stringContains('<project_id>25</project_id>'),
                     $this->stringContains('<hours>5.25</hours>'),
@@ -360,8 +360,8 @@ class TimeEntryTest extends TestCase
             ->with(
                 '/time_entries/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<time_entry>'),
-                    $this->stringEndsWith('</time_entry>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<time_entry>'),
+                    $this->stringEndsWith('</time_entry>' . "\n"),
                     $this->stringContains('<hours>10.25</hours>'),
                     $this->stringContains('<custom_fields type="array"><custom_field name="Affected version" id="1"><value>1.0.1</value></custom_field><custom_field name="Resolution" id="2"><value>Fixed</value></custom_field></custom_fields>')
                 )

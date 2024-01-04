@@ -424,8 +424,8 @@ class UserTest extends TestCase
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
-                    $this->stringEndsWith('</user>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
+                    $this->stringEndsWith('</user>' . "\n"),
                     $this->stringContains('<login>TestUser</login>'),
                     $this->stringContains('<password>secretPass</password>'),
                     $this->stringContains('<lastname>Last Name</lastname>'),
@@ -476,8 +476,8 @@ class UserTest extends TestCase
             ->with(
                 '/users.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
-                    $this->stringEndsWith('</user>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
+                    $this->stringEndsWith('</user>' . "\n"),
                     $this->stringContains('<login>TestUser</login>'),
                     $this->stringContains('<password>secretPass</password>'),
                     $this->stringContains('<lastname>Last Name</lastname>'),
@@ -526,8 +526,8 @@ class UserTest extends TestCase
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
-                    $this->stringEndsWith('</user>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
+                    $this->stringEndsWith('</user>' . "\n"),
                     $this->stringContains('<mail>user@example.com</mail>')
                 )
             )
@@ -569,8 +569,8 @@ class UserTest extends TestCase
             ->with(
                 '/users/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<user>'),
-                    $this->stringEndsWith('</user>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<user>'),
+                    $this->stringEndsWith('</user>' . "\n"),
                     $this->stringContains('<custom_fields type="array">'),
                     $this->stringContains('</custom_fields>'),
                     $this->stringContains('<custom_field name="CF Name" id="13">'),

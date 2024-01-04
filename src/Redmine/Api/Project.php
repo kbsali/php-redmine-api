@@ -34,12 +34,10 @@ class Project extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->projects = $this->retrieveData('/projects.json', $params);
+            return $this->retrieveData('/projects.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->projects;
     }
 
     /**
@@ -55,10 +53,10 @@ class Project extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->projects = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -70,6 +68,8 @@ class Project extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->projects;
     }
 
     /**
@@ -84,7 +84,7 @@ class Project extends AbstractApi
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
         if (true === $forceUpdate || empty($this->projects)) {
-            $this->list($params);
+            $this->projects = $this->list($params);
         }
         $ret = [];
         foreach ($this->projects['projects'] as $e) {
@@ -132,7 +132,7 @@ class Project extends AbstractApi
         }
 
         return $this->get(
-            PathSerializer::create('/projects/'.urlencode($id).'.json', $params)->getPath()
+            PathSerializer::create('/projects/' . urlencode($id) . '.json', $params)->getPath()
         );
     }
 
@@ -189,7 +189,7 @@ class Project extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/projects/'.$id.'.xml',
+            '/projects/' . $id . '.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
     }
@@ -203,7 +203,7 @@ class Project extends AbstractApi
      */
     protected function prepareParamsXml($params)
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
         return new \SimpleXMLElement(
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
@@ -221,6 +221,6 @@ class Project extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/projects/'.$id.'.xml');
+        return $this->delete('/projects/' . $id . '.xml');
     }
 }

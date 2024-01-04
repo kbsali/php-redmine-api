@@ -48,7 +48,7 @@ trait ClientApiTrait
         if (isset($this->apiInstances[$name])) {
             return $this->apiInstances[$name];
         }
-        $class = 'Redmine\Api\\'.$this->apiClassnames[$name];
+        $class = 'Redmine\Api\\' . $this->apiClassnames[$name];
         $this->apiInstances[$name] = new $class($this);
 
         return $this->apiInstances[$name];

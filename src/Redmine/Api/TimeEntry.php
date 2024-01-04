@@ -33,12 +33,10 @@ class TimeEntry extends AbstractApi
     final public function list(array $params = []): array
     {
         try {
-            $this->timeEntries = $this->retrieveData('/time_entries.json', $params);
+            return $this->retrieveData('/time_entries.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
-
-        return $this->timeEntries;
     }
 
     /**
@@ -54,10 +52,10 @@ class TimeEntry extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            return $this->list($params);
+            $this->timeEntries = $this->list($params);
         } catch (Exception $e) {
             if ($this->client->getLastResponseBody() === '') {
                 return false;
@@ -69,6 +67,8 @@ class TimeEntry extends AbstractApi
 
             return $e->getMessage();
         }
+
+        return $this->timeEntries;
     }
 
     /**
@@ -82,7 +82,7 @@ class TimeEntry extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/time_entries/'.urlencode($id).'.json');
+        return $this->get('/time_entries/' . urlencode($id) . '.json');
     }
 
     /**
@@ -144,7 +144,7 @@ class TimeEntry extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/time_entries/'.$id.'.xml',
+            '/time_entries/' . $id . '.xml',
             XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
         );
     }
@@ -160,6 +160,6 @@ class TimeEntry extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/time_entries/'.$id.'.xml');
+        return $this->delete('/time_entries/' . $id . '.xml');
     }
 }
