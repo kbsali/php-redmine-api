@@ -39,8 +39,7 @@ final class MockClient implements Client
     public $responseCodeMock;
     public $responseContentTypeMock;
 
-    private function __construct() {
-    }
+    private function __construct() {}
 
     /**
      * Sets to an existing username so api calls can be

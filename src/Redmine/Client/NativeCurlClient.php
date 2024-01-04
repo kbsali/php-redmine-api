@@ -261,7 +261,7 @@ final class NativeCurlClient implements Client
         $curlOptions = array_replace($curlOptions, $this->curlOptions);
 
         // Host and request options
-        $curlOptions[CURLOPT_URL] = $this->url.$path;
+        $curlOptions[CURLOPT_URL] = $this->url . $path;
 
         // Set the HTTP request headers
         $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path);
@@ -323,19 +323,19 @@ final class NativeCurlClient implements Client
 
         // Redmine specific headers
         if (null !== $this->impersonateUser && !array_key_exists(strtolower('X-Redmine-Switch-User'), $this->httpHeadersNames)) {
-            $httpHeaders[] = 'X-Redmine-Switch-User: '.$this->impersonateUser;
+            $httpHeaders[] = 'X-Redmine-Switch-User: ' . $this->impersonateUser;
         }
 
         // Set Authentication header
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
         if (null === $this->password && !array_key_exists(strtolower('X-Redmine-API-Key'), $this->httpHeadersNames)) {
-            $httpHeaders[] = 'X-Redmine-API-Key: '.$this->apikeyOrUsername;
+            $httpHeaders[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
         } else {
             if (!array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
                 // Setting Header "Authorization: Basic base64" is the same as
                 // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
                 // @see https://stackoverflow.com/a/26285941
-                $httpHeaders[] = 'Authorization: Basic '.base64_encode($this->apikeyOrUsername.':'.$this->password);
+                $httpHeaders[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
             }
         }
 
@@ -343,7 +343,7 @@ final class NativeCurlClient implements Client
         $customHttpHeaders = [];
 
         foreach ($this->httpHeaders as $headerName => $headerValue) {
-            $customHttpHeaders[] = $headerName.': '.$headerValue;
+            $customHttpHeaders[] = $headerName . ': ' . $headerValue;
         }
 
         // Merge custom headers
@@ -352,7 +352,7 @@ final class NativeCurlClient implements Client
         // Now set or reset mandatory headers
 
         // Content type headers
-        $tmp = parse_url($this->url.$path);
+        $tmp = parse_url($this->url . $path);
 
         if ($this->isUploadCall($path)) {
             $httpHeaders[] = 'Content-Type: application/octet-stream';

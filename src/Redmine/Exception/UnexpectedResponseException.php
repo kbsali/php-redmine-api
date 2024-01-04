@@ -14,6 +14,4 @@ use RuntimeException;
  * - Redmine\Client\Client::getLastResponseContentType()
  * - Redmine\Client\Client::getLastResponseBody()
  */
-final class UnexpectedResponseException extends RuntimeException implements RedmineException
-{
-}
+final class UnexpectedResponseException extends RuntimeException implements RedmineException {}

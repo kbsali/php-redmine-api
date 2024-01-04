@@ -46,7 +46,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->timeEntryActivities = $this->list($params);

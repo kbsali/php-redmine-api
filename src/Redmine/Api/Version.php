@@ -42,7 +42,7 @@ class Version extends AbstractApi
         }
 
         try {
-            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/versions.json', $params);
+            return $this->retrieveData('/projects/' . strval($projectIdentifier) . '/versions.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
@@ -62,7 +62,7 @@ class Version extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->versions = $this->listByProject(strval($project), $params);
@@ -134,7 +134,7 @@ class Version extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/versions/'.urlencode($id).'.json');
+        return $this->get('/versions/' . urlencode($id) . '.json');
     }
 
     /**
@@ -169,7 +169,7 @@ class Version extends AbstractApi
         $this->validateSharing($params);
 
         return $this->post(
-            '/projects/'.$project.'/versions.xml',
+            '/projects/' . $project . '/versions.xml',
             XmlSerializer::createFromArray(['version' => $params])->getEncoded()
         );
     }
@@ -197,7 +197,7 @@ class Version extends AbstractApi
         $this->validateSharing($params);
 
         return $this->put(
-            '/versions/'.$id.'.xml',
+            '/versions/' . $id . '.xml',
             XmlSerializer::createFromArray(['version' => $params])->getEncoded()
         );
     }
@@ -210,7 +210,7 @@ class Version extends AbstractApi
             'closed',
         ];
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
-            throw new InvalidParameterException('Possible values for status : '.implode(', ', $arrStatus));
+            throw new InvalidParameterException('Possible values for status : ' . implode(', ', $arrStatus));
         }
     }
 
@@ -224,7 +224,7 @@ class Version extends AbstractApi
             'system' => 'With all projects',
         ];
         if (isset($params['sharing']) && !isset($arrSharing[$params['sharing']])) {
-            throw new InvalidParameterException('Possible values for sharing : '.implode(', ', array_keys($arrSharing)));
+            throw new InvalidParameterException('Possible values for sharing : ' . implode(', ', array_keys($arrSharing)));
         }
     }
 
@@ -239,6 +239,6 @@ class Version extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/versions/'.$id.'.xml');
+        return $this->delete('/versions/' . $id . '.xml');
     }
 }

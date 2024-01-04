@@ -44,7 +44,7 @@ class IssueCategory extends AbstractApi
         }
 
         try {
-            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/issue_categories.json', $params);
+            return $this->retrieveData('/projects/' . strval($projectIdentifier) . '/issue_categories.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
@@ -64,7 +64,7 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             return $this->listByProject(strval($project), $params);
@@ -131,7 +131,7 @@ class IssueCategory extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/issue_categories/'.urlencode($id).'.json');
+        return $this->get('/issue_categories/' . urlencode($id) . '.json');
     }
 
     /**
@@ -161,7 +161,7 @@ class IssueCategory extends AbstractApi
         }
 
         return $this->post(
-            '/projects/'.$project.'/issue_categories.xml',
+            '/projects/' . $project . '/issue_categories.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
         );
     }
@@ -184,7 +184,7 @@ class IssueCategory extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/issue_categories/'.$id.'.xml',
+            '/issue_categories/' . $id . '.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
         );
     }
@@ -204,7 +204,7 @@ class IssueCategory extends AbstractApi
     public function remove($id, array $params = [])
     {
         return $this->delete(
-            PathSerializer::create('/issue_categories/'.$id.'.xml', $params)->getPath()
+            PathSerializer::create('/issue_categories/' . $id . '.xml', $params)->getPath()
         );
     }
 }

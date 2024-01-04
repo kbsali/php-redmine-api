@@ -73,7 +73,7 @@ final class JsonSerializer implements Stringable
                 \JSON_THROW_ON_ERROR
             );
         } catch (JsonException $e) {
-            throw new SerializerException('Catched error "'.$e->getMessage().'" while decoding JSON: '.$encoded, $e->getCode(), $e);
+            throw new SerializerException('Catched error "' . $e->getMessage() . '" while decoding JSON: ' . $encoded, $e->getCode(), $e);
         }
     }
 

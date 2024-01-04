@@ -77,7 +77,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             return $this->list($params);
@@ -113,7 +113,7 @@ class Issue extends AbstractApi
         }
 
         return $this->get(
-            PathSerializer::create('/issues/'.urlencode($id).'.json', $params)->getPath()
+            PathSerializer::create('/issues/' . urlencode($id) . '.json', $params)->getPath()
         );
     }
 
@@ -185,7 +185,7 @@ class Issue extends AbstractApi
         }
 
         return $this->put(
-            '/issues/'.$id.'.xml',
+            '/issues/' . $id . '.xml',
             XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded()
         );
     }
@@ -199,7 +199,7 @@ class Issue extends AbstractApi
     public function addWatcher($id, $watcherUserId)
     {
         return $this->post(
-            '/issues/'.$id.'/watchers.xml',
+            '/issues/' . $id . '/watchers.xml',
             XmlSerializer::createFromArray(['user_id' => $watcherUserId])->getEncoded()
         );
     }
@@ -212,7 +212,7 @@ class Issue extends AbstractApi
      */
     public function removeWatcher($id, $watcherUserId)
     {
-        return $this->delete('/issues/'.$id.'/watchers/'.$watcherUserId.'.xml');
+        return $this->delete('/issues/' . $id . '/watchers/' . $watcherUserId . '.xml');
     }
 
     /**
@@ -329,7 +329,7 @@ class Issue extends AbstractApi
         ];
 
         return $this->put(
-            '/issues/'.$id.'.json',
+            '/issues/' . $id . '.json',
             JsonSerializer::createFromArray(['issue' => $params])->getEncoded()
         );
     }
@@ -343,6 +343,6 @@ class Issue extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/issues/'.$id.'.xml');
+        return $this->delete('/issues/' . $id . '.xml');
     }
 }

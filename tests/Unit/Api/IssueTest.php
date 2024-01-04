@@ -351,7 +351,7 @@ class IssueTest extends TestCase
             ->method('requestPost')
             ->with(
                 $this->stringStartsWith('/issues/5/watchers.xml'),
-                $this->stringEndsWith('<user_id>10</user_id>'."\n")
+                $this->stringEndsWith('<user_id>10</user_id>' . "\n")
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -414,7 +414,7 @@ class IssueTest extends TestCase
             ->method('requestPost')
             ->with(
                 '/issues.xml',
-                '<?xml version="1.0"?>'."\n".'<issue/>'."\n"
+                '<?xml version="1.0"?>' . "\n" . '<issue/>' . "\n"
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -480,8 +480,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
                     $this->stringContains('<status_id>cleanedValue</status_id>'),
@@ -541,7 +541,7 @@ class IssueTest extends TestCase
                     $this->stringContains('<value>3</value>'),
                     $this->stringContains('</custom_field>'),
                     $this->stringContains('</custom_fields>'),
-                    $this->stringEndsWith('</issue>'."\n")
+                    $this->stringEndsWith('</issue>' . "\n")
                 )
             )
             ->willReturn(true);
@@ -575,7 +575,7 @@ class IssueTest extends TestCase
             ->method('requestPut')
             ->with(
                 '/issues/5.xml',
-                '<?xml version="1.0"?>'."\n".'<issue><id>5</id></issue>'."\n"
+                '<?xml version="1.0"?>' . "\n" . '<issue><id>5</id></issue>' . "\n"
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -641,8 +641,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<project_id>cleanedValue</project_id>'),
                     $this->stringContains('<category_id>cleanedValue</category_id>'),
@@ -692,8 +692,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<status_id>123</status_id>')
                 )
@@ -728,8 +728,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<id>5</id>'),
                     $this->stringContains('<notes>Note content</notes>')
                 )
@@ -769,8 +769,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<custom_fields type="array">'),
                     $this->stringContains('</custom_fields>'),
                     $this->stringContains('<custom_field id="225"><value>One Custom Field</value></custom_field>'),
@@ -805,8 +805,8 @@ class IssueTest extends TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<watcher_user_ids type="array">'),
                     $this->stringContains('</watcher_user_ids>'),
                     $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
@@ -852,24 +852,24 @@ class IssueTest extends TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<uploads type="array">'),
                     $this->stringContains('</uploads>'),
                     $this->stringContains(
                         '<upload>'
-                        .'<token>first-token</token>'
-                        .'<filename>SomeRandomFile.txt</filename>'
-                        .'<description>Simple description</description>'
-                        .'<content_type>text/plain</content_type>'
-                        .'</upload>'
+                        . '<token>first-token</token>'
+                        . '<filename>SomeRandomFile.txt</filename>'
+                        . '<description>Simple description</description>'
+                        . '<content_type>text/plain</content_type>'
+                        . '</upload>'
                     ),
                     $this->stringContains(
                         '<upload>'
-                        .'<token>second-token</token>'
-                        .'<filename>An-Other-File.css</filename>'
-                        .'<content_type>text/css</content_type>'
-                        .'</upload>'
+                        . '<token>second-token</token>'
+                        . '<filename>An-Other-File.css</filename>'
+                        . '<content_type>text/css</content_type>'
+                        . '</upload>'
                     )
                 )
             );
@@ -913,23 +913,23 @@ class IssueTest extends TestCase
             ->with(
                 '/issues.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
                     $this->stringContains('<watcher_user_ids type="array">'),
                     $this->stringContains('</watcher_user_ids>'),
                     $this->stringContains('<watcher_user_id>5</watcher_user_id>'),
                     $this->stringContains(
                         '<upload>'
-                        .'<token>first-token</token>'
-                        .'<filename>SomeRandomFile.txt</filename>'
-                        .'<description>Simple description</description>'
-                        .'<content_type>text/plain</content_type>'
-                        .'</upload>'
+                        . '<token>first-token</token>'
+                        . '<filename>SomeRandomFile.txt</filename>'
+                        . '<description>Simple description</description>'
+                        . '<content_type>text/plain</content_type>'
+                        . '</upload>'
                     ),
                     $this->stringContains(
                         '<custom_field id="25">'
-                        .'<value>Second Custom Field</value>'
-                        .'</custom_field>'
+                        . '<value>Second Custom Field</value>'
+                        . '</custom_field>'
                     ),
                     $this->stringContains('<subject>Issue subject with some xml entities: &amp; &lt; &gt; " \' </subject>'),
                     $this->stringContains('<description>Description with some xml entities: &amp; &lt; &gt; " \' </description>')
@@ -962,9 +962,9 @@ class IssueTest extends TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
                     $this->stringContains('<assigned_to_id>5</assigned_to_id>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringEndsWith('</issue>' . "\n"),
                 )
             );
 
@@ -994,9 +994,9 @@ class IssueTest extends TestCase
             ->with(
                 '/issues/5.xml',
                 $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>'."\n".'<issue>'),
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
                     $this->stringContains('<assigned_to_id></assigned_to_id>'),
-                    $this->stringEndsWith('</issue>'."\n"),
+                    $this->stringEndsWith('</issue>' . "\n"),
                 )
             );
 

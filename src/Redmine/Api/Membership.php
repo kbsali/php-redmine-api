@@ -43,7 +43,7 @@ class Membership extends AbstractApi
         }
 
         try {
-            return $this->retrieveData('/projects/'.strval($projectIdentifier).'/memberships.json', $params);
+            return $this->retrieveData('/projects/' . strval($projectIdentifier) . '/memberships.json', $params);
         } catch (SerializerException $th) {
             throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
         }
@@ -63,7 +63,7 @@ class Membership extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`'.__METHOD__.'()` is deprecated since v2.4.0, use `'.__CLASS__.'::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->memberships = $this->listByProject(strval($project), $params);
@@ -107,7 +107,7 @@ class Membership extends AbstractApi
         }
 
         return $this->post(
-            '/projects/'.$project.'/memberships.xml',
+            '/projects/' . $project . '/memberships.xml',
             XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
         );
     }
@@ -136,7 +136,7 @@ class Membership extends AbstractApi
         }
 
         return $this->put(
-            '/memberships/'.$id.'.xml',
+            '/memberships/' . $id . '.xml',
             XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
         );
     }
@@ -152,7 +152,7 @@ class Membership extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/memberships/'.$id.'.xml');
+        return $this->delete('/memberships/' . $id . '.xml');
     }
 
     /**
