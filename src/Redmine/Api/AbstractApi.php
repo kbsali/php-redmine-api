@@ -6,6 +6,8 @@ use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -23,9 +25,29 @@ abstract class AbstractApi implements Api
      */
     protected $client;
 
-    public function __construct(Client $client)
+    /**
+     * @var HttpClient
+     */
+    private $httpClient;
+
+    public function __construct($client)
     {
-        $this->client = $client;
+        if ($client instanceOf Client) {
+            $this->client = $client;
+        }
+
+        $httpClient = $client;
+
+        if (! $httpClient instanceOf HttpClient) {
+            $httpClient = $this->handleClient($client);
+        }
+
+        $this->httpClient = $httpClient;
+    }
+
+    final protected function getHttpClient(): HttpClient
+    {
+        return $this->httpClient;
     }
 
     /**
@@ -55,10 +77,10 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->client->requestGet(strval($path));
+        $response = $this->getHttpClient()->request('GET', strval($path));
 
-        $body = $this->client->getLastResponseBody();
-        $contentType = $this->client->getLastResponseContentType();
+        $body = $response->getBody();
+        $contentType = $response->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
         if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
@@ -329,5 +351,50 @@ abstract class AbstractApi implements Api
         }
 
         return $returnData;
+    }
+
+    private function handleClient(Client $client): HttpClient
+    {
+        return new class($client) implements HttpClient {
+            private $client;
+
+            public function __construct(Client $client)
+            {
+                $this->client = $client;
+            }
+
+            public function request(string $method, string $path, string $body = ''): Response
+            {
+                $this->client->requestGet($path);
+
+                return new class($this->client->getLastResponseStatusCode(), $this->client->getLastResponseContentType(), $this->client->getLastResponseBody()) implements Response {
+                    private $statusCode;
+                    private $contentType;
+                    private $body;
+
+                    public function __construct(int $statusCode, string $contentType, string $body)
+                    {
+                        $this->statusCode = $statusCode;
+                        $this->contentType = $contentType;
+                        $this->body = $body;
+                    }
+
+                    public function getStatusCode(): int
+                    {
+                        return $this->statusCode;
+                    }
+
+                    public function getContentType(): string
+                    {
+                        return $this->contentType;
+                    }
+
+                    public function getBody(): string
+                    {
+                        return $this->body;
+                    }
+                };
+            }
+        };
     }
 }
