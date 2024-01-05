@@ -82,7 +82,7 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param string $data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     protected function post($path, $data)
     {
@@ -104,7 +104,7 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param string $data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     protected function put($path, $data)
     {
@@ -125,7 +125,7 @@ abstract class AbstractApi implements Api
      *
      * @param string $path
      *
-     * @return false|SimpleXMLElement|string
+     * @return string
      */
     protected function delete($path)
     {
