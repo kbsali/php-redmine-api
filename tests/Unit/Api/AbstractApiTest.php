@@ -140,7 +140,7 @@ class AbstractApiTest extends TestCase
     /**
      * @covers \Redmine\Api\AbstractApi
      * @test
-     * @dataProvider getXmlDecodingFromGetMethodData
+     * @dataProvider getXmlDecodingFromRequestMethodsData
      */
     public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
     {
@@ -166,7 +166,7 @@ class AbstractApiTest extends TestCase
         }
     }
 
-    public static function getXmlDecodingFromGetMethodData(): array
+    public static function getXmlDecodingFromRequestMethodsData(): array
     {
         return [
             ['post', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
