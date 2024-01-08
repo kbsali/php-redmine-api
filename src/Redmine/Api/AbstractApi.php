@@ -72,7 +72,7 @@ abstract class AbstractApi implements Api
 
     final protected function getLastResonse(): Response
     {
-        return isset($this->lastResponse) ? $this->lastResponse : $this->createResponse(0, '', '');
+        return $this->lastResponse !== null ? $this->lastResponse : $this->createResponse(0, '', '');
     }
 
     /**
@@ -87,11 +87,11 @@ abstract class AbstractApi implements Api
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
 
-        if (isset($this->lastResponse)) {
+        if ($this->lastResponse !== null) {
             $code = $this->lastResponse->getStatusCode();
-        } else if (isset($this->client)) {
+        } elseif ($this->client !== null) {
             $code = $this->client->getLastResponseStatusCode();
-        } else{
+        } else {
             $code = 0;
         }
 
@@ -404,9 +404,9 @@ abstract class AbstractApi implements Api
             {
                 if ($method === 'POST') {
                     $this->client->requestPost($path, $body);
-                } else if ($method === 'PUT') {
+                } elseif ($method === 'PUT') {
                     $this->client->requestPut($path, $body);
-                } else if ($method === 'DELETE') {
+                } elseif ($method === 'DELETE') {
                     $this->client->requestDelete($path);
                 } else {
                     $this->client->requestGet($path);

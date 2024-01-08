@@ -105,16 +105,18 @@ class AbstractApiTest extends TestCase
         ]);
 
         $api1 = new class ($client) extends AbstractApi {
-            public function __construct($client) {
+            public function __construct($client)
+            {
                 parent::__construct($client);
-                $this->get('200.json', false);
+                parent::get('200.json', false);
             }
         };
 
         $api2 = new class ($client) extends AbstractApi {
-            public function __construct($client) {
+            public function __construct($client)
+            {
                 parent::__construct($client);
-                $this->get('500.json', false);
+                parent::get('500.json', false);
             }
         };
 
@@ -151,7 +153,8 @@ class AbstractApiTest extends TestCase
         $client->method('request')->willReturn($response);
 
         $api = new class ($client) extends AbstractApi {
-            public function __construct($client) {
+            public function __construct($client)
+            {
                 parent::__construct($client);
                 $this->get('', false);
             }
