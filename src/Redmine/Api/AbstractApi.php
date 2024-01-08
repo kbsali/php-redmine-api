@@ -81,7 +81,13 @@ abstract class AbstractApi implements Api
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
 
-        $code = $this->client->getLastResponseStatusCode();
+        if (isset($this->lastResponse)) {
+            $code = $this->lastResponse->getStatusCode();
+        } else if (isset($this->client)) {
+            $code = $this->client->getLastResponseStatusCode();
+        } else{
+            $code = 0;
+        }
 
         return 200 !== $code && 201 !== $code;
     }
@@ -96,10 +102,10 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $response = $this->getHttpClient()->request('GET', strval($path));
+        $this->lastResponse = $this->getHttpClient()->request('GET', strval($path));
 
-        $body = $response->getBody();
-        $contentType = $response->getContentType();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
         if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
@@ -127,10 +133,10 @@ abstract class AbstractApi implements Api
      */
     protected function post($path, $data)
     {
-        $response = $this->getHttpClient()->request('POST', strval($path), $data);
+        $this->lastResponse = $this->getHttpClient()->request('POST', strval($path), $data);
 
-        $body = $response->getBody();
-        $contentType = $response->getContentType();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
         if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
@@ -150,10 +156,10 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
-        $response = $this->getHttpClient()->request('PUT', strval($path), $data);
+        $this->lastResponse = $this->getHttpClient()->request('PUT', strval($path), $data);
 
-        $body = $response->getBody();
-        $contentType = $response->getContentType();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
         if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
@@ -172,9 +178,9 @@ abstract class AbstractApi implements Api
      */
     protected function delete($path)
     {
-        $response = $this->getHttpClient()->request('DELETE', strval($path));
+        $this->lastResponse = $this->getHttpClient()->request('DELETE', strval($path));
 
-        return $response->getBody();
+        return $this->lastResponse->getBody();
     }
 
     /**

@@ -8,6 +8,7 @@ use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -91,7 +92,7 @@ class AbstractApiTest extends TestCase
      * @test
      * @dataProvider getLastCallFailedData
      */
-    public function testLastCallFailedReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
@@ -101,9 +102,33 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
 
+    /**
+     * @covers \Redmine\Api\AbstractApi::lastCallFailed
+     * @test
+     * @dataProvider getLastCallFailedData
+     */
+    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    {
+        $response = $this->createMock(Response::class);
+        $response->method('getStatusCode')->willReturn($statusCode);
+
+        $client = $this->createMock(HttpClient::class);
+        $client->method('request')->willReturn($response);
+
+        $api = new class ($client) extends AbstractApi {
+            public function __construct($client) {
+                parent::__construct($client);
+                $this->get('', false);
+            }
+        };
+
+        $this->assertSame($expectedBoolean, $api->lastCallFailed());
+    }
+
     public static function getLastCallFailedData(): array
     {
         return [
+            [0, true],
             [100, true],
             [101, true],
             [102, true],
