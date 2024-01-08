@@ -2,10 +2,12 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
+use Redmine\Http\HttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -14,6 +16,38 @@ use SimpleXMLElement;
  */
 class AbstractApiTest extends TestCase
 {
+    public function testCreateWithHttpClientWorks()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'getHttpClient');
+        $method->setAccessible(true);
+
+        $this->assertSame($client, $method->invoke($api));
+    }
+
+    public function testCreateWitClientWorks()
+    {
+        $client = $this->createMock(Client::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'getHttpClient');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
+    }
+
+    public function testCreateWithoutClitentOrHttpClientThrowsException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `stdClass` given');
+
+        new class (new \stdClass()) extends AbstractApi {};
+    }
+
     /**
      * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
