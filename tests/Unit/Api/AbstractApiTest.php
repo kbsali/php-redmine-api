@@ -100,8 +100,8 @@ class AbstractApiTest extends TestCase
 
         $client = $this->createMock(HttpClient::class);
         $client->method('request')->willReturnMap([
-            ['GET', '200.json', $response1],
-            ['GET', '500.json', $response2],
+            ['GET', '200.json', '', $response1],
+            ['GET', '500.json', '', $response2],
         ]);
 
         $api1 = new class ($client) extends AbstractApi {
