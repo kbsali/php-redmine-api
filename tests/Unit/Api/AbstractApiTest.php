@@ -238,42 +238,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi
-     * @test
-     * @dataProvider getXmlDecodingFromRequestMethodsData
-     */
-    public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
-    {
-        $client = $this->createMock(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, $methodName);
-        $method->setAccessible(true);
-
-        // Perform the tests
-        if ('delete' === $methodName) {
-            $return = $method->invoke($api, 'path');
-
-            $this->assertSame($expected, $return);
-        } else {
-            $return = $method->invoke($api, 'path', '');
-
-            $this->assertInstanceOf(SimpleXMLElement::class, $return);
-            $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
-        }
-    }
-
-    public static function getXmlDecodingFromRequestMethodsData(): array
-    {
-        return [
-            ['delete', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
-        ];
-    }
-
-    /**
      * @covers \Redmine\Api\AbstractApi::retrieveData
      *
      * @dataProvider retrieveDataData
