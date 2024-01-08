@@ -330,7 +330,7 @@ class GroupTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
-        $client->expects($this->exactly(0))
+        $client->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
 

@@ -167,9 +167,9 @@ abstract class AbstractApi implements Api
      */
     protected function delete($path)
     {
-        $this->client->requestDelete($path);
+        $response = $this->getHttpClient()->request('DELETE', strval($path));
 
-        return $this->client->getLastResponseBody();
+        return $response->getBody();
     }
 
     /**
@@ -385,6 +385,8 @@ abstract class AbstractApi implements Api
                     $this->client->requestPost($path, $body);
                 } else if ($method === 'PUT') {
                     $this->client->requestPut($path, $body);
+                } else if ($method === 'DELETE') {
+                    $this->client->requestDelete($path);
                 } else {
                     $this->client->requestGet($path);
                 }

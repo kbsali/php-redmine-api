@@ -87,7 +87,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi
+     * @covers \Redmine\Api\AbstractApi::lastCallFailed
      * @test
      * @dataProvider getLastCallFailedData
      */
