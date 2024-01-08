@@ -32,6 +32,11 @@ abstract class AbstractApi implements Api
     private $httpClient;
 
     /**
+     * @var Response
+     */
+    private $lastResponse;
+
+    /**
      * @param Client|HttpClient $client
      */
     public function __construct($client)
@@ -217,7 +222,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if (isset($this->lastResponse) && $this->lastResponse->getBody() === '') {
                 return false;
             }
 
@@ -241,9 +246,9 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $response = $this->getHttpClient()->request('GET', strval($endpoint));
+            $this->lastResponse = $this->getHttpClient()->request('GET', strval($endpoint));
 
-            return $this->getLastResponseBodyAsArray($response);
+            return $this->getLastResponseBodyAsArray($this->lastResponse);
         }
 
         $params = $this->sanitizeParams(
@@ -270,12 +275,12 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $response = $this->getHttpClient()->request(
+            $this->lastResponse = $this->getHttpClient()->request(
                 'GET',
                 PathSerializer::create($endpoint, $params)->getPath()
             );
 
-            $newDataSet = $this->getLastResponseBodyAsArray($response);
+            $newDataSet = $this->getLastResponseBodyAsArray($this->lastResponse);
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
