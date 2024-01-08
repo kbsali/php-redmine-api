@@ -46,13 +46,13 @@ abstract class AbstractApi implements Api
             ));
         }
 
-        if ($client instanceOf Client) {
+        if ($client instanceof Client) {
             $this->client = $client;
         }
 
         $httpClient = $client;
 
-        if (! $httpClient instanceOf HttpClient) {
+        if (! $httpClient instanceof HttpClient) {
             $httpClient = $this->handleClient($client);
         }
 
@@ -370,7 +370,7 @@ abstract class AbstractApi implements Api
 
     private function handleClient(Client $client): HttpClient
     {
-        return new class($client) implements HttpClient {
+        return new class ($client) implements HttpClient {
             private $client;
 
             public function __construct(Client $client)
@@ -395,7 +395,7 @@ abstract class AbstractApi implements Api
 
             public function createResponse(int $statusCode, string $contentType, string $body): Response
             {
-                return new class($statusCode, $contentType, $body) implements Response {
+                return new class ($statusCode, $contentType, $body) implements Response {
                     private $statusCode;
                     private $contentType;
                     private $body;

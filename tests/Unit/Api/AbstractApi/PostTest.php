@@ -6,7 +6,6 @@ namespace Redmine\Tests\Unit\Api\AbstractApi;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
-use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
 use ReflectionMethod;
