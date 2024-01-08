@@ -203,8 +203,6 @@ class AbstractApiTest extends TestCase
     public static function getXmlDecodingFromRequestMethodsData(): array
     {
         return [
-            ['post', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
-            ['put', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
             ['delete', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
         ];
     }

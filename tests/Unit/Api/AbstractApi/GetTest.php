@@ -74,11 +74,9 @@ class GetTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi
-     * @test
      * @dataProvider getXmlDecodingFromGetMethodData
      */
-    public function testXmlDecodingFromRequestMethods($response, $decode, $expected)
+    public function testXmlDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
@@ -99,9 +97,9 @@ class GetTest extends TestCase
     public static function getXmlDecodingFromGetMethodData(): array
     {
         return [
-            ['<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
-            ['<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
-            ['<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
+            'decode by default' => ['<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
+            'decode true' => ['<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
+            'decode false' => ['<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
         ];
     }
 }
