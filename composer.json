@@ -49,6 +49,11 @@
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
-        "test": "phpunit"
+        "phpunit": "phpunit",
+        "test": [
+            "@phpstan",
+            "@phpunit",
+            "@codestyle --dry-run --diff"
+        ]
     }
 }
