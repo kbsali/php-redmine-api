@@ -120,8 +120,11 @@ class AbstractApiTest extends TestCase
             }
         };
 
+        $api3 = new class ($client) extends AbstractApi {};
+
         $this->assertSame(false, $api1->lastCallFailed());
         $this->assertSame(true, $api2->lastCallFailed());
+        $this->assertSame(true, $api3->lastCallFailed());
     }
 
     /**
