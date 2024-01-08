@@ -55,7 +55,7 @@ class IssuePriority extends AbstractApi
         try {
             $this->issuePriorities = $this->list($params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResonse()->getBody() === '') {
                 return false;
             }
 

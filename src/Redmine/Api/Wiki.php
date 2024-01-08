@@ -67,7 +67,7 @@ class Wiki extends AbstractApi
         try {
             $this->wikiPages = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResonse()->getBody() === '') {
                 return false;
             }
 

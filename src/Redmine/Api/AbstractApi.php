@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use Closure;
 use InvalidArgumentException;
 use Redmine\Api;
 use Redmine\Client\Client;
@@ -67,6 +68,11 @@ abstract class AbstractApi implements Api
     final protected function getHttpClient(): HttpClient
     {
         return $this->httpClient;
+    }
+
+    final protected function getLastResonse(): Response
+    {
+        return isset($this->lastResponse) ? $this->lastResponse : $this->createResponse(0, '', '');
     }
 
     /**
@@ -228,7 +234,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (Exception $e) {
-            if (isset($this->lastResponse) && $this->lastResponse->getBody() === '') {
+            if ($this->getLastResonse()->getBody() === '') {
                 return false;
             }
 
@@ -254,7 +260,7 @@ abstract class AbstractApi implements Api
         if (empty($params)) {
             $this->lastResponse = $this->getHttpClient()->request('GET', strval($endpoint));
 
-            return $this->getLastResponseBodyAsArray($this->lastResponse);
+            return $this->getResponseAsArray($this->lastResponse);
         }
 
         $params = $this->sanitizeParams(
@@ -286,7 +292,7 @@ abstract class AbstractApi implements Api
                 PathSerializer::create($endpoint, $params)->getPath()
             );
 
-            $newDataSet = $this->getLastResponseBodyAsArray($this->lastResponse);
+            $newDataSet = $this->getResponseAsArray($this->lastResponse);
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
@@ -360,7 +366,7 @@ abstract class AbstractApi implements Api
      *
      * @throws SerializerException if response body could not be converted into array
      */
-    private function getLastResponseBodyAsArray(Response $response): array
+    private function getResponseAsArray(Response $response): array
     {
         $body = $response->getBody();
         $contentType = $response->getContentType();
@@ -382,12 +388,16 @@ abstract class AbstractApi implements Api
 
     private function handleClient(Client $client): HttpClient
     {
-        return new class ($client) implements HttpClient {
-            private $client;
+        $responseFactory = Closure::fromCallable([$this, 'createResponse']);
 
-            public function __construct(Client $client)
+        return new class ($client, $responseFactory) implements HttpClient {
+            private $client;
+            private $responseFactory;
+
+            public function __construct(Client $client, Closure $responseFactory)
             {
                 $this->client = $client;
+                $this->responseFactory = $responseFactory;
             }
 
             public function request(string $method, string $path, string $body = ''): Response
@@ -402,42 +412,42 @@ abstract class AbstractApi implements Api
                     $this->client->requestGet($path);
                 }
 
-                return $this->createResponse(
+                return ($this->responseFactory)(
                     $this->client->getLastResponseStatusCode(),
                     $this->client->getLastResponseContentType(),
                     $this->client->getLastResponseBody()
                 );
             }
+        };
+    }
 
-            public function createResponse(int $statusCode, string $contentType, string $body): Response
+    private function createResponse(int $statusCode, string $contentType, string $body): Response
+    {
+        return new class ($statusCode, $contentType, $body) implements Response {
+            private $statusCode;
+            private $contentType;
+            private $body;
+
+            public function __construct(int $statusCode, string $contentType, string $body)
             {
-                return new class ($statusCode, $contentType, $body) implements Response {
-                    private $statusCode;
-                    private $contentType;
-                    private $body;
+                $this->statusCode = $statusCode;
+                $this->contentType = $contentType;
+                $this->body = $body;
+            }
 
-                    public function __construct(int $statusCode, string $contentType, string $body)
-                    {
-                        $this->statusCode = $statusCode;
-                        $this->contentType = $contentType;
-                        $this->body = $body;
-                    }
+            public function getStatusCode(): int
+            {
+                return $this->statusCode;
+            }
 
-                    public function getStatusCode(): int
-                    {
-                        return $this->statusCode;
-                    }
+            public function getContentType(): string
+            {
+                return $this->contentType;
+            }
 
-                    public function getContentType(): string
-                    {
-                        return $this->contentType;
-                    }
-
-                    public function getBody(): string
-                    {
-                        return $this->body;
-                    }
-                };
+            public function getBody(): string
+            {
+                return $this->body;
             }
         };
     }

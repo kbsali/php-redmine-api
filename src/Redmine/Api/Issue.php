@@ -82,7 +82,7 @@ class Issue extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResonse()->getBody() === '') {
                 return false;
             }
 
