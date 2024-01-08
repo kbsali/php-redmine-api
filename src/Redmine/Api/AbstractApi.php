@@ -241,9 +241,9 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $this->client->requestGet($endpoint);
+            $response = $this->getHttpClient()->request('GET', strval($endpoint));
 
-            return $this->getLastResponseBodyAsArray();
+            return $this->getLastResponseBodyAsArray($response);
         }
 
         $params = $this->sanitizeParams(
@@ -270,11 +270,12 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $this->client->requestGet(
+            $response = $this->getHttpClient()->request(
+                'GET',
                 PathSerializer::create($endpoint, $params)->getPath()
             );
 
-            $newDataSet = $this->getLastResponseBodyAsArray();
+            $newDataSet = $this->getLastResponseBodyAsArray($response);
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
@@ -348,11 +349,10 @@ abstract class AbstractApi implements Api
      *
      * @throws SerializerException if response body could not be converted into array
      */
-    private function getLastResponseBodyAsArray(): array
+    private function getLastResponseBodyAsArray(Response $response): array
     {
-        $body = $this->client->getLastResponseBody();
-
-        $contentType = $this->client->getLastResponseContentType();
+        $body = $response->getBody();
+        $contentType = $response->getContentType();
         $returnData = null;
 
         // parse XML
