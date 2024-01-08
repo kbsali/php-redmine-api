@@ -5,7 +5,11 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
+use Redmine\Serializer\XmlSerializer;
 use Redmine\Tests\Fixtures\MockClient;
+use SimpleXMLElement;
 
 /**
  * @coversDefaultClass \Redmine\Api\Issue
@@ -668,13 +672,13 @@ class IssueTest extends TestCase
      * @covers ::setIssueStatus
      * @test
      */
-    public function testSetIssueStatus()
+    public function testSetIssueStatusWithClient()
     {
         // Test values
         $response = 'API Response';
 
         // Create the used mock objects
-        $issueStatusApi = $this->createMock('Redmine\Api\Project');
+        $issueStatusApi = $this->createMock('Redmine\Api\IssueStatus');
         $issueStatusApi->expects($this->once())
             ->method('getIdByName')
             ->willReturn(123);
@@ -706,6 +710,32 @@ class IssueTest extends TestCase
 
         // Perform the tests
         $this->assertSame($response, $api->setIssueStatus(5, 'Status Name'));
+    }
+
+    /**
+     * Test setIssueStatus().
+     *
+     * @covers ::setIssueStatus
+     * @test
+     */
+    public function testSetIssueStatusWithHttpClient()
+    {
+        $response1 = $this->createMock(Response::class);
+        $response1->method('getContentType')->willReturn('application/json');
+        $response1->method('getBody')->willReturn('{"issue_statuses":[{"name":"status_name","id":123}]}');
+
+        $response2 = $this->createMock(Response::class);
+        $response2->method('getContentType')->willReturn('application/xml');
+        $response2->method('getBody')->willReturn('<?xml version="1.0"?><issue></issue>');
+
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(2))->method('request')->willReturn($response1, $response2);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertInstanceOf(SimpleXMLElement::class, $api->setIssueStatus(5, 'status_name'));
     }
 
     /**

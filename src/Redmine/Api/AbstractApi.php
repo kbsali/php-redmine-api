@@ -158,7 +158,7 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param string $data
      *
-     * @return string|SimpleXMLElement|false
+     * @return string|SimpleXMLElement
      */
     protected function put($path, $data)
     {

@@ -2,12 +2,15 @@
 
 namespace Redmine\Api;
 
+use Redmine\Client\NativeCurlClient;
+use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing issues, searching, editing and closing your projects issues.
@@ -23,6 +26,11 @@ class Issue extends AbstractApi
     public const PRIO_HIGH = 3;
     public const PRIO_URGENT = 4;
     public const PRIO_IMMEDIATE = 5;
+
+    /**
+     * @var IssueStatus
+     */
+    private $issueStatusApi;
 
     /**
      * List issues.
@@ -160,7 +168,7 @@ class Issue extends AbstractApi
      *
      * @param string $id the issue number
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function update($id, array $params)
     {
@@ -219,15 +227,23 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $status
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function setIssueStatus($id, $status)
     {
-        /** @var IssueStatus */
-        $api = $this->client->getApi('issue_status');
+        if ($this->issueStatusApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var IssueStatus */
+                $issueStatusApi = $this->client->getApi('issue_status');
+            } else {
+                $issueStatusApi = new IssueStatus($this->getHttpClient());
+            }
+
+            $this->issueStatusApi = $issueStatusApi;
+        }
 
         return $this->update($id, [
-            'status_id' => $api->getIdByName($status),
+            'status_id' => $this->issueStatusApi->getIdByName($status),
         ]);
     }
 
