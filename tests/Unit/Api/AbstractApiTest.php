@@ -89,6 +89,41 @@ class AbstractApiTest extends TestCase
 
     /**
      * @covers \Redmine\Api\AbstractApi::lastCallFailed
+     */
+    public function testLastCallFailedPreventsRaceCondition()
+    {
+        $response1 = $this->createMock(Response::class);
+        $response1->method('getStatusCode')->willReturn(200);
+
+        $response2 = $this->createMock(Response::class);
+        $response2->method('getStatusCode')->willReturn(500);
+
+        $client = $this->createMock(HttpClient::class);
+        $client->method('request')->willReturnMap([
+            ['GET', '200.json', $response1],
+            ['GET', '500.json', $response2],
+        ]);
+
+        $api1 = new class ($client) extends AbstractApi {
+            public function __construct($client) {
+                parent::__construct($client);
+                $this->get('200.json', false);
+            }
+        };
+
+        $api2 = new class ($client) extends AbstractApi {
+            public function __construct($client) {
+                parent::__construct($client);
+                $this->get('500.json', false);
+            }
+        };
+
+        $this->assertSame(false, $api1->lastCallFailed());
+        $this->assertSame(true, $api2->lastCallFailed());
+    }
+
+    /**
+     * @covers \Redmine\Api\AbstractApi::lastCallFailed
      * @test
      * @dataProvider getLastCallFailedData
      */
