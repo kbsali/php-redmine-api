@@ -145,12 +145,13 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
-        $this->client->requestPut($path, $data);
+        $response = $this->getHttpClient()->request('PUT', strval($path), $data);
 
-        $body = $this->client->getLastResponseBody();
+        $body = $response->getBody();
+        $contentType = $response->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -380,10 +381,12 @@ abstract class AbstractApi implements Api
 
             public function request(string $method, string $path, string $body = ''): Response
             {
-                if ($method === 'GET') {
-                    $this->client->requestGet($path);
-                } else {
+                if ($method === 'POST') {
                     $this->client->requestPost($path, $body);
+                } else if ($method === 'PUT') {
+                    $this->client->requestPut($path, $body);
+                } else {
+                    $this->client->requestGet($path);
                 }
 
                 return $this->createResponse(
