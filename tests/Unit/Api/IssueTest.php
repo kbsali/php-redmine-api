@@ -7,7 +7,6 @@ use Redmine\Api\Issue;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
-use Redmine\Serializer\XmlSerializer;
 use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
@@ -437,7 +436,7 @@ class IssueTest extends TestCase
      * @covers ::cleanParams
      * @test
      */
-    public function testCreateCleansParameters()
+    public function testCreateWithClientCleansParameters()
     {
         // Test values
         $response = 'API Response';
@@ -502,6 +501,59 @@ class IssueTest extends TestCase
 
         // Perform the tests
         $this->assertSame($response, $api->create($parameters));
+    }
+
+    /**
+     * @covers ::create
+     * @covers ::cleanParams
+     * @test
+     */
+    public function testCreateWithHttpClientRetrievesIssueStatusId()
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function(string $method, string $path, string $body = '') {
+                if ($method === 'GET') {
+                    $this->assertSame('/issue_statuses.json', $path);
+                    $this->assertSame('', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/json',
+                            'getBody' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+                        ]
+                    );
+                }
+
+                if ($method === 'POST') {
+                    $this->assertSame('/issues.xml', $path);
+                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><status_id>123</status_id></issue>', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/xml',
+                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                        ]
+                    );
+                }
+
+                throw new \Exception();
+            });
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        $xmlElement = $api->create(['status' => 'Status Name']);
+
+        // Perform the tests
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><issue></issue>',
+            $xmlElement->asXml(),
+        );
     }
 
     /**
@@ -720,22 +772,50 @@ class IssueTest extends TestCase
      */
     public function testSetIssueStatusWithHttpClient()
     {
-        $response1 = $this->createMock(Response::class);
-        $response1->method('getContentType')->willReturn('application/json');
-        $response1->method('getBody')->willReturn('{"issue_statuses":[{"name":"status_name","id":123}]}');
-
-        $response2 = $this->createMock(Response::class);
-        $response2->method('getContentType')->willReturn('application/xml');
-        $response2->method('getBody')->willReturn('<?xml version="1.0"?><issue></issue>');
-
         $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))->method('request')->willReturn($response1, $response2);
+        $client->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function(string $method, string $path, string $body = '') {
+                if ($method === 'GET') {
+                    $this->assertSame('/issue_statuses.json', $path);
+                    $this->assertSame('', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/json',
+                            'getBody' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+                        ]
+                    );
+                }
+
+                if ($method === 'PUT') {
+                    $this->assertSame('/issues/5.xml', $path);
+                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><id>5</id><status_id>123</status_id></issue>', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/xml',
+                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                        ]
+                    );
+                }
+
+                throw new \Exception();
+            });
 
         // Create the object under test
         $api = new Issue($client);
 
+        $xmlElement = $api->setIssueStatus(5, 'Status Name');
+
         // Perform the tests
-        $this->assertInstanceOf(SimpleXMLElement::class, $api->setIssueStatus(5, 'status_name'));
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><issue></issue>',
+            $xmlElement->asXml(),
+        );
     }
 
     /**

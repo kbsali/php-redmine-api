@@ -133,7 +133,7 @@ class Issue extends AbstractApi
      *
      * @param array $params the new issue data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function create(array $params = [])
     {
@@ -231,19 +231,10 @@ class Issue extends AbstractApi
      */
     public function setIssueStatus($id, $status)
     {
-        if ($this->issueStatusApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var IssueStatus */
-                $issueStatusApi = $this->client->getApi('issue_status');
-            } else {
-                $issueStatusApi = new IssueStatus($this->getHttpClient());
-            }
-
-            $this->issueStatusApi = $issueStatusApi;
-        }
+        $issueStatusApi = $this->getIssueStatusApi();
 
         return $this->update($id, [
-            'status_id' => $this->issueStatusApi->getIdByName($status),
+            'status_id' => $issueStatusApi->getIdByName($status),
         ]);
     }
 
@@ -281,12 +272,14 @@ class Issue extends AbstractApi
                 unset($params['category']);
             }
         }
+
         if (isset($params['status'])) {
-            /** @var IssueStatus */
-            $apiIssueStatus = $this->client->getApi('issue_status');
-            $params['status_id'] = $apiIssueStatus->getIdByName($params['status']);
+            $issueStatusApi = $this->getIssueStatusApi();
+
+            $params['status_id'] = $issueStatusApi->getIdByName($params['status']);
             unset($params['status']);
         }
+
         if (isset($params['tracker'])) {
             /** @var Tracker */
             $apiTracker = $this->client->getApi('tracker');
@@ -360,5 +353,24 @@ class Issue extends AbstractApi
     public function remove($id)
     {
         return $this->delete('/issues/' . $id . '.xml');
+    }
+
+    /**
+     * @return IssueStatus
+     */
+    private function getIssueStatusApi()
+    {
+        if ($this->issueStatusApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var IssueStatus */
+                $issueStatusApi = $this->client->getApi('issue_status');
+            } else {
+                $issueStatusApi = new IssueStatus($this->getHttpClient());
+            }
+
+            $this->issueStatusApi = $issueStatusApi;
+        }
+
+        return $this->issueStatusApi;
     }
 }
