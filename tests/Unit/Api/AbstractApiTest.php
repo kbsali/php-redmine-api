@@ -56,13 +56,7 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(HttpClient::class);
 
-        $api = new class ($client) extends AbstractApi {
-            public function __construct($client)
-            {
-                parent::__construct($client);
-                parent::get('200.json', false);
-            }
-        };
+        $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getLastResponse');
         $method->setAccessible(true);
