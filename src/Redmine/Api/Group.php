@@ -58,7 +58,7 @@ class Group extends AbstractApi
         try {
             $this->groups = $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResonse()->getBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

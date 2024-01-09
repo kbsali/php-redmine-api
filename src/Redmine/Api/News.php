@@ -88,7 +88,7 @@ class News extends AbstractApi
                 $this->news = $this->listByProject(strval($project), $params);
             }
         } catch (Exception $e) {
-            if ($this->getLastResonse()->getBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

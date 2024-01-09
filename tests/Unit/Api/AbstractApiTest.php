@@ -50,6 +50,27 @@ class AbstractApiTest extends TestCase
     }
 
     /**
+     * @covers ::getLastResponse
+     */
+    public function testGetLastResponseWithHttpClientWorks()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {
+            public function __construct($client)
+            {
+                parent::__construct($client);
+                parent::get('200.json', false);
+            }
+        };
+
+        $method = new ReflectionMethod($api, 'getLastResponse');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(Response::class, $method->invoke($api));
+    }
+
+    /**
      * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
@@ -88,7 +109,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::lastCallFailed
+     * @covers ::lastCallFailed
      */
     public function testLastCallFailedPreventsRaceCondition()
     {
@@ -128,7 +149,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::lastCallFailed
+     * @covers ::lastCallFailed
      * @test
      * @dataProvider getLastCallFailedData
      */
@@ -143,7 +164,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::lastCallFailed
+     * @covers ::lastCallFailed
      * @test
      * @dataProvider getLastCallFailedData
      */
@@ -238,7 +259,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveData
+     * @covers ::retrieveData
      *
      * @dataProvider retrieveDataData
      */
@@ -265,7 +286,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveData
+     * @covers ::retrieveData
      *
      * @dataProvider getRetrieveDataToExceptionData
      */
@@ -295,7 +316,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveAll
+     * @covers ::retrieveAll
      *
      * @dataProvider getRetrieveAllData
      */
@@ -324,7 +345,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::attachCustomFieldXML
+     * @covers ::attachCustomFieldXML
      */
     public function testDeprecatedAttachCustomFieldXML()
     {

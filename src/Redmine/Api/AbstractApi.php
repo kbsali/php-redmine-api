@@ -70,7 +70,7 @@ abstract class AbstractApi implements Api
         return $this->httpClient;
     }
 
-    final protected function getLastResonse(): Response
+    final protected function getLastResponse(): Response
     {
         return $this->lastResponse !== null ? $this->lastResponse : $this->createResponse(0, '', '');
     }
@@ -234,7 +234,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (Exception $e) {
-            if ($this->getLastResonse()->getBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

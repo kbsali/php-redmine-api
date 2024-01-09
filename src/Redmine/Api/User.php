@@ -58,7 +58,7 @@ class User extends AbstractApi
         try {
             $this->users = $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResonse()->getBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

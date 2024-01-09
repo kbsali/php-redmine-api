@@ -55,7 +55,7 @@ class Search extends AbstractApi
         try {
             $this->results = $this->listByQuery($query, $params);
         } catch (Exception $e) {
-            if ($this->getLastResonse()->getBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 
