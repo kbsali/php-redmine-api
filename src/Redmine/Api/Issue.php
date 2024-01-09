@@ -28,6 +28,11 @@ class Issue extends AbstractApi
     public const PRIO_IMMEDIATE = 5;
 
     /**
+     * @var IssueCategory
+     */
+    private $issueCategoryApi;
+
+    /**
      * @var IssueStatus
      */
     private $issueStatusApi;
@@ -270,13 +275,12 @@ class Issue extends AbstractApi
 
             $params['project_id'] = $projectApi->getIdByName($params['project']);
             unset($params['project']);
-
         }
 
         if (isset($params['category']) && isset($params['project_id'])) {
-            /** @var IssueCategory */
-            $apiIssueCategory = $this->client->getApi('issue_category');
-            $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
+            $issueCategoryApi = $this->getIssueCategoryApi();
+
+            $params['category_id'] = $issueCategoryApi->getIdByName($params['project_id'], $params['category']);
             unset($params['category']);
         }
 
@@ -360,6 +364,25 @@ class Issue extends AbstractApi
     public function remove($id)
     {
         return $this->delete('/issues/' . $id . '.xml');
+    }
+
+    /**
+     * @return IssueCategory
+     */
+    private function getIssueCategoryApi()
+    {
+        if ($this->issueCategoryApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var IssueCategory */
+                $issueCategoryApi = $this->client->getApi('issue_category');
+            } else {
+                $issueCategoryApi = new IssueCategory($this->getHttpClient());
+            }
+
+            $this->issueCategoryApi = $issueCategoryApi;
+        }
+
+        return $this->issueCategoryApi;
     }
 
     /**
