@@ -33,6 +33,11 @@ class Issue extends AbstractApi
     private $issueStatusApi;
 
     /**
+     * @var Project
+     */
+    private $projectApi;
+
+    /**
      * List issues.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
@@ -261,16 +266,18 @@ class Issue extends AbstractApi
     private function cleanParams(array $params = [])
     {
         if (isset($params['project'])) {
-            /** @var Project */
-            $apiProject = $this->client->getApi('project');
-            $params['project_id'] = $apiProject->getIdByName($params['project']);
+            $projectApi = $this->getProjectApi();
+
+            $params['project_id'] = $projectApi->getIdByName($params['project']);
             unset($params['project']);
-            if (isset($params['category'])) {
-                /** @var IssueCategory */
-                $apiIssueCategory = $this->client->getApi('issue_category');
-                $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
-                unset($params['category']);
-            }
+
+        }
+
+        if (isset($params['category']) && isset($params['project_id'])) {
+            /** @var IssueCategory */
+            $apiIssueCategory = $this->client->getApi('issue_category');
+            $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
+            unset($params['category']);
         }
 
         if (isset($params['status'])) {
@@ -372,5 +379,24 @@ class Issue extends AbstractApi
         }
 
         return $this->issueStatusApi;
+    }
+
+    /**
+     * @return Project
+     */
+    private function getProjectApi()
+    {
+        if ($this->projectApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var Project */
+                $projectApi = $this->client->getApi('project');
+            } else {
+                $projectApi = new Project($this->getHttpClient());
+            }
+
+            $this->projectApi = $projectApi;
+        }
+
+        return $this->projectApi;
     }
 }

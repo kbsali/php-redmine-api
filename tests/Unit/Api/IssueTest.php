@@ -557,6 +557,59 @@ class IssueTest extends TestCase
     }
 
     /**
+     * @covers ::create
+     * @covers ::cleanParams
+     * @test
+     */
+    public function testCreateWithHttpClientRetrievesProjectId()
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function(string $method, string $path, string $body = '') {
+                if ($method === 'GET') {
+                    $this->assertSame('/projects.json', $path);
+                    $this->assertSame('', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/json',
+                            'getBody' => '{"projects":[{"name":"Project Name","id":3}]}',
+                        ]
+                    );
+                }
+
+                if ($method === 'POST') {
+                    $this->assertSame('/issues.xml', $path);
+                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><project_id>3</project_id></issue>', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/xml',
+                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                        ]
+                    );
+                }
+
+                throw new \Exception();
+            });
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        $xmlElement = $api->create(['project' => 'Project Name']);
+
+        // Perform the tests
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><issue></issue>',
+            $xmlElement->asXml(),
+        );
+    }
+
+    /**
      * Test create() and buildXML().
      *
      * @covers ::create
