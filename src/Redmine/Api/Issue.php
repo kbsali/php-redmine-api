@@ -43,6 +43,11 @@ class Issue extends AbstractApi
     private $projectApi;
 
     /**
+     * @var Tracker
+     */
+    private $trackerApi;
+
+    /**
      * List issues.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
@@ -292,11 +297,12 @@ class Issue extends AbstractApi
         }
 
         if (isset($params['tracker'])) {
-            /** @var Tracker */
-            $apiTracker = $this->client->getApi('tracker');
-            $params['tracker_id'] = $apiTracker->getIdByName($params['tracker']);
+            $trackerApi = $this->getTrackerApi();
+
+            $params['tracker_id'] = $trackerApi->getIdByName($params['tracker']);
             unset($params['tracker']);
         }
+
         if (isset($params['assigned_to'])) {
             /** @var User */
             $apiUser = $this->client->getApi('user');
@@ -421,5 +427,24 @@ class Issue extends AbstractApi
         }
 
         return $this->projectApi;
+    }
+
+    /**
+     * @return Tracker
+     */
+    private function getTrackerApi()
+    {
+        if ($this->trackerApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var Tracker */
+                $trackerApi = $this->client->getApi('tracker');
+            } else {
+                $trackerApi = new Tracker($this->getHttpClient());
+            }
+
+            $this->trackerApi = $trackerApi;
+        }
+
+        return $this->trackerApi;
     }
 }
