@@ -437,6 +437,8 @@ class IssueTest extends TestCase
      * @covers ::getIssueCategoryApi
      * @covers ::getIssueStatusApi
      * @covers ::getProjectApi
+     * @covers ::getTrackerApi
+     * @covers ::getUserApi
      * @test
      */
     public function testCreateWithClientCleansParameters()
@@ -467,7 +469,7 @@ class IssueTest extends TestCase
             ->willReturn('cleanedValue');
 
         $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(6))
+        $client->expects($this->exactly(5))
             ->method('getApi')
             ->willReturnMap(
                 [
@@ -723,6 +725,60 @@ class IssueTest extends TestCase
     }
 
     /**
+     * @covers ::create
+     * @covers ::cleanParams
+     * @covers ::getUserApi
+     * @test
+     */
+    public function testCreateWithHttpClientRetrievesUserId()
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(function (string $method, string $path, string $body = '') {
+                if ($method === 'GET') {
+                    $this->assertSame('/users.json', $path);
+                    $this->assertSame('', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/json',
+                            'getBody' => '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
+                        ]
+                    );
+                }
+
+                if ($method === 'POST') {
+                    $this->assertSame('/issues.xml', $path);
+                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><assigned_to_id>6</assigned_to_id><author_id>5</author_id></issue>', $body);
+
+                    return $this->createConfiguredMock(
+                        Response::class,
+                        [
+                            'getContentType' => 'application/xml',
+                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                        ]
+                    );
+                }
+
+                throw new \Exception();
+            });
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        $xmlElement = $api->create(['assigned_to' => 'Assigned to User Name', 'author' => 'Author Name']);
+
+        // Perform the tests
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><issue></issue>',
+            $xmlElement->asXml(),
+        );
+    }
+
+    /**
      * Test create() and buildXML().
      *
      * @covers ::create
@@ -844,7 +900,7 @@ class IssueTest extends TestCase
             ->willReturn('cleanedValue');
 
         $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(6))
+        $client->expects($this->exactly(5))
             ->method('getApi')
             ->willReturnMap(
                 [

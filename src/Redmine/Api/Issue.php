@@ -48,6 +48,11 @@ class Issue extends AbstractApi
     private $trackerApi;
 
     /**
+     * @var User
+     */
+    private $userApi;
+
+    /**
      * List issues.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
@@ -304,15 +309,16 @@ class Issue extends AbstractApi
         }
 
         if (isset($params['assigned_to'])) {
-            /** @var User */
-            $apiUser = $this->client->getApi('user');
-            $params['assigned_to_id'] = $apiUser->getIdByUsername($params['assigned_to']);
+            $userApi = $this->getUserApi();
+
+            $params['assigned_to_id'] = $userApi->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
+
         if (isset($params['author'])) {
-            /** @var User */
-            $apiUser = $this->client->getApi('user');
-            $params['author_id'] = $apiUser->getIdByUsername($params['author']);
+            $userApi = $this->getUserApi();
+
+            $params['author_id'] = $userApi->getIdByUsername($params['author']);
             unset($params['author']);
         }
 
@@ -446,5 +452,24 @@ class Issue extends AbstractApi
         }
 
         return $this->trackerApi;
+    }
+
+    /**
+     * @return User
+     */
+    private function getUserApi()
+    {
+        if ($this->userApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var User */
+                $userApi = $this->client->getApi('user');
+            } else {
+                $userApi = new User($this->getHttpClient());
+            }
+
+            $this->userApi = $userApi;
+        }
+
+        return $this->userApi;
     }
 }
