@@ -6,49 +6,78 @@ namespace Redmine\Tests\Unit\Api\Group;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
-use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
+use SimpleXMLElement;
 
 /**
  * @covers \Redmine\Api\Group::create
  */
 class CreateTest extends TestCase
 {
-    /**
-     * @covers ::create
-     */
-    public function testCreateCallsPost()
+    public function testCreateWithNameCreatesGroup()
     {
-        // Test values
-        $response = 'API Response';
-        $postParameter = [
-            'name' => 'Group Name',
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/groups'),
-                    $this->logicalXor(
-                        $this->stringEndsWith('.json'),
-                        $this->stringEndsWith('.xml')
-                    )
-                ),
-                $this->stringContains('<group><name>Group Name</name></group>')
-            )
-            ->willReturn(true);
+        $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
+            ->method('request')
+            ->willReturnCallback(function (string $method, string $path, string $body = '') {
+                $this->assertSame('POST', $method);
+                $this->assertSame('/groups.xml', $path);
+                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name></group>', $body);
+
+                return $this->createConfiguredMock(
+                    Response::class,
+                    [
+                        'getContentType' => 'application/xml',
+                        'getBody' => '<?xml version="1.0"?><group></group>',
+                    ]
+                );
+            });
 
         // Create the object under test
         $api = new Group($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->create($postParameter));
+        $xmlElement = $api->create(['name' => 'Group Name']);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><group></group>',
+            $xmlElement->asXml(),
+        );
+    }
+
+    public function testCreateWithNameAndUserIdsCreatesGroup()
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->exactly(1))
+            ->method('request')
+            ->willReturnCallback(function (string $method, string $path, string $body = '') {
+                $this->assertSame('POST', $method);
+                $this->assertSame('/groups.xml', $path);
+                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name><user_ids type="array"><user_id>1</user_id><user_id>2</user_id><user_id>3</user_id></user_ids></group>', $body);
+
+                return $this->createConfiguredMock(
+                    Response::class,
+                    [
+                        'getContentType' => 'application/xml',
+                        'getBody' => '<?xml version="1.0"?><group></group>',
+                    ]
+                );
+            });
+
+        // Create the object under test
+        $api = new Group($client);
+
+        // Perform the tests
+        $xmlElement = $api->create(['name' => 'Group Name', 'user_ids' => [1, 2, 3]]);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
+        $this->assertXmlStringEqualsXmlString(
+            '<?xml version="1.0"?><group></group>',
+            $xmlElement->asXml(),
+        );
     }
 
     /**
@@ -60,7 +89,7 @@ class CreateTest extends TestCase
         $postParameter = [];
 
         // Create the used mock objects
-        $client = $this->createMock(Client::class);
+        $client = $this->createMock(HttpClient::class);
 
         // Create the object under test
         $api = new Group($client);

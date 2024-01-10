@@ -8,6 +8,7 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Handling of groups.
@@ -101,7 +102,7 @@ class Group extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function create(array $params = [])
     {
