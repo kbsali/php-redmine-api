@@ -44,9 +44,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @covers ::get
-     * @covers ::retrieveAll
-     * @covers ::isNotNull
      * @dataProvider getAllData
      * @test
      */
@@ -85,9 +82,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @covers ::get
-     * @covers ::retrieveAll
-     * @covers ::isNotNull
      * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
@@ -123,9 +117,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @covers ::get
-     * @covers ::retrieveAll
-     * @covers ::isNotNull
      * @test
      */
     public function testAllReturnsClientGetResponseWithHighLimit()
@@ -164,9 +155,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @covers ::get
-     * @covers ::retrieveAll
-     * @covers ::isNotNull
      * @test
      */
     public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()

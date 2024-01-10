@@ -68,7 +68,7 @@ class Membership extends AbstractApi
         try {
             $this->memberships = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

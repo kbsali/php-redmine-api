@@ -61,7 +61,6 @@ class AttachmentTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */
@@ -90,7 +89,6 @@ class AttachmentTest extends TestCase
     /**
      * Test download().
      *
-     * @covers ::get
      * @covers ::download
      * @test
      */

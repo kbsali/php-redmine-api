@@ -122,7 +122,6 @@ class ProjectTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */
@@ -158,7 +157,6 @@ class ProjectTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */

@@ -126,7 +126,6 @@ class TimeEntryTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */

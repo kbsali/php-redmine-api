@@ -2,10 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -14,6 +17,53 @@ use SimpleXMLElement;
  */
 class AbstractApiTest extends TestCase
 {
+    public function testCreateWithHttpClientWorks()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'getHttpClient');
+        $method->setAccessible(true);
+
+        $this->assertSame($client, $method->invoke($api));
+    }
+
+    public function testCreateWitClientWorks()
+    {
+        $client = $this->createMock(Client::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'getHttpClient');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
+    }
+
+    public function testCreateWithoutClitentOrHttpClientThrowsException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `stdClass` given');
+
+        new class (new \stdClass()) extends AbstractApi {};
+    }
+
+    /**
+     * @covers ::getLastResponse
+     */
+    public function testGetLastResponseWithHttpClientWorks()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'getLastResponse');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(Response::class, $method->invoke($api));
+    }
+
     /**
      * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
@@ -53,11 +103,51 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi
+     * @covers ::lastCallFailed
+     */
+    public function testLastCallFailedPreventsRaceCondition()
+    {
+        $response1 = $this->createMock(Response::class);
+        $response1->method('getStatusCode')->willReturn(200);
+
+        $response2 = $this->createMock(Response::class);
+        $response2->method('getStatusCode')->willReturn(500);
+
+        $client = $this->createMock(HttpClient::class);
+        $client->method('request')->willReturnMap([
+            ['GET', '200.json', '', $response1],
+            ['GET', '500.json', '', $response2],
+        ]);
+
+        $api1 = new class ($client) extends AbstractApi {
+            public function __construct($client)
+            {
+                parent::__construct($client);
+                parent::get('200.json', false);
+            }
+        };
+
+        $api2 = new class ($client) extends AbstractApi {
+            public function __construct($client)
+            {
+                parent::__construct($client);
+                parent::get('500.json', false);
+            }
+        };
+
+        $api3 = new class ($client) extends AbstractApi {};
+
+        $this->assertSame(false, $api1->lastCallFailed());
+        $this->assertSame(true, $api2->lastCallFailed());
+        $this->assertSame(true, $api3->lastCallFailed());
+    }
+
+    /**
+     * @covers ::lastCallFailed
      * @test
      * @dataProvider getLastCallFailedData
      */
-    public function testLastCallFailedReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
@@ -67,9 +157,34 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
 
+    /**
+     * @covers ::lastCallFailed
+     * @test
+     * @dataProvider getLastCallFailedData
+     */
+    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    {
+        $response = $this->createMock(Response::class);
+        $response->method('getStatusCode')->willReturn($statusCode);
+
+        $client = $this->createMock(HttpClient::class);
+        $client->method('request')->willReturn($response);
+
+        $api = new class ($client) extends AbstractApi {
+            public function __construct($client)
+            {
+                parent::__construct($client);
+                $this->get('', false);
+            }
+        };
+
+        $this->assertSame($expectedBoolean, $api->lastCallFailed());
+    }
+
     public static function getLastCallFailedData(): array
     {
         return [
+            [0, true],
             [100, true],
             [101, true],
             [102, true],
@@ -138,89 +253,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi
-     * @test
-     * @dataProvider getJsonDecodingFromGetMethodData
-     */
-    public function testJsonDecodingFromGetMethod($response, $decode, $expected)
-    {
-        $client = $this->createMock(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/json');
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
-
-        // Perform the tests
-        if (is_bool($decode)) {
-            $this->assertSame($expected, $method->invoke($api, 'path', $decode));
-        } else {
-            $this->assertSame($expected, $method->invoke($api, 'path'));
-        }
-    }
-
-    public static function getJsonDecodingFromGetMethodData(): array
-    {
-        return [
-            'test decode by default' => ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]],
-            'test decode by default, JSON decode: false' => ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
-            'test decode by default, JSON decode: true' => ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
-            'Empty body, JSON decode: false' => ['', false, false],
-            'Empty body, JSON decode: true' => ['', true, false],
-            'test invalid JSON' => ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'],
-        ];
-    }
-
-    /**
-     * @covers \Redmine\Api\AbstractApi
-     * @test
-     * @dataProvider getXmlDecodingFromGetMethodData
-     */
-    public function testXmlDecodingFromRequestMethods($methodName, $response, $decode, $expected)
-    {
-        $client = $this->createMock(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, $methodName);
-        $method->setAccessible(true);
-
-        // Perform the tests
-        if ('get' === $methodName) {
-            $return = $method->invoke($api, 'path', $decode);
-
-            $this->assertInstanceOf(SimpleXMLElement::class, $return);
-            $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
-        } elseif ('delete' === $methodName) {
-            $return = $method->invoke($api, 'path');
-
-            $this->assertSame($expected, $return);
-        } else {
-            $return = $method->invoke($api, 'path', '');
-
-            $this->assertInstanceOf(SimpleXMLElement::class, $return);
-            $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
-        }
-    }
-
-    public static function getXmlDecodingFromGetMethodData(): array
-    {
-        return [
-            ['get', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'], // test decode by default
-            ['get', '<?xml version="1.0"?><issue/>', true, '<?xml version="1.0"?><issue/>'],
-            ['get', '<?xml version="1.0"?><issue/>', false, '<?xml version="1.0"?><issue/>'], // test that xml decoding will be always happen
-            ['post', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
-            ['put', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
-            ['delete', '<?xml version="1.0"?><issue/>', null, '<?xml version="1.0"?><issue/>'],
-        ];
-    }
-
-    /**
-     * @covers \Redmine\Api\AbstractApi::retrieveData
+     * @covers ::retrieveData
      *
      * @dataProvider retrieveDataData
      */
@@ -247,7 +280,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveData
+     * @covers ::retrieveData
      *
      * @dataProvider getRetrieveDataToExceptionData
      */
@@ -277,7 +310,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::retrieveAll
+     * @covers ::retrieveAll
      *
      * @dataProvider getRetrieveAllData
      */
@@ -306,7 +339,7 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Api\AbstractApi::attachCustomFieldXML
+     * @covers ::attachCustomFieldXML
      */
     public function testDeprecatedAttachCustomFieldXML()
     {

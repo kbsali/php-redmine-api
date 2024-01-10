@@ -180,7 +180,7 @@ class MembershipTest extends TestCase
             ->method('requestDelete')
             ->with($this->stringContains('/memberships/5.xml'))
             ->willReturn(true);
-        $client->expects($this->once())
+        $client->expects($this->exactly(2))
             ->method('getLastResponseContentType')
             ->willReturn('application/json');
         $matcher = $this->exactly(2);

@@ -2,10 +2,14 @@
 
 namespace Redmine\Api;
 
+use Closure;
+use InvalidArgumentException;
 use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -23,9 +27,52 @@ abstract class AbstractApi implements Api
      */
     protected $client;
 
-    public function __construct(Client $client)
+    /**
+     * @var HttpClient
+     */
+    private $httpClient;
+
+    /**
+     * @var Response
+     */
+    private $lastResponse;
+
+    /**
+     * @param Client|HttpClient $client
+     */
+    public function __construct($client)
     {
-        $this->client = $client;
+        if (! is_object($client) || (! $client instanceof Client && ! $client instanceof HttpClient)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($client) must be of type %s or %s, `%s` given',
+                __METHOD__,
+                Client::class,
+                HttpClient::class,
+                (is_object($client)) ? get_class($client) : gettype($client)
+            ));
+        }
+
+        if ($client instanceof Client) {
+            $this->client = $client;
+        }
+
+        $httpClient = $client;
+
+        if (! $httpClient instanceof HttpClient) {
+            $httpClient = $this->handleClient($client);
+        }
+
+        $this->httpClient = $httpClient;
+    }
+
+    final protected function getHttpClient(): HttpClient
+    {
+        return $this->httpClient;
+    }
+
+    final protected function getLastResponse(): Response
+    {
+        return $this->lastResponse !== null ? $this->lastResponse : $this->createResponse(0, '', '');
     }
 
     /**
@@ -40,7 +87,13 @@ abstract class AbstractApi implements Api
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
 
-        $code = $this->client->getLastResponseStatusCode();
+        if ($this->lastResponse !== null) {
+            $code = $this->lastResponse->getStatusCode();
+        } elseif ($this->client !== null) {
+            $code = $this->client->getLastResponseStatusCode();
+        } else {
+            $code = 0;
+        }
 
         return 200 !== $code && 201 !== $code;
     }
@@ -55,10 +108,10 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->client->requestGet(strval($path));
+        $this->lastResponse = $this->getHttpClient()->request('GET', strval($path));
 
-        $body = $this->client->getLastResponseBody();
-        $contentType = $this->client->getLastResponseContentType();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
         if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
@@ -82,16 +135,17 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param string $data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     protected function post($path, $data)
     {
-        $this->client->requestPost($path, $data);
+        $this->lastResponse = $this->getHttpClient()->request('POST', strval($path), $data);
 
-        $body = $this->client->getLastResponseBody();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -104,16 +158,17 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param string $data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement
      */
     protected function put($path, $data)
     {
-        $this->client->requestPut($path, $data);
+        $this->lastResponse = $this->getHttpClient()->request('PUT', strval($path), $data);
 
-        $body = $this->client->getLastResponseBody();
+        $body = $this->lastResponse->getBody();
+        $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($this->client->getLastResponseContentType(), 'application/xml')) {
+        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -125,13 +180,13 @@ abstract class AbstractApi implements Api
      *
      * @param string $path
      *
-     * @return false|SimpleXMLElement|string
+     * @return string
      */
     protected function delete($path)
     {
-        $this->client->requestDelete($path);
+        $this->lastResponse = $this->getHttpClient()->request('DELETE', strval($path));
 
-        return $this->client->getLastResponseBody();
+        return $this->lastResponse->getBody();
     }
 
     /**
@@ -179,7 +234,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 
@@ -203,9 +258,9 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $this->client->requestGet($endpoint);
+            $this->lastResponse = $this->getHttpClient()->request('GET', strval($endpoint));
 
-            return $this->getLastResponseBodyAsArray();
+            return $this->getResponseAsArray($this->lastResponse);
         }
 
         $params = $this->sanitizeParams(
@@ -232,11 +287,12 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $this->client->requestGet(
+            $this->lastResponse = $this->getHttpClient()->request(
+                'GET',
                 PathSerializer::create($endpoint, $params)->getPath()
             );
 
-            $newDataSet = $this->getLastResponseBodyAsArray();
+            $newDataSet = $this->getResponseAsArray($this->lastResponse);
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
@@ -310,11 +366,10 @@ abstract class AbstractApi implements Api
      *
      * @throws SerializerException if response body could not be converted into array
      */
-    private function getLastResponseBodyAsArray(): array
+    private function getResponseAsArray(Response $response): array
     {
-        $body = $this->client->getLastResponseBody();
-
-        $contentType = $this->client->getLastResponseContentType();
+        $body = $response->getBody();
+        $contentType = $response->getContentType();
         $returnData = null;
 
         // parse XML
@@ -329,5 +384,71 @@ abstract class AbstractApi implements Api
         }
 
         return $returnData;
+    }
+
+    private function handleClient(Client $client): HttpClient
+    {
+        $responseFactory = Closure::fromCallable([$this, 'createResponse']);
+
+        return new class ($client, $responseFactory) implements HttpClient {
+            private $client;
+            private $responseFactory;
+
+            public function __construct(Client $client, Closure $responseFactory)
+            {
+                $this->client = $client;
+                $this->responseFactory = $responseFactory;
+            }
+
+            public function request(string $method, string $path, string $body = ''): Response
+            {
+                if ($method === 'POST') {
+                    $this->client->requestPost($path, $body);
+                } elseif ($method === 'PUT') {
+                    $this->client->requestPut($path, $body);
+                } elseif ($method === 'DELETE') {
+                    $this->client->requestDelete($path);
+                } else {
+                    $this->client->requestGet($path);
+                }
+
+                return ($this->responseFactory)(
+                    $this->client->getLastResponseStatusCode(),
+                    $this->client->getLastResponseContentType(),
+                    $this->client->getLastResponseBody()
+                );
+            }
+        };
+    }
+
+    private function createResponse(int $statusCode, string $contentType, string $body): Response
+    {
+        return new class ($statusCode, $contentType, $body) implements Response {
+            private $statusCode;
+            private $contentType;
+            private $body;
+
+            public function __construct(int $statusCode, string $contentType, string $body)
+            {
+                $this->statusCode = $statusCode;
+                $this->contentType = $contentType;
+                $this->body = $body;
+            }
+
+            public function getStatusCode(): int
+            {
+                return $this->statusCode;
+            }
+
+            public function getContentType(): string
+            {
+                return $this->contentType;
+            }
+
+            public function getBody(): string
+            {
+                return $this->body;
+            }
+        };
     }
 }

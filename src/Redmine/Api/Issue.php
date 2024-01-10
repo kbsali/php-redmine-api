@@ -2,12 +2,15 @@
 
 namespace Redmine\Api;
 
+use Redmine\Client\NativeCurlClient;
+use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing issues, searching, editing and closing your projects issues.
@@ -23,6 +26,31 @@ class Issue extends AbstractApi
     public const PRIO_HIGH = 3;
     public const PRIO_URGENT = 4;
     public const PRIO_IMMEDIATE = 5;
+
+    /**
+     * @var IssueCategory
+     */
+    private $issueCategoryApi;
+
+    /**
+     * @var IssueStatus
+     */
+    private $issueStatusApi;
+
+    /**
+     * @var Project
+     */
+    private $projectApi;
+
+    /**
+     * @var Tracker
+     */
+    private $trackerApi;
+
+    /**
+     * @var User
+     */
+    private $userApi;
 
     /**
      * List issues.
@@ -82,7 +110,7 @@ class Issue extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 
@@ -125,7 +153,7 @@ class Issue extends AbstractApi
      *
      * @param array $params the new issue data
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function create(array $params = [])
     {
@@ -160,7 +188,7 @@ class Issue extends AbstractApi
      *
      * @param string $id the issue number
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function update($id, array $params)
     {
@@ -219,15 +247,14 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $status
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function setIssueStatus($id, $status)
     {
-        /** @var IssueStatus */
-        $api = $this->client->getApi('issue_status');
+        $issueStatusApi = $this->getIssueStatusApi();
 
         return $this->update($id, [
-            'status_id' => $api->getIdByName($status),
+            'status_id' => $issueStatusApi->getIdByName($status),
         ]);
     }
 
@@ -254,39 +281,44 @@ class Issue extends AbstractApi
     private function cleanParams(array $params = [])
     {
         if (isset($params['project'])) {
-            /** @var Project */
-            $apiProject = $this->client->getApi('project');
-            $params['project_id'] = $apiProject->getIdByName($params['project']);
+            $projectApi = $this->getProjectApi();
+
+            $params['project_id'] = $projectApi->getIdByName($params['project']);
             unset($params['project']);
-            if (isset($params['category'])) {
-                /** @var IssueCategory */
-                $apiIssueCategory = $this->client->getApi('issue_category');
-                $params['category_id'] = $apiIssueCategory->getIdByName($params['project_id'], $params['category']);
-                unset($params['category']);
-            }
         }
+
+        if (isset($params['category']) && isset($params['project_id'])) {
+            $issueCategoryApi = $this->getIssueCategoryApi();
+
+            $params['category_id'] = $issueCategoryApi->getIdByName($params['project_id'], $params['category']);
+            unset($params['category']);
+        }
+
         if (isset($params['status'])) {
-            /** @var IssueStatus */
-            $apiIssueStatus = $this->client->getApi('issue_status');
-            $params['status_id'] = $apiIssueStatus->getIdByName($params['status']);
+            $issueStatusApi = $this->getIssueStatusApi();
+
+            $params['status_id'] = $issueStatusApi->getIdByName($params['status']);
             unset($params['status']);
         }
+
         if (isset($params['tracker'])) {
-            /** @var Tracker */
-            $apiTracker = $this->client->getApi('tracker');
-            $params['tracker_id'] = $apiTracker->getIdByName($params['tracker']);
+            $trackerApi = $this->getTrackerApi();
+
+            $params['tracker_id'] = $trackerApi->getIdByName($params['tracker']);
             unset($params['tracker']);
         }
+
         if (isset($params['assigned_to'])) {
-            /** @var User */
-            $apiUser = $this->client->getApi('user');
-            $params['assigned_to_id'] = $apiUser->getIdByUsername($params['assigned_to']);
+            $userApi = $this->getUserApi();
+
+            $params['assigned_to_id'] = $userApi->getIdByUsername($params['assigned_to']);
             unset($params['assigned_to']);
         }
+
         if (isset($params['author'])) {
-            /** @var User */
-            $apiUser = $this->client->getApi('user');
-            $params['author_id'] = $apiUser->getIdByUsername($params['author']);
+            $userApi = $this->getUserApi();
+
+            $params['author_id'] = $userApi->getIdByUsername($params['author']);
             unset($params['author']);
         }
 
@@ -344,5 +376,100 @@ class Issue extends AbstractApi
     public function remove($id)
     {
         return $this->delete('/issues/' . $id . '.xml');
+    }
+
+    /**
+     * @return IssueCategory
+     */
+    private function getIssueCategoryApi()
+    {
+        if ($this->issueCategoryApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var IssueCategory */
+                $issueCategoryApi = $this->client->getApi('issue_category');
+            } else {
+                $issueCategoryApi = new IssueCategory($this->getHttpClient());
+            }
+
+            $this->issueCategoryApi = $issueCategoryApi;
+        }
+
+        return $this->issueCategoryApi;
+    }
+
+    /**
+     * @return IssueStatus
+     */
+    private function getIssueStatusApi()
+    {
+        if ($this->issueStatusApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var IssueStatus */
+                $issueStatusApi = $this->client->getApi('issue_status');
+            } else {
+                $issueStatusApi = new IssueStatus($this->getHttpClient());
+            }
+
+            $this->issueStatusApi = $issueStatusApi;
+        }
+
+        return $this->issueStatusApi;
+    }
+
+    /**
+     * @return Project
+     */
+    private function getProjectApi()
+    {
+        if ($this->projectApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var Project */
+                $projectApi = $this->client->getApi('project');
+            } else {
+                $projectApi = new Project($this->getHttpClient());
+            }
+
+            $this->projectApi = $projectApi;
+        }
+
+        return $this->projectApi;
+    }
+
+    /**
+     * @return Tracker
+     */
+    private function getTrackerApi()
+    {
+        if ($this->trackerApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var Tracker */
+                $trackerApi = $this->client->getApi('tracker');
+            } else {
+                $trackerApi = new Tracker($this->getHttpClient());
+            }
+
+            $this->trackerApi = $trackerApi;
+        }
+
+        return $this->trackerApi;
+    }
+
+    /**
+     * @return User
+     */
+    private function getUserApi()
+    {
+        if ($this->userApi === null) {
+            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
+                /** @var User */
+                $userApi = $this->client->getApi('user');
+            } else {
+                $userApi = new User($this->getHttpClient());
+            }
+
+            $this->userApi = $userApi;
+        }
+
+        return $this->userApi;
     }
 }

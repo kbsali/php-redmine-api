@@ -57,7 +57,7 @@ class TimeEntry extends AbstractApi
         try {
             $this->timeEntries = $this->list($params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

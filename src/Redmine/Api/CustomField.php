@@ -55,7 +55,7 @@ class CustomField extends AbstractApi
         try {
             $this->customFields = $this->list($params);
         } catch (Exception $e) {
-            if ($this->client->getLastResponseBody() === '') {
+            if ($this->getLastResponse()->getBody() === '') {
                 return false;
             }
 

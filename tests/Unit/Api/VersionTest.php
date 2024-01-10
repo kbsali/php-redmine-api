@@ -125,7 +125,6 @@ class VersionTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */
@@ -158,7 +157,6 @@ class VersionTest extends TestCase
     /**
      * Test show().
      *
-     * @covers ::get
      * @covers ::show
      * @test
      */
