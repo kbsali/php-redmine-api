@@ -489,6 +489,13 @@ $client->getApi('group')->removeUser($groupId, $userId);
 $client->getApi('group')->create([
     'name' => 'asdf',
     'user_ids' => [1, 2],
+    'custom_fields' => [
+        [
+            'id' => 123,
+            'name' => 'cf_name',
+            'value' => 'cf_value',
+        ],
+    ],
 ]);
 
 // ----------------------------
