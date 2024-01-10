@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   tests:
-    name: Tests (PHP ${{ matrix.php }} on ${{ matrix.operating-system }})
+    name: Tests (PHPUnit with PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,7 +21,38 @@ jobs:
         with:
           fetch-depth: 2
 
-      - run: echo '💡 The ${{ github.repository }} repository has been cloned to the runner.'
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpunit
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite
+          coverage: xdebug
+
+      # Install composer dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: "Install Composer dependencies"
+        uses: "ramsey/composer-install@v2"
+
+      - name: Run tests
+        run: vendor/bin/phpunit --no-coverage
+
+  code-quality:
+    name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php: ["8.3"]
+        tool: ["phpstan", "code-coverage", "code-style"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -37,17 +68,22 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: Run static code analysis
-        if: ${{ matrix.php == '8.3' }}
+        if: ${{ matrix.tool == 'phpstan' }}
         run: composer run phpstan -- --error-format=github
 
-      - name: Run tests
-        run: vendor/bin/phpunit --coverage-clover .phpunit.cache/clover.xml
+      - name: Run tests with coverage-clover
+        if: ${{ matrix.tool == 'code-coverage' }}
+        run: composer run phpunit -- --coverage-clover .phpunit.cache/clover.xml
 
       - name: Upload coverage reports to Codecov
-        if: ${{ success() && matrix.php == '8.3' }}
+        if: ${{ matrix.tool == 'code-coverage' }}
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./.phpunit.cache/clover.xml
           fail_ci_if_error: true
           verbose: true
+
+      - name: Check code-style
+        if: ${{ matrix.tool == 'code-style' }}
+        run: composer run codestyle -- --dry-run --diff
