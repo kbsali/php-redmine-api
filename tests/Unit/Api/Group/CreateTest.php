@@ -117,9 +117,6 @@ class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreateThrowsExceptionIfNameIsMissing()
     {
         // Test values
