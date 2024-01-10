@@ -497,6 +497,18 @@ $client->getApi('group')->create([
         ],
     ],
 ]);
+$client->getApi('group')->update($groupId, [
+    'name' => 'asdf',
+    // Note: you can only add users this way; use removeUser to remove a user
+    'user_ids' => [1, 2],
+    'custom_fields' => [
+        [
+            'id' => 123,
+            'name' => 'cf_name',
+            'value' => 'cf_value',
+        ],
+    ],
+]);
 
 // ----------------------------
 // Project memberships

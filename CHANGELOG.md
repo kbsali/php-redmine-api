@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.4.0...v2.x)
 
+### Added
+
+- Added support for updating groups.
+
 ### Changed
 
 - The last response is saved in `Redmine\Api\AbstractApi` to prevent race conditions with `Redmine\Client\Client` implementations.
