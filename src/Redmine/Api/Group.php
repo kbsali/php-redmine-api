@@ -8,6 +8,7 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Handling of groups.
@@ -101,7 +102,7 @@ class Group extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function create(array $params = [])
     {
@@ -124,17 +125,28 @@ class Group extends AbstractApi
     }
 
     /**
+     * Updates a group.
+     *
      * NOT DOCUMENTED in Redmine's wiki.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
      *
-     * @param int $id
+     * @param int $id the group id
      *
-     * @throws Exception Not implemented
+     * @return string empty string
      */
-    public function update($id, array $params = [])
+    public function update(int $id, array $params = [])
     {
-        throw new \Exception('Not implemented');
+        $defaults = [
+            'name' => null,
+            'user_ids' => null,
+        ];
+        $params = $this->sanitizeParams($defaults, $params);
+
+        return $this->put(
+            '/groups/' . $id . '.xml',
+            XmlSerializer::createFromArray(['group' => $params])->getEncoded()
+        );
     }
 
     /**
