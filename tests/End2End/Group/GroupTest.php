@@ -25,17 +25,15 @@ class GroupTest extends ClientTestCase
             'name' => $groupName,
         ]);
 
-        $data = json_decode(json_encode($xmlData), true);
+        $groupData = json_decode(json_encode($xmlData), true);
 
-        $this->assertIsArray($data, json_encode($data));
-        $this->assertIsString($data['id']);
-        $this->assertSame($groupName, $data['name']);
+        $this->assertIsArray($groupData, json_encode($groupData));
+        $this->assertIsString($groupData['id']);
+        $this->assertSame($groupName, $groupData['name']);
 
-        $groupId = (int) $data['id'];
+        $groupId = (int) $groupData['id'];
 
         // List groups
-        $data = $groupApi->list();
-
         $this->assertSame(
             [
                 'groups' => [
@@ -45,12 +43,10 @@ class GroupTest extends ClientTestCase
                     ],
                 ],
             ],
-            $data
+            $groupApi->list()
         );
 
         // Read group
-        $data = $groupApi->show($groupId);
-
         $this->assertSame(
             [
                 'group' => [
@@ -58,7 +54,21 @@ class GroupTest extends ClientTestCase
                     'name' => $groupName,
                 ]
             ],
-            $data
+            $groupApi->show($groupId)
+        );
+
+        // Update group
+        $result = $groupApi->update($groupId, ['name' => 'new group name']);
+        $this->assertSame('', $result);
+
+        $this->assertSame(
+            [
+                'group' => [
+                    'id' => $groupId,
+                    'name' => 'new group name',
+                ]
+            ],
+            $groupApi->show($groupId)
         );
     }
 }
