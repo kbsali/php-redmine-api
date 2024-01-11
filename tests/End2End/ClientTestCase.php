@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\End2End;
 
+use DateTimeImmutable;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
@@ -24,6 +25,7 @@ class ClientTestCase extends TestCase
         // Create backup of database
         copy($this->sqliteFile, $this->sqliteBackup);
 
+        $now = new DateTimeImmutable();
         $pdo = new PDO('sqlite:' . $this->sqliteFile);
 
         // Get admin user to check sqlite connection
@@ -36,8 +38,12 @@ class ClientTestCase extends TestCase
         $stmt->execute([':id' => $adminUser['id'], ':must_change_passwd' => 0]);
 
         // Enable rest api
-        $stmt = $pdo->prepare('INSERT INTO settings(name, value) VALUES(:name, :value);');
-        $stmt->execute([':name' => 'rest_api_enabled', ':value' => 1]);
+        $stmt = $pdo->prepare('INSERT INTO settings(name, value, updated_on) VALUES(:name, :value, :updated_on);');
+        $stmt->execute([
+            ':name' => 'rest_api_enabled',
+            ':value' => 1,
+            ':updated_on' => $now->format('Y-m-d H:i:s.u'),
+        ]);
 
         $this->apiKey = sha1((string) time());
 
@@ -47,8 +53,8 @@ class ClientTestCase extends TestCase
             ':user_id' => $adminUser['id'],
             ':action' => 'api',
             ':value' => $this->apiKey,
-            ':created_on' => $adminUser['last_login_on'],
-            ':updated_on' => $adminUser['last_login_on'],
+            ':created_on' => $now->format('Y-m-d H:i:s.u'),
+            ':updated_on' => $now->format('Y-m-d H:i:s.u'),
         ]);
     }
 
