@@ -11,6 +11,10 @@ use Redmine\Client\NativeCurlClient;
 
 class ClientTestCase extends TestCase
 {
+    const V050101 = '050101';
+
+    private $redmineUrl;
+
     private $apiKey;
 
     private $sqliteFile;
@@ -19,8 +23,11 @@ class ClientTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->sqliteFile = dirname(__FILE__, 3) . '/.docker/redmine_data/sqlite/redmine.db';
-        $this->sqliteBackup = dirname(__FILE__, 3) . '/.docker/redmine_data/sqlite/redmine.db.bak';
+        $redmineVersion = self::V050101;
+
+        $this->sqliteFile = dirname(__FILE__, 3) . '/.docker/redmine-' . $redmineVersion . '_data/sqlite/redmine.db';
+        $this->sqliteBackup = dirname(__FILE__, 3) . '/.docker/redmine-' . $redmineVersion . '_data/sqlite/redmine.db.bak';
+        $this->redmineUrl = 'http://redmine-' . $redmineVersion . ':3000';
 
         // Create backup of database
         copy($this->sqliteFile, $this->sqliteBackup);
@@ -67,7 +74,7 @@ class ClientTestCase extends TestCase
     protected function getNativeCurlClient(): NativeCurlClient
     {
         return new NativeCurlClient(
-            'http://redmine:3000',
+            $this->redmineUrl,
             $this->apiKey
         );
     }
