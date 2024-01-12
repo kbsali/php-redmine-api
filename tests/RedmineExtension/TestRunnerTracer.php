@@ -11,14 +11,52 @@ use PHPUnit\Event\Tracer\Tracer;
 
 final class TestRunnerTracer implements Tracer
 {
+    /**
+     * @var RedmineInstances[] $instances
+     */
+    private static $instances = [];
+
+    /**
+     * @return RedmineInstances[]
+     */
+    public static function getRedmineInstances(): array
+    {
+        return static::$instances;
+    }
+
+    /**
+     * @return RedmineVersion[]
+     */
+    private static function getSupportedRedmineVersions(): array
+    {
+        return [
+            RedmineVersion::V5_1_1,
+            RedmineVersion::V5_0_7,
+        ];
+    }
+
+    public function registerInstance(RedmineInstance $instance): void
+    {
+        static::$instances[$instance->getVersionId()] = $instance;
+    }
+
+    public function deregisterInstance(RedmineInstance $instance): void
+    {
+        unset(static::$instances[$instance->getVersionId()]);
+    }
+
     public function trace(Event $event): void
     {
         if ($event instanceof Started) {
-            // setup Redmine instances
+            foreach (static::getSupportedRedmineVersions() as $version) {
+                RedmineInstance::create($this, $version);
+            }
         }
 
         if ($event instanceof Finished) {
-            // teardown Redmine instances
+            foreach ($this->instances as $instance) {
+                $instance->shutdown($this);
+            }
         }
     }
 }
