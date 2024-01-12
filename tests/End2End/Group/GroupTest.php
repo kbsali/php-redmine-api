@@ -10,9 +10,23 @@ use Redmine\Tests\End2End\ClientTestCase;
 
 class GroupTest extends ClientTestCase
 {
-    public function testInteractionWithGroup(): void
+    public static function getRedmineVersions(): array
     {
-        $client = $this->getNativeCurlClient();
+        $data = [];
+
+        foreach (static::getAvailableRedmineVersions() as $redmineVersion) {
+            $data[] = [$redmineVersion];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider getRedmineVersions
+     */
+    public function testInteractionWithGroup(string $redmineVersion): void
+    {
+        $client = $this->getNativeCurlClient($redmineVersion);
 
         /** @var Group */
         $groupApi = $client->getApi('group');

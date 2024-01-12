@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\End2End;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
@@ -87,9 +88,11 @@ class ClientTestCase extends TestCase
         }
     }
 
-    protected function getNativeCurlClient(): NativeCurlClient
+    protected function getNativeCurlClient(string $redmineVersion): NativeCurlClient
     {
-        $redmineVersion = static::V050101;
+        if (! array_key_exists($redmineVersion, $this->instances)) {
+            throw new InvalidArgumentException('Redmine version ' . $redmineVersion . ' is not supported.');
+        }
 
         return new NativeCurlClient(
             $this->instances[$redmineVersion]['redmineUrl'],
