@@ -48,7 +48,7 @@
     "scripts": {
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
-        "end2end": "phpunit -- tests/End2End",
+        "end2end": "phpunit --configuration=\"phpunit-end2end.xml\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
         "phpunit": "phpunit",
         "test": [
