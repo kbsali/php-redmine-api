@@ -17,25 +17,8 @@ services:
         ports:
             - "3000:3000"
         environment:
-            REDMINE_DB_MYSQL: "mariadb"
-            REDMINE_DB_PORT: ""
-            REDMINE_DB_USERNAME: "redmine"
-            REDMINE_DB_PASSWORD: "redmine"
-            REDMINE_DB_DATABASE: "redmine"
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
-        depends_on:
-            - mariadb
         volumes:
-            - ./.docker/redmine_data:/usr/src/redmine/files
-
-    mariadb:
-        image: mariadb:11.2
-        environment:
-            MYSQL_ROOT_PASSWORD: "root"
-            MYSQL_DATABASE: "redmine"
-            MYSQL_USER: "redmine"
-            MYSQL_PASSWORD: "redmine"
-        volumes:
-            - ./.docker/mariadb_data:/var/lib/mysql
-
+            - ./.docker/redmine_data/files:/usr/src/redmine/files
+            - ./.docker/redmine_data/sqlite:/usr/src/redmine/sqlite
