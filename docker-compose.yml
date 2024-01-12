@@ -33,3 +33,14 @@ services:
         volumes:
             - ./.docker/redmine-050101_data/files:/usr/src/redmine/files
             - ./.docker/redmine-050101_data/sqlite:/usr/src/redmine/sqlite
+
+    redmine-050007:
+        image: redmine:5.0.7
+        ports:
+            - "5008:3000"
+        environment:
+            REDMINE_SECRET_KEY_BASE: supersecretkey
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-050007_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-050007_data/sqlite:/usr/src/redmine/sqlite
