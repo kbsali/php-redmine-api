@@ -31,4 +31,7 @@
       <directory suffix=".php">src/Redmine/</directory>
     </include>
   </source>
+  <extensions>
+    <bootstrap class="Redmine\Tests\RedmineExtension\RedmineExtension"/>
+  </extensions>
 </phpunit>
