@@ -30,21 +30,24 @@ final class RedmineInstance
             throw new InvalidArgumentException('Redmine ' . $version->asString() . ' is not supported.');
         }
 
-        $tracer->registerInstance(new self($version));
+        $tracer->registerInstance(new self($tracer, $version));
     }
 
-    private $version;
+    private TestRunnerTracer $tracer;
 
-    private $sqliteFile;
+    private RedmineVersion $version;
 
-    private $sqliteBackup;
+    private string $sqliteFile;
 
-    private $redmineUrl;
+    private string $sqliteBackup;
 
-    private $apiKey;
+    private string $redmineUrl;
 
-    private function __construct(RedmineVersion $version)
+    private string $apiKey;
+
+    private function __construct(TestRunnerTracer $tracer, RedmineVersion $version)
     {
+        $this->tracer = $tracer;
         $this->version = $version;
 
         $versionId = strval($version->asId());
@@ -73,9 +76,24 @@ final class RedmineInstance
         return $this->apiKey;
     }
 
+    public function reset(TestRunnerTracer $tracer): void
+    {
+        if ($tracer !== $this->tracer) {
+            throw new InvalidArgumentException();
+        }
+
+        $this->restoreDatabaseFromBackup();
+        $this->runDatabaseMigration();
+    }
+
     public function shutdown(TestRunnerTracer $tracer): void
     {
+        if ($tracer !== $this->tracer) {
+            throw new InvalidArgumentException();
+        }
+
         $this->restoreDatabaseFromBackup();
+        $this->removeDatabaseBackup();
 
         $tracer->deregisterInstance($this);
     }
@@ -122,6 +140,10 @@ final class RedmineInstance
     private function restoreDatabaseFromBackup(): void
     {
         copy($this->sqliteBackup, $this->sqliteFile);
+    }
+
+    private function removeDatabaseBackup(): void
+    {
         unlink($this->sqliteBackup);
     }
 }
