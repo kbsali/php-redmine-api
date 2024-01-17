@@ -8,7 +8,6 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Test\Finished as TestFinished;
 use PHPUnit\Event\TestRunner\Finished as TestRunnerFinished;
 use PHPUnit\Event\TestRunner\Started;
-use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\Tracer\Tracer;
 use RuntimeException;
 

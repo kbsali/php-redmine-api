@@ -37,9 +37,11 @@ final class RedmineInstance
 
     private RedmineVersion $version;
 
-    private string $sqliteFile;
+    private string $workingDB;
 
-    private string $sqliteBackup;
+    private string $migratedDB;
+
+    private string $backupDB;
 
     private string $redmineUrl;
 
@@ -52,13 +54,15 @@ final class RedmineInstance
 
         $versionId = strval($version->asId());
 
-        $this->sqliteFile = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db';
-        $this->sqliteBackup = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db.bak';
+        $this->workingDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db';
+        $this->migratedDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine-migrated.db';
+        $this->backupDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db.bak';
         $this->redmineUrl = 'http://redmine-' . $versionId . ':3000';
         $this->apiKey = sha1($versionId . (string) time());
 
         $this->createDatabaseBackup();
         $this->runDatabaseMigration();
+        $this->saveMigratedDatabase();
     }
 
     public function getVersionId(): int
@@ -82,8 +86,7 @@ final class RedmineInstance
             throw new InvalidArgumentException();
         }
 
-        $this->restoreDatabaseFromBackup();
-        $this->runDatabaseMigration();
+        $this->restoreFromMigratedDatabase();
     }
 
     public function shutdown(TestRunnerTracer $tracer): void
@@ -93,21 +96,15 @@ final class RedmineInstance
         }
 
         $this->restoreDatabaseFromBackup();
-        $this->removeDatabaseBackup();
+        $this->removeDatabaseBackups();
 
         $tracer->deregisterInstance($this);
-    }
-
-    private function createDatabaseBackup()
-    {
-        // Create backup of database
-        copy($this->sqliteFile, $this->sqliteBackup);
     }
 
     private function runDatabaseMigration()
     {
         $now = new DateTimeImmutable();
-        $pdo = new PDO('sqlite:' . $this->sqliteFile);
+        $pdo = new PDO('sqlite:' . $this->workingDB);
 
         // Get admin user to check sqlite connection
         $stmt = $pdo->prepare('SELECT * FROM users WHERE login = :login;');
@@ -137,13 +134,35 @@ final class RedmineInstance
         ]);
     }
 
-    private function restoreDatabaseFromBackup(): void
+    /**
+     * Create backup of working database
+     */
+    private function createDatabaseBackup()
     {
-        copy($this->sqliteBackup, $this->sqliteFile);
+        copy($this->workingDB, $this->backupDB);
     }
 
-    private function removeDatabaseBackup(): void
+    /**
+     * Create backup of migrated database
+     */
+    private function saveMigratedDatabase()
     {
-        unlink($this->sqliteBackup);
+        copy($this->workingDB, $this->migratedDB);
+    }
+
+    private function restoreFromMigratedDatabase(): void
+    {
+        copy($this->migratedDB, $this->workingDB);
+    }
+
+    private function restoreDatabaseFromBackup(): void
+    {
+        copy($this->backupDB, $this->workingDB);
+    }
+
+    private function removeDatabaseBackups(): void
+    {
+        unlink($this->migratedDB);
+        unlink($this->backupDB);
     }
 }
