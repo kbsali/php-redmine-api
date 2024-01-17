@@ -44,7 +44,7 @@ you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/i
 * The PHP [SimpleXML](https://php.net/manual/en/book.simplexml.php) extension
 * The PHP [JSON](https://php.net/manual/en/book.json.php) extension
 * Enabled REST web service on your Redmine server
-    * Got to Administration -> Settings -> Api (`/settings/edit?tab=api`) and check the "Enable REST web service" box
+    * Go to Administration -> Settings -> Api (`/settings/edit?tab=api`) and check the "Enable REST web service" box
     * Obtain your *API access key* in your profile page: `/my/account`
     * (or use your *username & password*; not recommended)
 
