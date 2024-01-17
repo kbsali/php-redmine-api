@@ -65,34 +65,82 @@ class ProjectTest extends ClientTestCase
             array_keys($projectList)
         );
 
-        $expected = [
-            'projects' => [
-                [
-                    'id' => $projectId,
-                    'name' => $projectName,
-                    'identifier' => $projectIdentifier,
-                    'description' => null,
-                    'homepage' => '',
-                    'status' => 1,
-                    'is_public' => true,
-                    'inherit_members' => false,
-                    'created_on' => $projectList['projects'][0]['created_on'],
-                    'updated_on' => $projectList['projects'][0]['updated_on'],
-                ],
-            ],
-            'total_count' => 1,
-            'offset' => 0,
-            'limit' => 25,
+        $expectedProject = [
+            'id' => $projectId,
+            'name' => $projectName,
+            'identifier' => $projectIdentifier,
+            'description' => null,
+            'homepage' => '',
+            'status' => 1,
+            'is_public' => true,
+            'inherit_members' => false,
+            'created_on' => $projectList['projects'][0]['created_on'],
+            'updated_on' => $projectList['projects'][0]['updated_on'],
         ];
 
         // field 'homepage' was added in Redmine 5.1.0, see https://www.redmine.org/issues/39113
         if (version_compare($redmineVersion->asString(), '5.1.0', '<')) {
-            unset($expected['projects'][0]['homepage']);
+            unset($expectedProject['homepage']);
         }
 
         $this->assertSame(
-            $expected,
+            [
+                'projects' => [
+                    $expectedProject,
+                ],
+                'total_count' => 1,
+                'offset' => 0,
+                'limit' => 25,
+            ],
             $projectList
+        );
+
+        // Update project
+        $result = $api->update($projectIdentifier, [
+            'name' => 'new project name',
+            'homepage' => 'https://example.com',
+        ]);
+        $this->assertSame('', $result);
+
+        // Read single project
+        $projectDetails = $api->show($projectIdentifier);
+
+        $this->assertSame(
+            [
+                'id',
+                'name',
+                'identifier',
+                'description',
+                'homepage',
+                'status',
+                'is_public',
+                'inherit_members',
+                'trackers',
+                'issue_categories',
+                'created_on',
+                'updated_on',
+            ],
+            array_keys($projectDetails['project'])
+        );
+
+        $this->assertSame(
+            [
+                'project' => [
+                    'id' => $projectId,
+                    'name' => 'new project name',
+                    'identifier' => $projectIdentifier,
+                    'description' => null,
+                    'homepage' => 'https://example.com',
+                    'status' => 1,
+                    'is_public' => true,
+                    'inherit_members' => false,
+                    'trackers' => [],
+                    'issue_categories' => [],
+                    'created_on' => $projectDetails['project']['created_on'],
+                    'updated_on' => $projectDetails['project']['updated_on'],
+                ],
+            ],
+            $projectDetails,
         );
     }
 }
