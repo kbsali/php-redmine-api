@@ -35,18 +35,64 @@ class ProjectTest extends ClientTestCase
 
         // Create project
         $projectName = 'test project ' . $now->format('Y-m-d H:i:s');
-        $projectIdentifier = str_replace([' ', ':'], ['_', '-'], $projectName);
+        $projectIdentifier = 'test_project_' . $now->format('Y-m-d_H-i-s');
 
         $xmlData = $api->create([
             'name' => $projectName,
             'identifier' => $projectIdentifier,
         ]);
 
-        $projectData = json_decode(json_encode($xmlData), true);
+        $projectDataJson = json_encode($xmlData);
+        $projectData = json_decode($projectDataJson, true);
 
-        $this->assertIsArray($projectData, json_encode($projectData));
-        $this->assertIsString($projectData['id'], json_encode($projectData));
-        $this->assertSame($projectName, $projectData['name'], json_encode($projectData));
-        $this->assertSame($projectIdentifier, $projectData['identifier'], json_encode($projectData));
+        $this->assertIsArray($projectData, $projectDataJson);
+        $this->assertIsString($projectData['id'], $projectDataJson);
+        $this->assertSame($projectName, $projectData['name'], $projectDataJson);
+        $this->assertSame($projectIdentifier, $projectData['identifier'], $projectDataJson);
+
+        $projectId = (int) $projectData['id'];
+
+        // List projects
+        $projectList = $api->list();
+
+        $this->assertSame(
+            [
+                'projects',
+                'total_count',
+                'offset',
+                'limit',
+            ],
+            array_keys($projectList)
+        );
+
+        $expected = [
+            'projects' => [
+                [
+                    'id' => $projectId,
+                    'name' => $projectName,
+                    'identifier' => $projectIdentifier,
+                    'description' => null,
+                    'homepage' => '',
+                    'status' => 1,
+                    'is_public' => true,
+                    'inherit_members' => false,
+                    'created_on' => $projectList['projects'][0]['created_on'],
+                    'updated_on' => $projectList['projects'][0]['updated_on'],
+                ],
+            ],
+            'total_count' => 1,
+            'offset' => 0,
+            'limit' => 25,
+        ];
+
+        // field 'homepage' was added in Redmine 5.1.0, see https://www.redmine.org/issues/39113
+        if (version_compare($redmineVersion->asString(), '5.1.0', '<')) {
+            unset($expected['projects'][0]['homepage']);
+        }
+
+        $this->assertSame(
+            $expected,
+            $projectList
+        );
     }
 }
