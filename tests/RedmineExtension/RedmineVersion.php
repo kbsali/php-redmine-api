@@ -29,4 +29,18 @@ enum RedmineVersion: int
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#507-2023-11-27
      */
     case V5_0_7 = 50007;
+
+    public function asString(): string
+    {
+        return match($this) {
+            RedmineVersion::V5_0_7 => '5.0.7',
+            RedmineVersion::V5_1_0 => '5.1.0',
+            RedmineVersion::V5_1_1 => '5.1.1',
+        };
+    }
+
+    public function asId(): int
+    {
+        return $this->value;
+    }
 }

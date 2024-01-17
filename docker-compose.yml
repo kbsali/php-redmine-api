@@ -23,7 +23,9 @@ services:
             - ./.docker/redmine-dev_data/files:/usr/src/redmine/files
             - ./.docker/redmine-dev_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-050101:
+    # Make sure the following services are supported in /tests/RedmineExtension/RedmineInstance.php
+
+    redmine-50101:
         image: redmine:5.1.1
         ports:
             - "5101:3000"
@@ -31,16 +33,16 @@ services:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-050101_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-050101_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50101_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50101_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-050007:
+    redmine-50007:
         image: redmine:5.0.7
         ports:
-            - "5008:3000"
+            - "5007:3000"
         environment:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-050007_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-050007_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50007_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50007_data/sqlite:/usr/src/redmine/sqlite

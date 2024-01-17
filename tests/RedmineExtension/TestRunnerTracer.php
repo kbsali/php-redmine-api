@@ -8,31 +8,39 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\TestRunner\Finished;
 use PHPUnit\Event\TestRunner\Started;
 use PHPUnit\Event\Tracer\Tracer;
+use RuntimeException;
 
 final class TestRunnerTracer implements Tracer
 {
     /**
-     * @var RedmineInstances[] $instances
+     * @var RedmineInstance[] $instances
      */
-    private static $instances = [];
+    private static ?TestRunnerTracer $tracer = null;
 
     /**
-     * @return RedmineInstances[]
+     * @var RedmineInstance[] $instances
      */
-    public static function getRedmineInstances(): array
-    {
-        return static::$instances;
-    }
+    private static array $instances = [];
 
     /**
      * @return RedmineVersion[]
      */
-    private static function getSupportedRedmineVersions(): array
+    public static function getSupportedRedmineVersions(): array
     {
-        return [
-            RedmineVersion::V5_1_1,
-            RedmineVersion::V5_0_7,
-        ];
+        return RedmineInstance::getSupportedVersions();
+    }
+
+    public static function getRedmineInstance(RedmineVersion $redmineVersion): RedmineInstance
+    {
+        if (static::$tracer === null) {
+            throw new RuntimeException('You can only get a Redmine instance while the PHPUnit Test Runner is running.');
+        }
+
+        if (! array_key_exists($redmineVersion->asId(), static::$instances)) {
+            RedmineInstance::create(static::$tracer, $redmineVersion);
+        }
+
+        return static::$instances[$redmineVersion->asId()];
     }
 
     public function registerInstance(RedmineInstance $instance): void
@@ -48,15 +56,15 @@ final class TestRunnerTracer implements Tracer
     public function trace(Event $event): void
     {
         if ($event instanceof Started) {
-            foreach (static::getSupportedRedmineVersions() as $version) {
-                RedmineInstance::create($this, $version);
-            }
+            static::$tracer = $this;
         }
 
         if ($event instanceof Finished) {
-            foreach ($this->instances as $instance) {
+            foreach (static::$instances as $instance) {
                 $instance->shutdown($this);
             }
+
+            static::$tracer = null;
         }
     }
 }
