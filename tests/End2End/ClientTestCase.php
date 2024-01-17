@@ -4,71 +4,34 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\End2End;
 
-use DateTimeImmutable;
-use PDO;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
+use Redmine\Tests\RedmineExtension\RedmineVersion;
+use Redmine\Tests\RedmineExtension\TestRunnerTracer;
 
-class ClientTestCase extends TestCase
+abstract class ClientTestCase extends TestCase
 {
-    private $apiKey;
-
-    private $sqliteFile;
-
-    private $sqliteBackup;
-
-    public function setUp(): void
+    /**
+     * @return array<array<RedmineVersion>>
+     */
+    final public static function provideRedmineVersions(): array
     {
-        $this->sqliteFile = dirname(__FILE__, 3) . '/.docker/redmine_data/sqlite/redmine.db';
-        $this->sqliteBackup = dirname(__FILE__, 3) . '/.docker/redmine_data/sqlite/redmine.db.bak';
+        $data = [];
 
-        // Create backup of database
-        copy($this->sqliteFile, $this->sqliteBackup);
+        foreach (TestRunnerTracer::getSupportedRedmineVersions() as $version) {
+            $data[] = [$version];
+        }
 
-        $now = new DateTimeImmutable();
-        $pdo = new PDO('sqlite:' . $this->sqliteFile);
-
-        // Get admin user to check sqlite connection
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE login = :login;');
-        $stmt->execute([':login' => 'admin']);
-        $adminUser = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Update admin user
-        $stmt = $pdo->prepare('UPDATE users SET must_change_passwd = :must_change_passwd WHERE id = :id;');
-        $stmt->execute([':id' => $adminUser['id'], ':must_change_passwd' => 0]);
-
-        // Enable rest api
-        $stmt = $pdo->prepare('INSERT INTO settings(name, value, updated_on) VALUES(:name, :value, :updated_on);');
-        $stmt->execute([
-            ':name' => 'rest_api_enabled',
-            ':value' => 1,
-            ':updated_on' => $now->format('Y-m-d H:i:s.u'),
-        ]);
-
-        $this->apiKey = sha1((string) time());
-
-        // Create api token for admin user
-        $stmt = $pdo->prepare('INSERT INTO tokens(user_id, action, value, created_on, updated_on) VALUES(:user_id, :action, :value, :created_on, :updated_on);');
-        $stmt->execute([
-            ':user_id' => $adminUser['id'],
-            ':action' => 'api',
-            ':value' => $this->apiKey,
-            ':created_on' => $now->format('Y-m-d H:i:s.u'),
-            ':updated_on' => $now->format('Y-m-d H:i:s.u'),
-        ]);
+        return $data;
     }
 
-    public function tearDown(): void
+    protected function getNativeCurlClient(RedmineVersion $version): NativeCurlClient
     {
-        // Restore database from backup
-        copy($this->sqliteBackup, $this->sqliteFile);
-    }
+        $redmine = TestRunnerTracer::getRedmineInstance($version);
 
-    protected function getNativeCurlClient(): NativeCurlClient
-    {
         return new NativeCurlClient(
-            'http://redmine:3000',
-            $this->apiKey
+            $redmine->getRedmineUrl(),
+            $redmine->getApiKey()
         );
     }
 }

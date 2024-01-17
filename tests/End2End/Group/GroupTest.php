@@ -7,12 +7,16 @@ namespace Redmine\Tests\End2End\Group;
 use DateTimeImmutable;
 use Redmine\Api\Group;
 use Redmine\Tests\End2End\ClientTestCase;
+use Redmine\Tests\RedmineExtension\RedmineVersion;
 
 class GroupTest extends ClientTestCase
 {
-    public function testInteractionWithGroup(): void
+    /**
+     * @dataProvider provideRedmineVersions
+     */
+    public function testInteractionWithGroup(RedmineVersion $redmineVersion): void
     {
-        $client = $this->getNativeCurlClient();
+        $client = $this->getNativeCurlClient($redmineVersion);
 
         /** @var Group */
         $groupApi = $client->getApi('group');

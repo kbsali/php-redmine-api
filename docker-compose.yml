@@ -8,11 +8,11 @@ services:
         ports:
             - 8111:80
         depends_on:
-            - redmine
+            - redmine-dev
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
-    redmine:
+    redmine-dev:
         image: redmine:5.1.1
         ports:
             - "3000:3000"
@@ -20,5 +20,29 @@ services:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine_data/files:/usr/src/redmine/files
-            - ./.docker/redmine_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-dev_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-dev_data/sqlite:/usr/src/redmine/sqlite
+
+    # Make sure the following services are supported in /tests/RedmineExtension/RedmineInstance.php
+
+    redmine-50101:
+        image: redmine:5.1.1
+        ports:
+            - "5101:3000"
+        environment:
+            REDMINE_SECRET_KEY_BASE: supersecretkey
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-50101_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50101_data/sqlite:/usr/src/redmine/sqlite
+
+    redmine-50007:
+        image: redmine:5.0.7
+        ports:
+            - "5007:3000"
+        environment:
+            REDMINE_SECRET_KEY_BASE: supersecretkey
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-50007_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50007_data/sqlite:/usr/src/redmine/sqlite

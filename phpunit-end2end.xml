@@ -20,9 +20,11 @@
     </include>
   </source>
   <testsuites>
-    <testsuite name="all">
-      <directory suffix="Test.php">tests/Unit/</directory>
-      <directory suffix="Test.php">tests/Integration/</directory>
+    <testsuite name="end2end">
+      <directory suffix="Test.php">tests/End2End/</directory>
     </testsuite>
   </testsuites>
+  <extensions>
+    <bootstrap class="Redmine\Tests\RedmineExtension\RedmineExtension"/>
+  </extensions>
 </phpunit>
