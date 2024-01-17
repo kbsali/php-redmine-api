@@ -12,11 +12,17 @@ use Redmine\Tests\RedmineExtension\TestRunnerTracer;
 abstract class ClientTestCase extends TestCase
 {
     /**
-     * @return RedmineVersion[]
+     * @return array<array<RedmineVersion>>
      */
-    final public static function getAvailableRedmineVersions(): array
+    final public static function provideRedmineVersions(): array
     {
-        return TestRunnerTracer::getSupportedRedmineVersions();
+        $data = [];
+
+        foreach (TestRunnerTracer::getSupportedRedmineVersions() as $version) {
+            $data[] = [$version];
+        }
+
+        return $data;
     }
 
     protected function getNativeCurlClient(RedmineVersion $version): NativeCurlClient

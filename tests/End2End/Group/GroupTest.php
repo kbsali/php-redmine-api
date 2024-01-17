@@ -11,19 +11,8 @@ use Redmine\Tests\RedmineExtension\RedmineVersion;
 
 class GroupTest extends ClientTestCase
 {
-    public static function getRedmineVersions(): array
-    {
-        $data = [];
-
-        foreach (static::getAvailableRedmineVersions() as $version) {
-            $data[] = [$version];
-        }
-
-        return $data;
-    }
-
     /**
-     * @dataProvider getRedmineVersions
+     * @dataProvider provideRedmineVersions
      */
     public function testInteractionWithGroup(RedmineVersion $redmineVersion): void
     {
