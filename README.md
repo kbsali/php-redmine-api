@@ -13,19 +13,40 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 * Follows PSR-4 conventions and coding standard: autoload friendly
 * Choose between using native `cURL` function or any
-[PSR-18](https://www.php-fig.org/psr/psr-18/) http client like
-[Guzzle](https://github.com/guzzle/guzzle) for handling http connections
-* [mid-level API](docs/usage.md#mid-level-api) e.g. `$client->getApi('issue')->create($data)`
-* [low-level API](docs/usage.md#low-level-api) e.g. `$client->requestPost('/issues.json', $data)`
+[PSR-18 HTTP client implementation ](https://packagist.org/providers/psr/http-client-implementation)
+like [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
+* [mid-level API](docs/usage.md#mid-level-api) e.g.
+    ```php
+    $client->getApi('issue')->create(['project_id' => 1, 'subject' => 'issue title']);
+    ```
+* [low-level API](docs/usage.md#low-level-api) e.g.
+    ```php
+    $client->requestPost('/issues.json', '{"issue":{"project_id":1,"subject":"issue title"}}');
+    ```
+
+## Supported Redmine versions
+
+We support (and run tests against) the [latest Redmine versions](https://www.redmine.org/projects/redmine/wiki/Download#Latest-releases)
+that are actively maintained.
+
+- Redmine 5.1.x
+- Redmine 5.0.x
+
+Nevertheless, you can also use this library for all older Redmine versions.
+In this case, however, be aware that some features may not yet be supported by your Redmine server.
+
+If a new Redmine version enables new features that are not yet supported with this library,
+you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/issues).
 
 ## Requirements
 
 * PHP ^7.4 || ^8.0
 * The PHP [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension
 * The PHP [JSON](http://php.net/manual/en/book.json.php) extension
-* "Enable REST web service" for your Redmine project (/settings/edit?tab=authentication)
-* then obtain your *API access key* in your profile page : /my/account
-* or use your *username & password* (not recommended)
+* Enabled REST web service on your Redmine server
+    * Got to Administration -> Settings -> Api (`/settings/edit?tab=api`) and check the "Enable REST web service" box
+    * Obtain your *API access key* in your profile page: `/my/account`
+    * (or use your *username & password*; not recommended)
 
 ### Optional
 
@@ -34,17 +55,16 @@ Uses [Redmine API](http://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
 ## Todo
 
+* Tracking of Redmine API feature support in [#305](https://github.com/kbsali/php-redmine-api/issues/305)
 * Check header's response code (especially for POST/PUT/DELETE requests)
-* See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
+    * See http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
 
 ## Limitations / Missing Redmine-API
 
 Redmine is missing some APIs for a full remote management of the data:
-* List of activities & roles: http://www.redmine.org/issues/11464
 
-A possible solution to this would be to create an extra APIs implementing the
-missing entry points. See existing effort in doing so:
-https://github.com/rschobbert/redmine-miss-api
+* List of activities & roles: http://www.redmine.org/issues/11464
+* [Open issues because of missing Redmine API](https://github.com/kbsali/php-redmine-api/labels/pending%3A%20missing%20api)
 
 ## Install
 
