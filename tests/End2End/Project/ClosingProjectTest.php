@@ -8,7 +8,7 @@ use Redmine\Api\Project;
 use Redmine\Tests\End2End\ClientTestCase;
 use Redmine\Tests\RedmineExtension\RedmineVersion;
 
-class CloseProjectTest extends ClientTestCase
+class ClosingProjectTest extends ClientTestCase
 {
     /**
      * @dataProvider provideRedmineVersions
@@ -63,5 +63,31 @@ class CloseProjectTest extends ClientTestCase
             array_keys($projectDetails['project'])
         );
         $this->assertSame(5, $projectDetails['project']['status']);
+
+        // Reopen project
+        $this->assertTrue($api->reopen($projectIdentifier));
+
+        // Read single project
+        $projectDetails = $api->show($projectIdentifier);
+
+        $this->assertArrayHasKey('project', $projectDetails);
+        $this->assertSame(
+            [
+                'id',
+                'name',
+                'identifier',
+                'description',
+                'homepage',
+                'status',
+                'is_public',
+                'inherit_members',
+                'trackers',
+                'issue_categories',
+                'created_on',
+                'updated_on',
+            ],
+            array_keys($projectDetails['project'])
+        );
+        $this->assertSame(1, $projectDetails['project']['status']);
     }
 }
