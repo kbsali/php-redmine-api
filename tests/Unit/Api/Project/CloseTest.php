@@ -20,9 +20,9 @@ class CloseTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('request')
             ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('POST', $method);
+                $this->assertSame('PUT', $method);
                 $this->assertSame('/projects/5/close.xml', $path);
-                $this->assertXmlStringEqualsXmlString('', $body);
+                $this->assertSame('', $body);
 
                 return $this->createConfiguredMock(
                     Response::class,

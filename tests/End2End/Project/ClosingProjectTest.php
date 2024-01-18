@@ -53,10 +53,18 @@ class ClosingProjectTest extends ClientTestCase
                 'id',
                 'name',
                 'identifier',
+                'description',
+                'homepage',
+                'status',
+                'is_public',
+                'inherit_members',
+                'trackers',
+                'issue_categories',
+                'created_on',
+                'updated_on',
             ],
-            $projectDetails['project']
+            array_keys($projectDetails['project'])
         );
-        $this->assertArrayHasKey('status', $projectDetails['project']);
-        $this->assertSame('5', $projectDetails['project']['status']);
+        $this->assertSame(5, $projectDetails['project']['status']);
     }
 }

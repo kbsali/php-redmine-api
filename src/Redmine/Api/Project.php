@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use InvalidArgumentException;
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
@@ -191,6 +192,30 @@ class Project extends AbstractApi
         return $this->put(
             '/projects/' . $id . '.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+        );
+    }
+
+    /**
+     * Close a project.
+     *
+     * @see https://www.redmine.org/issues/35507
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @return string empty string
+     */
+    public function close($projectIdentifier): string
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        return $this->put(
+            '/projects/' . strval($projectIdentifier) . '/close.xml',
+            ''
         );
     }
 
