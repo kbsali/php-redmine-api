@@ -203,8 +203,9 @@ class Project extends AbstractApi
      * @param string|int $projectIdentifier project id or identifier
      *
      * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return bool true if the request was successful
+     * @return true if the request was successful
      */
     public function close($projectIdentifier): bool
     {
@@ -222,7 +223,11 @@ class Project extends AbstractApi
 
         $lastResponse = $this->getLastResponse();
 
-        return ($lastResponse->getStatusCode() === 204);
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
     }
 
     /**
@@ -233,8 +238,9 @@ class Project extends AbstractApi
      * @param string|int $projectIdentifier project id or identifier
      *
      * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return bool true if the request was successful
+     * @return true if the request was successful
      */
     public function reopen($projectIdentifier): bool
     {
@@ -252,7 +258,11 @@ class Project extends AbstractApi
 
         $lastResponse = $this->getLastResponse();
 
-        return ($lastResponse->getStatusCode() === 204);
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
     }
 
     /**
@@ -263,8 +273,9 @@ class Project extends AbstractApi
      * @param string|int $projectIdentifier project id or identifier
      *
      * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return bool true if the request was successful
+     * @return true if the request was successful
      */
     public function archive($projectIdentifier): bool
     {
@@ -282,7 +293,11 @@ class Project extends AbstractApi
 
         $lastResponse = $this->getLastResponse();
 
-        return ($lastResponse->getStatusCode() === 204);
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
     }
 
     /**
@@ -293,8 +308,9 @@ class Project extends AbstractApi
      * @param string|int $projectIdentifier project id or identifier
      *
      * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return bool true if the request was successful
+     * @return true if the request was successful
      */
     public function unarchive($projectIdentifier): bool
     {
@@ -312,7 +328,11 @@ class Project extends AbstractApi
 
         $lastResponse = $this->getLastResponse();
 
-        return ($lastResponse->getStatusCode() === 204);
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
     }
 
     /**
