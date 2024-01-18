@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\End2End\Project;
 
-use DateTimeImmutable;
 use Redmine\Api\Project;
 use Redmine\Tests\End2End\ClientTestCase;
 use Redmine\Tests\RedmineExtension\RedmineVersion;
 
-class ClosingProjectTest extends ClientTestCase
+class CloseProjectTest extends ClientTestCase
 {
     /**
      * @dataProvider provideRedmineVersions
