@@ -226,6 +226,36 @@ class Project extends AbstractApi
     }
 
     /**
+     * Reopen a project.
+     *
+     * @see https://www.redmine.org/issues/35507
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     *
+     * @return bool true if the request was successful
+     */
+    public function reopen($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/reopen.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        return ($lastResponse->getStatusCode() === 204);
+    }
+
+    /**
      * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
      *
      * @param array $params
