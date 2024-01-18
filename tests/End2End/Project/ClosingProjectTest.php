@@ -41,15 +41,21 @@ class ClosingProjectTest extends ClientTestCase
         $this->assertSame('1', $projectData['status'], $projectDataJson);
 
         // Close project
-        $result = $api->update($projectIdentifier, [
-            'status' => 5,
-        ]);
+        $result = $api->close($projectIdentifier);
         $this->assertSame('', $result);
 
         // Read single project
         $projectDetails = $api->show($projectIdentifier);
 
         $this->assertArrayHasKey('project', $projectDetails);
+        $this->assertSame(
+            [
+                'id',
+                'name',
+                'identifier',
+            ],
+            $projectDetails['project']
+        );
         $this->assertArrayHasKey('status', $projectDetails['project']);
         $this->assertSame('5', $projectDetails['project']['status']);
     }
