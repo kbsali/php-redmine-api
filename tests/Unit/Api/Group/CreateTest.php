@@ -30,7 +30,7 @@ class CreateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '<?xml version="1.0"?><group></group>',
+                        'getContent' => '<?xml version="1.0"?><group></group>',
                     ]
                 );
             });
@@ -62,7 +62,7 @@ class CreateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '<?xml version="1.0"?><group></group>',
+                        'getContent' => '<?xml version="1.0"?><group></group>',
                     ]
                 );
             });
@@ -94,7 +94,7 @@ class CreateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '<?xml version="1.0"?><group></group>',
+                        'getContent' => '<?xml version="1.0"?><group></group>',
                     ]
                 );
             });

@@ -22,7 +22,7 @@ class PutTest extends TestCase
         $response = $this->createMock(Response::class);
         $response->expects($this->any())->method('getStatusCode')->willReturn(200);
         $response->expects($this->any())->method('getContentType')->willReturn('application/xml');
-        $response->expects($this->any())->method('getBody')->willReturn('<?xml version="1.0"?><issue/>');
+        $response->expects($this->any())->method('getContent')->willReturn('<?xml version="1.0"?><issue/>');
 
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))->method('request')->with('PUT', 'path.xml', '')->willReturn($response);

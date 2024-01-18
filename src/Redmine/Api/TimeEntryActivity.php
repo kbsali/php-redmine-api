@@ -51,7 +51,7 @@ class TimeEntryActivity extends AbstractApi
         try {
             $this->timeEntryActivities = $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 

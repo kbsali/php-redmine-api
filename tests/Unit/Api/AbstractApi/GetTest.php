@@ -22,7 +22,7 @@ class GetTest extends TestCase
         $response = $this->createMock(Response::class);
         $response->expects($this->any())->method('getStatusCode')->willReturn(200);
         $response->expects($this->any())->method('getContentType')->willReturn('application/json');
-        $response->expects($this->any())->method('getBody')->willReturn('{"foo_bar": 12345}');
+        $response->expects($this->any())->method('getContent')->willReturn('{"foo_bar": 12345}');
 
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))->method('request')->with('GET', 'path.json')->willReturn($response);

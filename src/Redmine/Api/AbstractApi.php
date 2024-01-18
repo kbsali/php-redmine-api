@@ -110,7 +110,7 @@ abstract class AbstractApi implements Api
     {
         $this->lastResponse = $this->getHttpClient()->request('GET', strval($path));
 
-        $body = $this->lastResponse->getBody();
+        $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
@@ -141,7 +141,7 @@ abstract class AbstractApi implements Api
     {
         $this->lastResponse = $this->getHttpClient()->request('POST', strval($path), $data);
 
-        $body = $this->lastResponse->getBody();
+        $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
@@ -164,7 +164,7 @@ abstract class AbstractApi implements Api
     {
         $this->lastResponse = $this->getHttpClient()->request('PUT', strval($path), $data);
 
-        $body = $this->lastResponse->getBody();
+        $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
@@ -186,7 +186,7 @@ abstract class AbstractApi implements Api
     {
         $this->lastResponse = $this->getHttpClient()->request('DELETE', strval($path));
 
-        return $this->lastResponse->getBody();
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class AbstractApi implements Api
         try {
             $data = $this->retrieveData(strval($endpoint), $params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
@@ -368,7 +368,7 @@ abstract class AbstractApi implements Api
      */
     private function getResponseAsArray(Response $response): array
     {
-        $body = $response->getBody();
+        $body = $response->getContent();
         $contentType = $response->getContentType();
         $returnData = null;
 
@@ -445,7 +445,7 @@ abstract class AbstractApi implements Api
                 return $this->contentType;
             }
 
-            public function getBody(): string
+            public function getContent(): string
             {
                 return $this->body;
             }

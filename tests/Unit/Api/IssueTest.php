@@ -528,7 +528,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+                            'getContent' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
                         ]
                     );
                 }
@@ -541,7 +541,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }
@@ -582,7 +582,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"projects":[{"name":"Project Name","id":3}]}',
+                            'getContent' => '{"projects":[{"name":"Project Name","id":3}]}',
                         ]
                     );
                 }
@@ -595,7 +595,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }
@@ -636,7 +636,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"issue_categories":[{"name":"Category Name","id":45}]}',
+                            'getContent' => '{"issue_categories":[{"name":"Category Name","id":45}]}',
                         ]
                     );
                 }
@@ -649,7 +649,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }
@@ -690,7 +690,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"trackers":[{"name":"Tracker Name","id":9}]}',
+                            'getContent' => '{"trackers":[{"name":"Tracker Name","id":9}]}',
                         ]
                     );
                 }
@@ -703,7 +703,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }
@@ -744,7 +744,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
+                            'getContent' => '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
                         ]
                     );
                 }
@@ -757,7 +757,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }
@@ -1006,7 +1006,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/json',
-                            'getBody' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+                            'getContent' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
                         ]
                     );
                 }
@@ -1019,7 +1019,7 @@ class IssueTest extends TestCase
                         Response::class,
                         [
                             'getContentType' => 'application/xml',
-                            'getBody' => '<?xml version="1.0"?><issue></issue>',
+                            'getContent' => '<?xml version="1.0"?><issue></issue>',
                         ]
                     );
                 }

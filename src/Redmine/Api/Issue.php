@@ -110,7 +110,7 @@ class Issue extends AbstractApi
         try {
             return $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 

@@ -69,7 +69,7 @@ class IssueCategory extends AbstractApi
         try {
             return $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 

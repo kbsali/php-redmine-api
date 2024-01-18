@@ -26,7 +26,7 @@ interface Response
     public function getContentType(): string;
 
     /**
-     * Returns the body.
+     * Returns the body content.
      */
-    public function getBody(): string;
+    public function getContent(): string;
 }

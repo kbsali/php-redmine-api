@@ -29,7 +29,7 @@ class UpdateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '',
+                        'getContent' => '',
                     ]
                 );
             });
@@ -57,7 +57,7 @@ class UpdateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '',
+                        'getContent' => '',
                     ]
                 );
             });
@@ -85,7 +85,7 @@ class UpdateTest extends TestCase
                     Response::class,
                     [
                         'getContentType' => 'application/xml',
-                        'getBody' => '',
+                        'getContent' => '',
                     ]
                 );
             });

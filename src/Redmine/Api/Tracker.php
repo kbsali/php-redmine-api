@@ -55,7 +55,7 @@ class Tracker extends AbstractApi
         try {
             $this->trackers = $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
