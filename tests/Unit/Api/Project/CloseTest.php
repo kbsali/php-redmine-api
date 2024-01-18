@@ -2,9 +2,9 @@
 
 namespace Redmine\Tests\Unit\Api\Project;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
-use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
@@ -37,5 +37,18 @@ class CloseTest extends TestCase
         $api = new Project($client);
 
         $this->assertSame('', $api->close(5));
+    }
+
+    public function testCloseWithoutIntOrStringThrowsInvalidArgumentException()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new Project($client);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redmine\Api\Project::close(): Argument #1 ($projectIdentifier) must be of type int or string');
+
+        // Perform the tests
+        $api->close(true);
     }
 }
