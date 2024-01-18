@@ -202,9 +202,11 @@ class Project extends AbstractApi
      *
      * @param string|int $projectIdentifier project id or identifier
      *
-     * @return string empty string
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     *
+     * @return bool true if the request was successful
      */
-    public function close($projectIdentifier): string
+    public function close($projectIdentifier): bool
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
@@ -213,10 +215,14 @@ class Project extends AbstractApi
             ));
         }
 
-        return $this->put(
+        $this->put(
             '/projects/' . strval($projectIdentifier) . '/close.xml',
             ''
         );
+
+        $lastResponse = $this->getLastResponse();
+
+        return ($lastResponse->getStatusCode() === 204);
     }
 
     /**

@@ -20,7 +20,6 @@ class ClosingProjectTest extends ClientTestCase
 
         /** @var Project */
         $api = $client->getApi('project');
-        $now = new DateTimeImmutable();
 
         // Create project
         $projectName = 'test project';
@@ -41,8 +40,7 @@ class ClosingProjectTest extends ClientTestCase
         $this->assertSame('1', $projectData['status'], $projectDataJson);
 
         // Close project
-        $result = $api->close($projectIdentifier);
-        $this->assertSame('', $result);
+        $this->assertTrue($api->close($projectIdentifier));
 
         // Read single project
         $projectDetails = $api->show($projectIdentifier);

@@ -24,19 +24,17 @@ class CloseTest extends TestCase
                 $this->assertSame('/projects/5/close.xml', $path);
                 $this->assertSame('', $body);
 
-                return $this->createConfiguredMock(
-                    Response::class,
-                    [
-                        'getContentType' => 'application/xml',
-                        'getBody' => '',
-                    ]
-                );
+                return $this->createConfiguredMock(Response::class, [
+                    'getStatusCode' => 204,
+                    'getContentType' => 'application/xml',
+                    'getBody' => '',
+                ]);
             })
         ;
 
         $api = new Project($client);
 
-        $this->assertSame('', $api->close(5));
+        $this->assertTrue($api->close(5));
     }
 
     public function testCloseWithoutIntOrStringThrowsInvalidArgumentException()
@@ -48,7 +46,7 @@ class CloseTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Redmine\Api\Project::close(): Argument #1 ($projectIdentifier) must be of type int or string');
 
-        // Perform the tests
+        // provide a wrong project identifier
         $api->close(true);
     }
 }
