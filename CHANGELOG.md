@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added support for updating groups.
+- Added support for updating groups with method `Redmine\Api\Group::update()`.
+- New method `Redmine\Api\Project::close()` to close a project.
+- New method `Redmine\Api\Project::reopen()` to reopen a project.
+- New method `Redmine\Api\Project::archive()` to archive a project.
+- New method `Redmine\Api\Project::unarchive()` to unarchive a project.
 
 ### Changed
 
