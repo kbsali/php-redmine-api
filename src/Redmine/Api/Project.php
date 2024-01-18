@@ -256,6 +256,66 @@ class Project extends AbstractApi
     }
 
     /**
+     * Archive a project.
+     *
+     * @see https://www.redmine.org/issues/35420
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     *
+     * @return bool true if the request was successful
+     */
+    public function archive($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/archive.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        return ($lastResponse->getStatusCode() === 204);
+    }
+
+    /**
+     * Unarchive a project.
+     *
+     * @see https://www.redmine.org/issues/35420
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     *
+     * @return bool true if the request was successful
+     */
+    public function unarchive($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/unarchive.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        return ($lastResponse->getStatusCode() === 204);
+    }
+
+    /**
      * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
      *
      * @param array $params
