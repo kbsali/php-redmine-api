@@ -207,7 +207,7 @@ class Project extends AbstractApi
      *
      * @return true if the request was successful
      */
-    public function close($projectIdentifier): bool
+    final public function close($projectIdentifier): bool
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
@@ -242,7 +242,7 @@ class Project extends AbstractApi
      *
      * @return true if the request was successful
      */
-    public function reopen($projectIdentifier): bool
+    final public function reopen($projectIdentifier): bool
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
@@ -277,7 +277,7 @@ class Project extends AbstractApi
      *
      * @return true if the request was successful
      */
-    public function archive($projectIdentifier): bool
+    final public function archive($projectIdentifier): bool
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
@@ -312,7 +312,7 @@ class Project extends AbstractApi
      *
      * @return true if the request was successful
      */
-    public function unarchive($projectIdentifier): bool
+    final public function unarchive($projectIdentifier): bool
     {
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
