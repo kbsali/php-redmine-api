@@ -2,6 +2,7 @@
 
 namespace Redmine\Api;
 
+use InvalidArgumentException;
 use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
@@ -192,6 +193,146 @@ class Project extends AbstractApi
             '/projects/' . $id . '.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
+    }
+
+    /**
+     * Close a project.
+     *
+     * @see https://www.redmine.org/issues/35507
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
+     *
+     * @return true if the request was successful
+     */
+    final public function close($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/close.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
+    }
+
+    /**
+     * Reopen a project.
+     *
+     * @see https://www.redmine.org/issues/35507
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
+     *
+     * @return true if the request was successful
+     */
+    final public function reopen($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/reopen.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
+    }
+
+    /**
+     * Archive a project.
+     *
+     * @see https://www.redmine.org/issues/35420
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
+     *
+     * @return true if the request was successful
+     */
+    final public function archive($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/archive.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
+    }
+
+    /**
+     * Unarchive a project.
+     *
+     * @see https://www.redmine.org/issues/35420
+     *
+     * @param string|int $projectIdentifier project id or identifier
+     *
+     * @throws InvalidArgumentException if $projectIdentifier is not provided as int or string
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
+     *
+     * @return true if the request was successful
+     */
+    final public function unarchive($projectIdentifier): bool
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__
+            ));
+        }
+
+        $this->put(
+            '/projects/' . strval($projectIdentifier) . '/unarchive.xml',
+            ''
+        );
+
+        $lastResponse = $this->getLastResponse();
+
+        if ($lastResponse->getStatusCode() !== 204) {
+            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+        }
+
+        return true;
     }
 
     /**
