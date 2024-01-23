@@ -9,6 +9,7 @@ use Redmine\Client\Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\Request;
 use Redmine\Http\Response;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
@@ -108,7 +109,11 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->lastResponse = $this->getHttpClient()->request('GET', strval($path));
+        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            'GET',
+            strval($path),
+            $this->getContentTypeFromPath(strval($path))
+        ));
 
         $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
@@ -139,7 +144,12 @@ abstract class AbstractApi implements Api
      */
     protected function post($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request('POST', strval($path), $data);
+        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            'POST',
+            strval($path),
+            $this->getContentTypeFromPath(strval($path)),
+            $data
+        ));
 
         $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
@@ -162,7 +172,12 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request('PUT', strval($path), $data);
+        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            'PUT',
+            strval($path),
+            $this->getContentTypeFromPath(strval($path)),
+            $data
+        ));
 
         $body = $this->lastResponse->getContent();
         $contentType = $this->lastResponse->getContentType();
@@ -184,7 +199,11 @@ abstract class AbstractApi implements Api
      */
     protected function delete($path)
     {
-        $this->lastResponse = $this->getHttpClient()->request('DELETE', strval($path));
+        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            'DELETE',
+            strval($path),
+            $this->getContentTypeFromPath(strval($path))
+        ));
 
         return $this->lastResponse->getContent();
     }
@@ -258,7 +277,11 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $this->lastResponse = $this->getHttpClient()->request('GET', strval($endpoint));
+            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+                'GET',
+                strval($endpoint),
+                $this->getContentTypeFromPath(strval($endpoint))
+            ));
 
             return $this->getResponseAsArray($this->lastResponse);
         }
@@ -287,10 +310,11 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $this->lastResponse = $this->getHttpClient()->request(
+            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
                 'GET',
-                PathSerializer::create($endpoint, $params)->getPath()
-            );
+                PathSerializer::create($endpoint, $params)->getPath(),
+                $this->getContentTypeFromPath($endpoint)
+            ));
 
             $newDataSet = $this->getResponseAsArray($this->lastResponse);
 
@@ -400,16 +424,16 @@ abstract class AbstractApi implements Api
                 $this->responseFactory = $responseFactory;
             }
 
-            public function request(string $method, string $path, string $body = ''): Response
+            public function request(Request $request): Response
             {
-                if ($method === 'POST') {
-                    $this->client->requestPost($path, $body);
-                } elseif ($method === 'PUT') {
-                    $this->client->requestPut($path, $body);
-                } elseif ($method === 'DELETE') {
-                    $this->client->requestDelete($path);
+                if ($request->getMethod() === 'POST') {
+                    $this->client->requestPost($request->getPath(), $request->getContent());
+                } elseif ($request->getMethod() === 'PUT') {
+                    $this->client->requestPut($request->getPath(), $request->getContent());
+                } elseif ($request->getMethod() === 'DELETE') {
+                    $this->client->requestDelete($request->getPath());
                 } else {
-                    $this->client->requestGet($path);
+                    $this->client->requestGet($request->getPath());
                 }
 
                 return ($this->responseFactory)(
@@ -450,5 +474,60 @@ abstract class AbstractApi implements Api
                 return $this->body;
             }
         };
+    }
+
+    private function createRequest(string $method, string $path, string $contentType, string $content = ''): Request
+    {
+        return new class ($method, $path, $contentType, $content) implements Request {
+            private $method;
+            private $path;
+            private $contentType;
+            private $content;
+
+            public function __construct(string $method, string $path, string $contentType, string $content)
+            {
+                $this->method = $method;
+                $this->path = $path;
+                $this->contentType = $contentType;
+                $this->content = $content;
+            }
+
+            public function getMethod(): string
+            {
+                return $this->method;
+            }
+
+            public function getPath(): string
+            {
+                return $this->path;
+            }
+
+            public function getContentType(): string
+            {
+                return $this->contentType;
+            }
+
+            public function getContent(): string
+            {
+                return $this->content;
+            }
+        };
+    }
+
+    private function getContentTypeFromPath(string $path): string
+    {
+        $tmp = parse_url($path);
+
+        $path = strtolower($path);
+
+        if (false !== strpos($path, '/uploads.json') || false !== strpos($path, '/uploads.xml')) {
+            return 'application/octet-stream';
+        } elseif ('json' === substr($tmp['path'], -4)) {
+            return 'application/json';
+        } elseif ('xml' === substr($tmp['path'], -3)) {
+            return 'application/xml';
+        } else {
+            return '';
+        }
     }
 }

@@ -20,9 +20,7 @@ interface HttpClient
     /**
      * Create and send a HTTP request and return the response
      *
-     * @param string $body must be empty string on 'GET' request
-     *
      * @throws ClientException If anything goes wrong on creating or sending the request
      */
-    public function request(string $method, string $path, string $body = ''): Response;
+    public function request(Request $request): Response;
 }

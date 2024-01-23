@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\Request;
 use Redmine\Http\Response;
 use SimpleXMLElement;
 
@@ -21,10 +22,11 @@ class CreateTest extends TestCase
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('POST', $method);
-                $this->assertSame('/groups.xml', $path);
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name></group>', $body);
+            ->willReturnCallback(function (Request $request) {
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('/groups.xml', $request->getPath());
+                $this->assertSame('application/xml', $request->getContentType());
+                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name></group>', $request->getContent());
 
                 return $this->createConfiguredMock(
                     Response::class,
@@ -53,10 +55,11 @@ class CreateTest extends TestCase
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('POST', $method);
-                $this->assertSame('/groups.xml', $path);
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name><user_ids type="array"><user_id>1</user_id><user_id>2</user_id><user_id>3</user_id></user_ids></group>', $body);
+            ->willReturnCallback(function (Request $request) {
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('/groups.xml', $request->getPath());
+                $this->assertSame('application/xml', $request->getContentType());
+                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name><user_ids type="array"><user_id>1</user_id><user_id>2</user_id><user_id>3</user_id></user_ids></group>', $request->getContent());
 
                 return $this->createConfiguredMock(
                     Response::class,
@@ -85,10 +88,11 @@ class CreateTest extends TestCase
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->exactly(1))
             ->method('request')
-            ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('POST', $method);
-                $this->assertSame('/groups.xml', $path);
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name><custom_fields type="array"><custom_field id="1"><value>5</value></custom_field></custom_fields></group>', $body);
+            ->willReturnCallback(function (Request $request) {
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('/groups.xml', $request->getPath());
+                $this->assertSame('application/xml', $request->getContentType());
+                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name><custom_fields type="array"><custom_field id="1"><value>5</value></custom_field></custom_fields></group>', $request->getContent());
 
                 return $this->createConfiguredMock(
                     Response::class,

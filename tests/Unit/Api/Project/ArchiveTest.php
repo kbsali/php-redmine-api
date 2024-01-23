@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Tests\Unit\Api\Project;
 
 use InvalidArgumentException;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
-use Redmine\Http\Response;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @covers \Redmine\Api\Project::archive
@@ -16,21 +18,16 @@ class ArchiveTest extends TestCase
 {
     public function testArchiveReturnsTrue()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))
-            ->method('request')
-            ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('PUT', $method);
-                $this->assertSame('/projects/5/archive.xml', $path);
-                $this->assertSame('', $body);
-
-                return $this->createConfiguredMock(Response::class, [
-                    'getStatusCode' => 204,
-                    'getContentType' => 'application/xml',
-                    'getBody' => '',
-                ]);
-            })
-        ;
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/archive.xml',
+                'application/xml',
+                '',
+                204
+            ]
+        );
 
         $api = new Project($client);
 
@@ -39,21 +36,16 @@ class ArchiveTest extends TestCase
 
     public function testArchiveThrowsUnexpectedResponseException()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))
-            ->method('request')
-            ->willReturnCallback(function (string $method, string $path, string $body = '') {
-                $this->assertSame('PUT', $method);
-                $this->assertSame('/projects/5/archive.xml', $path);
-                $this->assertSame('', $body);
-
-                return $this->createConfiguredMock(Response::class, [
-                    'getStatusCode' => 403,
-                    'getContentType' => 'application/xml',
-                    'getBody' => '',
-                ]);
-            })
-        ;
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/archive.xml',
+                'application/xml',
+                '',
+                403
+            ]
+        );
 
         $api = new Project($client);
 
