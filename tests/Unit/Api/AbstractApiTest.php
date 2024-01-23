@@ -8,7 +8,6 @@ use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
-use Redmine\Http\Request;
 use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;

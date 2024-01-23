@@ -5,9 +5,6 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Client\Client;
-use Redmine\Http\HttpClient;
-use Redmine\Http\Request;
-use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
@@ -561,40 +558,27 @@ class IssueTest extends TestCase
      */
     public function testCreateWithHttpClientRetrievesProjectId()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                if ($request->getMethod() === 'GET') {
-                    $this->assertSame('/projects.json', $request->getPath());
-                    $this->assertSame('application/json', $request->getContentType());
-                    $this->assertSame('', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/json',
-                            'getContent' => '{"projects":[{"name":"Project Name","id":3}]}',
-                        ]
-                    );
-                }
-
-                if ($request->getMethod() === 'POST') {
-                    $this->assertSame('/issues.xml', $request->getPath());
-                    $this->assertSame('application/xml', $request->getContentType());
-                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><project_id>3</project_id></issue>', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/xml',
-                            'getContent' => '<?xml version="1.0"?><issue></issue>',
-                        ]
-                    );
-                }
-
-                throw new \Exception();
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"projects":[{"name":"Project Name","id":3}]}'
+            ],
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><project_id>3</project_id></issue>',
+                200,
+                'application/xml',
+                '<?xml version="1.0"?><issue></issue>'
+            ]
+        );
 
         // Create the object under test
         $api = new Issue($client);
@@ -617,40 +601,27 @@ class IssueTest extends TestCase
      */
     public function testCreateWithHttpClientRetrievesIssueCategoryId()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                if ($request->getMethod() === 'GET') {
-                    $this->assertSame('/projects/3/issue_categories.json', $request->getPath());
-                    $this->assertSame('application/json', $request->getContentType());
-                    $this->assertSame('', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/json',
-                            'getContent' => '{"issue_categories":[{"name":"Category Name","id":45}]}',
-                        ]
-                    );
-                }
-
-                if ($request->getMethod() === 'POST') {
-                    $this->assertSame('/issues.xml', $request->getPath());
-                    $this->assertSame('application/xml', $request->getContentType());
-                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><project_id>3</project_id><category_id>45</category_id></issue>', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/xml',
-                            'getContent' => '<?xml version="1.0"?><issue></issue>',
-                        ]
-                    );
-                }
-
-                throw new \Exception();
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/3/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_categories":[{"name":"Category Name","id":45}]}'
+            ],
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><project_id>3</project_id><category_id>45</category_id></issue>',
+                200,
+                'application/xml',
+                '<?xml version="1.0"?><issue></issue>'
+            ]
+        );
 
         // Create the object under test
         $api = new Issue($client);
@@ -673,40 +644,27 @@ class IssueTest extends TestCase
      */
     public function testCreateWithHttpClientRetrievesTrackerId()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                if ($request->getMethod() === 'GET') {
-                    $this->assertSame('/trackers.json', $request->getPath());
-                    $this->assertSame('application/json', $request->getContentType());
-                    $this->assertSame('', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/json',
-                            'getContent' => '{"trackers":[{"name":"Tracker Name","id":9}]}',
-                        ]
-                    );
-                }
-
-                if ($request->getMethod() === 'POST') {
-                    $this->assertSame('/issues.xml', $request->getPath());
-                    $this->assertSame('application/xml', $request->getContentType());
-                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><tracker_id>9</tracker_id></issue>', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/xml',
-                            'getContent' => '<?xml version="1.0"?><issue></issue>',
-                        ]
-                    );
-                }
-
-                throw new \Exception();
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"trackers":[{"name":"Tracker Name","id":9}]}'
+            ],
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><tracker_id>9</tracker_id></issue>',
+                200,
+                'application/xml',
+                '<?xml version="1.0"?><issue></issue>'
+            ]
+        );
 
         // Create the object under test
         $api = new Issue($client);
@@ -729,40 +687,27 @@ class IssueTest extends TestCase
      */
     public function testCreateWithHttpClientRetrievesUserId()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                if ($request->getMethod() === 'GET') {
-                    $this->assertSame('/users.json', $request->getPath());
-                    $this->assertSame('application/json', $request->getContentType());
-                    $this->assertSame('', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/json',
-                            'getContent' => '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
-                        ]
-                    );
-                }
-
-                if ($request->getMethod() === 'POST') {
-                    $this->assertSame('/issues.xml', $request->getPath());
-                    $this->assertSame('application/xml', $request->getContentType());
-                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><assigned_to_id>6</assigned_to_id><author_id>5</author_id></issue>', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/xml',
-                            'getContent' => '<?xml version="1.0"?><issue></issue>',
-                        ]
-                    );
-                }
-
-                throw new \Exception();
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}'
+            ],
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><assigned_to_id>6</assigned_to_id><author_id>5</author_id></issue>',
+                200,
+                'application/xml',
+                '<?xml version="1.0"?><issue></issue>'
+            ]
+        );
 
         // Create the object under test
         $api = new Issue($client);
@@ -993,40 +938,27 @@ class IssueTest extends TestCase
      */
     public function testSetIssueStatusWithHttpClient()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                if ($request->getMethod() === 'GET') {
-                    $this->assertSame('/issue_statuses.json', $request->getPath());
-                    $this->assertSame('application/json', $request->getContentType());
-                    $this->assertSame('', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/json',
-                            'getContent' => '{"issue_statuses":[{"name":"Status Name","id":123}]}',
-                        ]
-                    );
-                }
-
-                if ($request->getMethod() === 'PUT') {
-                    $this->assertSame('/issues/5.xml', $request->getPath());
-                    $this->assertSame('application/xml', $request->getContentType());
-                    $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><issue><id>5</id><status_id>123</status_id></issue>', $request->getContent());
-
-                    return $this->createConfiguredMock(
-                        Response::class,
-                        [
-                            'getContentType' => 'application/xml',
-                            'getContent' => '<?xml version="1.0"?><issue></issue>',
-                        ]
-                    );
-                }
-
-                throw new \Exception();
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/issue_statuses.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_statuses":[{"name":"Status Name","id":123}]}'
+            ],
+            [
+                'PUT',
+                '/issues/5.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>5</id><status_id>123</status_id></issue>',
+                200,
+                'application/xml',
+                '<?xml version="1.0"?><issue></issue>'
+            ]
+        );
 
         // Create the object under test
         $api = new Issue($client);

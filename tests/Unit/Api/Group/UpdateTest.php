@@ -6,10 +6,7 @@ namespace Redmine\Tests\Unit\Api\Group;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
-use Redmine\Http\HttpClient;
-use Redmine\Http\Request;
-use Redmine\Http\Response;
-use SimpleXMLElement;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @covers \Redmine\Api\Group::update
@@ -18,23 +15,18 @@ class UpdateTest extends TestCase
 {
     public function testUpdateWithNameUpdatesGroup()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                $this->assertSame('PUT', $request->getMethod());
-                $this->assertSame('/groups/1.xml', $request->getPath());
-                $this->assertSame('application/xml', $request->getContentType());
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><name>Group Name</name></group>', $request->getContent());
-
-                return $this->createConfiguredMock(
-                    Response::class,
-                    [
-                        'getContentType' => 'application/xml',
-                        'getContent' => '',
-                    ]
-                );
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/groups/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><group><name>Group Name</name></group>',
+                200,
+                'application/xml',
+                ''
+            ]
+        );
 
         // Create the object under test
         $api = new Group($client);
@@ -47,23 +39,18 @@ class UpdateTest extends TestCase
 
     public function testUpdateWithUserIdsUpdatesGroup()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                $this->assertSame('PUT', $request->getMethod());
-                $this->assertSame('/groups/1.xml', $request->getPath());
-                $this->assertSame('application/xml', $request->getContentType());
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><user_ids type="array"><user_id>1</user_id><user_id>2</user_id><user_id>3</user_id></user_ids></group>', $request->getContent());
-
-                return $this->createConfiguredMock(
-                    Response::class,
-                    [
-                        'getContentType' => 'application/xml',
-                        'getContent' => '',
-                    ]
-                );
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/groups/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><group><user_ids type="array"><user_id>1</user_id><user_id>2</user_id><user_id>3</user_id></user_ids></group>',
+                200,
+                'application/xml',
+                ''
+            ]
+        );
 
         // Create the object under test
         $api = new Group($client);
@@ -76,23 +63,18 @@ class UpdateTest extends TestCase
 
     public function testUpdateWithCustomFieldsUpdatesGroup()
     {
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))
-            ->method('request')
-            ->willReturnCallback(function (Request $request) {
-                $this->assertSame('PUT', $request->getMethod());
-                $this->assertSame('/groups/1.xml', $request->getPath());
-                $this->assertSame('application/xml', $request->getContentType());
-                $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><group><custom_fields type="array"><custom_field id="1"><value>5</value></custom_field></custom_fields></group>', $request->getContent());
-
-                return $this->createConfiguredMock(
-                    Response::class,
-                    [
-                        'getContentType' => 'application/xml',
-                        'getContent' => '',
-                    ]
-                );
-            });
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/groups/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><group><custom_fields type="array"><custom_field id="1"><value>5</value></custom_field></custom_fields></group>',
+                200,
+                'application/xml',
+                ''
+            ]
+        );
 
         // Create the object under test
         $api = new Group($client);

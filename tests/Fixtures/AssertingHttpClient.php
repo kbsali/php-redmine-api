@@ -88,7 +88,7 @@ final class AssertingHttpClient implements HttpClient
 
         if ($data['content'] !== '' && $data['contentType'] === 'application/xml') {
             $this->testCase->assertXmlStringEqualsXmlString($data['content'], $request->getContent());
-        } else if ($data['content'] !== '' && $data['contentType'] === 'application/json') {
+        } elseif ($data['content'] !== '' && $data['contentType'] === 'application/json') {
             $this->testCase->assertJsonStringEqualsJsonString($data['content'], $request->getContent());
         } else {
             $this->testCase->assertSame($data['content'], $request->getContent());
