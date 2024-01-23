@@ -253,6 +253,10 @@ $client->getApi('project')->create([
 $client->getApi('project')->update($projectId, [
     'name' => 'different name',
 ]);
+$client->getApi('project')->close($projectId);
+$client->getApi('project')->reopen($projectId);
+$client->getApi('project')->archive($projectId);
+$client->getApi('project')->unarchive($projectId);
 $client->getApi('project')->remove($projectId);
 
 // ----------------------------
