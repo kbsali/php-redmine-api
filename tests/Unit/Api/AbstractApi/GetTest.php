@@ -7,8 +7,7 @@ namespace Redmine\Tests\Unit\Api\AbstractApi;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
-use Redmine\Http\HttpClient;
-use Redmine\Http\Response;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -19,13 +18,18 @@ class GetTest extends TestCase
 {
     public function testGetWithHttpClient()
     {
-        $response = $this->createMock(Response::class);
-        $response->expects($this->any())->method('getStatusCode')->willReturn(200);
-        $response->expects($this->any())->method('getContentType')->willReturn('application/json');
-        $response->expects($this->any())->method('getBody')->willReturn('{"foo_bar": 12345}');
-
-        $client = $this->createMock(HttpClient::class);
-        $client->expects($this->exactly(1))->method('request')->with('GET', 'path.json')->willReturn($response);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                'path.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"foo_bar": 12345}'
+            ]
+        );
 
         $api = new class ($client) extends AbstractApi {};
 

@@ -9,6 +9,7 @@ use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -107,17 +108,23 @@ class AbstractApiTest extends TestCase
      */
     public function testLastCallFailedPreventsRaceCondition()
     {
-        $response1 = $this->createMock(Response::class);
-        $response1->method('getStatusCode')->willReturn(200);
-
-        $response2 = $this->createMock(Response::class);
-        $response2->method('getStatusCode')->willReturn(500);
-
-        $client = $this->createMock(HttpClient::class);
-        $client->method('request')->willReturnMap([
-            ['GET', '200.json', '', $response1],
-            ['GET', '500.json', '', $response2],
-        ]);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '200.json',
+                'application/json',
+                '',
+                200
+            ],
+            [
+                'GET',
+                '500.json',
+                'application/json',
+                '',
+                500
+            ]
+        );
 
         $api1 = new class ($client) extends AbstractApi {
             public function __construct($client)

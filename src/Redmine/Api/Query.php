@@ -55,7 +55,7 @@ class Query extends AbstractApi
         try {
             $this->query = $this->list($params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 

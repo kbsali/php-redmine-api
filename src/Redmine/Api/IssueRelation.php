@@ -58,7 +58,7 @@ class IssueRelation extends AbstractApi
         try {
             $this->relations = $this->listByIssueId($issueId, $params);
         } catch (Exception $e) {
-            if ($this->getLastResponse()->getBody() === '') {
+            if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
