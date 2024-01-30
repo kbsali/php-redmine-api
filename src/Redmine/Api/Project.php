@@ -37,7 +37,7 @@ class Project extends AbstractApi
         try {
             return $this->retrieveData('/projects.json', $params);
         } catch (SerializerException $th) {
-            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+            throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
     }
 
@@ -224,7 +224,7 @@ class Project extends AbstractApi
         $lastResponse = $this->getLastResponse();
 
         if ($lastResponse->getStatusCode() !== 204) {
-            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+            throw UnexpectedResponseException::create($lastResponse);
         }
 
         return true;
@@ -259,7 +259,7 @@ class Project extends AbstractApi
         $lastResponse = $this->getLastResponse();
 
         if ($lastResponse->getStatusCode() !== 204) {
-            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+            throw UnexpectedResponseException::create($lastResponse);
         }
 
         return true;
@@ -294,7 +294,7 @@ class Project extends AbstractApi
         $lastResponse = $this->getLastResponse();
 
         if ($lastResponse->getStatusCode() !== 204) {
-            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+            throw UnexpectedResponseException::create($lastResponse);
         }
 
         return true;
@@ -329,7 +329,7 @@ class Project extends AbstractApi
         $lastResponse = $this->getLastResponse();
 
         if ($lastResponse->getStatusCode() !== 204) {
-            throw new UnexpectedResponseException('The Redmine server replied with the status code ' . $lastResponse->getStatusCode());
+            throw UnexpectedResponseException::create($lastResponse);
         }
 
         return true;

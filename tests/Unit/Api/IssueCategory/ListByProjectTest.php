@@ -114,7 +114,7 @@ class ListByProjectTest extends TestCase
         $api = new IssueCategory($client);
 
         $this->expectException(UnexpectedResponseException::class);
-        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+        $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
 
         // Perform the tests
         $api->listByProject(5);

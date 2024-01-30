@@ -49,7 +49,7 @@ class UnarchiveTest extends TestCase
         $api = new Project($client);
 
         $this->expectException(UnexpectedResponseException::class);
-        $this->expectExceptionMessage('The Redmine server replied with the status code 403');
+        $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
 
         $api->unarchive(5);
     }

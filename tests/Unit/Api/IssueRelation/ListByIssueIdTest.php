@@ -84,7 +84,7 @@ class ListByIssueIdTest extends TestCase
         $api = new IssueRelation($client);
 
         $this->expectException(UnexpectedResponseException::class);
-        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+        $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
 
         // Perform the tests
         $api->listByIssueId(5);

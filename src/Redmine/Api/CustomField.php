@@ -33,7 +33,7 @@ class CustomField extends AbstractApi
         try {
             return $this->retrieveData('/custom_fields.json', $params);
         } catch (SerializerException $th) {
-            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+            throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
     }
 

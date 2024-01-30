@@ -33,7 +33,7 @@ class Role extends AbstractApi
         try {
             return $this->retrieveData('/roles.json', $params);
         } catch (SerializerException $th) {
-            throw new UnexpectedResponseException('The Redmine server responded with an unexpected body.', $th->getCode(), $th);
+            throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
     }
 
