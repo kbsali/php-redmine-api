@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Project::reopen()` to reopen a project.
 - New method `Redmine\Api\Project::archive()` to archive a project.
 - New method `Redmine\Api\Project::unarchive()` to unarchive a project.
+- New method `UnexpectedResponseException::getResponse()` to get the last response responsible for the exception.
 
 ### Changed
 
@@ -35,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\News::list()` to list news from all project.
 - New method `Redmine\Api\News::listByProject()` to list news from a project.
 - New method `Redmine\Api\Project::list()` to list projects.
-- New method `Redmine\Api\Query::list()` to list projects.
+- New method `Redmine\Api\Query::list()` to list queries.
 - New method `Redmine\Api\Role::list()` to list roles.
 - New method `Redmine\Api\Search::listByQuery()` to list search results by query.
 - New method `Redmine\Api\TimeEntry::list()` to list time entries.
