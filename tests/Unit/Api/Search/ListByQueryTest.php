@@ -85,7 +85,7 @@ class ListByQueryTest extends TestCase
         $api = new Search($client);
 
         $this->expectException(UnexpectedResponseException::class);
-        $this->expectExceptionMessage('The Redmine server responded with an unexpected body.');
+        $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
 
         // Perform the tests
         $api->listByQuery('query');
