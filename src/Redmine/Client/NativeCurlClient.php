@@ -6,6 +6,7 @@ namespace Redmine\Client;
 
 use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use Redmine\Http\Request;
 use Redmine\Http\Response;
 
@@ -72,37 +73,11 @@ final class NativeCurlClient implements Client, HttpClient
             $request->getContentType()
         );
 
-        return new class (
+        return HttpFactory::makeResponse(
             $this->lastResponseStatusCode,
             $this->lastResponseContentType,
             $this->lastResponseBody
-        ) implements Response {
-            private $statusCode;
-            private $contentType;
-            private $body;
-
-            public function __construct(int $statusCode, string $contentType, string $body)
-            {
-                $this->statusCode = $statusCode;
-                $this->contentType = $contentType;
-                $this->body = $body;
-            }
-
-            public function getStatusCode(): int
-            {
-                return $this->statusCode;
-            }
-
-            public function getContentType(): string
-            {
-                return $this->contentType;
-            }
-
-            public function getContent(): string
-            {
-                return $this->body;
-            }
-        };
+        );
     }
 
     /**

@@ -9,6 +9,7 @@ use Redmine\Client\Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use Redmine\Http\Request;
 use Redmine\Http\Response;
 use Redmine\Serializer\JsonSerializer;
@@ -73,7 +74,7 @@ abstract class AbstractApi implements Api
 
     final protected function getLastResponse(): Response
     {
-        return $this->lastResponse !== null ? $this->lastResponse : $this->createResponse(0, '', '');
+        return $this->lastResponse !== null ? $this->lastResponse : HttpFactory::makeResponse(0, '', '');
     }
 
     /**
@@ -412,16 +413,12 @@ abstract class AbstractApi implements Api
 
     private function handleClient(Client $client): HttpClient
     {
-        $responseFactory = Closure::fromCallable([$this, 'createResponse']);
-
-        return new class ($client, $responseFactory) implements HttpClient {
+        return new class ($client) implements HttpClient {
             private $client;
-            private $responseFactory;
 
-            public function __construct(Client $client, Closure $responseFactory)
+            public function __construct(Client $client)
             {
                 $this->client = $client;
-                $this->responseFactory = $responseFactory;
             }
 
             public function request(Request $request): Response
@@ -436,42 +433,11 @@ abstract class AbstractApi implements Api
                     $this->client->requestGet($request->getPath());
                 }
 
-                return ($this->responseFactory)(
+                return HttpFactory::makeResponse(
                     $this->client->getLastResponseStatusCode(),
                     $this->client->getLastResponseContentType(),
                     $this->client->getLastResponseBody()
                 );
-            }
-        };
-    }
-
-    private function createResponse(int $statusCode, string $contentType, string $body): Response
-    {
-        return new class ($statusCode, $contentType, $body) implements Response {
-            private $statusCode;
-            private $contentType;
-            private $body;
-
-            public function __construct(int $statusCode, string $contentType, string $body)
-            {
-                $this->statusCode = $statusCode;
-                $this->contentType = $contentType;
-                $this->body = $body;
-            }
-
-            public function getStatusCode(): int
-            {
-                return $this->statusCode;
-            }
-
-            public function getContentType(): string
-            {
-                return $this->contentType;
-            }
-
-            public function getContent(): string
-            {
-                return $this->body;
             }
         };
     }
