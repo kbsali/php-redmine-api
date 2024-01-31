@@ -19,6 +19,7 @@ use Redmine\Http\Response;
 /**
  * @covers \Redmine\Client\Psr18Client::request
  * @covers \Redmine\Client\Psr18Client::runRequest
+ * @covers \Redmine\Client\Psr18Client::createRequest
  */
 class RequestTest extends TestCase
 {
@@ -73,9 +74,10 @@ class RequestTest extends TestCase
     public static function getRequestReponseData(): array
     {
         return [
+            ['GET', '', 101, '', ''],
             ['GET', '', 101, 'text/plain', ''],
             ['GET', '', 200, 'application/json', '{"foo_bar": 12345}'],
-            ['GET', '', 301, 'application/json', ''],
+            ['GET', '', 301, 'application/xml', ''],
             ['GET', '', 404, 'application/json', '{"title": "404 Not Found"}'],
             ['GET', '', 500, 'text/plain', 'Internal Server Error'],
             ['POST', '{"foo":"bar"}', 101, 'text/plain', ''],

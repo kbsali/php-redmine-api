@@ -12,6 +12,7 @@ use stdClass;
 /**
  * @covers \Redmine\Client\NativeCurlClient::request
  * @covers \Redmine\Client\NativeCurlClient::runRequest
+ * @covers \Redmine\Client\NativeCurlClient::createHttpHeader
  */
 class RequestTest extends TestCase
 {
@@ -68,6 +69,7 @@ class RequestTest extends TestCase
     public static function getRequestReponseData(): array
     {
         return [
+            ['GET', '', 101, '', ''],
             ['GET', '', 101, 'text/plain', ''],
             ['GET', '', 200, 'application/json', '{"foo_bar": 12345}'],
             ['GET', '', 301, 'application/json', ''],
