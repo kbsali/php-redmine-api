@@ -13,11 +13,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Redmine\Exception\ClientException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Request;
+use Redmine\Http\Response;
 
 /**
  * Psr18 client.
  */
-final class Psr18Client implements Client
+final class Psr18Client implements Client, HttpClient
 {
     use ClientApiTrait;
 
@@ -74,6 +77,53 @@ final class Psr18Client implements Client
     }
 
     /**
+     * Create and send a HTTP request and return the response
+     *
+     * @throws ClientException If anything goes wrong on creating or sending the request
+     */
+    public function request(Request $request): Response
+    {
+        $response = $this->runRequest(
+            $request->getMethod(),
+            $request->getPath(),
+            $request->getContent(),
+            $request->getContentType()
+        );
+
+        return new class (
+            $response->getStatusCode(),
+            $response->getHeaderLine('Content-Type'),
+            strval($response->getBody())
+        ) implements Response {
+            private $statusCode;
+            private $contentType;
+            private $body;
+
+            public function __construct(int $statusCode, string $contentType, string $body)
+            {
+                $this->statusCode = $statusCode;
+                $this->contentType = $contentType;
+                $this->body = $body;
+            }
+
+            public function getStatusCode(): int
+            {
+                return $this->statusCode;
+            }
+
+            public function getContentType(): string
+            {
+                return $this->contentType;
+            }
+
+            public function getContent(): string
+            {
+                return $this->body;
+            }
+        };
+    }
+
+    /**
      * Sets to an existing username so api calls can be
      * impersonated to this user.
      */
@@ -92,34 +142,58 @@ final class Psr18Client implements Client
 
     /**
      * Create and send a GET request.
+     *
+     * @throws ClientException If anything goes wrong on the request
+     *
+     * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestGet(string $path): bool
     {
-        return $this->runRequest('GET', $path);
+        $response = $this->runRequest('GET', $path);
+
+        return $response->getStatusCode() < 400;
     }
 
     /**
      * Create and send a POST request.
+     *
+     * @throws ClientException If anything goes wrong on the request
+     *
+     * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestPost(string $path, string $body): bool
     {
-        return $this->runRequest('POST', $path, $body);
+        $response = $this->runRequest('POST', $path, $body);
+
+        return $response->getStatusCode() < 400;
     }
 
     /**
      * Create and send a PUT request.
+     *
+     * @throws ClientException If anything goes wrong on the request
+     *
+     * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestPut(string $path, string $body): bool
     {
-        return $this->runRequest('PUT', $path, $body);
+        $response = $this->runRequest('PUT', $path, $body);
+
+        return $response->getStatusCode() < 400;
     }
 
     /**
      * Create and send a DELETE request.
+     *
+     * @throws ClientException If anything goes wrong on the request
+     *
+     * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestDelete(string $path): bool
     {
-        return $this->runRequest('DELETE', $path);
+        $response = $this->runRequest('DELETE', $path);
+
+        return $response->getStatusCode() < 400;
     }
 
     /**
@@ -162,14 +236,12 @@ final class Psr18Client implements Client
      * Create and run a request.
      *
      * @throws ClientException If anything goes wrong on the request
-     *
-     * @return bool true if status code of the response is not 4xx oder 5xx
      */
-    private function runRequest(string $method, string $path, string $body = ''): bool
+    private function runRequest(string $method, string $path, string $body = '', string $contentType = ''): ResponseInterface
     {
         $this->lastResponse = null;
 
-        $request = $this->createRequest($method, $path, $body);
+        $request = $this->createRequest($method, $path, $body, $contentType);
 
         try {
             $this->lastResponse = $this->httpClient->sendRequest($request);
@@ -177,10 +249,10 @@ final class Psr18Client implements Client
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return $this->lastResponse->getStatusCode() < 400;
+        return $this->lastResponse;
     }
 
-    private function createRequest(string $method, string $path, string $body = ''): RequestInterface
+    private function createRequest(string $method, string $path, string $body = '', string $contentType = ''): RequestInterface
     {
         $request = $this->requestFactory->createRequest(
             $method,
@@ -228,14 +300,19 @@ final class Psr18Client implements Client
         }
 
         // set Content-Type header
-        $tmp = parse_url($this->url . $path);
+        if ($contentType !== '') {
+            $request = $request->withHeader('Content-Type', $contentType);
+        } else {
+            // guess Content-Type from path
+            $tmp = parse_url($this->url . $path);
 
-        if ($this->isUploadCall($path)) {
-            $request = $request->withHeader('Content-Type', 'application/octet-stream');
-        } elseif ('json' === substr($tmp['path'], -4)) {
-            $request = $request->withHeader('Content-Type', 'application/json');
-        } elseif ('xml' === substr($tmp['path'], -3)) {
-            $request = $request->withHeader('Content-Type', 'text/xml');
+            if ($this->isUploadCall($path)) {
+                $request = $request->withHeader('Content-Type', 'application/octet-stream');
+            } elseif ('json' === substr($tmp['path'], -4)) {
+                $request = $request->withHeader('Content-Type', 'application/json');
+            } elseif ('xml' === substr($tmp['path'], -3)) {
+                $request = $request->withHeader('Content-Type', 'text/xml');
+            }
         }
 
         return $request;
