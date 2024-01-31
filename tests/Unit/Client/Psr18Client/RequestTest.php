@@ -39,7 +39,7 @@ class RequestTest extends TestCase
         ]);
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function() {
+            'createRequest' => (function () {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);
@@ -102,11 +102,11 @@ class RequestTest extends TestCase
     {
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->expects($this->exactly(1))->method('sendRequest')->willThrowException(
-            new class('error message') extends Exception implements ClientExceptionInterface {}
+            new class ('error message') extends Exception implements ClientExceptionInterface {}
         );
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function() {
+            'createRequest' => (function () {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);
