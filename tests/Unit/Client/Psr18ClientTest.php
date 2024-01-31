@@ -13,6 +13,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Client;
 use Redmine\Client\Psr18Client;
+use Redmine\Http\HttpClient;
 
 class Psr18ClientTest extends TestCase
 {
@@ -32,6 +33,7 @@ class Psr18ClientTest extends TestCase
 
         $this->assertInstanceOf(Psr18Client::class, $client);
         $this->assertInstanceOf(Client::class, $client);
+        $this->assertInstanceOf(HttpClient::class, $client);
     }
 
     /**
