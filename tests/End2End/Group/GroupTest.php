@@ -29,11 +29,13 @@ class GroupTest extends ClientTestCase
             'name' => $groupName,
         ]);
 
-        $groupData = json_decode(json_encode($xmlData), true);
+        $jsonData = json_encode($xmlData);
 
-        $this->assertIsArray($groupData, json_encode($groupData));
-        $this->assertIsString($groupData['id']);
-        $this->assertSame($groupName, $groupData['name']);
+        $groupData = json_decode($jsonData, true);
+
+        $this->assertIsArray($groupData, $jsonData);
+        $this->assertIsString($groupData['id'], $jsonData);
+        $this->assertSame($groupName, $groupData['name'], $jsonData);
 
         $groupId = (int) $groupData['id'];
 

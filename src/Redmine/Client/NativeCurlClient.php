@@ -102,7 +102,7 @@ final class NativeCurlClient implements Client, HttpClient
      */
     public function requestGet(string $path): bool
     {
-        return $this->runRequest('get', $path);
+        return $this->runRequest('GET', $path);
     }
 
     /**
@@ -110,7 +110,7 @@ final class NativeCurlClient implements Client, HttpClient
      */
     public function requestPost(string $path, string $body): bool
     {
-        return $this->runRequest('post', $path, $body);
+        return $this->runRequest('POST', $path, $body);
     }
 
     /**
@@ -118,7 +118,7 @@ final class NativeCurlClient implements Client, HttpClient
      */
     public function requestPut(string $path, string $body): bool
     {
-        return $this->runRequest('put', $path, $body);
+        return $this->runRequest('PUT', $path, $body);
     }
 
     /**
@@ -126,7 +126,7 @@ final class NativeCurlClient implements Client, HttpClient
      */
     public function requestDelete(string $path): bool
     {
-        return $this->runRequest('delete', $path);
+        return $this->runRequest('DELETE', $path);
     }
 
     /**
@@ -295,7 +295,7 @@ final class NativeCurlClient implements Client, HttpClient
         unset($curlOptions[CURLOPT_POST]);
         unset($curlOptions[CURLOPT_POSTFIELDS]);
         switch ($method) {
-            case 'post':
+            case 'POST':
                 $curlOptions[CURLOPT_POST] = 1;
                 if ($this->isUploadCall($path) && $this->isValidFilePath($body)) {
                     @trigger_error('Uploading an attachment by filepath is deprecated, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
@@ -311,13 +311,13 @@ final class NativeCurlClient implements Client, HttpClient
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
-            case 'put':
+            case 'PUT':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
                 if ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
-            case 'delete':
+            case 'DELETE':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'DELETE';
                 break;
             default: // GET
