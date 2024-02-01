@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Client;
 
+use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
@@ -9,10 +10,13 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Client;
 use Redmine\Client\Psr18Client;
+use Redmine\Http\HttpClient;
+use stdClass;
 
 class Psr18ClientTest extends TestCase
 {
@@ -32,17 +36,25 @@ class Psr18ClientTest extends TestCase
 
         $this->assertInstanceOf(Psr18Client::class, $client);
         $this->assertInstanceOf(Client::class, $client);
+        $this->assertInstanceOf(HttpClient::class, $client);
     }
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
-    public function acceptServerRequestFactoryInConstructorForBC()
+    public function testServerRequestFactoryIsAcceptedInConstructorForBC()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
-            $this->createMock(ServerRequestFactoryInterface::class),
+            $this->createConfiguredMock(ServerRequestFactoryInterface::class, [
+                'createServerRequest' => (function () {
+                    $request = $this->createMock(ServerRequestInterface::class);
+                    $request->method('withHeader')->willReturn($request);
+                    $request->method('withBody')->willReturn($request);
+
+                    return $request;
+                })(),
+            ]),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'access_token'
@@ -50,6 +62,8 @@ class Psr18ClientTest extends TestCase
 
         $this->assertInstanceOf(Psr18Client::class, $client);
         $this->assertInstanceOf(Client::class, $client);
+
+        $client->requestGet('/path.xml');
     }
 
     /**
@@ -294,6 +308,23 @@ class Psr18ClientTest extends TestCase
             ['version', 'Redmine\Api\Version'],
             ['wiki', 'Redmine\Api\Wiki'],
         ];
+    }
+
+    /**
+     * @covers \Redmine\Client\Psr18Client::__construct
+     */
+    public function testCreateWithoutFactoryThrowsException()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Redmine\Client\Psr18Client::__construct(): Argument #2 ($requestFactory) must be of type Psr\Http\Message\RequestFactoryInterface');
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            new stdClass(),
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token'
+        );
     }
 
     /**

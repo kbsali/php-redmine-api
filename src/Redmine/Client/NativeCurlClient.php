@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Redmine\Client;
 
 use Redmine\Exception\ClientException;
+use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
+use Redmine\Http\Request;
+use Redmine\Http\Response;
 
 /**
  * Native cURL client.
  */
-final class NativeCurlClient implements Client
+final class NativeCurlClient implements Client, HttpClient
 {
     use ClientApiTrait;
 
@@ -56,6 +60,27 @@ final class NativeCurlClient implements Client
     }
 
     /**
+     * Create and send a HTTP request and return the response
+     *
+     * @throws ClientException If anything goes wrong on creating or sending the request
+     */
+    public function request(Request $request): Response
+    {
+        $this->runRequest(
+            $request->getMethod(),
+            $request->getPath(),
+            $request->getContent(),
+            $request->getContentType()
+        );
+
+        return HttpFactory::makeResponse(
+            $this->lastResponseStatusCode,
+            $this->lastResponseContentType,
+            $this->lastResponseBody
+        );
+    }
+
+    /**
      * Sets to an existing username so api calls can be
      * impersonated to this user.
      */
@@ -77,7 +102,7 @@ final class NativeCurlClient implements Client
      */
     public function requestGet(string $path): bool
     {
-        return $this->request('get', $path);
+        return $this->runRequest('GET', $path);
     }
 
     /**
@@ -85,7 +110,7 @@ final class NativeCurlClient implements Client
      */
     public function requestPost(string $path, string $body): bool
     {
-        return $this->request('post', $path, $body);
+        return $this->runRequest('POST', $path, $body);
     }
 
     /**
@@ -93,7 +118,7 @@ final class NativeCurlClient implements Client
      */
     public function requestPut(string $path, string $body): bool
     {
-        return $this->request('put', $path, $body);
+        return $this->runRequest('PUT', $path, $body);
     }
 
     /**
@@ -101,7 +126,7 @@ final class NativeCurlClient implements Client
      */
     public function requestDelete(string $path): bool
     {
-        return $this->request('delete', $path);
+        return $this->runRequest('DELETE', $path);
     }
 
     /**
@@ -211,13 +236,13 @@ final class NativeCurlClient implements Client
     /**
      * @throws ClientException If anything goes wrong on curl request
      */
-    private function request(string $method, string $path, string $body = ''): bool
+    private function runRequest(string $method, string $path, string $body = '', string $contentType = ''): bool
     {
         $this->lastResponseStatusCode = 0;
         $this->lastResponseContentType = '';
         $this->lastResponseBody = '';
 
-        $curl = $this->createCurl($method, $path, $body);
+        $curl = $this->createCurl($method, $path, $body, $contentType);
 
         $response = curl_exec($curl);
 
@@ -249,7 +274,7 @@ final class NativeCurlClient implements Client
      *
      * @return \CurlHandle a cURL handle on success, <b>FALSE</b> on errors
      */
-    private function createCurl(string $method, string $path, string $body = '')
+    private function createCurl(string $method, string $path, string $body = '', string $contentType = '')
     {
         // General cURL options
         $curlOptions = [
@@ -264,13 +289,13 @@ final class NativeCurlClient implements Client
         $curlOptions[CURLOPT_URL] = $this->url . $path;
 
         // Set the HTTP request headers
-        $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path);
+        $curlOptions[CURLOPT_HTTPHEADER] = $this->createHttpHeader($path, $contentType);
 
         unset($curlOptions[CURLOPT_CUSTOMREQUEST]);
         unset($curlOptions[CURLOPT_POST]);
         unset($curlOptions[CURLOPT_POSTFIELDS]);
         switch ($method) {
-            case 'post':
+            case 'POST':
                 $curlOptions[CURLOPT_POST] = 1;
                 if ($this->isUploadCall($path) && $this->isValidFilePath($body)) {
                     @trigger_error('Uploading an attachment by filepath is deprecated, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
@@ -286,13 +311,13 @@ final class NativeCurlClient implements Client
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
-            case 'put':
+            case 'PUT':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
                 if ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;
-            case 'delete':
+            case 'DELETE':
                 $curlOptions[CURLOPT_CUSTOMREQUEST] = 'DELETE';
                 break;
             default: // GET
@@ -314,7 +339,7 @@ final class NativeCurlClient implements Client
         return $curl;
     }
 
-    private function createHttpHeader(string $path): array
+    private function createHttpHeader(string $path, string $contentType = ''): array
     {
         // Additional request headers
         $httpHeaders = [
@@ -352,14 +377,18 @@ final class NativeCurlClient implements Client
         // Now set or reset mandatory headers
 
         // Content type headers
-        $tmp = parse_url($this->url . $path);
+        if ($contentType !== '') {
+            $httpHeaders[] = 'Content-Type: ' . $contentType;
+        } else {
+            $tmp = parse_url($this->url . $path);
 
-        if ($this->isUploadCall($path)) {
-            $httpHeaders[] = 'Content-Type: application/octet-stream';
-        } elseif ('json' === substr($tmp['path'], -4)) {
-            $httpHeaders[] = 'Content-Type: application/json';
-        } elseif ('xml' === substr($tmp['path'], -3)) {
-            $httpHeaders[] = 'Content-Type: text/xml';
+            if ($this->isUploadCall($path)) {
+                $httpHeaders[] = 'Content-Type: application/octet-stream';
+            } elseif ('json' === substr($tmp['path'], -4)) {
+                $httpHeaders[] = 'Content-Type: application/json';
+            } elseif ('xml' === substr($tmp['path'], -3)) {
+                $httpHeaders[] = 'Content-Type: text/xml';
+            }
         }
 
         return $httpHeaders;

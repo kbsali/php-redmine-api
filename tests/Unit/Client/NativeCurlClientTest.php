@@ -10,6 +10,7 @@ use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
+use Redmine\Http\HttpClient;
 use stdClass;
 
 class NativeCurlClientTest extends TestCase
@@ -44,6 +45,7 @@ class NativeCurlClientTest extends TestCase
 
         $this->assertInstanceOf(NativeCurlClient::class, $client);
         $this->assertInstanceOf(Client::class, $client);
+        $this->assertInstanceOf(HttpClient::class, $client);
     }
 
     /**
