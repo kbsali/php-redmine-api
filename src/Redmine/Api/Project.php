@@ -9,6 +9,7 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing projects, creating, editing.
@@ -146,7 +147,7 @@ class Project extends AbstractApi
      *
      * @throws MissingParameterException
      *
-     * @return string|false
+     * @return string|SimpleXMLElement|false
      */
     public function create(array $params = [])
     {
