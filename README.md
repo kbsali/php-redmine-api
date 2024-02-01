@@ -3,6 +3,7 @@
 [![Latest Version](https://img.shields.io/github/release/kbsali/php-redmine-api.svg)](https://github.com/kbsali/php-redmine-api/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-blueviolet.svg)](LICENSE)
 [![Build Status](https://github.com/kbsali/php-redmine-api/actions/workflows/tests.yml/badge.svg?branch=v2.x)](https://github.com/kbsali/php-redmine-api/actions)
+[![Codecov](https://codecov.io/gh/kbsali/php-redmine-api/graph/badge.svg?token=0123456789)](https://codecov.io/gh/kbsali/php-redmine-api)
 [![Total Downloads](https://img.shields.io/packagist/dt/kbsali/redmine-api.svg)](https://packagist.org/packages/kbsali/redmine-api)
 
 A simple PHP Object Oriented wrapper for Redmine API.
