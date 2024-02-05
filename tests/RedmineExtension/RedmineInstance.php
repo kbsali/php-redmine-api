@@ -149,7 +149,7 @@ final class RedmineInstance
      */
     private function createDatabaseBackup()
     {
-        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->backupDB);
+        $this->fs->copy($this->workingDB, $this->backupDB);
     }
 
     /**
@@ -157,22 +157,22 @@ final class RedmineInstance
      */
     private function saveMigratedDatabase()
     {
-        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->migratedDB);
+        $this->fs->copy($this->workingDB, $this->migratedDB);
     }
 
     private function restoreFromMigratedDatabase(): void
     {
-        copy($this->rootPath . $this->migratedDB, $this->rootPath . $this->workingDB);
+        $this->fs->copy($this->migratedDB, $this->workingDB);
     }
 
     private function restoreDatabaseFromBackup(): void
     {
-        copy($this->rootPath . $this->backupDB, $this->rootPath . $this->workingDB);
+        $this->fs->copy($this->backupDB, $this->workingDB);
     }
 
     private function removeDatabaseBackups(): void
     {
-        unlink($this->rootPath . $this->migratedDB);
-        unlink($this->rootPath . $this->backupDB);
+        $this->fs->delete($this->migratedDB);
+        $this->fs->delete($this->backupDB);
     }
 }
