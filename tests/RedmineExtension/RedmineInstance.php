@@ -6,6 +6,9 @@ namespace Redmine\Tests\RedmineExtension;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use PDO;
 
 final class RedmineInstance
@@ -37,6 +40,10 @@ final class RedmineInstance
 
     private RedmineVersion $version;
 
+    private string $rootPath;
+
+    private FilesystemOperator $fs;
+
     private string $workingDB;
 
     private string $migratedDB;
@@ -54,9 +61,12 @@ final class RedmineInstance
 
         $versionId = strval($version->asId());
 
-        $this->workingDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db';
-        $this->migratedDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine-migrated.db';
-        $this->backupDB = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/sqlite/redmine.db.bak';
+        $this->rootPath = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/';
+        $this->fs = new Filesystem(new LocalFilesystemAdapter($this->rootPath));
+
+        $this->workingDB = 'sqlite/redmine.db';
+        $this->migratedDB = 'sqlite/redmine-migrated.db';
+        $this->backupDB = 'sqlite/redmine.db.bak';
         $this->redmineUrl = 'http://redmine-' . $versionId . ':3000';
         $this->apiKey = sha1($versionId . (string) time());
 
@@ -104,7 +114,7 @@ final class RedmineInstance
     private function runDatabaseMigration()
     {
         $now = new DateTimeImmutable();
-        $pdo = new PDO('sqlite:' . $this->workingDB);
+        $pdo = new PDO('sqlite:' . $this->rootPath . $this->workingDB);
 
         // Get admin user to check sqlite connection
         $stmt = $pdo->prepare('SELECT * FROM users WHERE login = :login;');
@@ -139,7 +149,7 @@ final class RedmineInstance
      */
     private function createDatabaseBackup()
     {
-        copy($this->workingDB, $this->backupDB);
+        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->backupDB);
     }
 
     /**
@@ -147,22 +157,22 @@ final class RedmineInstance
      */
     private function saveMigratedDatabase()
     {
-        copy($this->workingDB, $this->migratedDB);
+        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->migratedDB);
     }
 
     private function restoreFromMigratedDatabase(): void
     {
-        copy($this->migratedDB, $this->workingDB);
+        copy($this->rootPath . $this->migratedDB, $this->rootPath . $this->workingDB);
     }
 
     private function restoreDatabaseFromBackup(): void
     {
-        copy($this->backupDB, $this->workingDB);
+        copy($this->rootPath . $this->backupDB, $this->rootPath . $this->workingDB);
     }
 
     private function removeDatabaseBackups(): void
     {
-        unlink($this->migratedDB);
-        unlink($this->backupDB);
+        unlink($this->rootPath . $this->migratedDB);
+        unlink($this->rootPath . $this->backupDB);
     }
 }
