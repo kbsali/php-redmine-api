@@ -18,25 +18,25 @@ class Attachment extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Attachments
      *
-     * @param string $id the attachment number
+     * @param int $id the attachment number
      *
      * @return array information about the attachment
      */
     public function show($id)
     {
-        return $this->get('/attachments/' . urlencode($id) . '.json');
+        return $this->get('/attachments/' . urlencode(strval($id)) . '.json');
     }
 
     /**
      * Get attachment content as a binary file.
      *
-     * @param string $id the attachment number
+     * @param int $id the attachment number
      *
      * @return string the attachment content
      */
     public function download($id)
     {
-        return $this->get('/attachments/download/' . urlencode($id), false);
+        return $this->get('/attachments/download/' . urlencode(strval($id)), false);
     }
 
     /**
@@ -70,6 +70,6 @@ class Attachment extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/attachments/' . $id . '.xml');
+        return $this->delete('/attachments/' . urlencode(strval($id)) . '.xml');
     }
 }

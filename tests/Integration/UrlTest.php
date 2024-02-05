@@ -517,9 +517,9 @@ class UrlTest extends TestCase
         $this->assertEquals('/projects/testProject/wiki/about.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
-        $res = $api->show('testProject', 'about', 'v1');
+        $res = $api->show('testProject', 'about', 18);
 
-        $this->assertEquals('/projects/testProject/wiki/about/v1.json?include=attachments', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about/18.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
         $res = $api->remove('testProject', 'about');
