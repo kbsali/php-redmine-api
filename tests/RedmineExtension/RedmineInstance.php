@@ -50,6 +50,12 @@ final class RedmineInstance
 
     private string $backupDB;
 
+    private string $workingFiles;
+
+    private string $migratedFiles;
+
+    private string $backupFiles;
+
     private string $redmineUrl;
 
     private string $apiKey;
@@ -67,12 +73,19 @@ final class RedmineInstance
         $this->workingDB = 'sqlite/redmine.db';
         $this->migratedDB = 'sqlite/redmine-migrated.db';
         $this->backupDB = 'sqlite/redmine.db.bak';
+
+        $this->workingFiles = 'files/';
+        $this->migratedFiles = 'files-migrated/';
+        $this->backupFiles = 'files-bak/';
+
         $this->redmineUrl = 'http://redmine-' . $versionId . ':3000';
         $this->apiKey = sha1($versionId . (string) time());
 
         $this->createDatabaseBackup();
+        // $this->createFilesBackup();
         $this->runDatabaseMigration();
         $this->saveMigratedDatabase();
+        // $this->saveMigratedFiles();
     }
 
     public function getVersionId(): int
@@ -97,6 +110,7 @@ final class RedmineInstance
         }
 
         $this->restoreFromMigratedDatabase();
+        // $this->restoreFromMigratedFiles();
     }
 
     public function shutdown(TestRunnerTracer $tracer): void
@@ -106,7 +120,9 @@ final class RedmineInstance
         }
 
         $this->restoreDatabaseFromBackup();
+        // $this->restoreFilesFromBackup();
         $this->removeDatabaseBackups();
+        // $this->removeFilesBackups();
 
         $tracer->deregisterInstance($this);
     }
@@ -174,5 +190,39 @@ final class RedmineInstance
     {
         $this->fs->delete($this->migratedDB);
         $this->fs->delete($this->backupDB);
+    }
+
+    private function createFilesBackup()
+    {
+        $this->copyDirectory($this->workingFiles, $this->backupFiles);
+    }
+
+    private function saveMigratedFiles()
+    {
+        $this->copyDirectory($this->workingFiles, $this->migratedFiles);
+    }
+
+    private function restoreFromMigratedFiles(): void
+    {
+        $this->fs->deleteDirectory($this->workingFiles);
+        $this->copyDirectory($this->migratedFiles, $this->workingFiles);
+    }
+
+    private function restoreFilesFromBackup(): void
+    {
+        $this->fs->deleteDirectory($this->workingFiles);
+        $this->copyDirectory($this->backupFiles, $this->workingFiles);
+    }
+
+    private function removeFilesBackups(): void
+    {
+        $this->fs->deleteDirectory($this->migratedFiles);
+        $this->fs->deleteDirectory($this->backupFiles);
+    }
+
+    private function copyDirectory(string $source, string $target): void
+    {
+        // Not implemented by Flysystem
+        // @see https://github.com/thephpleague/flysystem/issues/1619
     }
 }
