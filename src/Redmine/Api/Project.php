@@ -118,9 +118,9 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects#Showing-a-project
      *
-     * @param string $id     the project id
-     * @param array  $params available parameters:
-     *                       include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
+     * @param string|int $id     project id or identifier
+     * @param array      $params available parameters:
+     *                           include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
      * @return array information about the project
      */
@@ -133,7 +133,7 @@ class Project extends AbstractApi
         }
 
         return $this->get(
-            PathSerializer::create('/projects/' . urlencode($id) . '.json', $params)->getPath()
+            PathSerializer::create('/projects/' . urlencode(strval($id)) . '.json', $params)->getPath()
         );
     }
 
@@ -175,7 +175,7 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param string $id the project id
+     * @param string|int $id project id or identifier
      *
      * @return string|false
      */
@@ -190,7 +190,7 @@ class Project extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/projects/' . $id . '.xml',
+            '/projects/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
     }
