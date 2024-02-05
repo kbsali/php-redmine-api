@@ -134,7 +134,7 @@ class Version extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/versions/' . strval($id) . '.json');
+        return $this->get('/versions/' . urlencode(strval($id)) . '.json');
     }
 
     /**

@@ -139,8 +139,8 @@ class User extends AbstractApi
      *  - api_key: the API key of the user, visible for admins and for yourself (added in 2.3.0)
      *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0)
      *
-     * @param string $id     the user id
-     * @param array  $params extra associated data
+     * @param int|string $id     the user id or `current` for retrieving the user whose credentials are used
+     * @param array      $params extra associated data
      *
      * @return array information about the user
      */
@@ -159,7 +159,7 @@ class User extends AbstractApi
         $params['include'] = implode(',', $params['include']);
 
         return $this->get(
-            PathSerializer::create('/users/' . urlencode($id) . '.json', $params)->getPath()
+            PathSerializer::create('/users/' . urlencode(strval($id)) . '.json', $params)->getPath()
         );
     }
 
@@ -205,7 +205,7 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param string $id the user id
+     * @param int $id the user id
      *
      * @return string|false
      */
@@ -222,7 +222,7 @@ class User extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/users/' . $id . '.xml',
+            '/users/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['user' => $params])->getEncoded()
         );
     }
