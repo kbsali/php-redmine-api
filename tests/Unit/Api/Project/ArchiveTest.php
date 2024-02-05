@@ -64,7 +64,7 @@ class ArchiveTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Redmine\Api\Project::archive(): Argument #1 ($projectIdentifier) must be of type int or string');
 
-        // provide a wrong project identifier
+        /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
         $api->archive(true);
     }
 }
