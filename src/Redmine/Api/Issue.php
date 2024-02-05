@@ -219,8 +219,8 @@ class Issue extends AbstractApi
     }
 
     /**
-     * @param int    $id
-     * @param string $watcherUserId
+     * @param int $id
+     * @param int $watcherUserId
      *
      * @return false|string
      */
@@ -228,13 +228,13 @@ class Issue extends AbstractApi
     {
         return $this->post(
             '/issues/' . urlencode(strval($id)) . '/watchers.xml',
-            XmlSerializer::createFromArray(['user_id' => $watcherUserId])->getEncoded()
+            XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded()
         );
     }
 
     /**
-     * @param int    $id
-     * @param string $watcherUserId
+     * @param int $id
+     * @param int $watcherUserId
      *
      * @return false|\SimpleXMLElement|string
      */
