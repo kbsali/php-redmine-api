@@ -320,6 +320,7 @@ class Psr18ClientTest extends TestCase
 
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
+            /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
             new stdClass(),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
