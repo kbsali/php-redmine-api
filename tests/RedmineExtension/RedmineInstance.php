@@ -6,9 +6,6 @@ namespace Redmine\Tests\RedmineExtension;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemOperator;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use PDO;
 
 final class RedmineInstance
@@ -42,8 +39,6 @@ final class RedmineInstance
 
     private string $rootPath;
 
-    private FilesystemOperator $fs;
-
     private string $workingDB;
 
     private string $migratedDB;
@@ -68,7 +63,6 @@ final class RedmineInstance
         $versionId = strval($version->asId());
 
         $this->rootPath = dirname(__FILE__, 3) . '/.docker/redmine-' . $versionId . '_data/';
-        $this->fs = new Filesystem(new LocalFilesystemAdapter($this->rootPath));
 
         $this->workingDB = 'sqlite/redmine.db';
         $this->migratedDB = 'sqlite/redmine-migrated.db';
@@ -110,7 +104,7 @@ final class RedmineInstance
         }
 
         $this->restoreFromMigratedDatabase();
-        // $this->restoreFromMigratedFiles();
+        $this->restoreFromMigratedFiles();
     }
 
     public function shutdown(TestRunnerTracer $tracer): void
@@ -120,7 +114,7 @@ final class RedmineInstance
         }
 
         $this->restoreDatabaseFromBackup();
-        // $this->restoreFilesFromBackup();
+        $this->restoreFilesFromBackup();
         $this->removeDatabaseBackups();
         $this->removeFilesBackups();
 
@@ -165,7 +159,7 @@ final class RedmineInstance
      */
     private function createDatabaseBackup()
     {
-        $this->fs->copy($this->workingDB, $this->backupDB);
+        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->backupDB);
     }
 
     /**
@@ -173,64 +167,77 @@ final class RedmineInstance
      */
     private function saveMigratedDatabase()
     {
-        $this->fs->copy($this->workingDB, $this->migratedDB);
+        copy($this->rootPath . $this->workingDB, $this->rootPath . $this->migratedDB);
     }
 
     private function restoreFromMigratedDatabase(): void
     {
-        $this->fs->copy($this->migratedDB, $this->workingDB);
+        copy($this->rootPath . $this->migratedDB, $this->rootPath . $this->workingDB);
     }
 
     private function restoreDatabaseFromBackup(): void
     {
-        $this->fs->copy($this->backupDB, $this->workingDB);
+        copy($this->rootPath . $this->backupDB, $this->rootPath . $this->workingDB);
     }
 
     private function removeDatabaseBackups(): void
     {
-        $this->fs->delete($this->migratedDB);
-        $this->fs->delete($this->backupDB);
+        unlink($this->rootPath . $this->migratedDB);
+        unlink($this->rootPath . $this->backupDB);
     }
 
     private function createFilesBackup()
     {
-        $this->copyDirectory($this->workingFiles, $this->backupFiles);
+        exec(sprintf(
+            'cp -r %s %s',
+            $this->rootPath . $this->workingFiles,
+            $this->rootPath . rtrim($this->backupFiles, '/'),
+        ));
     }
 
     private function saveMigratedFiles()
     {
-        $this->copyDirectory($this->workingFiles, $this->migratedFiles);
+        exec(sprintf(
+            'cp -r %s %s',
+            $this->rootPath . $this->workingFiles,
+            $this->rootPath . rtrim($this->migratedFiles, '/'),
+        ));
     }
 
     private function restoreFromMigratedFiles(): void
     {
-        $this->fs->deleteDirectory($this->workingFiles);
-        $this->copyDirectory($this->migratedFiles, $this->workingFiles);
+        exec(sprintf(
+            'rm -r %s',
+            $this->rootPath . $this->workingFiles . '*',
+        ));
+
+        exec(sprintf(
+            'cp -r %s %s',
+            $this->rootPath . $this->migratedFiles . '*',
+            $this->rootPath . rtrim($this->workingFiles, '/'),
+        ));
     }
 
     private function restoreFilesFromBackup(): void
     {
-        $this->fs->deleteDirectory($this->workingFiles);
-        $this->copyDirectory($this->backupFiles, $this->workingFiles);
+        exec(sprintf(
+            'rm -r %s',
+            $this->rootPath . $this->workingFiles . '*',
+        ));
+
+        exec(sprintf(
+            'cp -r %s %s',
+            $this->rootPath . $this->backupFiles . '*',
+            $this->rootPath . rtrim($this->workingFiles, '/'),
+        ));
     }
 
     private function removeFilesBackups(): void
     {
-        $this->fs->deleteDirectory($this->migratedFiles);
-        $this->fs->deleteDirectory($this->backupFiles);
-    }
-
-    /**
-     * Copy a directory is not implemented in Flysystem
-     *
-     * @see https://github.com/thephpleague/flysystem/issues/1619
-     */
-    private function copyDirectory(string $source, string $target): void
-    {
         exec(sprintf(
-            'cp -r %s %s',
-            $this->rootPath . rtrim($source, '/'),
-            $this->rootPath . rtrim($target, '/'),
+            'rm -r %s %s',
+            $this->rootPath . $this->migratedFiles,
+            $this->rootPath . $this->backupFiles,
         ));
     }
 }
