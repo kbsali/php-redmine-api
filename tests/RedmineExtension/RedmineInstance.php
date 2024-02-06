@@ -188,6 +188,7 @@ final class RedmineInstance
 
     private function createFilesBackup()
     {
+        touch($this->rootPath . $this->workingFiles . 'empty');
         exec(sprintf(
             'cp -r %s %s',
             $this->rootPath . $this->workingFiles,
@@ -207,7 +208,7 @@ final class RedmineInstance
     private function restoreFromMigratedFiles(): void
     {
         exec(sprintf(
-            'rm -rf %s',
+            'rm -r %s',
             $this->rootPath . $this->workingFiles . '*',
         ));
 
@@ -221,7 +222,7 @@ final class RedmineInstance
     private function restoreFilesFromBackup(): void
     {
         exec(sprintf(
-            'rm -rf %s',
+            'rm -r %s',
             $this->rootPath . $this->workingFiles . '*',
         ));
 
@@ -235,9 +236,11 @@ final class RedmineInstance
     private function removeFilesBackups(): void
     {
         exec(sprintf(
-            'rm -rf %s %s',
+            'rm -r %s %s',
             $this->rootPath . $this->migratedFiles,
             $this->rootPath . $this->backupFiles,
         ));
+
+        unlink($this->rootPath . $this->workingFiles . 'empty');
     }
 }
