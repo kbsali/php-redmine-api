@@ -82,14 +82,14 @@ class Version extends AbstractApi
     }
 
     /**
-     * Returns an array of name/id pairs (or id/name if not $reverse) of issue versions for $project.
+     * Returns an array of name/id pairs (or id/name if not $reverse) of versions for $project.
      *
      * @param string|int $project     project id or literal identifier
      * @param bool       $forceUpdate to force the update of the projects var
      * @param bool       $reverse     to return an array indexed by name rather than id
      * @param array      $params      optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of projects (id => project name)
+     * @return array list of versions (id => version name)
      */
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
@@ -105,10 +105,10 @@ class Version extends AbstractApi
     }
 
     /**
-     * Get an issue version id given its name and related project.
+     * Get an version id given its name and related project.
      *
      * @param string|int $project project id or literal identifier
-     * @param string     $name
+     * @param string     $name The version name
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
@@ -124,17 +124,17 @@ class Version extends AbstractApi
     }
 
     /**
-     * Get extended information about an issue version.
+     * Get extended information about a version.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET-2
      *
-     * @param string $id the issue category id
+     * @param int $id the version id
      *
-     * @return array information about the category
+     * @return array information about the version
      */
     public function show($id)
     {
-        return $this->get('/versions/' . urlencode($id) . '.json');
+        return $this->get('/versions/' . urlencode(strval($id)) . '.json');
     }
 
     /**
@@ -143,7 +143,7 @@ class Version extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#POST
      *
      * @param string|int $project project id or literal identifier
-     * @param array      $params  the new issue category data
+     * @param array      $params  the new version data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -175,11 +175,11 @@ class Version extends AbstractApi
     }
 
     /**
-     * Update issue category's information.
+     * Update version's information.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#PUT
      *
-     * @param string $id the issue category id
+     * @param int $id the version id
      *
      * @return string|false
      */

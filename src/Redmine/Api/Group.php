@@ -164,7 +164,7 @@ class Group extends AbstractApi
     public function show($id, array $params = [])
     {
         return $this->get(
-            PathSerializer::create('/groups/' . urlencode($id) . '.json', $params)->getPath()
+            PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath()
         );
     }
 

@@ -129,7 +129,7 @@ class Issue extends AbstractApi
      * available $params :
      * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
-     * @param string $id     the issue id
+     * @param int    $id     the issue id
      * @param array  $params extra associated data
      *
      * @return array information about the issue
@@ -141,7 +141,7 @@ class Issue extends AbstractApi
         }
 
         return $this->get(
-            PathSerializer::create('/issues/' . urlencode($id) . '.json', $params)->getPath()
+            PathSerializer::create('/issues/' . urlencode(strval($id)) . '.json', $params)->getPath()
         );
     }
 
@@ -186,7 +186,7 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param string $id the issue number
+     * @param int $id the issue number
      *
      * @return string|SimpleXMLElement|false
      */
@@ -213,34 +213,34 @@ class Issue extends AbstractApi
         }
 
         return $this->put(
-            '/issues/' . $id . '.xml',
+            '/issues/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded()
         );
     }
 
     /**
-     * @param int    $id
-     * @param string $watcherUserId
+     * @param int $id
+     * @param int $watcherUserId
      *
      * @return false|string
      */
     public function addWatcher($id, $watcherUserId)
     {
         return $this->post(
-            '/issues/' . $id . '/watchers.xml',
-            XmlSerializer::createFromArray(['user_id' => $watcherUserId])->getEncoded()
+            '/issues/' . urlencode(strval($id)) . '/watchers.xml',
+            XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded()
         );
     }
 
     /**
-     * @param int    $id
-     * @param string $watcherUserId
+     * @param int $id
+     * @param int $watcherUserId
      *
      * @return false|\SimpleXMLElement|string
      */
     public function removeWatcher($id, $watcherUserId)
     {
-        return $this->delete('/issues/' . $id . '/watchers/' . $watcherUserId . '.xml');
+        return $this->delete('/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml');
     }
 
     /**
@@ -330,7 +330,7 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param string $id         the issue number
+     * @param int    $id         the issue number
      * @param array  $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
      *
      * @return bool|string
@@ -345,7 +345,7 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param string $id          the issue number
+     * @param int    $id          the issue number
      * @param array  $attachments [
      *                            ['token' => '...', 'filename' => '...', 'content_type' => '...'],
      *                            ['token' => '...', 'filename' => '...', 'content_type' => '...']
@@ -361,7 +361,7 @@ class Issue extends AbstractApi
         ];
 
         return $this->put(
-            '/issues/' . $id . '.json',
+            '/issues/' . urlencode(strval($id)) . '.json',
             JsonSerializer::createFromArray(['issue' => $params])->getEncoded()
         );
     }
@@ -369,13 +369,13 @@ class Issue extends AbstractApi
     /**
      * Remove a issue by issue number.
      *
-     * @param string $id the issue number
+     * @param int $id the issue number
      *
      * @return false|\SimpleXMLElement|string
      */
     public function remove($id)
     {
-        return $this->delete('/issues/' . $id . '.xml');
+        return $this->delete('/issues/' . urlencode(strval($id)) . '.xml');
     }
 
     /**

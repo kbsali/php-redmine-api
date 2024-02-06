@@ -125,13 +125,13 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET-2
      *
-     * @param string $id the issue category id
+     * @param int $id the issue category id
      *
      * @return array information about the category
      */
     public function show($id)
     {
-        return $this->get('/issue_categories/' . urlencode($id) . '.json');
+        return $this->get('/issue_categories/' . urlencode(strval($id)) . '.json');
     }
 
     /**
@@ -171,7 +171,7 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
-     * @param string $id the issue category id
+     * @param int $id the issue category id
      *
      * @return string|false
      */
@@ -184,7 +184,7 @@ class IssueCategory extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/issue_categories/' . $id . '.xml',
+            '/issue_categories/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
         );
     }
@@ -204,7 +204,7 @@ class IssueCategory extends AbstractApi
     public function remove($id, array $params = [])
     {
         return $this->delete(
-            PathSerializer::create('/issue_categories/' . $id . '.xml', $params)->getPath()
+            PathSerializer::create('/issue_categories/' . urlencode(strval($id)) . '.xml', $params)->getPath()
         );
     }
 }

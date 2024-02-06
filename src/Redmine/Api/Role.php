@@ -100,6 +100,6 @@ class Role extends AbstractApi
      */
     public function show($id)
     {
-        return $this->get('/roles/' . urlencode($id) . '.json');
+        return $this->get('/roles/' . urlencode(strval($id)) . '.json');
     }
 }

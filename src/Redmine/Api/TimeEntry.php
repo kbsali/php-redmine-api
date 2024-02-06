@@ -76,13 +76,13 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param string $id the time entry id
+     * @param int $id the time entry id
      *
      * @return array information about the time entry
      */
     public function show($id)
     {
-        return $this->get('/time_entries/' . urlencode($id) . '.json');
+        return $this->get('/time_entries/' . urlencode(strval($id)) . '.json');
     }
 
     /**
