@@ -207,7 +207,7 @@ final class RedmineInstance
     private function restoreFromMigratedFiles(): void
     {
         exec(sprintf(
-            'rm -r %s',
+            'rm -rf %s',
             $this->rootPath . $this->workingFiles . '*',
         ));
 
@@ -221,7 +221,7 @@ final class RedmineInstance
     private function restoreFilesFromBackup(): void
     {
         exec(sprintf(
-            'rm -r %s',
+            'rm -rf %s',
             $this->rootPath . $this->workingFiles . '*',
         ));
 
@@ -235,7 +235,7 @@ final class RedmineInstance
     private function removeFilesBackups(): void
     {
         exec(sprintf(
-            'rm -r %s %s',
+            'rm -rf %s %s',
             $this->rootPath . $this->migratedFiles,
             $this->rootPath . $this->backupFiles,
         ));
