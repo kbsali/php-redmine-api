@@ -82,10 +82,10 @@ final class RedmineInstance
         $this->apiKey = sha1($versionId . (string) time());
 
         $this->createDatabaseBackup();
-        // $this->createFilesBackup();
+        $this->createFilesBackup();
         $this->runDatabaseMigration();
         $this->saveMigratedDatabase();
-        // $this->saveMigratedFiles();
+        $this->saveMigratedFiles();
     }
 
     public function getVersionId(): int
@@ -122,7 +122,7 @@ final class RedmineInstance
         $this->restoreDatabaseFromBackup();
         // $this->restoreFilesFromBackup();
         $this->removeDatabaseBackups();
-        // $this->removeFilesBackups();
+        $this->removeFilesBackups();
 
         $tracer->deregisterInstance($this);
     }
@@ -220,9 +220,17 @@ final class RedmineInstance
         $this->fs->deleteDirectory($this->backupFiles);
     }
 
+    /**
+     * Copy a directory is not implemented in Flysystem
+     *
+     * @see https://github.com/thephpleague/flysystem/issues/1619
+     */
     private function copyDirectory(string $source, string $target): void
     {
-        // Not implemented by Flysystem
-        // @see https://github.com/thephpleague/flysystem/issues/1619
+        exec(sprintf(
+            'cp -r %s %s',
+            $this->rootPath . rtrim($source, '/'),
+            $this->rootPath . rtrim($target, '/'),
+        ));
     }
 }

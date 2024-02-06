@@ -15,7 +15,7 @@ class WikiTest extends ClientTestCase
     /**
      * @dataProvider provideRedmineVersions
      */
-    public function testInteractionWithGroup(RedmineVersion $redmineVersion): void
+    public function testInteractions(RedmineVersion $redmineVersion): void
     {
         $client = $this->getNativeCurlClient($redmineVersion);
 
@@ -42,6 +42,7 @@ class WikiTest extends ClientTestCase
         $attachmentData = json_decode($jsonData, true);
 
         $this->assertIsArray($attachmentData, $jsonData);
+        $this->assertArrayHasKey('upload', $attachmentData, $jsonData);
         $this->assertSame(
             ['id', 'token'],
             array_keys($attachmentData['upload']),
@@ -52,6 +53,7 @@ class WikiTest extends ClientTestCase
 
         $this->assertSame('1.7b962f8af22e26802b87abfa0b07b21dbd03b984ec8d6888dabd3f69cff162f8', $attachmentToken);
 
+        // Add attachment to wiki page
         /** @var Wiki */
         $wikiApi = $client->getApi('wiki');
 
