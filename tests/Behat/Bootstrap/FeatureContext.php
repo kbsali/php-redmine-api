@@ -6,19 +6,21 @@ namespace Redmine\Tests\Behat\Bootstrap;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
+use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
-use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
+use Redmine\Tests\RedmineExtension\RedmineInstance;
 
 final class FeatureContext extends TestCase implements Context
 {
     private static ?BehatHookTracer $tracer = null;
-
-    private static NativeCurlClient $client;
 
     /**
      * @BeforeSuite
@@ -27,15 +29,6 @@ final class FeatureContext extends TestCase implements Context
     {
         static::$tracer = new BehatHookTracer();
         static::$tracer->hook($scope);
-
-        $versions = static::$tracer::getSupportedRedmineVersions();
-
-        $redmine = static::$tracer::getRedmineInstance(array_shift($versions));
-
-        static::$client = new NativeCurlClient(
-            $redmine->getRedmineUrl(),
-            $redmine->getApiKey()
-        );
     }
 
     /**
@@ -55,39 +48,75 @@ final class FeatureContext extends TestCase implements Context
         static::$tracer = null;
     }
 
+    private RedmineInstance $redmine;
+
+    private Client $client;
+
+    private Response $lastResponse;
+
+    private mixed $lastReturn;
+
     /**
-     * @Given an existing FeatureContext
+     * @Given I have a Redmine server with version :versionString
      */
-    public function anExistingFeaturecontext()
+    public function iHaveARedmineServerWithVersion(string $versionString)
     {
-        // Create project
+        $version = null;
+
+        foreach (static::$tracer::getSupportedRedmineVersions() as $redmineVersion) {
+            if ($redmineVersion->asString() === $versionString) {
+                $version = $redmineVersion;
+                break;
+            }
+        }
+
+        if ($version === null) {
+            throw new InvalidArgumentException('Redmine ' . $versionString . ' is not supported.');
+        }
+
+        $this->redmine = static::$tracer::getRedmineInstance($version);
+    }
+
+    /**
+     * @Given I have a :clientName client
+     */
+    public function iHaveAClient($clientName)
+    {
+        if ($clientName !== 'NativeCurlClient') {
+            throw new InvalidArgumentException('Client ' . $clientName . ' is not supported.');
+        }
+
+        $this->client = new NativeCurlClient(
+            $this->redmine->getRedmineUrl(),
+            $this->redmine->getApiKey()
+        );
+    }
+
+    /**
+     * @When I create a project with name :name and identifier :identifier
+     */
+    public function iCreateAProjectWithNameAndIdentifier($name, $identifier)
+    {
         /** @var Project */
-        $projectApi = static::$client->getApi('project');
+        $projectApi = $this->client->getApi('project');
 
-        $projectIdentifier = 'project-with-wiki';
-
-        $xmlData = $projectApi->create(['name' => 'project with wiki', 'identifier' => $projectIdentifier]);
-
-        $projectDataJson = json_encode($xmlData);
-        $projectData = json_decode($projectDataJson, true);
-
-        $this->assertIsArray($projectData, $projectDataJson);
-        $this->assertSame($projectIdentifier, $projectData['identifier'], $projectDataJson);
+        $this->lastReturn = $projectApi->create(['name' => $name, 'identifier' => $identifier]);
+        $this->lastResponse = $projectApi->getLastResponse();
     }
 
     /**
-     * @When I run the tests
+     * @Then the response has the status code :statusCode
      */
-    public function iRunTheTests()
+    public function theResponseHasTheStatusCode(int $statusCode)
     {
-        $this->assertTrue(true);
+        $this->assertSame($statusCode, $this->lastResponse->getStatusCode());
     }
 
     /**
-     * @Then some testable outcome is achieved
+     * @Then the response has the content type :contentType
      */
-    public function someTestableOutcomeIsAchieved()
+    public function theResponseHasTheContentType(string $contentType)
     {
-        $this->assertTrue(true);
+        $this->assertStringStartsWith($contentType, $this->lastResponse->getContentType());
     }
 }
