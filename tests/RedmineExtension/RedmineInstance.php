@@ -188,6 +188,7 @@ final class RedmineInstance
 
     private function createFilesBackup()
     {
+        // Add an empty file to avoid warnings about copying and removing content from an empty folder
         touch($this->rootPath . $this->workingFiles . 'empty');
         exec(sprintf(
             'cp -r %s %s',

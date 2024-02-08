@@ -67,12 +67,13 @@ class WikiTest extends ClientTestCase
         $wikiDataJson = json_encode($xmlData);
         $wikiData = json_decode($wikiDataJson, true);
 
-        $this->assertIsArray($wikiData, $jsonData);
+        $this->assertIsArray($wikiData, $wikiDataJson);
         $this->assertSame(
             ['title', 'text', 'version', 'author', 'comments', 'created_on', 'updated_on'],
             array_keys($wikiData),
             $wikiDataJson
         );
+        $this->assertSame('Testpage', $wikiData['title'], $wikiDataJson);
 
         // Check attachments
         $wikiData = $wikiApi->show($projectIdentifier, 'testpage');
@@ -82,5 +83,12 @@ class WikiTest extends ClientTestCase
             ['id', 'filename', 'filesize', 'content_type', 'description', 'content_url', 'author', 'created_on'],
             array_keys($wikiData['wiki_page']['attachments'][0])
         );
+
+        // Update wiki page returns empty string
+        $returnData = $wikiApi->update($projectIdentifier, 'testpage', [
+            'text' => '# First Wiki page with changes',
+        ]);
+
+        $this->assertSame('', $returnData);
     }
 }
