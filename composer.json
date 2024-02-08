@@ -33,7 +33,8 @@
         "phpunit/phpunit": "^9 || ^10.5",
         "guzzlehttp/psr7": "^2",
         "php-mock/php-mock-phpunit": "^2.6",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "behat/behat": "^3.14"
     },
     "autoload": {
         "psr-4": {
@@ -46,6 +47,7 @@
         }
     },
     "scripts": {
+        "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
         "end2end": "phpunit --configuration=\"phpunit-end2end.xml\"",

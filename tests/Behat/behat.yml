@@ -1,0 +1,8 @@
+default:
+    suites:
+        default:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    name: Foobar
