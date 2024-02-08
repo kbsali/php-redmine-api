@@ -83,7 +83,7 @@ class IssueRelation extends AbstractApi
      */
     public function show($id)
     {
-        $ret = $this->get('/relations/' . urlencode($id) . '.json');
+        $ret = $this->get('/relations/' . urlencode(strval($id)) . '.json');
         if (false === $ret) {
             return [];
         }
@@ -126,7 +126,7 @@ class IssueRelation extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         $response = $this->post(
-            '/issues/' . urlencode($issueId) . '/relations.json',
+            '/issues/' . urlencode(strval($issueId)) . '/relations.json',
             JsonSerializer::createFromArray(['relation' => $params])->getEncoded()
         );
 

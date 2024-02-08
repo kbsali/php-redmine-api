@@ -170,7 +170,7 @@ class VersionTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestGet')
-            ->with('/versions/test.json')
+            ->with('/versions/5.json')
             ->willReturn(true);
         $client->expects($this->once())
             ->method('getLastResponseBody')
@@ -183,7 +183,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->show('test'));
+        $this->assertSame($expectedReturn, $api->show(5));
     }
 
     /**
@@ -231,7 +231,7 @@ class VersionTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('requestDelete')
-            ->with('/versions/test.xml')
+            ->with('/versions/5.xml')
             ->willReturn(true);
         $client->expects($this->once())
             ->method('getLastResponseBody')
@@ -241,7 +241,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->remove('test'));
+        $this->assertSame($response, $api->remove(5));
     }
 
     /**
@@ -429,7 +429,7 @@ class VersionTest extends TestCase
         $this->expectExceptionMessage('Possible values for status : open, locked, closed');
 
         // Perform the tests
-        $api->update('test', $parameters);
+        $api->update(5, $parameters);
     }
 
     /**
@@ -452,7 +452,7 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
-                '/versions/test.xml',
+                '/versions/5.xml',
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
                     $this->stringEndsWith('</version>' . "\n"),
@@ -468,7 +468,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -493,7 +493,7 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
-                '/versions/test.xml',
+                '/versions/5.xml',
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
                     $this->stringEndsWith('</version>' . "\n"),
@@ -510,7 +510,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -837,7 +837,7 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
-                '/versions/test.xml',
+                '/versions/5.xml',
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
                     $this->stringEndsWith('</version>' . "\n"),
@@ -854,7 +854,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -881,7 +881,7 @@ class VersionTest extends TestCase
         $client->expects($this->once())
             ->method('requestPut')
             ->with(
-                '/versions/test.xml',
+                '/versions/5.xml',
                 $this->logicalAnd(
                     $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
                     $this->stringEndsWith('</version>' . "\n"),
@@ -900,7 +900,7 @@ class VersionTest extends TestCase
         $api = new Version($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->update('test', $parameters));
+        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     /**
@@ -932,7 +932,7 @@ class VersionTest extends TestCase
         $this->expectExceptionMessage('Possible values for sharing : none, descendants, hierarchy, tree, system');
 
         // Perform the tests
-        $api->update('test', $parameters);
+        $api->update(5, $parameters);
     }
 
     /**
