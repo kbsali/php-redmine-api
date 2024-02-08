@@ -487,24 +487,24 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Wiki */
         $api = MockClient::create()->getApi('wiki');
-        $res = $api->create('testProject', 'about', [
+        $res = $api->create('testProject', 'about page', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
         $res = json_decode($res, true);
 
-        $this->assertEquals('/projects/testProject/wiki/about.xml', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
         $this->assertEquals('PUT', $res['method']);
 
-        $res = $api->update('testProject', 'about', [
+        $res = $api->update('testProject', 'about page', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
         ]);
         $res = json_decode($res, true);
 
-        $this->assertEquals('/projects/testProject/wiki/about.xml', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
         $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
@@ -512,20 +512,20 @@ class UrlTest extends TestCase
         $this->assertEquals('/projects/testProject/wiki/index.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
-        $res = $api->show('testProject', 'about');
+        $res = $api->show('testProject', 'about page');
 
-        $this->assertEquals('/projects/testProject/wiki/about.json?include=attachments', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
-        $res = $api->show('testProject', 'about', 18);
+        $res = $api->show('testProject', 'about page', 18);
 
-        $this->assertEquals('/projects/testProject/wiki/about/18.json?include=attachments', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page/18.json?include=attachments', $res['path']);
         $this->assertEquals('GET', $res['method']);
 
-        $res = $api->remove('testProject', 'about');
+        $res = $api->remove('testProject', 'about page');
         $res = json_decode($res, true);
 
-        $this->assertEquals('/projects/testProject/wiki/about.xml', $res['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
         $this->assertEquals('DELETE', $res['method']);
     }
 }

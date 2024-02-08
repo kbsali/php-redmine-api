@@ -57,7 +57,7 @@ class WikiTest extends ClientTestCase
         /** @var Wiki */
         $wikiApi = $client->getApi('wiki');
 
-        $xmlData = $wikiApi->create($projectIdentifier, 'testpage', [
+        $xmlData = $wikiApi->create($projectIdentifier, 'Test Page', [
             'text' => '# First Wiki page',
             'uploads' => [
                 ['token' => $attachmentToken, 'filename' => 'filename.txt', 'content-type' => 'text/plain'],
@@ -73,11 +73,12 @@ class WikiTest extends ClientTestCase
             array_keys($wikiData),
             $wikiDataJson
         );
-        $this->assertSame('Testpage', $wikiData['title'], $wikiDataJson);
+        $this->assertSame('Test+Page', $wikiData['title'], $wikiDataJson);
 
         // Check attachments
-        $wikiData = $wikiApi->show($projectIdentifier, 'testpage');
+        $wikiData = $wikiApi->show($projectIdentifier, 'Test Page');
 
+        $this->assertIsArray($wikiData, json_encode($wikiData));
         $this->assertIsArray($wikiData['wiki_page']['attachments'][0]);
         $this->assertSame(
             ['id', 'filename', 'filesize', 'content_type', 'description', 'content_url', 'author', 'created_on'],
@@ -85,10 +86,15 @@ class WikiTest extends ClientTestCase
         );
 
         // Update wiki page returns empty string
-        $returnData = $wikiApi->update($projectIdentifier, 'testpage', [
+        $returnData = $wikiApi->update($projectIdentifier, 'Test Page', [
             'text' => '# First Wiki page with changes',
         ]);
 
-        $this->assertSame('', $returnData);
+        $this->assertSame('', $returnData, json_encode($returnData));
+
+        // Remove wiki page
+        $returnData = $wikiApi->remove($projectIdentifier, 'Test Page');
+
+        $this->assertSame('', $returnData, json_encode($returnData));
     }
 }
