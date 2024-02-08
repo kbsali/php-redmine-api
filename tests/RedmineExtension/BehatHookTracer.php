@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\RedmineExtension;
 
-use PHPUnit\Event\Event;
-use PHPUnit\Event\Test\Finished as TestFinished;
-use PHPUnit\Event\TestRunner\Finished as TestRunnerFinished;
-use PHPUnit\Event\TestRunner\Started as TestRunnerStarted;
-use PHPUnit\Event\Tracer\Tracer;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Testwork\Hook\Scope\AfterSuiteScope;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Testwork\Hook\Scope\HookScope;
 use RuntimeException;
 
-final class TestRunnerTracer implements Tracer, InstanceRegistration
+final class BehatHookTracer implements InstanceRegistration
 {
     /**
      * @var RedmineInstance[] $instances
      */
-    private static ?TestRunnerTracer $tracer = null;
+    private static ?BehatHookTracer $tracer = null;
 
     /**
      * @var RedmineInstance[] $instances
@@ -54,19 +53,19 @@ final class TestRunnerTracer implements Tracer, InstanceRegistration
         unset(static::$instances[$instance->getVersionId()]);
     }
 
-    public function trace(Event $event): void
+    public function hook(HookScope $event): void
     {
-        if ($event instanceof TestRunnerStarted) {
+        if ($event instanceof BeforeSuiteScope) {
             static::$tracer = $this;
         }
 
-        if ($event instanceof TestFinished) {
+        if ($event instanceof AfterScenarioScope) {
             foreach (static::$instances as $instance) {
                 $instance->reset($this);
             }
         }
 
-        if ($event instanceof TestRunnerFinished) {
+        if ($event instanceof AfterSuiteScope) {
             foreach (static::$instances as $instance) {
                 $instance->shutdown($this);
             }
