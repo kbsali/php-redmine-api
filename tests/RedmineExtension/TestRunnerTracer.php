@@ -7,7 +7,7 @@ namespace Redmine\Tests\RedmineExtension;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Test\Finished as TestFinished;
 use PHPUnit\Event\TestRunner\Finished as TestRunnerFinished;
-use PHPUnit\Event\TestRunner\Started;
+use PHPUnit\Event\TestRunner\Started as TestRunnerStarted;
 use PHPUnit\Event\Tracer\Tracer;
 use RuntimeException;
 
@@ -56,7 +56,7 @@ final class TestRunnerTracer implements Tracer
 
     public function trace(Event $event): void
     {
-        if ($event instanceof Started) {
+        if ($event instanceof TestRunnerStarted) {
             static::$tracer = $this;
         }
 

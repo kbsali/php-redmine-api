@@ -100,9 +100,9 @@ class Wiki extends AbstractApi
         ];
 
         if (null === $version) {
-            $path = '/projects/' . $project . '/wiki/' . $page . '.json';
+            $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '.json';
         } else {
-            $path = '/projects/' . $project . '/wiki/' . $page . '/' . $version . '.json';
+            $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '/' . $version . '.json';
         }
 
         return $this->get(
@@ -129,7 +129,7 @@ class Wiki extends AbstractApi
         $params = $this->sanitizeParams($defaults, $params);
 
         return $this->put(
-            '/projects/' . $project . '/wiki/' . $page . '.xml',
+            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
             XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
         );
     }
@@ -160,6 +160,8 @@ class Wiki extends AbstractApi
      */
     public function remove($project, $page)
     {
-        return $this->delete('/projects/' . $project . '/wiki/' . $page . '.xml');
+        return $this->delete(
+            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml'
+        );
     }
 }

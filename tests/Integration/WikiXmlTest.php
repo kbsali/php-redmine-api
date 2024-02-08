@@ -11,7 +11,7 @@ class WikiXmlTest extends TestCase
     {
         /** @var \Redmine\Api\Wiki */
         $api = MockClient::create()->getApi('wiki');
-        $res = $api->create('testProject', 'about', [
+        $res = $api->create('testProject', 'about page', [
             'text' => 'asdf',
             'comments' => 'asdf',
             'version' => 'asdf',
@@ -19,7 +19,7 @@ class WikiXmlTest extends TestCase
         $response = json_decode($res, true);
 
         $this->assertEquals('PUT', $response['method']);
-        $this->assertEquals('/projects/testProject/wiki/about.xml', $response['path']);
+        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $response['path']);
         $this->assertXmlStringEqualsXmlString(
             <<< XML
             <?xml version="1.0"?>
