@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Parameter types for IDs were fixed in API for attachments, groups, issues, project, users and versions.
+- Wiki pages with special characters are now handled correctly
 
 ## [v2.5.0](https://github.com/kbsali/php-redmine-api/compare/v2.4.0...v2.5.0) - 2024-02-05
 
