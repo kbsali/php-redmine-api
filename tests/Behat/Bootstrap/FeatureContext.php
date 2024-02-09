@@ -7,6 +7,7 @@ namespace Redmine\Tests\Behat\Bootstrap;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -19,6 +20,7 @@ use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
 use Redmine\Tests\RedmineExtension\RedmineInstance;
 use Redmine\Tests\RedmineExtension\RedmineVersion;
+use SimpleXMLElement;
 
 final class FeatureContext extends TestCase implements Context
 {
@@ -133,5 +135,29 @@ final class FeatureContext extends TestCase implements Context
     public function theResponseHasTheContentType(string $contentType)
     {
         $this->assertStringStartsWith($contentType, $this->lastResponse->getContentType());
+    }
+
+    /**
+     * @Then the returned data is an instance of :className
+     */
+    public function theReturnedDataIsAnInstanceOf(string $className)
+    {
+        $this->assertInstanceOf($className, $this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data has the following properties
+     */
+    public function theReturnedDataHasTheFollowingProperties(PyStringNode $string)
+    {
+        $properties = [];
+
+        if ($this->lastReturn instanceof SimpleXMLElement) {
+            $properties = array_keys(get_object_vars($this->lastReturn));
+
+            $this->assertSame($string->getStrings(), $properties);
+        } else {
+            throw new PendingException();
+        }
     }
 }
