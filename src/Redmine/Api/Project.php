@@ -347,7 +347,7 @@ class Project extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
-        return new \SimpleXMLElement(
+        return new SimpleXMLElement(
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
         );
     }

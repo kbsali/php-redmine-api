@@ -122,11 +122,24 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @When I list all projects
+     */
+    public function iListAllProjects()
+    {
+        /** @var Project */
+        $projectApi = $this->client->getApi('project');
+
+        $this->lastReturn = $projectApi->list();
+        $this->lastResponse = $projectApi->getLastResponse();
+        var_dump($this->lastReturn);
+    }
+
+    /**
      * @Then the response has the status code :statusCode
      */
     public function theResponseHasTheStatusCode(int $statusCode)
     {
-        $this->assertSame($statusCode, $this->lastResponse->getStatusCode());
+        $this->assertSame($statusCode, $this->lastResponse->getStatusCode(), 'Raw response content: ' . $this->lastResponse->getContent());
     }
 
     /**
@@ -134,7 +147,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheContentType(string $contentType)
     {
-        $this->assertStringStartsWith($contentType, $this->lastResponse->getContentType());
+        $this->assertStringStartsWith($contentType, $this->lastResponse->getContentType(), 'Raw response content: ' . $this->lastResponse->getContent());
     }
 
     /**

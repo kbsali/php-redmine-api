@@ -48,3 +48,10 @@ Feature: Interacting with the REST API for projects
             | homepage          | https://example.com  |
             | is_public         | true                 |
             | inherit_members   | false                |
+
+    Scenario: List of all projects
+        Given I have a "NativeCurlClient" client
+        When I create a project with name "Test Project" and identifier "test-project"
+        And I list all projects
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
