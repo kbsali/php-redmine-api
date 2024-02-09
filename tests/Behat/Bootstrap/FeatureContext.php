@@ -11,6 +11,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
@@ -93,26 +94,25 @@ final class FeatureContext extends TestCase implements Context
      */
     public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier)
     {
-        /** @var Project */
-        $projectApi = $this->client->getApi('project');
+        $table = new TableNode([
+            ['property', 'value'],
+            ['name', $name],
+            ['identifier', $identifier],
+        ]);
 
-        $this->lastReturn = $projectApi->create(['name' => $name, 'identifier' => $identifier]);
-        $this->lastResponse = $projectApi->getLastResponse();
+        $this->iCreateAProjectWithTheFollowingData($table);
     }
 
     /**
-     * @When I create a project with name :name, identifier :identifier and the following data
+     * @When I create a project with the following data
      */
-    public function iCreateAProjectWithNameIdentifierAndTheFollowingData(string $name, string $identifier, TableNode $table)
+    public function iCreateAProjectWithTheFollowingData(TableNode $table)
     {
         $data = [];
 
         foreach ($table as $row) {
-            $data[$row['key']] = $row['value'];
+            $data[$row['property']] = $row['value'];
         }
-
-        $data['name'] = $name;
-        $data['identifier'] = $identifier;
 
         /** @var Project */
         $projectApi = $this->client->getApi('project');
@@ -146,9 +146,9 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
-     * @Then the returned data has the following properties
+     * @Then the returned data has only the following properties
      */
-    public function theReturnedDataHasTheFollowingProperties(PyStringNode $string)
+    public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
     {
         $properties = [];
 
@@ -158,6 +158,36 @@ final class FeatureContext extends TestCase implements Context
             $this->assertSame($string->getStrings(), $properties);
         } else {
             throw new PendingException();
+        }
+    }
+
+    /**
+     * @Then the returned data has proterties with the following data
+     */
+    public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table)
+    {
+        if ($this->lastReturn instanceof SimpleXMLElement) {
+            $returnData = json_decode(json_encode($this->lastReturn), true);
+        } else {
+            throw new PendingException();
+        }
+
+        if (! is_array($returnData)) {
+            throw new Exception('Last return could not converted to array.');
+        }
+
+        foreach ($table as $row) {
+            $this->assertArrayHasKey($row['property'], $returnData);
+
+            $value = $returnData[$row['property']];
+
+            if ($value instanceof SimpleXMLElement) {
+                $value = strval($value);
+            }
+
+            $expected = $row['value'];
+
+            $this->assertSame($expected, $value, 'Error with property ' . $row['property']);
         }
     }
 }

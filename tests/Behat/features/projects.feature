@@ -9,7 +9,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has the following properties
+        And the returned data has only the following properties
             """
             id
             name
@@ -22,25 +22,29 @@ Feature: Interacting with the REST API for projects
             created_on
             updated_on
             """
+        And the returned data has proterties with the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+            | identifier        | test-project         |
 
     Scenario: Creating a project with multiple parameters
         Given I have a "NativeCurlClient" client
-        When I create a project with name "Test Project", identifier "test-project" and the following data
-            | key          | value                |
-            | description  | project description  |
+        When I create a project with the following data
+            | property          | value                |
+            | name              | Test Project         |
+            | identifier        | test-project         |
+            | description       | project description  |
+            | homepage          | https://example.com  |
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has the following properties
-            """
-            id
-            name
-            identifier
-            description
-            homepage
-            status
-            is_public
-            inherit_members
-            created_on
-            updated_on
-            """
+        And the returned data has proterties with the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+            | identifier        | test-project         |
+            | description       | project description  |
+            | homepage          | https://example.com  |
+            | is_public         | true                 |
+            | inherit_members   | false                |
