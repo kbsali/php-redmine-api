@@ -18,6 +18,7 @@ use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
 use Redmine\Tests\RedmineExtension\RedmineInstance;
+use Redmine\Tests\RedmineExtension\RedmineVersion;
 
 final class FeatureContext extends TestCase implements Context
 {
@@ -57,25 +58,17 @@ final class FeatureContext extends TestCase implements Context
 
     private mixed $lastReturn;
 
-    /**
-     * @Given I have a Redmine server with version :versionString
-     */
-    public function iHaveARedmineServerWithVersion(string $versionString)
+    public function __construct(string $redmineVersion)
     {
-        $version = null;
-
-        foreach (static::$tracer::getSupportedRedmineVersions() as $redmineVersion) {
-            if ($redmineVersion->asString() === $versionString) {
-                $version = $redmineVersion;
-                break;
-            }
-        }
+        $version = RedmineVersion::tryFrom($redmineVersion);
 
         if ($version === null) {
-            throw new InvalidArgumentException('Redmine ' . $versionString . ' is not supported.');
+            throw new InvalidArgumentException('Redmine ' . $redmineVersion . ' is not supported.');
         }
 
         $this->redmine = static::$tracer::getRedmineInstance($version);
+
+        parent::__construct('BehatRedmine' . $version->asId());
     }
 
     /**
