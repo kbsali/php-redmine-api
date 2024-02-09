@@ -7,6 +7,7 @@ namespace Redmine\Tests\Behat\Bootstrap;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use InvalidArgumentException;
@@ -95,12 +96,33 @@ final class FeatureContext extends TestCase implements Context
     /**
      * @When I create a project with name :name and identifier :identifier
      */
-    public function iCreateAProjectWithNameAndIdentifier($name, $identifier)
+    public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier)
     {
         /** @var Project */
         $projectApi = $this->client->getApi('project');
 
         $this->lastReturn = $projectApi->create(['name' => $name, 'identifier' => $identifier]);
+        $this->lastResponse = $projectApi->getLastResponse();
+    }
+
+    /**
+     * @When I create a project with name :name, identifier :identifier and the following data
+     */
+    public function iCreateAProjectWithNameIdentifierAndTheFollowingData(string $name, string $identifier, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['key']] = $row['value'];
+        }
+
+        $data['name'] = $name;
+        $data['identifier'] = $identifier;
+
+        /** @var Project */
+        $projectApi = $this->client->getApi('project');
+
+        $this->lastReturn = $projectApi->create($data);
         $this->lastResponse = $projectApi->getLastResponse();
     }
 
