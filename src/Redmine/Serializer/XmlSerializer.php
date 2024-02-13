@@ -163,6 +163,7 @@ final class XmlSerializer implements Stringable
             'tracker_ids' => 'tracker',
             'user_ids' => 'user_id',
             'watcher_user_ids' => 'watcher_user_id',
+            'tag_list' => 'tag_list',
         ];
 
         if ('custom_fields' === $k && is_array($v)) {
