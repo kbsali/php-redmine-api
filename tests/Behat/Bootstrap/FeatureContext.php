@@ -266,6 +266,11 @@ final class FeatureContext extends TestCase implements Context
                 $expected = false;
             }
 
+            // Handle placeholder %redmine_id%
+            if (is_string($expected)) {
+                $expected = str_replace('%redmine_id%', strval($this->redmine->getVersionId()), $expected);
+            }
+
             $this->assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
         }
     }

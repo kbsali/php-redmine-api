@@ -31,4 +31,18 @@ trait AttachmentContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I show the attachment with the id :attachmentId
+     */
+    public function iShowTheAttachmentWithTheId(int $attachmentId)
+    {
+        /** @var Attachment */
+        $api = $this->getNativeCurlClient()->getApi('attachment');
+
+        $this->registerClientResponse(
+            $api->show($attachmentId),
+            $api->getLastResponse()
+        );
+    }
 }
