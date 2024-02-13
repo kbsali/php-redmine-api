@@ -20,11 +20,25 @@ trait GroupContextTrait
         ];
 
         /** @var Group */
-        $groupApi = $this->getNativeCurlClient()->getApi('group');
+        $api = $this->getNativeCurlClient()->getApi('group');
 
         $this->registerClientResponse(
-            $groupApi->create($data),
-            $groupApi->getLastResponse()
+            $api->create($data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I list all groups
+     */
+    public function iListAllGroups()
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse()
         );
     }
 }

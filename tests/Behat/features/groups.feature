@@ -18,3 +18,15 @@ Feature: Interacting with the REST API for groups
             | property          | value                |
             | id                | 4                    |
             | name              | Test Group           |
+
+    Scenario: Listing of zero groups
+        Given I have a "NativeCurlClient" client
+        When I list all groups
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            groups
+            """
+        And the returned data "groups" property is an array
+        And the returned data "groups" property containts "0" items
