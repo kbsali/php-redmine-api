@@ -75,6 +75,18 @@ Feature: Interacting with the REST API for projects
             created_on
             updated_on
             """
+        And the returned data "project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+            | identifier        | test-project         |
+            | description       | null                 |
+            | homepage          |                      |
+            | status            | 1                    |
+            | is_public         | true                 |
+            | inherit_members   | false                |
+            | trackers          | []                   |
+            | issue_categories  | []                   |
 
     Scenario: Listing of zero projects
         Given I have a "NativeCurlClient" client

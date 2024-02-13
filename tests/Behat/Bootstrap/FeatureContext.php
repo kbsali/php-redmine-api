@@ -166,30 +166,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table)
     {
-        $returnData = $this->getLastReturnAsArray();
-
-        if (! is_array($returnData)) {
-            throw new Exception('Last return could not converted to array.');
-        }
-
-        foreach ($table as $row) {
-            $this->assertArrayHasKey($row['property'], $returnData);
-
-            $value = $returnData[$row['property']];
-
-            if ($value instanceof SimpleXMLElement) {
-                $value = strval($value);
-            }
-
-            $expected = $row['value'];
-
-            // Handle expected int values
-            if (is_int($value) && ctype_digit($expected)) {
-                $expected = intval($expected);
-            }
-
-            $this->assertSame($expected, $value, 'Error with property ' . $row['property']);
-        }
+        $this->theReturnedDataPropertyContainsTheFollowingData(null, $table);
     }
 
     /**
@@ -214,6 +191,53 @@ final class FeatureContext extends TestCase implements Context
         $value = $this->getItemFromArray($returnData, $property);
 
         $this->assertCount($count, $value);
+    }
+
+    /**
+     * @Then the returned data :property property contains the following data
+     */
+    public function theReturnedDataPropertyContainsTheFollowingData($property, TableNode $table)
+    {
+        $returnData = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
+
+        foreach ($table as $row) {
+            $this->assertArrayHasKey($row['property'], $returnData);
+
+            $value = $returnData[$row['property']];
+
+            if ($value instanceof SimpleXMLElement) {
+                $value = strval($value);
+            }
+
+            $expected = $row['value'];
+
+            // Handle expected empty array
+            if ($value === [] && $expected === '[]') {
+                $expected = [];
+            }
+
+            // Handle expected int values
+            if (is_int($value) && ctype_digit($expected)) {
+                $expected = intval($expected);
+            }
+
+            // Handle expected null value
+            if ($value === null && $expected === 'null') {
+                $expected = null;
+            }
+
+            // Handle expected true value
+            if ($value === true && $expected === 'true') {
+                $expected = true;
+            }
+
+            // Handle expected false value
+            if ($value === false && $expected === 'false') {
+                $expected = false;
+            }
+
+            $this->assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
+        }
     }
 
     /**
