@@ -175,9 +175,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
     {
-        $properties = array_keys($this->getLastReturnAsArray());
-
-        $this->assertSame($string->getStrings(), $properties);
+        $this->theReturnedDataPropertyHasOnlyTheFollowingProperties(null, $string);
     }
 
     /**
@@ -218,7 +216,7 @@ final class FeatureContext extends TestCase implements Context
     {
         $returnData = $this->getLastReturnAsArray();
 
-        $value = $returnData[$property] ?? null;
+        $value = $this->getItemFromArray($returnData, $property);
 
         $this->assertIsArray($value);
     }
@@ -230,9 +228,39 @@ final class FeatureContext extends TestCase implements Context
     {
         $returnData = $this->getLastReturnAsArray();
 
-        $value = $returnData[$property] ?? null;
+        $value = $this->getItemFromArray($returnData, $property);
 
         $this->assertCount($count, $value);
+    }
+
+    /**
+     * @Then the returned data :property property has only the following properties
+     */
+    public function theReturnedDataPropertyHasOnlyTheFollowingProperties($property, PyStringNode $string)
+    {
+        $value = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
+
+        $properties = array_keys($value);
+
+        $this->assertSame($string->getStrings(), $properties);
+    }
+
+    /**
+     * @Then the returned data :property property has only the following properties with Redmine version :versionComparision
+     */
+    public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion($property, string $versionComparision, PyStringNode $string)
+    {
+        $parts = explode(' ', $versionComparision);
+
+        $redmineVersion = RedmineVersion::tryFrom($parts[1]);
+
+        if ($redmineVersion === null) {
+            throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
+        }
+
+        if (version_compare($this->redmine->getVersionString(), $parts[1], $parts[0])) {
+            $this->theReturnedDataPropertyHasOnlyTheFollowingProperties($property, $string);
+        }
     }
 
     private function getLastReturnAsArray(): array
@@ -257,5 +285,25 @@ final class FeatureContext extends TestCase implements Context
         $this->lastReturnAsArray = $returnData;
 
         return $this->lastReturnAsArray;
+    }
+
+    /**
+     * Get item from an array by key supporting "dot" notation.
+     */
+    private function getItemFromArray(array $array, $key): mixed
+    {
+        if ($key === null) {
+            return $array;
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (! array_key_exists($segment, $array)) {
+                return null;
+            }
+
+            $array = $array[$segment];
+        }
+
+        return $array;
     }
 }

@@ -87,6 +87,11 @@ final class RedmineInstance
         return $this->version->asId();
     }
 
+    public function getVersionString(): string
+    {
+        return $this->version->asString();
+    }
+
     public function getRedmineUrl(): string
     {
         return $this->redmineUrl;

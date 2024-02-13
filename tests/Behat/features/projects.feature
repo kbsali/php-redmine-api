@@ -69,6 +69,7 @@ Feature: Interacting with the REST API for projects
             | offset            | 0                    |
             | limit             | 25                   |
 
+    @wip
     Scenario: List of all projects with one project
         Given I have a "NativeCurlClient" client
         When I create a project with name "Test Project" and identifier "test-project"
@@ -82,3 +83,30 @@ Feature: Interacting with the REST API for projects
             | limit             | 25                   |
         And the returned data "projects" property is an array
         And the returned data "projects" property containts "1" items
+        And the returned data "projects.0" property is an array
+        # field 'homepage' was added in Redmine 5.1.0, see https://www.redmine.org/issues/39113
+        And the returned data "projects.0" property has only the following properties with Redmine version ">= 5.1.0"
+            """
+            id
+            name
+            identifier
+            description
+            homepage
+            status
+            is_public
+            inherit_members
+            created_on
+            updated_on
+            """
+        But the returned data "projects.0" property has only the following properties with Redmine version "< 5.1.0"
+            """
+            id
+            name
+            identifier
+            description
+            status
+            is_public
+            inherit_members
+            created_on
+            updated_on
+            """
