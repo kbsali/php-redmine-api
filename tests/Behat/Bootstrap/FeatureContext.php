@@ -25,6 +25,7 @@ use SimpleXMLElement;
 
 final class FeatureContext extends TestCase implements Context
 {
+    use GroupContextTrait;
     use ProjectContextTrait;
 
     private static ?BehatHookTracer $tracer = null;
