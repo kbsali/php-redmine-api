@@ -30,3 +30,26 @@ Feature: Interacting with the REST API for groups
             """
         And the returned data "groups" property is an array
         And the returned data "groups" property containts "0" items
+
+    Scenario: Listing of one group
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        When I list all groups
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            groups
+            """
+        And the returned data "groups" property is an array
+        And the returned data "groups" property containts "1" items
+        And the returned data "groups.0" property is an array
+        And the returned data "groups.0" property has only the following properties
+            """
+            id
+            name
+            """
+        And the returned data "groups.0" property contains the following data
+            | property          | value                |
+            | id                | 4                    |
+            | name              | Test Group           |
