@@ -15,9 +15,24 @@ trait GroupContextTrait
      */
     public function iCreateAGroupWithName(string $groupName)
     {
-        $data = [
-            'name' => $groupName,
-        ];
+        $table = new TableNode([
+            ['property', 'value'],
+            ['name', $groupName],
+        ]);
+
+        $this->iCreateAGroupWithTheFollowingData($table);
+    }
+
+    /**
+     * @When I create a group with the following data
+     */
+    public function iCreateAGroupWithTheFollowingData(TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
 
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -52,6 +67,26 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->show($groupId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I update the group with id :groupId with the following data
+     */
+    public function iUpdateTheGroupWithIdWithTheFollowingData(int $groupId, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->update($groupId, $data),
             $api->getLastResponse()
         );
     }

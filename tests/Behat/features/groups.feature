@@ -54,7 +54,6 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
-    @wip
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -75,3 +74,16 @@ Feature: Interacting with the REST API for groups
             | property          | value                |
             | id                | 4                    |
             | name              | Test Group           |
+
+    Scenario: Updating a group
+        Given I have a "NativeCurlClient" client
+        And I create a group with the following data
+            | property          | value                |
+            | name              | Test Group           |
+        When I update the group with id "4" with the following data
+            | property          | value                |
+            | name              | new group name       |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
