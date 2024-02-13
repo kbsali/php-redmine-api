@@ -51,8 +51,8 @@ Feature: Interacting with the REST API for projects
 
     Scenario: Showing a specific project
         Given I have a "NativeCurlClient" client
-        When I create a project with name "Test Project" and identifier "test-project"
-        And I show the project with identifier "test-project"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I show the project with identifier "test-project"
         Then the response has the status code "200"
         And the response has the content type "application/json"
         And the returned data has only the following properties
@@ -110,8 +110,8 @@ Feature: Interacting with the REST API for projects
 
     Scenario: Listing of one project
         Given I have a "NativeCurlClient" client
-        When I create a project with name "Test Project" and identifier "test-project"
-        And I list all projects
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I list all projects
         Then the response has the status code "200"
         And the response has the content type "application/json"
         And the returned data has proterties with the following data
@@ -151,8 +151,8 @@ Feature: Interacting with the REST API for projects
 
     Scenario: Updating a project
         Given I have a "NativeCurlClient" client
-        When I create a project with name "Test Project" and identifier "test-project"
-        And I update the project with identifier "test-project" with the following data
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I update the project with identifier "test-project" with the following data
             | property          | value                |
             | name              | new project name     |
             | homepage          | https://example.com  |
@@ -177,6 +177,37 @@ Feature: Interacting with the REST API for projects
         And I create a project with name "Test Project" and identifier "test-project"
         And I close the project with identifier "test-project"
         When I reopen the project with identifier "test-project"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        When I show the project with identifier "test-project"
+        Then the returned data "project" property contains the following data
+            | property          | value                |
+            | status            | 1                    |
+
+    Scenario: Archiving a project
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I archive the project with identifier "test-project"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+
+    Scenario: Showing an archived project is not possible
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I archive the project with identifier "test-project"
+        When I show the project with identifier "test-project"
+        Then the response has the status code "403"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+
+    Scenario: Unarchiving a project
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I archive the project with identifier "test-project"
+        When I unarchive the project with identifier "test-project"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""

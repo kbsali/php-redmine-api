@@ -119,4 +119,32 @@ trait ProjectContextTrait
             $projectApi->getLastResponse()
         );
     }
+
+    /**
+     * @When I archive the project with identifier :identifier
+     */
+    public function iArchiveTheProjectWithIdentifier(string $identifier)
+    {
+        /** @var Project */
+        $projectApi = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $projectApi->archive($identifier),
+            $projectApi->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I unarchive the project with identifier :identifier
+     */
+    public function iUnarchiveTheProjectWithIdentifier(string $identifier)
+    {
+        /** @var Project */
+        $projectApi = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $projectApi->unarchive($identifier),
+            $projectApi->getLastResponse()
+        );
+    }
 }

@@ -154,6 +154,14 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @Then the returned data is false
+     */
+    public function theReturnedDataIsFalse()
+    {
+        $this->assertFalse($this->lastReturn);
+    }
+
+    /**
      * @Then the returned data has only the following properties
      */
     public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
@@ -275,6 +283,8 @@ final class FeatureContext extends TestCase implements Context
         if (isset($this->lastReturnAsArray)) {
             return $this->lastReturnAsArray;
         }
+
+        $returnData = null;
 
         if ($this->lastReturn instanceof SimpleXMLElement) {
             $returnData = json_decode(json_encode($this->lastReturn), true);
