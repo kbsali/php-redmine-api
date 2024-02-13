@@ -25,6 +25,7 @@ use SimpleXMLElement;
 
 final class FeatureContext extends TestCase implements Context
 {
+    use AttachmentContextTrait;
     use GroupContextTrait;
     use ProjectContextTrait;
 
@@ -309,6 +310,8 @@ final class FeatureContext extends TestCase implements Context
 
         if ($this->lastReturn instanceof SimpleXMLElement) {
             $returnData = json_decode(json_encode($this->lastReturn), true);
+        } elseif (is_string($this->lastReturn)) {
+            $returnData = json_decode($this->lastReturn, true);
         } elseif (is_array($this->lastReturn)) {
             $returnData = $this->lastReturn;
         }
