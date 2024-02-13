@@ -131,7 +131,6 @@ final class FeatureContext extends TestCase implements Context
 
         $this->lastReturn = $projectApi->list();
         $this->lastResponse = $projectApi->getLastResponse();
-        var_dump($this->lastReturn);
     }
 
     /**
@@ -139,7 +138,11 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheStatusCode(int $statusCode)
     {
-        $this->assertSame($statusCode, $this->lastResponse->getStatusCode(), 'Raw response content: ' . $this->lastResponse->getContent());
+        $this->assertSame(
+            $statusCode,
+            $this->lastResponse->getStatusCode(),
+            'Raw response content: ' . $this->lastResponse->getContent()
+        );
     }
 
     /**
@@ -147,7 +150,11 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theResponseHasTheContentType(string $contentType)
     {
-        $this->assertStringStartsWith($contentType, $this->lastResponse->getContentType(), 'Raw response content: ' . $this->lastResponse->getContent());
+        $this->assertStringStartsWith(
+            $contentType,
+            $this->lastResponse->getContentType(),
+            'Raw response content: ' . $this->lastResponse->getContent()
+        );
     }
 
     /**
@@ -167,11 +174,13 @@ final class FeatureContext extends TestCase implements Context
 
         if ($this->lastReturn instanceof SimpleXMLElement) {
             $properties = array_keys(get_object_vars($this->lastReturn));
-
-            $this->assertSame($string->getStrings(), $properties);
+        } else if (is_array($this->lastReturn)) {
+            $properties = array_keys($this->lastReturn);
         } else {
-            throw new PendingException();
+            throw new PendingException(__METHOD__);
         }
+
+        $this->assertSame($string->getStrings(), $properties);
     }
 
     /**
@@ -181,8 +190,10 @@ final class FeatureContext extends TestCase implements Context
     {
         if ($this->lastReturn instanceof SimpleXMLElement) {
             $returnData = json_decode(json_encode($this->lastReturn), true);
+        } else if (is_array($this->lastReturn)) {
+            $returnData = $this->lastReturn;
         } else {
-            throw new PendingException();
+            throw new PendingException(__METHOD__);
         }
 
         if (! is_array($returnData)) {
@@ -199,6 +210,11 @@ final class FeatureContext extends TestCase implements Context
             }
 
             $expected = $row['value'];
+
+            // Handle expected int values
+            if (is_int($value) && ctype_digit($expected)) {
+                $expected = intval($expected);
+            }
 
             $this->assertSame($expected, $value, 'Error with property ' . $row['property']);
         }
