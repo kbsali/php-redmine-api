@@ -159,6 +159,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
+        And the returned data is exactly ""
 
     Scenario: Closing a project
         Given I have a "NativeCurlClient" client
@@ -167,6 +168,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
+        And the returned data is true
         When I show the project with identifier "test-project"
         Then the returned data "project" property contains the following data
             | property          | value                |
@@ -180,6 +182,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
+        And the returned data is true
         When I show the project with identifier "test-project"
         Then the returned data "project" property contains the following data
             | property          | value                |
@@ -192,6 +195,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
+        And the returned data is true
 
     Scenario: Showing an archived project is not possible
         Given I have a "NativeCurlClient" client
@@ -211,6 +215,7 @@ Feature: Interacting with the REST API for projects
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
+        And the returned data is true
         When I show the project with identifier "test-project"
         Then the returned data "project" property contains the following data
             | property          | value                |

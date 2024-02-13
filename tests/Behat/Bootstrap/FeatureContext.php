@@ -146,11 +146,11 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
-     * @Then the returned data is an instance of :className
+     * @Then the returned data is true
      */
-    public function theReturnedDataIsAnInstanceOf(string $className)
+    public function theReturnedDataIsTrue()
     {
-        $this->assertInstanceOf($className, $this->lastReturn);
+        $this->assertTrue($this->lastReturn);
     }
 
     /**
@@ -159,6 +159,22 @@ final class FeatureContext extends TestCase implements Context
     public function theReturnedDataIsFalse()
     {
         $this->assertFalse($this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data is exactly :content
+     */
+    public function theReturnedDataIsExactly(string $content)
+    {
+        $this->assertSame($content, $this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data is an instance of :className
+     */
+    public function theReturnedDataIsAnInstanceOf(string $className)
+    {
+        $this->assertInstanceOf($className, $this->lastReturn);
     }
 
     /**
