@@ -59,6 +59,20 @@ trait ProjectContextTrait
     }
 
     /**
+     * @When I show the project with identifier :identifier
+     */
+    public function iShowTheProjectWithIdentifier(string $identifier)
+    {
+        /** @var Project */
+        $projectApi = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $projectApi->show($identifier),
+            $projectApi->getLastResponse()
+        );
+    }
+
+    /**
      * @When I update the project with identifier :identifier with the following data
      */
     public function iUpdateTheProjectWithIdentifierWithTheFollowingData(string $identifier, TableNode $table)

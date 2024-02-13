@@ -49,9 +49,36 @@ Feature: Interacting with the REST API for projects
             | is_public         | true                 |
             | inherit_members   | false                |
 
+    Scenario: Showing a specific project
+        Given I have a "NativeCurlClient" client
+        When I create a project with name "Test Project" and identifier "test-project"
+        And I show the project with identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            project
+            """
+        And the returned data "project" property is an array
+        And the returned data "project" property has only the following properties
+            """
+            id
+            name
+            identifier
+            description
+            homepage
+            status
+            is_public
+            inherit_members
+            trackers
+            issue_categories
+            created_on
+            updated_on
+            """
+
     Scenario: Listing of zero projects
         Given I have a "NativeCurlClient" client
-        And I list all projects
+        When I list all projects
         Then the response has the status code "200"
         And the response has the content type "application/json"
         And the returned data has only the following properties
