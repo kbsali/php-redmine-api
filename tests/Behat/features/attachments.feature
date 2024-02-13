@@ -25,7 +25,6 @@ Feature: Interacting with the REST API for attachments
             | id                | 1                                                                  |
             | token             | 1.7b962f8af22e26802b87abfa0b07b21dbd03b984ec8d6888dabd3f69cff162f8 |
 
-    @wip
     Scenario: Showing the details of an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
