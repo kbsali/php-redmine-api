@@ -14,7 +14,6 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Project;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Response;
@@ -26,6 +25,8 @@ use SimpleXMLElement;
 
 final class FeatureContext extends TestCase implements Context
 {
+    use ProjectContextTrait;
+
     private static ?BehatHookTracer $tracer = null;
 
     /**
@@ -92,50 +93,16 @@ final class FeatureContext extends TestCase implements Context
         );
     }
 
-    /**
-     * @When I create a project with name :name and identifier :identifier
-     */
-    public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier)
+    private function getNativeCurlClient(): NativeCurlClient
     {
-        $table = new TableNode([
-            ['property', 'value'],
-            ['name', $name],
-            ['identifier', $identifier],
-        ]);
-
-        $this->iCreateAProjectWithTheFollowingData($table);
+        return $this->client;
     }
 
-    /**
-     * @When I create a project with the following data
-     */
-    public function iCreateAProjectWithTheFollowingData(TableNode $table)
+    private function registerClientResponse(mixed $lastReturn, Response $lastResponse): void
     {
-        $data = [];
-
-        foreach ($table as $row) {
-            $data[$row['property']] = $row['value'];
-        }
-
-        /** @var Project */
-        $projectApi = $this->client->getApi('project');
-
         unset($this->lastReturnAsArray);
-        $this->lastReturn = $projectApi->create($data);
-        $this->lastResponse = $projectApi->getLastResponse();
-    }
-
-    /**
-     * @When I list all projects
-     */
-    public function iListAllProjects()
-    {
-        /** @var Project */
-        $projectApi = $this->client->getApi('project');
-
-        unset($this->lastReturnAsArray);
-        $this->lastReturn = $projectApi->list();
-        $this->lastResponse = $projectApi->getLastResponse();
+        $this->lastReturn = $lastReturn;
+        $this->lastResponse = $lastResponse;
     }
 
     /**
@@ -160,6 +127,22 @@ final class FeatureContext extends TestCase implements Context
             $this->lastResponse->getContentType(),
             'Raw response content: ' . $this->lastResponse->getContent()
         );
+    }
+
+    /**
+     * @Then the response has an empty content type
+     */
+    public function theResponseHasAnEmptyContentType()
+    {
+        $this->assertSame('', $this->lastResponse->getContentType());
+    }
+
+    /**
+     * @Then the response has the content :content
+     */
+    public function theResponseHasTheContent(string $content)
+    {
+        $this->assertSame($content, $this->lastResponse->getContent());
     }
 
     /**

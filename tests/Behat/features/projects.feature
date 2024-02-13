@@ -49,7 +49,7 @@ Feature: Interacting with the REST API for projects
             | is_public         | true                 |
             | inherit_members   | false                |
 
-    Scenario: List of all projects without any projects
+    Scenario: Listing of zero projects
         Given I have a "NativeCurlClient" client
         And I list all projects
         Then the response has the status code "200"
@@ -69,8 +69,7 @@ Feature: Interacting with the REST API for projects
             | offset            | 0                    |
             | limit             | 25                   |
 
-    @wip
-    Scenario: List of all projects with one project
+    Scenario: Listing of one project
         Given I have a "NativeCurlClient" client
         When I create a project with name "Test Project" and identifier "test-project"
         And I list all projects
@@ -110,3 +109,14 @@ Feature: Interacting with the REST API for projects
             created_on
             updated_on
             """
+
+    Scenario: Updating a project
+        Given I have a "NativeCurlClient" client
+        When I create a project with name "Test Project" and identifier "test-project"
+        And I update the project with identifier "test-project" with the following data
+            | property          | value                |
+            | name              | new project name     |
+            | homepage          | https://example.com  |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
