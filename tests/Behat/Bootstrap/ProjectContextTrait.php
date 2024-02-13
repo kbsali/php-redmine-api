@@ -36,11 +36,11 @@ trait ProjectContextTrait
         }
 
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->create($data),
-            $projectApi->getLastResponse()
+            $api->create($data),
+            $api->getLastResponse()
         );
     }
 
@@ -50,11 +50,11 @@ trait ProjectContextTrait
     public function iListAllProjects()
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->list(),
-            $projectApi->getLastResponse()
+            $api->list(),
+            $api->getLastResponse()
         );
     }
 
@@ -64,11 +64,11 @@ trait ProjectContextTrait
     public function iShowTheProjectWithIdentifier(string $identifier)
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->show($identifier),
-            $projectApi->getLastResponse()
+            $api->show($identifier),
+            $api->getLastResponse()
         );
     }
 
@@ -84,11 +84,11 @@ trait ProjectContextTrait
         }
 
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->update($identifier, $data),
-            $projectApi->getLastResponse()
+            $api->update($identifier, $data),
+            $api->getLastResponse()
         );
     }
 
@@ -98,11 +98,11 @@ trait ProjectContextTrait
     public function iCloseTheProjectWithIdentifier(string $identifier)
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->close($identifier),
-            $projectApi->getLastResponse()
+            $api->close($identifier),
+            $api->getLastResponse()
         );
     }
 
@@ -112,11 +112,11 @@ trait ProjectContextTrait
     public function iReopenTheProjectWithIdentifier(string $identifier)
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->reopen($identifier),
-            $projectApi->getLastResponse()
+            $api->reopen($identifier),
+            $api->getLastResponse()
         );
     }
 
@@ -126,11 +126,11 @@ trait ProjectContextTrait
     public function iArchiveTheProjectWithIdentifier(string $identifier)
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->archive($identifier),
-            $projectApi->getLastResponse()
+            $api->archive($identifier),
+            $api->getLastResponse()
         );
     }
 
@@ -140,11 +140,11 @@ trait ProjectContextTrait
     public function iUnarchiveTheProjectWithIdentifier(string $identifier)
     {
         /** @var Project */
-        $projectApi = $this->getNativeCurlClient()->getApi('project');
+        $api = $this->getNativeCurlClient()->getApi('project');
 
         $this->registerClientResponse(
-            $projectApi->unarchive($identifier),
-            $projectApi->getLastResponse()
+            $api->unarchive($identifier),
+            $api->getLastResponse()
         );
     }
 }
