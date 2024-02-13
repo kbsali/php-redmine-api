@@ -53,3 +53,25 @@ Feature: Interacting with the REST API for groups
             | property          | value                |
             | id                | 4                    |
             | name              | Test Group           |
+
+    @wip
+    Scenario: Showing a specific group
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        When I show the group with id "4"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            group
+            """
+        And the returned data "group" property is an array
+        And the returned data "group" property has only the following properties
+            """
+            id
+            name
+            """
+        And the returned data "group" property contains the following data
+            | property          | value                |
+            | id                | 4                    |
+            | name              | Test Group           |

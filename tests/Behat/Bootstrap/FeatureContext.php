@@ -225,6 +225,10 @@ final class FeatureContext extends TestCase implements Context
     {
         $returnData = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
 
+        if (! is_array($returnData)) {
+            throw new RuntimeException('The returned data on property "' . $property . '" is not an array.');
+        }
+
         foreach ($table as $row) {
             $this->assertArrayHasKey($row['property'], $returnData);
 

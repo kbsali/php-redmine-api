@@ -41,4 +41,18 @@ trait GroupContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I show the group with id :groupId
+     */
+    public function iShowTheGroupWithId(int $groupId)
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->show($groupId),
+            $api->getLastResponse()
+        );
+    }
 }
