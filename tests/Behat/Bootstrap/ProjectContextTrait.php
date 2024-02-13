@@ -91,4 +91,32 @@ trait ProjectContextTrait
             $projectApi->getLastResponse()
         );
     }
+
+    /**
+     * @When I close the project with identifier :identifier
+     */
+    public function iCloseTheProjectWithIdentifier(string $identifier)
+    {
+        /** @var Project */
+        $projectApi = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $projectApi->close($identifier),
+            $projectApi->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I reopen the project with identifier :identifier
+     */
+    public function iReopenTheProjectWithIdentifier(string $identifier)
+    {
+        /** @var Project */
+        $projectApi = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $projectApi->reopen($identifier),
+            $projectApi->getLastResponse()
+        );
+    }
 }
