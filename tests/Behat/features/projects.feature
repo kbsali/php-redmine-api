@@ -61,6 +61,8 @@ Feature: Interacting with the REST API for projects
             offset
             limit
             """
+        And the returned data "projects" property is an array
+        And the returned data "projects" property containts "0" items
         And the returned data has proterties with the following data
             | property          | value                |
             | total_count       | 0                    |
@@ -78,3 +80,5 @@ Feature: Interacting with the REST API for projects
             | total_count       | 1                    |
             | offset            | 0                    |
             | limit             | 25                   |
+        And the returned data "projects" property is an array
+        And the returned data "projects" property containts "1" items

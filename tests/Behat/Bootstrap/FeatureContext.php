@@ -21,6 +21,7 @@ use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
 use Redmine\Tests\RedmineExtension\RedmineInstance;
 use Redmine\Tests\RedmineExtension\RedmineVersion;
+use RuntimeException;
 use SimpleXMLElement;
 
 final class FeatureContext extends TestCase implements Context
@@ -60,6 +61,8 @@ final class FeatureContext extends TestCase implements Context
     private Response $lastResponse;
 
     private mixed $lastReturn;
+
+    private array $lastReturnAsArray;
 
     public function __construct(string $redmineVersion)
     {
@@ -117,6 +120,7 @@ final class FeatureContext extends TestCase implements Context
         /** @var Project */
         $projectApi = $this->client->getApi('project');
 
+        unset($this->lastReturnAsArray);
         $this->lastReturn = $projectApi->create($data);
         $this->lastResponse = $projectApi->getLastResponse();
     }
@@ -129,6 +133,7 @@ final class FeatureContext extends TestCase implements Context
         /** @var Project */
         $projectApi = $this->client->getApi('project');
 
+        unset($this->lastReturnAsArray);
         $this->lastReturn = $projectApi->list();
         $this->lastResponse = $projectApi->getLastResponse();
     }
@@ -170,15 +175,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
     {
-        $properties = [];
-
-        if ($this->lastReturn instanceof SimpleXMLElement) {
-            $properties = array_keys(get_object_vars($this->lastReturn));
-        } else if (is_array($this->lastReturn)) {
-            $properties = array_keys($this->lastReturn);
-        } else {
-            throw new PendingException(__METHOD__);
-        }
+        $properties = array_keys($this->getLastReturnAsArray());
 
         $this->assertSame($string->getStrings(), $properties);
     }
@@ -188,13 +185,7 @@ final class FeatureContext extends TestCase implements Context
      */
     public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table)
     {
-        if ($this->lastReturn instanceof SimpleXMLElement) {
-            $returnData = json_decode(json_encode($this->lastReturn), true);
-        } else if (is_array($this->lastReturn)) {
-            $returnData = $this->lastReturn;
-        } else {
-            throw new PendingException(__METHOD__);
-        }
+        $returnData = $this->getLastReturnAsArray();
 
         if (! is_array($returnData)) {
             throw new Exception('Last return could not converted to array.');
@@ -218,5 +209,53 @@ final class FeatureContext extends TestCase implements Context
 
             $this->assertSame($expected, $value, 'Error with property ' . $row['property']);
         }
+    }
+
+    /**
+     * @Then the returned data :property property is an array
+     */
+    public function theReturnedDataPropertyIsAnArray($property)
+    {
+        $returnData = $this->getLastReturnAsArray();
+
+        $value = $returnData[$property] ?? null;
+
+        $this->assertIsArray($value);
+    }
+
+    /**
+     * @Then the returned data :property property containts :count items
+     */
+    public function theReturnedDataPropertyContaintsItems($property, int $count)
+    {
+        $returnData = $this->getLastReturnAsArray();
+
+        $value = $returnData[$property] ?? null;
+
+        $this->assertCount($count, $value);
+    }
+
+    private function getLastReturnAsArray(): array
+    {
+        if (isset($this->lastReturnAsArray)) {
+            return $this->lastReturnAsArray;
+        }
+
+        if ($this->lastReturn instanceof SimpleXMLElement) {
+            $returnData = json_decode(json_encode($this->lastReturn), true);
+        } else if (is_array($this->lastReturn)) {
+            $returnData = $this->lastReturn;
+        }
+
+        if (! is_array($returnData)) {
+            throw new RuntimeException(sprintf(
+                'the last returned data "%s" could not parsed into an array.',
+                json_encode($this->lastReturn),
+            ));
+        }
+
+        $this->lastReturnAsArray = $returnData;
+
+        return $this->lastReturnAsArray;
     }
 }
