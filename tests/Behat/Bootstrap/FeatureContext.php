@@ -58,7 +58,7 @@ final class FeatureContext extends TestCase implements Context
 
     private RedmineInstance $redmine;
 
-    private Client $client;
+    private NativeCurlClient $client;
 
     private Response $lastResponse;
 
@@ -309,7 +309,7 @@ final class FeatureContext extends TestCase implements Context
 
         if ($this->lastReturn instanceof SimpleXMLElement) {
             $returnData = json_decode(json_encode($this->lastReturn), true);
-        } else if (is_array($this->lastReturn)) {
+        } elseif (is_array($this->lastReturn)) {
             $returnData = $this->lastReturn;
         }
 
