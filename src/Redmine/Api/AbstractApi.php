@@ -37,7 +37,7 @@ abstract class AbstractApi implements Api
     /**
      * @var Response
      */
-    private $lastResponse;
+    protected $lastResponse;
 
     /**
      * @param Client|HttpClient $client
@@ -102,6 +102,8 @@ abstract class AbstractApi implements Api
 
     /**
      * Perform the client get() method.
+     *
+     * @deprecated since v2.6.0, use `\Redmine\Serializer\HttpClient::request()` instead
      *
      * @param string $path
      * @param bool   $decodeIfJson

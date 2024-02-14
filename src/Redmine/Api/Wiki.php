@@ -6,6 +6,8 @@ use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -91,7 +93,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param int        $version version of the page
      *
-     * @return array information about the wiki page
+     * @return array|false|string information about the wiki page as array or false|string on error
      */
     public function show($project, $page, $version = null)
     {
@@ -105,9 +107,23 @@ class Wiki extends AbstractApi
             $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '/' . $version . '.json';
         }
 
-        return $this->get(
-            PathSerializer::create($path, $params)->getPath()
-        );
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+            'GET',
+            PathSerializer::create($path, $params)->getPath(),
+            'application/json'
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            try {
+                return JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
