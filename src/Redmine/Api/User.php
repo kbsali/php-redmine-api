@@ -144,7 +144,7 @@ class User extends AbstractApi
      * @param int|string $id     the user id or `current` for retrieving the user whose credentials are used
      * @param array      $params extra associated data
      *
-     * @return array information about the user
+     * @return array|false|string information about the user as array or false|string on error
      */
     public function show($id, array $params = [])
     {

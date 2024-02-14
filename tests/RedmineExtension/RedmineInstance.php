@@ -126,6 +126,18 @@ final class RedmineInstance
         $tracer->deregisterInstance($this);
     }
 
+    /**
+     * Allows tests to prepare the database
+     */
+    public function excecuteDatabaseQuery(string $query, array $options = [], array $params = null): void
+    {
+        $pdo = new PDO('sqlite:' . $this->rootPath . $this->workingDB);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $pdo->prepare($query, $options);
+        $stmt->execute($params);
+    }
+
     private function runDatabaseMigration()
     {
         $now = new DateTimeImmutable();
