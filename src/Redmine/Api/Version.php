@@ -7,6 +7,8 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -130,11 +132,27 @@ class Version extends AbstractApi
      *
      * @param int $id the version id
      *
-     * @return array information about the version
+     * @return array|false|string information about the version as array of false|string on error
      */
     public function show($id)
     {
-        return $this->get('/versions/' . urlencode(strval($id)) . '.json');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+            'GET',
+            '/versions/' . urlencode(strval($id)) . '.json',
+            'application/json'
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            try {
+                return JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
