@@ -11,10 +11,8 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
@@ -28,6 +26,7 @@ final class FeatureContext extends TestCase implements Context
     use AttachmentContextTrait;
     use GroupContextTrait;
     use ProjectContextTrait;
+    use VersionContextTrait;
     use WikiContextTrait;
 
     private static ?BehatHookTracer $tracer = null;
