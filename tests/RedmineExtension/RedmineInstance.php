@@ -22,9 +22,9 @@ final class RedmineInstance
     }
 
     /**
-     * @param TestRunnerTracer $tracer Required to ensure that RedmineInstance is created while Test Runner is running
+     * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
      */
-    public static function create(TestRunnerTracer $tracer, RedmineVersion $version): void
+    public static function create(InstanceRegistration $tracer, RedmineVersion $version): void
     {
         if (! in_array($version, static::getSupportedVersions())) {
             throw new InvalidArgumentException('Redmine ' . $version->asString() . ' is not supported.');
@@ -33,7 +33,7 @@ final class RedmineInstance
         $tracer->registerInstance(new self($tracer, $version));
     }
 
-    private TestRunnerTracer $tracer;
+    private InstanceRegistration $tracer;
 
     private RedmineVersion $version;
 
@@ -55,7 +55,7 @@ final class RedmineInstance
 
     private string $apiKey;
 
-    private function __construct(TestRunnerTracer $tracer, RedmineVersion $version)
+    private function __construct(InstanceRegistration $tracer, RedmineVersion $version)
     {
         $this->tracer = $tracer;
         $this->version = $version;
@@ -87,6 +87,11 @@ final class RedmineInstance
         return $this->version->asId();
     }
 
+    public function getVersionString(): string
+    {
+        return $this->version->asString();
+    }
+
     public function getRedmineUrl(): string
     {
         return $this->redmineUrl;
@@ -97,7 +102,7 @@ final class RedmineInstance
         return $this->apiKey;
     }
 
-    public function reset(TestRunnerTracer $tracer): void
+    public function reset(InstanceRegistration $tracer): void
     {
         if ($tracer !== $this->tracer) {
             throw new InvalidArgumentException();
@@ -107,7 +112,7 @@ final class RedmineInstance
         $this->restoreFromMigratedFiles();
     }
 
-    public function shutdown(TestRunnerTracer $tracer): void
+    public function shutdown(InstanceRegistration $tracer): void
     {
         if ($tracer !== $this->tracer) {
             throw new InvalidArgumentException();

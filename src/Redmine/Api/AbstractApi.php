@@ -72,7 +72,7 @@ abstract class AbstractApi implements Api
         return $this->httpClient;
     }
 
-    final protected function getLastResponse(): Response
+    final public function getLastResponse(): Response
     {
         return $this->lastResponse !== null ? $this->lastResponse : HttpFactory::makeResponse(0, '', '');
     }

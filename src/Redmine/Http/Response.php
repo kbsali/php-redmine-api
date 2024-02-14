@@ -9,8 +9,6 @@ namespace Redmine\Http;
  *
  * The method signatures are defined with the intention that an implementing class
  * can implment this interface and also the PSR-7 `\Psr\Http\Message\ResponseInterface`
- *
- * @internal
  */
 interface Response
 {
