@@ -30,7 +30,15 @@ trait WikiContextTrait
         $data = [];
 
         foreach ($table as $row) {
-            $data[$row['property']] = $row['value'];
+            $key = $row['property'];
+            $value = $row['value'];
+
+            // Support for json in uploads
+            if ($key === 'uploads') {
+                $value = json_decode($value, true);
+            }
+
+            $data[$key] = $value;
         }
 
         /** @var Wiki */
