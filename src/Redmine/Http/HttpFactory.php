@@ -41,4 +41,42 @@ final class HttpFactory
             }
         };
     }
+
+    public static function makeRequest(string $method, string $path, string $contentType, string $content = ''): Request
+    {
+        return new class ($method, $path, $contentType, $content) implements Request {
+            private $method;
+            private $path;
+            private $contentType;
+            private $content;
+
+            public function __construct(string $method, string $path, string $contentType, string $content)
+            {
+                $this->method = $method;
+                $this->path = $path;
+                $this->contentType = $contentType;
+                $this->content = $content;
+            }
+
+            public function getMethod(): string
+            {
+                return $this->method;
+            }
+
+            public function getPath(): string
+            {
+                return $this->path;
+            }
+
+            public function getContentType(): string
+            {
+                return $this->contentType;
+            }
+
+            public function getContent(): string
+            {
+                return $this->content;
+            }
+        };
+    }
 }

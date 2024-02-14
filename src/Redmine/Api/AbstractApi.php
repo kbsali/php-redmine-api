@@ -110,7 +110,7 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'GET',
             strval($path),
             $this->getContentTypeFromPath(strval($path))
@@ -145,7 +145,7 @@ abstract class AbstractApi implements Api
      */
     protected function post($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'POST',
             strval($path),
             $this->getContentTypeFromPath(strval($path)),
@@ -173,7 +173,7 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'PUT',
             strval($path),
             $this->getContentTypeFromPath(strval($path)),
@@ -200,7 +200,7 @@ abstract class AbstractApi implements Api
      */
     protected function delete($path)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'DELETE',
             strval($path),
             $this->getContentTypeFromPath(strval($path))
@@ -278,7 +278,7 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 strval($endpoint),
                 $this->getContentTypeFromPath(strval($endpoint))
@@ -311,7 +311,7 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 PathSerializer::create($endpoint, $params)->getPath(),
                 $this->getContentTypeFromPath($endpoint)
@@ -438,44 +438,6 @@ abstract class AbstractApi implements Api
                     $this->client->getLastResponseContentType(),
                     $this->client->getLastResponseBody()
                 );
-            }
-        };
-    }
-
-    private function createRequest(string $method, string $path, string $contentType, string $content = ''): Request
-    {
-        return new class ($method, $path, $contentType, $content) implements Request {
-            private $method;
-            private $path;
-            private $contentType;
-            private $content;
-
-            public function __construct(string $method, string $path, string $contentType, string $content)
-            {
-                $this->method = $method;
-                $this->path = $path;
-                $this->contentType = $contentType;
-                $this->content = $content;
-            }
-
-            public function getMethod(): string
-            {
-                return $this->method;
-            }
-
-            public function getPath(): string
-            {
-                return $this->path;
-            }
-
-            public function getContentType(): string
-            {
-                return $this->contentType;
-            }
-
-            public function getContent(): string
-            {
-                return $this->content;
             }
         };
     }
