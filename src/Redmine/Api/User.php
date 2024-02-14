@@ -6,6 +6,8 @@ use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 
@@ -158,9 +160,22 @@ class User extends AbstractApi
         );
         $params['include'] = implode(',', $params['include']);
 
-        return $this->get(
-            PathSerializer::create('/users/' . urlencode(strval($id)) . '.json', $params)->getPath()
-        );
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
+            PathSerializer::create('/users/' . urlencode(strval($id)) . '.json', $params)->getPath(),
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            try {
+                return JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -149,9 +149,9 @@ class Version extends AbstractApi
             } catch (SerializerException $e) {
                 return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

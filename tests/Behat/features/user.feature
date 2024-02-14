@@ -18,20 +18,31 @@ Feature: Interacting with the REST API for users
             """
             id
             login
+            admin
             firstname
             lastname
+            mail
             created_on
             updated_on
             last_login_on
             passwd_changed_on
+            twofa_scheme
+            api_key
+            status
+            groups
             memberships
             """
         And the returned data "user" property contains the following data
             | property          | value                |
             | id                | 1                    |
             | login             | admin                |
+            | admin             | true                 |
             | firstname         | Redmine              |
             | lastname          | Admin                |
+            | mail              | admin@example.net    |
+            | twofa_scheme      | null                 |
+            | status            | 1                    |
+            | groups            | []                   |
             | memberships       | []                   |
 
     @user @error
