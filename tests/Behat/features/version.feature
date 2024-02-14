@@ -7,7 +7,9 @@ Feature: Interacting with the REST API for versions
     Scenario: Creating a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        When I create a version with name "Test-Version" and project identifier "test-project"
+        When I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
@@ -49,3 +51,43 @@ Feature: Interacting with the REST API for versions
             | property          | value                |
             | id                | 1                    |
             | name              | Test Project         |
+
+    @version
+    Scenario: Showing a version
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "Test-Version" and project identifier "test-project"
+        When I show the version with id "1"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            version
+            """
+        And the returned data "version" property is an array
+        And the returned data "version" property has only the following properties
+            """
+            id
+            project
+            name
+            description
+            status
+            due_date
+            sharing
+            wiki_page_title
+            estimated_hours
+            spent_hours
+            created_on
+            updated_on
+            """
+        And the returned data "version" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test-Version         |
+            | description       |                      |
+            | status            | open                 |
+            | due_date          | null                 |
+            | sharing           | none                 |
+            | wiki_page_title   | null                 |
+            | estimated_hours   | 0.0                  |
+            | spent_hours       | 0.0                  |

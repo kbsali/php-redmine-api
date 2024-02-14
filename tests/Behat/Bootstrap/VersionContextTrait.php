@@ -43,4 +43,18 @@ trait VersionContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I show the version with id :versionId
+     */
+    public function iShowTheVersionWithId(int $versionId)
+    {
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->show($versionId),
+            $api->getLastResponse()
+        );
+    }
 }

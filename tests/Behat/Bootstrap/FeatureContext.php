@@ -216,6 +216,7 @@ final class FeatureContext extends TestCase implements Context
 
         $value = $this->getItemFromArray($returnData, $property);
 
+        $this->assertIsArray($value);
         $this->assertCount($count, $value);
     }
 
@@ -249,6 +250,11 @@ final class FeatureContext extends TestCase implements Context
             // Handle expected int values
             if (is_int($value) && ctype_digit($expected)) {
                 $expected = intval($expected);
+            }
+
+            // Handle expected float values
+            if (is_float($value) && is_numeric($expected)) {
+                $expected = floatval($expected);
             }
 
             // Handle expected null value
