@@ -27,19 +27,7 @@ trait WikiContextTrait
      */
     public function iCreateAWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table)
     {
-        $data = [];
-
-        foreach ($table as $row) {
-            $key = $row['property'];
-            $value = $row['value'];
-
-            // Support for json in uploads
-            if ($key === 'uploads') {
-                $value = json_decode($value, true);
-            }
-
-            $data[$key] = $value;
-        }
+        $data = $this->prepareWikiData($table);
 
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
@@ -62,5 +50,40 @@ trait WikiContextTrait
             $api->show($identifier, $pageName),
             $api->getLastResponse()
         );
+    }
+
+    /**
+     * @When I update the wiki page with name :pageName and project identifier :identifier with the following data
+     */
+    public function iUpdateTheWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table)
+    {
+        $data = $this->prepareWikiData($table);
+
+        /** @var Wiki */
+        $api = $this->getNativeCurlClient()->getApi('wiki');
+
+        $this->registerClientResponse(
+            $api->update($identifier, $pageName, $data),
+            $api->getLastResponse()
+        );
+    }
+
+    private function prepareWikiData(TableNode $table): array
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $key = $row['property'];
+            $value = $row['value'];
+
+            // Support for json in uploads
+            if ($key === 'uploads') {
+                $value = json_decode($value, true);
+            }
+
+            $data[$key] = $value;
+        }
+
+        return $data;
     }
 }
