@@ -101,7 +101,7 @@ Feature: Interacting with the REST API for projects
             limit
             """
         And the returned data "projects" property is an array
-        And the returned data "projects" property containts "0" items
+        And the returned data "projects" property contains "0" items
         And the returned data has proterties with the following data
             | property          | value                |
             | total_count       | 0                    |
@@ -120,7 +120,7 @@ Feature: Interacting with the REST API for projects
             | offset            | 0                    |
             | limit             | 25                   |
         And the returned data "projects" property is an array
-        And the returned data "projects" property containts "1" items
+        And the returned data "projects" property contains "1" items
         And the returned data "projects.0" property is an array
         # field 'homepage' was added in Redmine 5.1.0, see https://www.redmine.org/issues/39113
         And the returned data "projects.0" property has only the following properties with Redmine version ">= 5.1.0"

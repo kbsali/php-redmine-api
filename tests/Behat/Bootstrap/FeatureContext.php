@@ -28,6 +28,7 @@ final class FeatureContext extends TestCase implements Context
     use AttachmentContextTrait;
     use GroupContextTrait;
     use ProjectContextTrait;
+    use WikiContextTrait;
 
     private static ?BehatHookTracer $tracer = null;
 
@@ -208,9 +209,9 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
-     * @Then the returned data :property property containts :count items
+     * @Then the returned data :property property contains :count items
      */
-    public function theReturnedDataPropertyContaintsItems($property, int $count)
+    public function theReturnedDataPropertyContainsItems($property, int $count)
     {
         $returnData = $this->getLastReturnAsArray();
 

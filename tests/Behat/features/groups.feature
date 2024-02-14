@@ -29,7 +29,7 @@ Feature: Interacting with the REST API for groups
             groups
             """
         And the returned data "groups" property is an array
-        And the returned data "groups" property containts "0" items
+        And the returned data "groups" property contains "0" items
 
     Scenario: Listing of one group
         Given I have a "NativeCurlClient" client
@@ -42,7 +42,7 @@ Feature: Interacting with the REST API for groups
             groups
             """
         And the returned data "groups" property is an array
-        And the returned data "groups" property containts "1" items
+        And the returned data "groups" property contains "1" items
         And the returned data "groups.0" property is an array
         And the returned data "groups.0" property has only the following properties
             """
