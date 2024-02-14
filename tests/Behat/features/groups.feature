@@ -3,6 +3,7 @@ Feature: Interacting with the REST API for groups
     As a user
     I want to make sure the Redmine server replies with the correct response
 
+    @group
     Scenario: Creating a group with minimal parameters
         Given I have a "NativeCurlClient" client
         When I create a group with name "Test Group"
@@ -19,6 +20,7 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
+    @group
     Scenario: Listing of zero groups
         Given I have a "NativeCurlClient" client
         When I list all groups
@@ -31,6 +33,7 @@ Feature: Interacting with the REST API for groups
         And the returned data "groups" property is an array
         And the returned data "groups" property contains "0" items
 
+    @group
     Scenario: Listing of one group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -54,6 +57,7 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
+    @group
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -75,6 +79,7 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
+    @group
     Scenario: Updating a group
         Given I have a "NativeCurlClient" client
         And I create a group with the following data

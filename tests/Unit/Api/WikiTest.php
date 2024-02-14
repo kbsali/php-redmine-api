@@ -129,7 +129,8 @@ class WikiTest extends TestCase
     public function testShowWithNumericIdsReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -145,7 +146,7 @@ class WikiTest extends TestCase
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show(5, 'test'));
+        $this->assertSame($expectedReturn, $api->show(5, 'test'));
     }
 
     /**
@@ -157,7 +158,8 @@ class WikiTest extends TestCase
     public function testShowWithIdentifierReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -173,7 +175,7 @@ class WikiTest extends TestCase
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show('test', 'example'));
+        $this->assertSame($expectedReturn, $api->show('test', 'example'));
     }
 
     /**
@@ -185,7 +187,8 @@ class WikiTest extends TestCase
     public function testShowWithNumericIdsAndVersionReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -201,7 +204,7 @@ class WikiTest extends TestCase
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show(5, 'test', 22));
+        $this->assertSame($expectedReturn, $api->show(5, 'test', 22));
     }
 
     /**
@@ -213,7 +216,8 @@ class WikiTest extends TestCase
     public function testShowWithIdentifierAndVersionReturnsClientGetResponse()
     {
         // Test values
-        $response = 'API Response';
+        $response = '["API Response"]';
+        $expectedReturn = ['API Response'];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -229,7 +233,7 @@ class WikiTest extends TestCase
         $api = new Wiki($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->show('test', 'example', 22));
+        $this->assertSame($expectedReturn, $api->show('test', 'example', 22));
     }
 
     /**
