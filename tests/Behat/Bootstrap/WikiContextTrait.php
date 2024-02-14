@@ -68,6 +68,20 @@ trait WikiContextTrait
         );
     }
 
+    /**
+     * @When I delete the wiki page with name :pageName and project identifier :identifier
+     */
+    public function iDeleteTheWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier)
+    {
+        /** @var Wiki */
+        $api = $this->getNativeCurlClient()->getApi('wiki');
+
+        $this->registerClientResponse(
+            $api->remove($identifier, $pageName),
+            $api->getLastResponse()
+        );
+    }
+
     private function prepareWikiData(TableNode $table): array
     {
         $data = [];
