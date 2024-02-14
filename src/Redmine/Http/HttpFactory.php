@@ -79,4 +79,9 @@ final class HttpFactory
             }
         };
     }
+
+    public static function makeJsonRequest(string $method, string $path, string $content = ''): Request
+    {
+        return static::makeRequest($method, $path, 'application/json', $content);
+    }
 }

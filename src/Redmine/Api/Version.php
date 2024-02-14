@@ -136,10 +136,9 @@ class Version extends AbstractApi
      */
     public function show($id)
     {
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
             '/versions/' . urlencode(strval($id)) . '.json',
-            'application/json'
         ));
 
         $body = $this->lastResponse->getContent();

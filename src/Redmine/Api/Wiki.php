@@ -107,10 +107,9 @@ class Wiki extends AbstractApi
             $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '/' . $version . '.json';
         }
 
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
             PathSerializer::create($path, $params)->getPath(),
-            'application/json'
         ));
 
         $body = $this->lastResponse->getContent();
