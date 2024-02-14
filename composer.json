@@ -29,11 +29,12 @@
         "psr/http-factory": "^1.0"
     },
     "require-dev": {
+        "behat/behat": "^3.14",
         "friendsofphp/php-cs-fixer": "^3.45",
-        "phpunit/phpunit": "^9 || ^10.5",
         "guzzlehttp/psr7": "^2",
         "php-mock/php-mock-phpunit": "^2.6",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9 || ^10.5"
     },
     "autoload": {
         "psr-4": {
@@ -45,10 +46,13 @@
             "Redmine\\Tests\\": "tests/"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
     "scripts": {
+        "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
-        "end2end": "phpunit --configuration=\"phpunit-end2end.xml\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
         "phpunit": "phpunit",
         "test": [
