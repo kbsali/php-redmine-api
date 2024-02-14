@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.x)
 
+### Added
+
+- New method `Redmine\Api\...::getLastResponse()` to get the last response made by the API class.
+
 ### Fixed
 
 - Parameter types for IDs were fixed in API for attachments, groups, issues, project, users and versions.
