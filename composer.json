@@ -29,12 +29,12 @@
         "psr/http-factory": "^1.0"
     },
     "require-dev": {
+        "behat/behat": "^3.14",
         "friendsofphp/php-cs-fixer": "^3.45",
-        "phpunit/phpunit": "^9 || ^10.5",
         "guzzlehttp/psr7": "^2",
         "php-mock/php-mock-phpunit": "^2.6",
         "phpstan/phpstan": "^1.10",
-        "behat/behat": "^3.14"
+        "phpunit/phpunit": "^9 || ^10.5"
     },
     "autoload": {
         "psr-4": {
@@ -45,6 +45,9 @@
         "psr-4": {
             "Redmine\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
     },
     "scripts": {
         "behat": "behat --config tests/Behat/behat.yml",
