@@ -26,6 +26,7 @@ final class FeatureContext extends TestCase implements Context
     use AttachmentContextTrait;
     use GroupContextTrait;
     use ProjectContextTrait;
+    use UserContextTrait;
     use VersionContextTrait;
     use WikiContextTrait;
 
