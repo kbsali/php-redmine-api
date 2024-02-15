@@ -114,15 +114,15 @@ class Wiki extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ('' !== $body) {
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
+        if ('' === $body) {
+            return false;
         }
 
-        return false;
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**
