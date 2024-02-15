@@ -79,6 +79,15 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
+    @group @error
+    Scenario: Try to show a non-existing group
+        Given I have a "NativeCurlClient" client
+        When I show the group with id "40"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+
     @group
     Scenario: Updating a group
         Given I have a "NativeCurlClient" client

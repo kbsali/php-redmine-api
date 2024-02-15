@@ -6,6 +6,8 @@ use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
@@ -159,13 +161,26 @@ class Group extends AbstractApi
      * @param int   $id     the group id
      * @param array $params params to pass to url
      *
-     * @return array
+     * @return array|false|string information about the group as array or false|string on error
      */
     public function show($id, array $params = [])
     {
-        return $this->get(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
             PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**
