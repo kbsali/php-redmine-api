@@ -42,7 +42,7 @@ final class HttpFactory
         };
     }
 
-    public static function makeRequest(string $method, string $path, string $contentType, string $content = ''): Request
+    public static function makeRequest(string $method, string $path, string $contentType = '', string $content = ''): Request
     {
         return new class ($method, $path, $contentType, $content) implements Request {
             private $method;

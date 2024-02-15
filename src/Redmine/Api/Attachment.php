@@ -2,6 +2,9 @@
 
 namespace Redmine\Api;
 
+use Redmine\Exception\SerializerException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 
 /**
@@ -20,11 +23,26 @@ class Attachment extends AbstractApi
      *
      * @param int $id the attachment number
      *
-     * @return array information about the attachment
+     * @return array|false|string information about the attachment as array or false|string on error
      */
     public function show($id)
     {
-        return $this->get('/attachments/' . urlencode(strval($id)) . '.json');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
+            '/attachments/' . urlencode(strval($id)) . '.json',
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**
@@ -32,11 +50,18 @@ class Attachment extends AbstractApi
      *
      * @param int $id the attachment number
      *
-     * @return string the attachment content
+     * @return string|false the attachment content as string of false on error
      */
     public function download($id)
     {
-        return $this->get('/attachments/download/' . urlencode(strval($id)), false);
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+            'GET',
+            '/attachments/download/' . urlencode(strval($id))
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        return ('' === $body) ? false : $body;
     }
 
     /**
