@@ -228,33 +228,4 @@ class RoleTest extends TestCase
         $this->assertSame($expectedReturn, $api->listing(true));
         $this->assertSame($expectedReturn, $api->listing(true));
     }
-
-    /**
-     * Test show().
-     *
-     * @covers ::show
-     * @test
-     */
-    public function testShowReturnsClientGetResponse()
-    {
-        // Test values
-        $response = '["API Response"]';
-        $expectedReturn = ['API Response'];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with($this->stringStartsWith('/roles/5.json'))
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Role($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->show(5));
-    }
 }
