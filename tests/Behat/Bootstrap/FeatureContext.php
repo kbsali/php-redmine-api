@@ -151,6 +151,14 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @Then the response has the content
+     */
+    public function theResponseHasTheContentWithMultipleLines(PyStringNode $string)
+    {
+        $this->assertSame($string->getRaw(), $this->lastResponse->getContent());
+    }
+
+    /**
      * @Then the returned data is true
      */
     public function theReturnedDataIsTrue()
@@ -172,6 +180,14 @@ final class FeatureContext extends TestCase implements Context
     public function theReturnedDataIsExactly(string $content)
     {
         $this->assertSame($content, $this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data is exactly
+     */
+    public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string)
+    {
+        $this->assertSame($string->getRaw(), $this->lastReturn);
     }
 
     /**
