@@ -29,4 +29,18 @@ trait TimeEntryContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I show the time entry with the id :activityId
+     */
+    public function iShowTheTimeEntryWithTheId(int $activityId)
+    {
+        /** @var TimeEntry */
+        $api = $this->getNativeCurlClient()->getApi('time_entry');
+
+        $this->registerClientResponse(
+            $api->show($activityId),
+            $api->getLastResponse()
+        );
+    }
 }

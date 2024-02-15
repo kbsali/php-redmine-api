@@ -68,3 +68,78 @@ Feature: Interacting with the REST API for time_entries
             | property          | value                |
             | id                | 1                    |
             | name              | development          |
+
+    @time_entry
+    Scenario: Showing a time_entry to a project
+        Given I have a "NativeCurlClient" client
+        And I have a time entry activiy with name "development"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a time entry with the following data
+            | property          | value                |
+            | project_id        | 1                    |
+            | hours             | 1                    |
+        When I show the time entry with the id "1"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            time_entry
+            """
+        And the returned data "time_entry" property has only the following properties
+            """
+            id
+            project
+            user
+            activity
+            hours
+            comments
+            spent_on
+            created_on
+            updated_on
+            """
+        And the returned data "time_entry" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | hours             | 1.0                  |
+            | comments          | null                 |
+        And the returned data "time_entry.project" property is an array
+        And the returned data "time_entry.project" property has only the following properties
+            """
+            id
+            name
+            """
+        And the returned data "time_entry.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+        And the returned data "time_entry.user" property is an array
+        And the returned data "time_entry.user" property has only the following properties
+            """
+            id
+            name
+            """
+        And the returned data "time_entry.user" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Redmine Admin        |
+        And the returned data "time_entry.activity" property is an array
+        And the returned data "time_entry.activity" property has only the following properties
+            """
+            id
+            name
+            """
+        And the returned data "time_entry.activity" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | development          |
+
+    @time_entry @entry
+    Scenario: Try to show a non-existing time_entry
+        Given I have a "NativeCurlClient" client
+        And I have a time entry activiy with name "development"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I show the time entry with the id "1"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false

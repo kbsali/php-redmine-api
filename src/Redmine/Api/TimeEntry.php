@@ -6,6 +6,8 @@ use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\XmlSerializer;
 
 /**
@@ -78,11 +80,26 @@ class TimeEntry extends AbstractApi
      *
      * @param int $id the time entry id
      *
-     * @return array information about the time entry
+     * @return array|false|string information about the time entry as array or false|string on error
      */
     public function show($id)
     {
-        return $this->get('/time_entries/' . urlencode(strval($id)) . '.json');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
+            '/time_entries/' . urlencode(strval($id)) . '.json'
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**
