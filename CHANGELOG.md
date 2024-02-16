@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Parameter types for IDs were fixed in API for attachments, groups, issues, project, users and versions.
+- Return types were fixed in API for attachments, groups, time entries, issues, project, users, versions and wiki.
 - Wiki pages with special characters are now handled correctly
 - `Redmine\Api\Attachment::download()` returns false on error instead of the HTML error page
 
