@@ -59,9 +59,11 @@ class Attachment extends AbstractApi
             '/attachments/download/' . urlencode(strval($id))
         ));
 
-        $body = $this->lastResponse->getContent();
+        if (200 !== $this->lastResponse->getStatusCode()) {
+            return false;
+        }
 
-        return ('' === $body) ? false : $body;
+        return $this->lastResponse->getContent();
     }
 
     /**

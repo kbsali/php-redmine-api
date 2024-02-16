@@ -14,7 +14,7 @@ class DownloadTest extends TestCase
     /**
      * @dataProvider getDownloadData
      */
-    public function testDownloadReturnsCorrectResponse($id, $expectedPath, $response, $expectedReturn)
+    public function testDownloadReturnsCorrectResponse($id, $expectedPath, $responseCode, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -23,7 +23,7 @@ class DownloadTest extends TestCase
                 $expectedPath,
                 '',
                 '',
-                200,
+                $responseCode,
                 'application/json',
                 $response
             ]
@@ -39,9 +39,9 @@ class DownloadTest extends TestCase
     public static function getDownloadData(): array
     {
         return [
-            'string response with integer id' => [5, '/attachments/download/5', 'attachment-content', 'attachment-content'],
-            'string response with string id' => ['5', '/attachments/download/5', 'attachment-content', 'attachment-content'],
-            'false response' => [5, '/attachments/download/5', '', false],
+            'string response with integer id' => [5, '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
+            'string response with string id' => ['5', '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
+            'false response' => [5, '/attachments/download/5', 404, '', false],
         ];
     }
 }

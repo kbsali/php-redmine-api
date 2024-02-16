@@ -102,6 +102,6 @@ Feature: Interacting with the REST API for attachments
         When I download the attachment with the id "1"
         Then the response has the status code "404"
         And the response has the content type "text/html"
-        # FIXME: the response body contains a 404 HTML page from Redmine
+        # The response body contains a 404 HTML page from Redmine
         # And the response has the content "<!DOCTYPE html><html lang="en">..."
-        # And the returned data is exactly "<!DOCTYPE html><html lang="en">..."
+        And the returned data is false
