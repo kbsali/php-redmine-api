@@ -14,8 +14,6 @@ use Redmine\Exception\ClientException;
  *
  * The client is responsible for ensuring that all data is sent in the correct form and
  * that received data is processed correctly.
- *
- * @internal
  */
 interface HttpClient
 {

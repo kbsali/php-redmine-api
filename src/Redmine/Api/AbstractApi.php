@@ -82,12 +82,12 @@ abstract class AbstractApi implements Api
      *
      * @return bool
      *
-     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use \Redmine\Client\Client::getLastResponseStatusCode() instead
-     * @see Client::getLastResponseStatusCode() for checking the status code directly
+     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use `Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead
+     * @see AbstractApi::getLastResponse()->getStatusCode() for checking the status code directly
      */
     public function lastCallFailed()
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Api\AbstractApi::getLastResponse()->getStatusCode() instead.', E_USER_DEPRECATED);
 
         if ($this->lastResponse !== null) {
             $code = $this->lastResponse->getStatusCode();
@@ -103,7 +103,7 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client get() method.
      *
-     * @deprecated since v2.6.0, use `\Redmine\Serializer\HttpClient::request()` instead
+     * @deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead
      *
      * @param string $path
      * @param bool   $decodeIfJson
@@ -112,6 +112,8 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
+
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'GET',
             strval($path),

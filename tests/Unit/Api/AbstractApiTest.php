@@ -52,6 +52,35 @@ class AbstractApiTest extends TestCase
     }
 
     /**
+     * @covers ::get
+     */
+    public function testGetTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\AbstractApi::get()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $method = new ReflectionMethod($api, 'get');
+        $method->setAccessible(true);
+
+        $method->invoke($api, '/path.json');
+    }
+
+    /**
      * @covers ::getLastResponse
      */
     public function testGetLastResponseWithHttpClientWorks()
@@ -60,10 +89,7 @@ class AbstractApiTest extends TestCase
 
         $api = new class ($client) extends AbstractApi {};
 
-        $method = new ReflectionMethod($api, 'getLastResponse');
-        $method->setAccessible(true);
-
-        $this->assertInstanceOf(Response::class, $method->invoke($api));
+        $this->assertInstanceOf(Response::class, $api->getLastResponse());
     }
 
     /**
