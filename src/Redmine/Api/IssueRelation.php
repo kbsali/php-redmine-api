@@ -79,12 +79,13 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
-     * @return array relation's details
+     * @return array relation's details or empty array on error
      */
     public function show($id)
     {
         $ret = $this->get('/relations/' . urlencode(strval($id)) . '.json');
-        if (false === $ret) {
+
+        if (false === $ret || ! is_array($ret)) {
             return [];
         }
 
