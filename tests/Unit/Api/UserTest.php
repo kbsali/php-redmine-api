@@ -5,7 +5,6 @@ namespace Redmine\Tests\Unit\Api;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Client\Client;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**

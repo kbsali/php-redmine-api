@@ -187,7 +187,7 @@ class User extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return SimpleXMLElement|string
      */
     public function create(array $params = [])
     {

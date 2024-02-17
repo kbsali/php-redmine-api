@@ -4,7 +4,6 @@ namespace Redmine\Tests\Unit\Api\User;
 
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
-use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
