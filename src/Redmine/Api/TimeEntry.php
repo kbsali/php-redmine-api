@@ -9,6 +9,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing time entries, creating, editing.
@@ -111,7 +112,7 @@ class TimeEntry extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return SimpleXMLElement|string
      */
     public function create(array $params = [])
     {
