@@ -10,6 +10,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing users, creating, editing.
