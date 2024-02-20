@@ -6,7 +6,6 @@ namespace Redmine\Tests\Behat\Bootstrap;
 
 trait IssuePriorityContextTrait
 {
-
     /**
      * @Given I have an issue priority with the name :priority
      */
