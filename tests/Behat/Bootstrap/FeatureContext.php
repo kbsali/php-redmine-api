@@ -6,7 +6,6 @@ namespace Redmine\Tests\Behat\Bootstrap;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
@@ -25,9 +24,13 @@ final class FeatureContext extends TestCase implements Context
 {
     use AttachmentContextTrait;
     use GroupContextTrait;
+    use IssueContextTrait;
+    use IssuePriorityContextTrait;
+    use IssueStatusContextTrait;
     use ProjectContextTrait;
     use TimeEntryActivityContextTrait;
     use TimeEntryContextTrait;
+    use TrackerContextTrait;
     use UserContextTrait;
     use VersionContextTrait;
     use WikiContextTrait;
