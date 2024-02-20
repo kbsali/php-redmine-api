@@ -3,6 +3,7 @@
 namespace Redmine\Api;
 
 use Redmine\Exception;
+use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpFactory;
@@ -127,9 +128,16 @@ class IssueRelation extends AbstractApi
      * Create a new issue relation.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#POST
+     * available $params:
+     * - issue_to_id (required): the id of the related issue
+     * - relation_type (required to explicit : default "relates"): the type of relation
+     *   (in: "relates", "duplicates", "duplicated", "blocks", "blocked", "precedes", "follows", "copied_to", "copied_from")
+     * - delay (optional): the delay for a "precedes" or "follows" relation
      *
      * @param int   $issueId the ID of the issue we are creating the relation on
      * @param array $params  the new issue relation data
+     *
+     * @throws MissingParameterException Missing mandatory parameters
      *
      * @return array
      */
@@ -142,6 +150,10 @@ class IssueRelation extends AbstractApi
         ];
 
         $params = $this->sanitizeParams($defaults, $params);
+
+        if (!isset($params['issue_to_id'])) {
+            throw new MissingParameterException('Theses parameters are mandatory: `issue_to_id`');
+        }
 
         $response = $this->post(
             '/issues/' . urlencode(strval($issueId)) . '/relations.json',
