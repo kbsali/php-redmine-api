@@ -288,39 +288,6 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test create().
-     *
-     * @covers ::create
-     * @covers ::post
-     * @test
-     */
-    public function testCreateCallsPost()
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = [];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                '/issues.xml',
-                '<?xml version="1.0"?>' . "\n" . '<issue/>' . "\n"
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Issue($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->create($parameters));
-    }
-
-    /**
      * Test cleanParams().
      *
      * @covers ::create

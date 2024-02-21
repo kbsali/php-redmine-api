@@ -99,9 +99,6 @@ class CreateTest extends TestCase
 
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
-        // Test values
-        $response = 'API Response';
-
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
 
@@ -112,7 +109,7 @@ class CreateTest extends TestCase
         $this->expectExceptionMessage('Theses parameters are mandatory: `name`, `identifier`');
 
         // Perform the tests
-        $this->assertSame($response, $api->create());
+        $api->create();
     }
 
     /**
