@@ -94,6 +94,39 @@ class CreateTest extends TestCase
                 201,
                 '<?xml version="1.0" encoding="UTF-8"?><project></project>',
             ],
+            'test with custom fields' => [
+                [
+                    'identifier' => 'test-project',
+                    'name' => 'Test Project',
+                    'custom_fields' => [
+                        [
+                            'id' => 123,
+                            'name' => 'cf_name',
+                            'field_format' => 'string',
+                            'value' => [1, 2, 3],
+                        ],
+                    ],
+                ],
+                '/projects.xml',
+                <<<XML
+                <?xml version="1.0" encoding="UTF-8"?>
+                <project>
+                    <name>Test Project</name>
+                    <identifier>test-project</identifier>
+                    <custom_fields type="array">
+                        <custom_field name="cf_name" field_format="string" id="123" multiple="true">
+                            <value type="array">
+                                <value>1</value>
+                                <value>2</value>
+                                <value>3</value>
+                            </value>
+                        </custom_field>
+                    </custom_fields>
+                </project>
+                XML,
+                201,
+                '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+            ],
         ];
     }
 

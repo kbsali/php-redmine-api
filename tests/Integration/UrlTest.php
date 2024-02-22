@@ -266,14 +266,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Project */
         $api = MockClient::create()->getApi('project');
-        $res = $api->create([
-            'name' => 'asdf',
-            'identifier' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, [
             'name' => 'asdf',
@@ -329,14 +321,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\TimeEntry */
         $api = MockClient::create()->getApi('time_entry');
-        $res = $api->create([
-            'issue_id' => 1,
-            'hours' => 12,
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/time_entries.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, []);
         $res = json_decode($res, true);
