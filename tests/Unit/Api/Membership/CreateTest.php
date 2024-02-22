@@ -64,6 +64,30 @@ class CreateTest extends TestCase
         ];
     }
 
+    public function testCreateReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects/5/memberships.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new Membership($client);
+
+        // Perform the tests
+        $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
+
+        $this->assertSame('', $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
         // Create the used mock objects

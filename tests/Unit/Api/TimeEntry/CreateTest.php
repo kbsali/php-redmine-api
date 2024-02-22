@@ -102,6 +102,30 @@ class CreateTest extends TestCase
         ];
     }
 
+    public function testCreateReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/time_entries.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new TimeEntry($client);
+
+        // Perform the tests
+        $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
+
+        $this->assertSame('', $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
         // Test values

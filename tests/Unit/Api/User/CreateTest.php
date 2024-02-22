@@ -89,6 +89,30 @@ class CreateTest extends TestCase
         ];
     }
 
+    public function testCreateReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new User($client);
+
+        // Perform the tests
+        $return = $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
+
+        $this->assertSame('', $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters()
     {
         // Test values
