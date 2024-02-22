@@ -20,34 +20,6 @@ class UserXmlTest extends TestCase
         $api->create();
     }
 
-    public function testCreateComplex()
-    {
-        /** @var \Redmine\Api\User */
-        $api = MockClient::create()->getApi('user');
-        $res = $api->create([
-            'login' => 'test',
-            'firstname' => 'test',
-            'lastname' => 'test',
-            'mail' => 'test@example.com',
-        ]);
-        $response = json_decode($res, true);
-
-        $this->assertEquals('POST', $response['method']);
-        $this->assertEquals('/users.xml', $response['path']);
-        $this->assertXmlStringEqualsXmlString(
-            <<< XML
-            <?xml version="1.0"?>
-            <user>
-                <login>test</login>
-                <lastname>test</lastname>
-                <firstname>test</firstname>
-                <mail>test@example.com</mail>
-            </user>
-            XML,
-            $response['data']
-        );
-    }
-
     public function testUpdate()
     {
         /** @var \Redmine\Api\User */

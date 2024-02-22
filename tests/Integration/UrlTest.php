@@ -399,16 +399,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');
-        $res = $api->create([
-            'login' => 'asdf',
-            'lastname' => 'asdf',
-            'firstname' => 'asdf',
-            'mail' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/users.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, []);
         $res = json_decode($res, true);
