@@ -3,6 +3,7 @@ Feature: Interacting with the REST API for wikis
     As a user
     I want to make sure the Redmine server replies with the correct response
 
+    @wiki
     Scenario: Creating a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -41,6 +42,7 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @wiki @attachment
     Scenario: Creating a wiki page with attachment upload
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -83,6 +85,7 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @wiki
     Scenario: Showing a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -126,6 +129,17 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @wiki @error
+    Scenario: Try to show a not existing wiki page
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I show the wiki page with name "This-page-does-not-exist" and project identifier "test-project"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+
+    @wiki @attachment
     Scenario: Showing a wiki page with uploaded attachment
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -204,6 +218,7 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @wiki
     Scenario: Updating a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -218,6 +233,7 @@ Feature: Interacting with the REST API for wikis
         And the response has the content ""
         And the returned data is exactly ""
 
+    @wiki
     Scenario: Deleting a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

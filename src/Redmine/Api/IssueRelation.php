@@ -5,6 +5,7 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 
 /**
@@ -79,16 +80,33 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
-     * @return array relation's details
+     * @return array relation's details or empty array on error
      */
     public function show($id)
     {
-        $ret = $this->get('/relations/' . urlencode(strval($id)) . '.json');
-        if (false === $ret) {
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
+            '/relations/' . urlencode(strval($id)) . '.json',
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+
+        if ('' === $body) {
             return [];
         }
 
-        return $ret['relation'];
+        try {
+            $data = JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return [];
+        }
+
+        if (! is_array($data) || ! array_key_exists('relation', $data) || ! is_array($data['relation'])) {
+            return [];
+        }
+
+        return $data['relation'];
     }
 
     /**

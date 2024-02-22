@@ -37,7 +37,7 @@ abstract class AbstractApi implements Api
     /**
      * @var Response
      */
-    private $lastResponse;
+    protected $lastResponse;
 
     /**
      * @param Client|HttpClient $client
@@ -82,12 +82,12 @@ abstract class AbstractApi implements Api
      *
      * @return bool
      *
-     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use \Redmine\Client\Client::getLastResponseStatusCode() instead
-     * @see Client::getLastResponseStatusCode() for checking the status code directly
+     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use `Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead
+     * @see AbstractApi::getLastResponse()->getStatusCode() for checking the status code directly
      */
     public function lastCallFailed()
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Client\Client::getLastResponseStatusCode() instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.1.0, use \Redmine\Api\AbstractApi::getLastResponse()->getStatusCode() instead.', E_USER_DEPRECATED);
 
         if ($this->lastResponse !== null) {
             $code = $this->lastResponse->getStatusCode();
@@ -103,6 +103,8 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client get() method.
      *
+     * @deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead
+     *
      * @param string $path
      * @param bool   $decodeIfJson
      *
@@ -110,7 +112,9 @@ abstract class AbstractApi implements Api
      */
     protected function get($path, $decodeIfJson = true)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
+
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'GET',
             strval($path),
             $this->getContentTypeFromPath(strval($path))
@@ -145,7 +149,7 @@ abstract class AbstractApi implements Api
      */
     protected function post($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'POST',
             strval($path),
             $this->getContentTypeFromPath(strval($path)),
@@ -173,7 +177,7 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'PUT',
             strval($path),
             $this->getContentTypeFromPath(strval($path)),
@@ -200,7 +204,7 @@ abstract class AbstractApi implements Api
      */
     protected function delete($path)
     {
-        $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'DELETE',
             strval($path),
             $this->getContentTypeFromPath(strval($path))
@@ -278,7 +282,7 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if (empty($params)) {
-            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 strval($endpoint),
                 $this->getContentTypeFromPath(strval($endpoint))
@@ -311,7 +315,7 @@ abstract class AbstractApi implements Api
             $params['limit'] = $_limit;
             $params['offset'] = $offset;
 
-            $this->lastResponse = $this->getHttpClient()->request($this->createRequest(
+            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 PathSerializer::create($endpoint, $params)->getPath(),
                 $this->getContentTypeFromPath($endpoint)
@@ -438,44 +442,6 @@ abstract class AbstractApi implements Api
                     $this->client->getLastResponseContentType(),
                     $this->client->getLastResponseBody()
                 );
-            }
-        };
-    }
-
-    private function createRequest(string $method, string $path, string $contentType, string $content = ''): Request
-    {
-        return new class ($method, $path, $contentType, $content) implements Request {
-            private $method;
-            private $path;
-            private $contentType;
-            private $content;
-
-            public function __construct(string $method, string $path, string $contentType, string $content)
-            {
-                $this->method = $method;
-                $this->path = $path;
-                $this->contentType = $contentType;
-                $this->content = $content;
-            }
-
-            public function getMethod(): string
-            {
-                return $this->method;
-            }
-
-            public function getPath(): string
-            {
-                return $this->path;
-            }
-
-            public function getContentType(): string
-            {
-                return $this->contentType;
-            }
-
-            public function getContent(): string
-            {
-                return $this->content;
             }
         };
     }

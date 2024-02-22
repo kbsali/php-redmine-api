@@ -3,6 +3,7 @@ Feature: Interacting with the REST API for projects
     As a user
     I want to make sure the Redmine server replies with the correct response
 
+    @project
     Scenario: Creating a project with minimal parameters
         Given I have a "NativeCurlClient" client
         When I create a project with name "Test Project" and identifier "test-project"
@@ -28,6 +29,7 @@ Feature: Interacting with the REST API for projects
             | name              | Test Project         |
             | identifier        | test-project         |
 
+    @project
     Scenario: Creating a project with multiple parameters
         Given I have a "NativeCurlClient" client
         When I create a project with the following data
@@ -49,6 +51,7 @@ Feature: Interacting with the REST API for projects
             | is_public         | true                 |
             | inherit_members   | false                |
 
+    @project
     Scenario: Showing a specific project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -88,6 +91,7 @@ Feature: Interacting with the REST API for projects
             | trackers          | []                   |
             | issue_categories  | []                   |
 
+    @project
     Scenario: Listing of zero projects
         Given I have a "NativeCurlClient" client
         When I list all projects
@@ -108,6 +112,7 @@ Feature: Interacting with the REST API for projects
             | offset            | 0                    |
             | limit             | 25                   |
 
+    @project
     Scenario: Listing of one project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -149,6 +154,7 @@ Feature: Interacting with the REST API for projects
             updated_on
             """
 
+    @project
     Scenario: Updating a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -161,6 +167,7 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is exactly ""
 
+    @project
     Scenario: Closing a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -174,6 +181,7 @@ Feature: Interacting with the REST API for projects
             | property          | value                |
             | status            | 5                    |
 
+    @project
     Scenario: Reopening a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -188,6 +196,7 @@ Feature: Interacting with the REST API for projects
             | property          | value                |
             | status            | 1                    |
 
+    @project
     Scenario: Archiving a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -197,6 +206,7 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is true
 
+    @project @error
     Scenario: Showing an archived project is not possible
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -207,6 +217,7 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is false
 
+    @project
     Scenario: Unarchiving a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

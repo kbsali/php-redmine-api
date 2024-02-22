@@ -11,10 +11,8 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
@@ -28,6 +26,10 @@ final class FeatureContext extends TestCase implements Context
     use AttachmentContextTrait;
     use GroupContextTrait;
     use ProjectContextTrait;
+    use TimeEntryActivityContextTrait;
+    use TimeEntryContextTrait;
+    use UserContextTrait;
+    use VersionContextTrait;
     use WikiContextTrait;
 
     private static ?BehatHookTracer $tracer = null;
@@ -149,6 +151,14 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @Then the response has the content
+     */
+    public function theResponseHasTheContentWithMultipleLines(PyStringNode $string)
+    {
+        $this->assertSame($string->getRaw(), $this->lastResponse->getContent());
+    }
+
+    /**
      * @Then the returned data is true
      */
     public function theReturnedDataIsTrue()
@@ -170,6 +180,14 @@ final class FeatureContext extends TestCase implements Context
     public function theReturnedDataIsExactly(string $content)
     {
         $this->assertSame($content, $this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data is exactly
+     */
+    public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string)
+    {
+        $this->assertSame($string->getRaw(), $this->lastReturn);
     }
 
     /**
@@ -217,6 +235,7 @@ final class FeatureContext extends TestCase implements Context
 
         $value = $this->getItemFromArray($returnData, $property);
 
+        $this->assertIsArray($value);
         $this->assertCount($count, $value);
     }
 
@@ -250,6 +269,11 @@ final class FeatureContext extends TestCase implements Context
             // Handle expected int values
             if (is_int($value) && ctype_digit($expected)) {
                 $expected = intval($expected);
+            }
+
+            // Handle expected float values
+            if (is_float($value) && is_numeric($expected)) {
+                $expected = floatval($expected);
             }
 
             // Handle expected null value

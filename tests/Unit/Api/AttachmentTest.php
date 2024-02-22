@@ -59,62 +59,6 @@ class AttachmentTest extends TestCase
     }
 
     /**
-     * Test show().
-     *
-     * @covers ::show
-     * @test
-     */
-    public function testShowReturnsClientGetResponse()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with($this->equalTo('/attachments/5.json'))
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Attachment($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->show(5));
-    }
-
-    /**
-     * Test download().
-     *
-     * @covers ::download
-     * @test
-     */
-    public function testDownloadReturnsUndecodedClientGetResponse()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with($this->equalTo('/attachments/download/5'))
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Attachment($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->download(5));
-    }
-
-    /**
      * Test upload().
      *
      * @covers ::post

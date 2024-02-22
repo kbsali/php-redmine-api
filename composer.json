@@ -50,7 +50,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "behat": "behat --config tests/Behat/behat.yml",
+        "behat": "behat --config tests/Behat/behat.yml --format progress",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",

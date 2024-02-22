@@ -7,6 +7,7 @@ use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
@@ -132,7 +133,7 @@ class Issue extends AbstractApi
      * @param int    $id     the issue id
      * @param array  $params extra associated data
      *
-     * @return array information about the issue
+     * @return array|false|string information about the issue as array or false|string on error
      */
     public function show($id, array $params = [])
     {
@@ -140,9 +141,22 @@ class Issue extends AbstractApi
             $params['include'] = implode(',', $params['include']);
         }
 
-        return $this->get(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
             PathSerializer::create('/issues/' . urlencode(strval($id)) . '.json', $params)->getPath()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**

@@ -9,12 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New interface `Redmine\Http\HttpClient` for new minimalistic HTTP clients.
+- New interface `Redmine\Http\Request` for sending data with new minimalistic HTTP clients.
 - New method `Redmine\Api\...::getLastResponse()` to get the last response made by the API class.
 
 ### Fixed
 
 - Parameter types for IDs were fixed in API for attachments, groups, issues, project, users and versions.
-- Wiki pages with special characters are now handled correctly
+- Return types were fixed in API for attachments, groups, time entries, issues, project, users, versions and wiki.
+- Wiki pages with special characters are now handled correctly.
+- `Redmine\Api\Attachment::download()` returns false on error instead of the HTML error page.
+
+### Deprecated
+
+- `Redmine\Api\AbstractApi::get()` is deprecated, use `\Redmine\Http\HttpClient::request()` instead.
 
 ## [v2.5.0](https://github.com/kbsali/php-redmine-api/compare/v2.4.0...v2.5.0) - 2024-02-05
 
@@ -25,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Project::reopen()` to reopen a project.
 - New method `Redmine\Api\Project::archive()` to archive a project.
 - New method `Redmine\Api\Project::unarchive()` to unarchive a project.
+- New interface `Redmine\Http\Response` as a data object for Redmine server responses.
 - New method `UnexpectedResponseException::getResponse()` to get the last response responsible for the exception.
 
 ### Changed

@@ -5,6 +5,8 @@ namespace Redmine\Api;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 
 /**
  * Listing roles.
@@ -96,10 +98,25 @@ class Role extends AbstractApi
      *
      * @param int $id the role id
      *
-     * @return array
+     * @return array|false|string information about the role as array or false|string on error
      */
     public function show($id)
     {
-        return $this->get('/roles/' . urlencode(strval($id)) . '.json');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
+            '/roles/' . urlencode(strval($id)) . '.json'
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 }

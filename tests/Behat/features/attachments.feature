@@ -3,6 +3,7 @@ Feature: Interacting with the REST API for attachments
     As a user
     I want to make sure the Redmine server replies with the correct response
 
+    @attachment
     Scenario: Uploading an attachment
         Given I have a "NativeCurlClient" client
         When I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -25,6 +26,7 @@ Feature: Interacting with the REST API for attachments
             | id                | 1                                                                  |
             | token             | 1.7b962f8af22e26802b87abfa0b07b21dbd03b984ec8d6888dabd3f69cff162f8 |
 
+    @attachment
     Scenario: Showing the details of an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -62,3 +64,44 @@ Feature: Interacting with the REST API for attachments
             | property          | value                                                                |
             | id                | 1                                                                    |
             | name              | Redmine Admin                                                        |
+
+    @attachment @error
+    Scenario: Try to show details of a non-existing attachment
+        Given I have a "NativeCurlClient" client
+        When I show the attachment with the id "1"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+
+    @attachment
+    Scenario: Downloading an attachment
+        Given I have a "NativeCurlClient" client
+        And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
+            | property          | value                |
+            | filename          | testfile.txt         |
+        When I download the attachment with the id "1"
+        Then the response has the status code "200"
+        And the response has the content type "text/plain"
+        And the response has the content
+            """
+            This is a test file.
+            It will be needed for testing file uploads.
+
+            """
+        And the returned data is exactly
+            """
+            This is a test file.
+            It will be needed for testing file uploads.
+
+            """
+
+    @attachment @error
+    Scenario: Try to download a non-existing attachment
+        Given I have a "NativeCurlClient" client
+        When I download the attachment with the id "1"
+        Then the response has the status code "404"
+        And the response has the content type "text/html"
+        # The response body contains a 404 HTML page from Redmine
+        # And the response has the content "<!DOCTYPE html><html lang="en">..."
+        And the returned data is false

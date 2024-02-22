@@ -7,6 +7,8 @@ use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
+use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
@@ -123,7 +125,7 @@ class Project extends AbstractApi
      * @param array      $params available parameters:
      *                           include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
-     * @return array information about the project
+     * @return array|false|string information about the project as array or false|string on error
      */
     public function show($id, array $params = [])
     {
@@ -133,9 +135,22 @@ class Project extends AbstractApi
             $params['include'] = 'trackers,issue_categories,attachments,relations';
         }
 
-        return $this->get(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'GET',
             PathSerializer::create('/projects/' . urlencode(strval($id)) . '.json', $params)->getPath()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' === $body) {
+            return false;
+        }
+
+        try {
+            return JsonSerializer::createFromString($body)->getNormalized();
+        } catch (SerializerException $e) {
+            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
+        }
     }
 
     /**

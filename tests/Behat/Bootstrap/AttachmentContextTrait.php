@@ -45,4 +45,18 @@ trait AttachmentContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I download the attachment with the id :attachmentId
+     */
+    public function iDownloadTheAttachmentWithTheId(int $attachmentId)
+    {
+        /** @var Attachment */
+        $api = $this->getNativeCurlClient()->getApi('attachment');
+
+        $this->registerClientResponse(
+            $api->download($attachmentId),
+            $api->getLastResponse()
+        );
+    }
 }
