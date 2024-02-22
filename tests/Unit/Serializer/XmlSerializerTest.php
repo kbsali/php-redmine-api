@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
+/**
+ * @coversDefaultClass \Redmine\Serializer\XmlSerializer
+ */
 class XmlSerializerTest extends TestCase
 {
     public static function getEncodedToNormalizedData(): array
@@ -186,8 +189,6 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Serializer\XmlSerializer::getEncoded
-     * @covers \Redmine\Serializer\XmlSerializer::__toString
      * @test
      *
      * @dataProvider getNormalizedToEncodedData

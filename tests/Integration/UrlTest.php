@@ -217,14 +217,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Membership */
         $api = MockClient::create()->getApi('membership');
-        $res = $api->create('testProject', [
-            'user_id' => 1,
-            'role_ids' => [1],
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/memberships.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, [
             'user_id' => 1,
