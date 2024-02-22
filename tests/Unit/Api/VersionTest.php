@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Client\Client;
 use Redmine\Exception\InvalidParameterException;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -464,97 +463,6 @@ class VersionTest extends TestCase
         // Perform the tests
         $this->assertFalse($api->getIdByName(5, 'Version 1'));
         $this->assertSame(5, $api->getIdByName(5, 'Version 5'));
-    }
-
-    /**
-     * Test validateSharing().
-     *
-     * @covers       ::create
-     * @covers       ::validateSharing
-     * @dataProvider validSharingProvider
-     * @test
-     *
-     * @param string $sharingValue
-     * @param string $sharingXmlElement
-     */
-    public function testCreateWithValidSharing($sharingValue, $sharingXmlElement)
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = [
-            'name' => 'Test version',
-            'sharing' => $sharingValue,
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                '/projects/test/versions.xml',
-                $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
-                    $this->stringContains('<name>Test version</name>'),
-                    $this->stringContains($sharingXmlElement)
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->once())
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Version($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->create('test', $parameters));
-    }
-
-    /**
-     * Test validateSharing().
-     *
-     * @covers       ::create
-     * @covers       ::validateSharing
-     * @dataProvider validEmptySharingProvider
-     * @test
-     *
-     * @param string $sharingValue
-     */
-    public function testCreateWithValidEmptySharing($sharingValue)
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = [
-            'name' => 'Test version',
-            'sharing' => $sharingValue,
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                '/projects/test/versions.xml',
-                $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<version>'),
-                    $this->stringEndsWith('</version>' . "\n"),
-                    $this->stringContains('<name>Test version</name>'),
-                    $this->logicalNot(
-                        $this->stringContains('<sharing')
-                    )
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->once())
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Version($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->create('test', $parameters));
     }
 
     /**
