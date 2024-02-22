@@ -186,10 +186,19 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/projects/' . $project . '/versions.xml',
             XmlSerializer::createFromArray(['version' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**

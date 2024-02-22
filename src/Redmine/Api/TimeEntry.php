@@ -133,10 +133,19 @@ class TimeEntry extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/time_entries.xml',
             XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**

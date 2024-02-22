@@ -180,10 +180,19 @@ class Project extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`, `identifier`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/projects.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**

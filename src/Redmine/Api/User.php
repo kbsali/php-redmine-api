@@ -210,10 +210,19 @@ class User extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/users.xml',
             XmlSerializer::createFromArray(['user' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**
