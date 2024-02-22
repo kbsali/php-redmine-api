@@ -205,7 +205,7 @@ class Group extends AbstractApi
      * @param int $id     id of the group
      * @param int $userId id of the user
      *
-     * @return string
+     * @return SimpleXMLElement|string
      */
     public function addUser($id, $userId)
     {

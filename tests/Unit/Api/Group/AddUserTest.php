@@ -1,21 +1,21 @@
 <?php
 
-namespace Redmine\Tests\Unit\Api\Issue;
+namespace Redmine\Tests\Unit\Api\Group;
 
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Issue;
+use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 /**
- * @covers \Redmine\Api\Issue::addWatcher
+ * @covers \Redmine\Api\Group::addUser
  */
-class AddWatcherTest extends TestCase
+class AddUserTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
      */
-    public function testCreateReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testCreateReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -31,10 +31,10 @@ class AddWatcherTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = new Group($client);
 
         // Perform the tests
-        $return = $api->addWatcher($issueId, $watcherUserId);
+        $return = $api->addUser($groupId, $userId);
 
         $this->assertInstanceOf(SimpleXMLElement::class, $return);
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
@@ -46,7 +46,7 @@ class AddWatcherTest extends TestCase
             'test with integers' => [
                 25,
                 5,
-                '/issues/25/watchers.xml',
+                '/groups/25/users.xml',
                 <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user_id>5</user_id>
