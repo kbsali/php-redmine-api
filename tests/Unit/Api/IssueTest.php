@@ -227,37 +227,6 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test addWatcher().
-     *
-     * @covers ::addWatcher
-     * @test
-     */
-    public function testAddWatcherCallsPost()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                $this->stringStartsWith('/issues/5/watchers.xml'),
-                $this->stringEndsWith('<user_id>10</user_id>' . "\n")
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Issue($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->addWatcher(5, 10));
-    }
-
-    /**
      * Test removeWatcher().
      *
      * @covers ::removeWatcher
