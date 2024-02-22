@@ -257,6 +257,85 @@ class IssueTest extends TestCase
     }
 
     /**
+     * Test cleanParams() with Client for BC
+     *
+     * @covers ::create
+     * @covers ::cleanParams
+     * @covers ::getIssueCategoryApi
+     * @covers ::getIssueStatusApi
+     * @covers ::getProjectApi
+     * @covers ::getTrackerApi
+     * @covers ::getUserApi
+     * @test
+     */
+    public function testCreateWithClientCleansParameters()
+    {
+        // Test values
+        $response = 'API Response';
+        $parameters = [
+            'project' => 'Project Name',
+            'category' => 'Category Name',
+            'status' => 'Status Name',
+            'tracker' => 'Tracker Name',
+            'assigned_to' => 'Assigned to User Name',
+            'author' => 'Author Name',
+        ];
+
+        // Create the used mock objects
+        $getIdByNameApi = $this->createMock('Redmine\Api\Project');
+        $getIdByNameApi->expects($this->exactly(3))
+            ->method('getIdByName')
+            ->willReturn('cleanedValue');
+        $issueCategoryGetIdByNameApi = $this->createMock('Redmine\Api\IssueCategory');
+        $issueCategoryGetIdByNameApi->expects($this->exactly(1))
+            ->method('getIdByName')
+            ->willReturn('cleanedValue');
+        $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
+        $getIdByUsernameApi->expects($this->exactly(2))
+            ->method('getIdByUsername')
+            ->willReturn('cleanedValue');
+
+        $client = $this->createMock(Client::class);
+        $client->expects($this->exactly(5))
+            ->method('getApi')
+            ->willReturnMap(
+                [
+                    ['project', $getIdByNameApi],
+                    ['issue_category', $issueCategoryGetIdByNameApi],
+                    ['issue_status', $getIdByNameApi],
+                    ['tracker', $getIdByNameApi],
+                    ['user', $getIdByUsernameApi],
+                ]
+            );
+
+        $client->expects($this->once())
+            ->method('requestPost')
+            ->with(
+                '/issues.xml',
+                $this->logicalAnd(
+                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
+                    $this->stringEndsWith('</issue>' . "\n"),
+                    $this->stringContains('<project_id>cleanedValue</project_id>'),
+                    $this->stringContains('<category_id>cleanedValue</category_id>'),
+                    $this->stringContains('<status_id>cleanedValue</status_id>'),
+                    $this->stringContains('<tracker_id>cleanedValue</tracker_id>'),
+                    $this->stringContains('<assigned_to_id>cleanedValue</assigned_to_id>'),
+                    $this->stringContains('<author_id>cleanedValue</author_id>')
+                )
+            )
+            ->willReturn(true);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $this->assertSame($response, $api->create($parameters));
+    }
+
+    /**
      * Test update().
      *
      * @covers ::update

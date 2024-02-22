@@ -207,9 +207,8 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getIssueStatusApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getIssueStatusApi
      */
     public function testCreateWithHttpClientRetrievesIssueStatusId()
     {
@@ -249,9 +248,8 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getProjectApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getProjectApi
      */
     public function testCreateWithHttpClientRetrievesProjectId()
     {
@@ -291,9 +289,8 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getIssueCategoryApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getIssueCategoryApi
      */
     public function testCreateWithHttpClientRetrievesIssueCategoryId()
     {
@@ -333,9 +330,8 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getTrackerApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getTrackerApi
      */
     public function testCreateWithHttpClientRetrievesTrackerId()
     {
@@ -375,9 +371,8 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getUserApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getUserApi
      */
     public function testCreateWithHttpClientRetrievesUserId()
     {
@@ -419,13 +414,12 @@ class CreateTest extends TestCase
     /**
      * Test cleanParams().
      *
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getIssueCategoryApi
-     * @covers ::getIssueStatusApi
-     * @covers ::getProjectApi
-     * @covers ::getTrackerApi
-     * @covers ::getUserApi
+     * @covers \Redmine\Api\Issue::cleanParams
+     * @covers \Redmine\Api\Issue::getIssueCategoryApi
+     * @covers \Redmine\Api\Issue::getIssueStatusApi
+     * @covers \Redmine\Api\Issue::getProjectApi
+     * @covers \Redmine\Api\Issue::getTrackerApi
+     * @covers \Redmine\Api\Issue::getUserApi
      */
     public function testCreateWithClientCleansParameters()
     {
