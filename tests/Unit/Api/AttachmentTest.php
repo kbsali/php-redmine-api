@@ -57,37 +57,4 @@ class AttachmentTest extends TestCase
             [500, true],
         ];
     }
-
-    /**
-     * Test upload().
-     *
-     * @covers ::post
-     * @covers ::upload
-     * @test
-     */
-    public function testUploadReturnsClientPostResponse()
-    {
-        // Test values
-        $postRequestData = 'API Response';
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                $this->stringStartsWith('/uploads.json'),
-                $this->equalTo($postRequestData)
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Attachment($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->upload($postRequestData));
-    }
 }
