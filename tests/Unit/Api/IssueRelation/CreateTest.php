@@ -7,7 +7,6 @@ use Redmine\Api\IssueRelation;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use SimpleXMLElement;
 
 /**
  * @covers \Redmine\Api\IssueRelation::create
