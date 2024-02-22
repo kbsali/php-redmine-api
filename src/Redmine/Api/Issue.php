@@ -189,6 +189,11 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
 
+        // FIXME: Throw exception on missing mandatory parameters
+        // if (!isset($params['subject']) || !isset($params['project_id']) || !isset($params['tracker_id']) || !isset($params['priority_id']) || !isset($params['status_id'])) {
+        //     throw new MissingParameterException('Theses parameters are mandatory: `subject`, `project_id|project`, `tracker_id|tracker`, `priority_id|priority`, `status_id|status`');
+        // }
+
         return $this->post(
             '/issues.xml',
             XmlSerializer::createFromArray(['issue' => $params])->getEncoded()
