@@ -178,10 +178,19 @@ class IssueCategory extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/projects/' . $project . '/issue_categories.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**

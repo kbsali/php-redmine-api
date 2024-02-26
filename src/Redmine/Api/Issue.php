@@ -194,10 +194,19 @@ class Issue extends AbstractApi
         //     throw new MissingParameterException('Theses parameters are mandatory: `subject`, `project_id|project`, `tracker_id|tracker`, `priority_id|priority`, `status_id|status`');
         // }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/issues.xml',
             XmlSerializer::createFromArray(['issue' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**
@@ -245,10 +254,19 @@ class Issue extends AbstractApi
      */
     public function addWatcher($id, $watcherUserId)
     {
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/issues/' . urlencode(strval($id)) . '/watchers.xml',
             XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**

@@ -155,11 +155,14 @@ class IssueRelation extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `issue_to_id`');
         }
 
-        $response = $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'POST',
             '/issues/' . urlencode(strval($issueId)) . '/relations.json',
             JsonSerializer::createFromArray(['relation' => $params])->getEncoded()
-        );
+        ));
 
-        return JsonSerializer::createFromString($response)->getNormalized();
+        $body = $this->lastResponse->getContent();
+
+        return JsonSerializer::createFromString($body)->getNormalized();
     }
 }
