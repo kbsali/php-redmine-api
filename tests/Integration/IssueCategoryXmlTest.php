@@ -20,28 +20,6 @@ class IssueCategoryXmlTest extends TestCase
         $api->create('aProject');
     }
 
-    public function testCreateComplex()
-    {
-        /** @var \Redmine\Api\IssueCategory */
-        $api = MockClient::create()->getApi('issue_category');
-        $res = $api->create('otherProject', [
-            'name' => 'test category',
-        ]);
-        $response = json_decode($res, true);
-
-        $this->assertEquals('POST', $response['method']);
-        $this->assertEquals('/projects/otherProject/issue_categories.xml', $response['path']);
-        $this->assertXmlStringEqualsXmlString(
-            <<< XML
-            <?xml version="1.0"?>
-            <issue_category>
-                <name>test category</name>
-            </issue_category>
-            XML,
-            $response['data']
-        );
-    }
-
     public function testUpdate()
     {
         /** @var \Redmine\Api\IssueCategory */

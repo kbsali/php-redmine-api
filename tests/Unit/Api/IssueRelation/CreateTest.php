@@ -5,6 +5,7 @@ namespace Redmine\Tests\Unit\Api\IssueRelation;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -54,6 +55,31 @@ class CreateTest extends TestCase
                 ['relation' => []],
             ],
         ];
+    }
+
+    public function testCreateThrowsExceptionIfResponseContainsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/5/relations.json',
+                'application/json',
+                '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new IssueRelation($client);
+
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage('Catched error "Syntax error" while decoding JSON: ');
+
+        // Perform the tests
+        $api->create(5, ['issue_to_id' => 10]);
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters()

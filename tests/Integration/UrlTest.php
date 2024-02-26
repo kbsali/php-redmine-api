@@ -15,12 +15,6 @@ class UrlTest extends TestCase
 
         $this->assertEquals('/attachments/1.json', $res['path']);
         $this->assertEquals('GET', $res['method']);
-
-        $res = $api->upload('asdf');
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/uploads.json', $res['path']);
-        $this->assertEquals('POST', $res['method']);
     }
 
     public function testCustomFields()
@@ -37,13 +31,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Group */
         $api = MockClient::create()->getApi('group');
-        $res = $api->create([
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/groups.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->all();
 
@@ -61,12 +48,6 @@ class UrlTest extends TestCase
         $this->assertEquals('/groups/1.xml', $res['path']);
         $this->assertEquals('DELETE', $res['method']);
 
-        $res = $api->addUser(1, 1);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/groups/1/users.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
-
         $res = $api->removeUser(1, 1);
         $res = json_decode($res, true);
 
@@ -78,13 +59,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Issue */
         $api = MockClient::create()->getApi('issue');
-        $res = $api->create([
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, [
             'name' => 'asdf',
@@ -135,13 +109,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\IssueCategory */
         $api = MockClient::create()->getApi('issue_category');
-        $res = $api->create('testProject', [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/issue_categories.xml', $res['path']);
-        $this->assertEquals('POST', $res['method']);
 
         $res = $api->update(1, [
             'name' => 'asdf',

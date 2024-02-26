@@ -13,9 +13,9 @@ use SimpleXMLElement;
 class AddUserTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
+     * @dataProvider getAddUserData
      */
-    public function testCreateReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testAddUserReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -40,7 +40,7 @@ class AddUserTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
-    public static function getCreateData(): array
+    public static function getAddUserData(): array
     {
         return [
             'test with integers' => [
@@ -55,5 +55,29 @@ class AddUserTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
+    }
+
+    public function testAddUserReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups/1/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new Group($client);
+
+        // Perform the tests
+        $return = $api->addUser(1, 2);
+
+        $this->assertSame('', $return);
     }
 }

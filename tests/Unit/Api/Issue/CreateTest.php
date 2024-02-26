@@ -75,6 +75,31 @@ class CreateTest extends TestCase
                 201,
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
+            'test with line break in description' => [
+                [
+                    'subject' => 'Issue subject',
+                    'description' => "line1\nline2",
+                    'project_id' => 1,
+                    'tracker_id' => 2,
+                    'priority_id' => 3,
+                    'status_id' => 4,
+                ],
+                '/issues.xml',
+                <<<XML
+                <?xml version="1.0" encoding="UTF-8"?>
+                <issue>
+                    <subject>Issue subject</subject>
+                    <description>line1
+                line2</description>
+                    <project_id>1</project_id>
+                    <priority_id>3</priority_id>
+                    <status_id>4</status_id>
+                    <tracker_id>2</tracker_id>
+                </issue>
+                XML,
+                201,
+                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+            ],
             'test with with some xml entities' => [
                 [
                     'subject' => 'Issue subject with some xml entities: & < > " \' ',
@@ -204,6 +229,30 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
+    }
+
+    public function testCreateReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue/>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $return = $api->create([]);
+
+        $this->assertSame('', $return);
     }
 
     /**

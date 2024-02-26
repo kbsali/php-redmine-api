@@ -53,6 +53,14 @@ class CreateTest extends TestCase
                 201,
                 '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
             ],
+            'test with minimal parameters and project identifier as string' => [
+                'test-project',
+                ['name' => 'Test Category'],
+                '/projects/test-project/issue_categories.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+                201,
+                '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
+            ],
             'test with all parameters' => [
                 5,
                 ['name' => 'Test Category', 'assigned_to_id' => 2],
@@ -62,6 +70,30 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
             ],
         ];
+    }
+
+    public function testCreateReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects/5/issue_categories.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new IssueCategory($client);
+
+        // Perform the tests
+        $return = $api->create(5, ['name' => 'Test Category']);
+
+        $this->assertSame('', $return);
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters()

@@ -48,6 +48,15 @@ class UploadTest extends TestCase
                 '{}',
                 '{}',
             ],
+            'test attachment returns empty string' => [
+                'attachment-content',
+                [],
+                'attachment-content',
+                '/uploads.json',
+                201,
+                '',
+                '',
+            ],
             'test attachment with params' => [
                 'attachment-content',
                 [

@@ -271,7 +271,7 @@ class IssueTest extends TestCase
     public function testCreateWithClientCleansParameters()
     {
         // Test values
-        $response = 'API Response';
+        $response = '<?xml version="1.0"?><issue></issue>';
         $parameters = [
             'project' => 'Project Name',
             'category' => 'Category Name',
@@ -327,12 +327,15 @@ class IssueTest extends TestCase
         $client->expects($this->exactly(1))
             ->method('getLastResponseBody')
             ->willReturn($response);
+        $client->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/xml');
 
         // Create the object under test
         $api = new Issue($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->create($parameters));
+        $this->assertXmlStringEqualsXmlString($response, $api->create($parameters)->asXML());
     }
 
     /**

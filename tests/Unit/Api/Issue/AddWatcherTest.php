@@ -13,7 +13,7 @@ use SimpleXMLElement;
 class AddWatcherTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
+     * @dataProvider getAddWatcherData
      */
     public function testCreateReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $expectedBody, $responseCode, $response)
     {
@@ -40,7 +40,7 @@ class AddWatcherTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
-    public static function getCreateData(): array
+    public static function getAddWatcherData(): array
     {
         return [
             'test with integers' => [
@@ -55,5 +55,29 @@ class AddWatcherTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
+    }
+
+    public function testAddWatcherReturnsEmptyString()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                ''
+            ]
+        );
+
+        // Create the object under test
+        $api = new Issue($client);
+
+        // Perform the tests
+        $return = $api->addWatcher(1, 2);
+
+        $this->assertSame('', $return);
     }
 }
