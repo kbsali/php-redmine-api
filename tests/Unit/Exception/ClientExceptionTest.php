@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Exception as RedmineException;
 use Redmine\Exception\ClientException;
 
+/**
+ * @coversDefaultClass \Redmine\Exception\ClientException
+ */
 class ClientExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
     public function testClientException()
     {
         $exception = new ClientException();

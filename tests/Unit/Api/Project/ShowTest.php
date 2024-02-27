@@ -39,11 +39,63 @@ class ShowTest extends TestCase
     public static function getShowData(): array
     {
         return [
-            'array response with integer id' => [5, [], '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations', '["API Response"]', ['API Response']],
-            'array response with string id' => ['test', [], '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations', '["API Response"]', ['API Response']],
-            'array response with parameters' => [5, ['parameter1', 'parameter2', 'enabled_modules'], '/projects/5.json?0=parameter1&1=parameter2&2=enabled_modules&include=trackers%2Cissue_categories%2Cattachments%2Crelations', '["API Response"]', ['API Response']],
-            'string response' => [5, [], '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations', 'string', 'Error decoding body as JSON: Syntax error'],
-            'false response' => [5, [], '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations', '', false],
+            'array response with integer id' => [
+                5,
+                [],
+                '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'array response with string id' => [
+                'test',
+                [],
+                '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'test include parameter as array' => [
+                'test',
+                [
+                    'include' => ['resource1', 'resource2'],
+                ],
+                '/projects/test.json?include=resource1%2Cresource2',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'test include parameter as string will be ignored' => [
+                'test',
+                [
+                    'include' => 'resource1,resource2',
+                ],
+                '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'array response with parameters' => [
+                5,
+                [
+                    'parameter1',
+                    'parameter2',
+                    'enabled_modules',
+                ],
+                '/projects/5.json?0=parameter1&1=parameter2&2=enabled_modules&include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'string response' => [
+                5,
+                [],
+                '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                'string',
+                'Error decoding body as JSON: Syntax error',
+            ],
+            'false response' => [
+                5,
+                [],
+                '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+                '',
+                false,
+            ],
         ];
     }
 }

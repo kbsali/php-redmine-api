@@ -12,6 +12,7 @@ use stdClass;
 /**
  * @covers \Redmine\Client\NativeCurlClient::request
  * @covers \Redmine\Client\NativeCurlClient::runRequest
+ * @covers \Redmine\Client\NativeCurlClient::createCurl
  * @covers \Redmine\Client\NativeCurlClient::createHttpHeader
  */
 class RequestTest extends TestCase
@@ -91,5 +92,64 @@ class RequestTest extends TestCase
             ['DELETE', '', 404, 'application/json', '{"title": "404 Not Found"}'],
             ['DELETE', '', 500, 'text/plain', 'Internal Server Error'],
         ];
+    }
+
+    public function testRequestWithUploadAndFilepathReturnsCorrectResponse()
+    {
+        $namespace = 'Redmine\Client';
+
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock($namespace, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock($namespace, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn('{"upload":{}}');
+
+        $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+            [$curl, CURLINFO_HTTP_CODE, 201],
+            [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
+        ])));
+
+        $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
+
+        $curlClose = $this->getFunctionMock($namespace, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token'
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $request = $this->createConfiguredMock(Request::class, [
+            'getMethod' => 'POST',
+            'getPath' => '/uploads.json',
+            'getContentType' => 'application/octet-stream',
+            'getContent' => realpath(__DIR__ . '/../../../Fixtures/testfile_01.txt'),
+        ]);
+
+        $response = $client->request($request);
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame('application/json', $response->getContentType());
+        $this->assertSame('{"upload":{}}', $response->getContent());
     }
 }

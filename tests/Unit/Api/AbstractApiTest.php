@@ -58,7 +58,12 @@ class AbstractApiTest extends TestCase
     {
         $client = $this->createMock(HttpClient::class);
 
-        $api = new class ($client) extends AbstractApi {};
+        $api = new class ($client) extends AbstractApi {
+            public function runGet($path)
+            {
+                return $this->get($path);
+            }
+        };
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -74,10 +79,7 @@ class AbstractApiTest extends TestCase
             E_USER_DEPRECATED
         );
 
-        $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
-
-        $method->invoke($api, '/path.json');
+        $api->runGet('/path.json');
     }
 
     /**
@@ -90,6 +92,37 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $this->assertInstanceOf(Response::class, $api->getLastResponse());
+    }
+
+    /**
+     * @covers ::post
+     */
+    public function testPostTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {
+            public function runPost($path, $data)
+            {
+                return $this->post($path, $data);
+            }
+        };
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\AbstractApi::post()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->runPost('/path.json', 'data');
     }
 
     /**

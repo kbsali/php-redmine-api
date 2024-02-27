@@ -6,6 +6,7 @@ use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
+use SimpleXMLElement;
 
 /**
  * Attachment details.
@@ -80,10 +81,14 @@ class Attachment extends AbstractApi
      */
     public function upload($attachment, $params = [])
     {
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+            'POST',
             PathSerializer::create('/uploads.json', $params)->getPath(),
+            'application/octet-stream',
             $attachment
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -93,7 +98,7 @@ class Attachment extends AbstractApi
      *
      * @param int $id id of the attachment
      *
-     * @return false|\SimpleXMLElement|string
+     * @return false|SimpleXMLElement|string
      */
     public function remove($id)
     {

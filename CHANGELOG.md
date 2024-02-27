@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New interface `Redmine\Http\Request` for sending data with new minimalistic HTTP clients.
 - New method `Redmine\Api\...::getLastResponse()` to get the last response made by the API class.
 
+### Changed
+
+- Calling `Redmine\Api\IssueRelation::create()` without the mandatory parameter `issue_to_id` throws a `Redmine\Exception\MissingParameterException` instead of returning a error array
+
 ### Fixed
 
 - Parameter types for IDs were fixed in API for attachments, groups, issues, project, users and versions.
@@ -23,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 - `Redmine\Api\AbstractApi::get()` is deprecated, use `\Redmine\Http\HttpClient::request()` instead.
+- `Redmine\Api\AbstractApi::post()` is deprecated, use `\Redmine\Http\HttpClient::request()` instead.
 - The constant `Redmine\Api\Issue::PRIO_LOW` is deprecated.
 - The constant `Redmine\Api\Issue::PRIO_NORMAL` is deprecated.
 - The constant `Redmine\Api\Issue::PRIO_HIGH` is deprecated.

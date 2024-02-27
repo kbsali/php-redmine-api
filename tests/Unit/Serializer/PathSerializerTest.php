@@ -7,6 +7,9 @@ namespace Redmine\Tests\Unit\Serializer;
 use PHPUnit\Framework\TestCase;
 use Redmine\Serializer\PathSerializer;
 
+/**
+ * @coversDefaultClass \Redmine\Serializer\PathSerializer
+ */
 class PathSerializerTest extends TestCase
 {
     public static function getPathData(): array
@@ -48,8 +51,6 @@ class PathSerializerTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Serializer\PathSerializer::getPath
-     * @covers \Redmine\Serializer\PathSerializer::__toString
      * @test
      *
      * @dataProvider getPathData

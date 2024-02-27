@@ -120,10 +120,19 @@ class Group extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/groups.xml',
             XmlSerializer::createFromArray(['group' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**
@@ -205,14 +214,23 @@ class Group extends AbstractApi
      * @param int $id     id of the group
      * @param int $userId id of the user
      *
-     * @return string
+     * @return SimpleXMLElement|string
      */
     public function addUser($id, $userId)
     {
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/groups/' . $id . '/users.xml',
             XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**

@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Exception as RedmineException;
 use Redmine\Exception\InvalidApiNameException;
 
+/**
+ * @coversDefaultClass \Redmine\Exception\InvalidApiNameException
+ */
 class InvalidApiNameExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
     public function testInvalidApiNameException()
     {
         $exception = new InvalidApiNameException();

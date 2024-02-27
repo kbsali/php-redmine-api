@@ -275,44 +275,6 @@ class GroupTest extends TestCase
     /**
      * Test removeUser().
      *
-     * @covers ::addUser
-     * @covers ::post
-     * @test
-     */
-    public function testAddUserCallsPost()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/groups/5/users'),
-                    $this->logicalXor(
-                        $this->stringEndsWith('.json'),
-                        $this->stringEndsWith('.xml')
-                    )
-                ),
-                $this->stringContains('<user_id>10</user_id>')
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Group($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->addUser(5, 10));
-    }
-
-    /**
-     * Test removeUser().
-     *
      * @covers ::delete
      * @covers ::removeUser
      * @test
