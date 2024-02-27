@@ -8,28 +8,31 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
+/**
+ * @coversDefaultClass \Redmine\Serializer\XmlSerializer
+ */
 class XmlSerializerTest extends TestCase
 {
     public static function getEncodedToNormalizedData(): array
     {
         return [
-            [
+            'test with single tag' => [
                 '<a/>',
                 [],
             ],
-            [
+            'test with closed tag' => [
                 '<?xml version="1.0"?><issue/>',
                 [],
             ],
-            [
+            'test with open and close tag' => [
                 '<?xml version="1.0"?><issue></issue>',
                 [],
             ],
-            [
+            'test with integer' => [
                 '<?xml version="1.0"?><issue>1</issue>',
                 ['1'],
             ],
-            [
+            'test with array' => [
                 <<< XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issues type="array" count="1640">
@@ -107,13 +110,22 @@ class XmlSerializerTest extends TestCase
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
 
-        $serializer = XmlSerializer::createFromString($data);
+        XmlSerializer::createFromString($data);
     }
 
     public static function getNormalizedToEncodedData(): array
     {
         return [
-            [
+            'test with simple string' => [
+                [
+                    'key' => 'value',
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <key>value</key>
+                XML,
+            ],
+            'test with simple array' => [
                 [
                     'issue' => [
                         'project_id' => 1,
@@ -124,13 +136,13 @@ class XmlSerializerTest extends TestCase
                 <<< XML
                 <?xml version="1.0"?>
                 <issue>
-                  <project_id>1</project_id>
-                  <subject>Example</subject>
-                  <priority_id>4</priority_id>
+                    <project_id>1</project_id>
+                    <subject>Example</subject>
+                    <priority_id>4</priority_id>
                 </issue>
                 XML,
             ],
-            [
+            'test with ignored elements' => [
                 [
                     'issue' => [
                         'project_id' => 1,
@@ -144,13 +156,41 @@ class XmlSerializerTest extends TestCase
                 <<< XML
                 <?xml version="1.0"?>
                 <issue>
-                  <project_id>1</project_id>
-                  <subject>Example</subject>
-                  <priority_id>4</priority_id>
+                    <project_id>1</project_id>
+                    <subject>Example</subject>
+                    <priority_id>4</priority_id>
                 </issue>
                 XML,
             ],
-            [
+            'test with custom fields with single value' => [
+                [
+                    'project' => [
+                        'name' => 'some name',
+                        'identifier' => 'the_identifier',
+                        'custom_fields' => [
+                            [
+                                'id' => 123,
+                                'name' => 'cf_name',
+                                'field_format' => 'string',
+                                'value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <project>
+                    <name>some name</name>
+                    <identifier>the_identifier</identifier>
+                    <custom_fields type="array">
+                        <custom_field name="cf_name" field_format="string" id="123">
+                            <value>1</value>
+                        </custom_field>
+                    </custom_fields>
+                </project>
+                XML,
+            ],
+            'test with custom fields with array value' => [
                 [
                     'project' => [
                         'name' => 'some name',
@@ -168,26 +208,51 @@ class XmlSerializerTest extends TestCase
                 <<< XML
                 <?xml version="1.0"?>
                 <project>
-                  <name>some name</name>
-                  <identifier>the_identifier</identifier>
-                  <custom_fields type="array">
-                    <custom_field name="cf_name" field_format="string" id="123" multiple="true">
-                      <value type="array">
-                        <value>1</value>
-                        <value>2</value>
-                        <value>3</value>
-                      </value>
-                    </custom_field>
-                  </custom_fields>
+                    <name>some name</name>
+                    <identifier>the_identifier</identifier>
+                    <custom_fields type="array">
+                        <custom_field name="cf_name" field_format="string" id="123" multiple="true">
+                            <value type="array">
+                                <value>1</value>
+                                <value>2</value>
+                                <value>3</value>
+                            </value>
+                        </custom_field>
+                    </custom_fields>
                 </project>
+                XML,
+            ],
+            'test with uploads' => [
+                [
+                    'issue' => [
+                        'uploads' => [
+                            [
+                                'token' => 'asdfasdfasdfasdf',
+                                'filename' => 'MyFile.pdf',
+                                'description' => 'MyFile is better then YourFile...',
+                                'content_type' => 'application/pdf',
+                            ],
+                        ],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                    <uploads type="array">
+                        <upload>
+                            <token>asdfasdfasdfasdf</token>
+                            <filename>MyFile.pdf</filename>
+                            <description>MyFile is better then YourFile...</description>
+                            <content_type>application/pdf</content_type>
+                        </upload>
+                    </uploads>
+                </issue>
                 XML,
             ],
         ];
     }
 
     /**
-     * @covers \Redmine\Serializer\XmlSerializer::getEncoded
-     * @covers \Redmine\Serializer\XmlSerializer::__toString
      * @test
      *
      * @dataProvider getNormalizedToEncodedData
@@ -219,6 +284,6 @@ class XmlSerializerTest extends TestCase
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
 
-        $serializer = XmlSerializer::createFromArray($data);
+        XmlSerializer::createFromArray($data);
     }
 }

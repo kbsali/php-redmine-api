@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 
+/**
+ * @coversDefaultClass \Redmine\Serializer\JsonSerializer
+ */
 class JsonSerializerTest extends TestCase
 {
     public static function getEncodedToNormalizedData(): array
@@ -180,8 +183,6 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Serializer\JsonSerializer::getEncoded
-     * @covers \Redmine\Serializer\JsonSerializer::__toString
      * @test
      *
      * @dataProvider getNormalizedToEncodedData

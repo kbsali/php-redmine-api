@@ -10,6 +10,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing users, creating, editing.
@@ -187,7 +188,7 @@ class User extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return SimpleXMLElement|string
      */
     public function create(array $params = [])
     {
@@ -209,10 +210,19 @@ class User extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/users.xml',
             XmlSerializer::createFromArray(['user' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**

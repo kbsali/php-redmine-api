@@ -11,6 +11,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing issue categories, creating, editing.
@@ -161,7 +162,7 @@ class IssueCategory extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return SimpleXMLElement|string
      */
     public function create($project, array $params = [])
     {
@@ -177,10 +178,19 @@ class IssueCategory extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `name`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/projects/' . $project . '/issue_categories.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**

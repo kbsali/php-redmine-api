@@ -2,7 +2,6 @@
 
 namespace Redmine\Api;
 
-use Closure;
 use InvalidArgumentException;
 use Redmine\Api;
 use Redmine\Client\Client;
@@ -142,6 +141,8 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client post() method.
      *
+     * @deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead
+     *
      * @param string $path
      * @param string $data
      *
@@ -149,6 +150,8 @@ abstract class AbstractApi implements Api
      */
     protected function post($path, $data)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
+
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'POST',
             strval($path),

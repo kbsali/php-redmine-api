@@ -7,7 +7,9 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpFactory;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Handling project memberships.
@@ -92,7 +94,7 @@ class Membership extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|false
+     * @return SimpleXMLElement|string
      */
     public function create($project, array $params = [])
     {
@@ -106,10 +108,19 @@ class Membership extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
         }
 
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/projects/' . $project . '/memberships.xml',
             XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ('' !== $body) {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**

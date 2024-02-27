@@ -189,10 +189,24 @@ class Issue extends AbstractApi
         $params = $this->cleanParams($params);
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->post(
+        // FIXME: Throw exception on missing mandatory parameters
+        // if (!isset($params['subject']) || !isset($params['project_id']) || !isset($params['tracker_id']) || !isset($params['priority_id']) || !isset($params['status_id'])) {
+        //     throw new MissingParameterException('Theses parameters are mandatory: `subject`, `project_id|project`, `tracker_id|tracker`, `priority_id|priority`, `status_id|status`');
+        // }
+
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/issues.xml',
             XmlSerializer::createFromArray(['issue' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**
@@ -236,21 +250,30 @@ class Issue extends AbstractApi
      * @param int $id
      * @param int $watcherUserId
      *
-     * @return false|string
+     * @return SimpleXMLElement|string
      */
     public function addWatcher($id, $watcherUserId)
     {
-        return $this->post(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'POST',
             '/issues/' . urlencode(strval($id)) . '/watchers.xml',
             XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body === '') {
+            return $body;
+        }
+
+        return new SimpleXMLElement($body);
     }
 
     /**
      * @param int $id
      * @param int $watcherUserId
      *
-     * @return false|\SimpleXMLElement|string
+     * @return false|SimpleXMLElement|string
      */
     public function removeWatcher($id, $watcherUserId)
     {
@@ -385,7 +408,7 @@ class Issue extends AbstractApi
      *
      * @param int $id the issue number
      *
-     * @return false|\SimpleXMLElement|string
+     * @return false|SimpleXMLElement|string
      */
     public function remove($id)
     {
