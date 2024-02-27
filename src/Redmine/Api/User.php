@@ -46,7 +46,8 @@ class User extends AbstractApi
     /**
      * List users.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see User::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *

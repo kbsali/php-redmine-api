@@ -42,7 +42,8 @@ class Role extends AbstractApi
     /**
      * List roles.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see Role::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *

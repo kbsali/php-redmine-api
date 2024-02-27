@@ -81,7 +81,7 @@ abstract class AbstractApi implements Api
      *
      * @return bool
      *
-     * @deprecated since v2.1.0, because it does not correctly handle 2xx codes that are not 200 or 201, use `Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead
+     * @deprecated v2.1.0 It does not correctly handle 2xx codes that are not 200 or 201, use `Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead
      * @see AbstractApi::getLastResponse()->getStatusCode() for checking the status code directly
      */
     public function lastCallFailed()
@@ -102,7 +102,8 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client get() method.
      *
-     * @deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead
+     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      *
      * @param string $path
      * @param bool   $decodeIfJson
@@ -141,7 +142,8 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client post() method.
      *
-     * @deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead
+     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      *
      * @param string $path
      * @param string $data
@@ -247,7 +249,8 @@ abstract class AbstractApi implements Api
      * Retrieves all the elements of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
-     * @deprecated since v2.2.0, use `retrieveData()` instead
+     * @deprecated v2.2.0 Use `retrieveData()` instead
+     * @see AbstractApi::retrieveData()
      *
      * @param string $endpoint API end point
      * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
@@ -347,7 +350,8 @@ abstract class AbstractApi implements Api
     /**
      * Attaches Custom Fields to a create/update query.
      *
-     * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead
+     * @deprecated v2.3.0 Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead
+     * @see \Redmine\Serializer\XmlSerializer::createFromArray()
      *
      * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
      * @param array            $fields array of fields to attach, each field needs name, id and value set

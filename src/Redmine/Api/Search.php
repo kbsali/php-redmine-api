@@ -39,7 +39,8 @@ class Search extends AbstractApi
     /**
      * Search.
      *
-     * @deprecated since v2.4.0, use listByQuery() instead.
+     * @deprecated v2.4.0 Use listByQuery() instead.
+     * @see Search::listByQuery()
      *
      * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
      *

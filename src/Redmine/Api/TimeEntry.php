@@ -45,7 +45,8 @@ class TimeEntry extends AbstractApi
     /**
      * List time entries.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see TimeEntry::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
