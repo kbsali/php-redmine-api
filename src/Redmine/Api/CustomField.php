@@ -40,7 +40,8 @@ class CustomField extends AbstractApi
     /**
      * List custom fields.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see CustomField::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *

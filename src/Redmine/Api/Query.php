@@ -40,7 +40,8 @@ class Query extends AbstractApi
     /**
      * Returns the list of all custom queries visible by the user (public and private queries) for all projects.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see Query::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
      *

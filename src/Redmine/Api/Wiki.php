@@ -53,7 +53,8 @@ class Wiki extends AbstractApi
     /**
      * List wiki pages of given $project.
      *
-     * @deprecated since v2.4.0, use listByProject() instead.
+     * @deprecated v2.4.0 Use listByProject() instead.
+     * @see Wiki::listByProject()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *

@@ -47,7 +47,8 @@ class Project extends AbstractApi
     /**
      * List projects.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see Project::list()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
@@ -361,7 +362,8 @@ class Project extends AbstractApi
     }
 
     /**
-     * @deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
+     * @deprecated v2.3.0 Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
+     * @see \Redmine\Serializer\XmlSerializer::createFromArray()
      *
      * @param array $params
      *

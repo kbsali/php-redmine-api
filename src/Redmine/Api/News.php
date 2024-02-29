@@ -68,7 +68,9 @@ class News extends AbstractApi
     /**
      * List news (if no $project is given, it will return ALL the news).
      *
-     * @deprecated since v2.4.0, use list() or listByProject() instead.
+     * @deprecated v2.4.0 Use list() or listByProject() instead.
+     * @see News::list()
+     * @see News::listByProject()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
      *
