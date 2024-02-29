@@ -113,6 +113,32 @@ Feature: Interacting with the REST API for issues
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @issue
+    Scenario: Updating an issue
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | subject           | new issue subject    |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+
     @issue @error
     Scenario: Showing a not existing issue
         Given I have a "NativeCurlClient" client

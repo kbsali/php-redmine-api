@@ -60,14 +60,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\Issue */
         $api = MockClient::create()->getApi('issue');
 
-        $res = $api->update(1, [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/issues.json', $res['path']);
@@ -91,12 +83,6 @@ class UrlTest extends TestCase
 
         // $res = $api->setIssueStatus(1, 'asdf');
         // $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'DELETE'));
-
-        $res = $api->addNoteToIssue(1, 'asdf');
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->attach(1, ['asdf']);
         $res = json_decode($res, true);
