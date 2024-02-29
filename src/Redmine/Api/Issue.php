@@ -22,10 +22,29 @@ use SimpleXMLElement;
  */
 class Issue extends AbstractApi
 {
+    /**
+     * @deprecated v2.6.0 Will be removed in v3.0.0
+     */
     public const PRIO_LOW = 1;
+
+    /**
+     * @deprecated v2.6.0 Will be removed in v3.0.0
+     */
     public const PRIO_NORMAL = 2;
+
+    /**
+     * @deprecated v2.6.0 Will be removed in v3.0.0
+     */
     public const PRIO_HIGH = 3;
+
+    /**
+     * @deprecated v2.6.0 Will be removed in v3.0.0
+     */
     public const PRIO_URGENT = 4;
+
+    /**
+     * @deprecated v2.6.0 Will be removed in v3.0.0
+     */
     public const PRIO_IMMEDIATE = 5;
 
     /**

@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Redmine\Api\AbstractApi::get()` is deprecated, use `\Redmine\Http\HttpClient::request()` instead.
 - `Redmine\Api\AbstractApi::post()` is deprecated, use `\Redmine\Http\HttpClient::request()` instead.
+- The constant `Redmine\Api\Issue::PRIO_LOW` is deprecated.
+- The constant `Redmine\Api\Issue::PRIO_NORMAL` is deprecated.
+- The constant `Redmine\Api\Issue::PRIO_HIGH` is deprecated.
+- The constant `Redmine\Api\Issue::PRIO_URGENT` is deprecated.
+- The constant `Redmine\Api\Issue::PRIO_IMMEDIATE` is deprecated.
 
 ## [v2.5.0](https://github.com/kbsali/php-redmine-api/compare/v2.4.0...v2.5.0) - 2024-02-05
 
