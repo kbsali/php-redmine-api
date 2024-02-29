@@ -54,7 +54,8 @@ class Version extends AbstractApi
     /**
      * List versions.
      *
-     * @deprecated since v2.4.0, use listByProject() instead.
+     * @deprecated v2.4.0 Use listByProject() instead.
+     * @see Version::listByProject()
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *

@@ -38,7 +38,8 @@ class TimeEntryActivity extends AbstractApi
     /**
      * List time entry activities.
      *
-     * @deprecated since v2.4.0, use list() instead.
+     * @deprecated v2.4.0 Use list() instead.
+     * @see TimeEntryActivity::list()
      *
      * @param array $params optional parameters to be passed to the api (offset, limit, ...)
      *
