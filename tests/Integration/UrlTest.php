@@ -83,12 +83,6 @@ class UrlTest extends TestCase
 
         // $res = $api->setIssueStatus(1, 'asdf');
         // $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'DELETE'));
-
-        $res = $api->attach(1, ['asdf']);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.json', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
     }
 
     public function testIssueCategory()

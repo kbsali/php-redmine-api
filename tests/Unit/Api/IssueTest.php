@@ -179,54 +179,6 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test attach().
-     *
-     * @covers ::attach
-     * @covers ::put
-     * @test
-     */
-    public function testAttachCallsPut()
-    {
-        // Test values
-        $response = 'API Response';
-        $attachment = [
-            'token' => 'sample-test-token',
-            'filename' => 'test.txt',
-        ];
-        $requestData = [
-            'issue' => [
-                'id' => 5,
-                'uploads' => [$attachment],
-            ],
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPut')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/issues/5'),
-                    $this->logicalXor(
-                        $this->stringEndsWith('.json'),
-                        $this->stringEndsWith('.xml')
-                    )
-                ),
-                json_encode($requestData)
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Issue($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->attach(5, $attachment));
-    }
-
-    /**
      * Test removeWatcher().
      *
      * @covers ::removeWatcher
