@@ -351,7 +351,7 @@ class IssueCategoryTest extends TestCase
     public function testUpdateCallsPut()
     {
         // Test values
-        $response = 'API Response';
+        $response = '';
         $parameters = [
             'name' => 'Test Category',
             'assigned_to_id' => 2,
