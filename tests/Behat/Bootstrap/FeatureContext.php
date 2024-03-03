@@ -29,7 +29,9 @@ final class FeatureContext extends TestCase implements Context
     use IssuePriorityContextTrait;
     use IssueRelationContextTrait;
     use IssueStatusContextTrait;
+    use MembershipContextTrait;
     use ProjectContextTrait;
+    use RoleContextTrait;
     use TimeEntryActivityContextTrait;
     use TimeEntryContextTrait;
     use TrackerContextTrait;

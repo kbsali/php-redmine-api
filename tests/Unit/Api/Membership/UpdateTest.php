@@ -10,24 +10,24 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 /**
- * @covers \Redmine\Api\Membership::create
+ * @covers \Redmine\Api\Membership::update
  */
-class CreateTest extends TestCase
+class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
+     * @dataProvider getUpdateData
      */
-    public function testCreateReturnsCorrectResponse($identifier, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
             $this,
             [
-                'POST',
+                'PUT',
                 $expectedPath,
                 'application/xml',
                 $expectedBody,
                 $responseCode,
-                'application/xml',
+                '',
                 $response
             ]
         );
@@ -36,43 +36,41 @@ class CreateTest extends TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $return = $api->create($identifier, $parameters);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+        $this->assertSame('', $api->update($id, $parameters));
     }
 
-    public static function getCreateData(): array
+    public static function getUpdateData(): array
     {
         return [
             'test with one role_id' => [
                 5,
                 ['user_id' => 4, 'role_ids' => [2]],
-                '/projects/5/memberships.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>2</role_id></role_ids></membership>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
+                '/memberships/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><role_ids type="array"><role_id>2</role_id></role_ids><user_id>4</user_id>
+                </membership>',
+                204,
+                '',
             ],
             'test with multiple role_ids' => [
                 5,
                 ['user_id' => 4, 'role_ids' => [5, 6]],
-                '/projects/5/memberships.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids></membership>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
+                '/memberships/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids><user_id>4</user_id></membership>',
+                204,
+                '',
             ],
         ];
     }
 
-    public function testCreateReturnsEmptyString()
+    public function testUpdateReturnsEmptyString()
     {
         $client = AssertingHttpClient::create(
             $this,
             [
-                'POST',
-                '/projects/5/memberships.xml',
+                'PUT',
+                '/memberships/5.xml',
                 'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><role_ids>2</role_ids><user_id>4</user_id></membership>',
                 500,
                 '',
                 ''
@@ -83,12 +81,12 @@ class CreateTest extends TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
+        $return = $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
 
         $this->assertSame('', $return);
     }
 
-    public function testCreateThrowsExceptionWithEmptyParameters()
+    public function testUpdateThrowsExceptionWithEmptyParameters()
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
@@ -97,16 +95,16 @@ class CreateTest extends TestCase
         $api = new Membership($client);
 
         $this->expectException(MissingParameterException::class);
-        $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');
+        $this->expectExceptionMessage('Theses parameters are mandatory: `role_ids`');
 
         // Perform the tests
-        $api->create(5);
+        $api->update(5);
     }
 
     /**
-     * @dataProvider incompleteCreateParameterProvider
+     * @dataProvider incompleteUpdateParameterProvider
      */
-    public function testCreateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
+    public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
@@ -115,10 +113,10 @@ class CreateTest extends TestCase
         $api = new Membership($client);
 
         $this->expectException(MissingParameterException::class);
-        $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');
+        $this->expectExceptionMessage('Theses parameters are mandatory: `role_ids`');
 
         // Perform the tests
-        $api->create('test', $parameters);
+        $api->update(5, $parameters);
     }
 
     /**
@@ -126,16 +124,11 @@ class CreateTest extends TestCase
      *
      * @return array[]
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteUpdateParameterProvider(): array
     {
         return [
             'missing all mandatory parameters' => [
                 [],
-            ],
-            'missing `user_id` parameter' => [
-                [
-                    'role_ids' => [2],
-                ],
             ],
             'missing `role_ids` parameter' => [
                 [
