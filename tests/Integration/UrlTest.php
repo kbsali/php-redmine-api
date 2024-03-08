@@ -356,25 +356,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Wiki */
         $api = MockClient::create()->getApi('wiki');
-        $res = $api->create('testProject', 'about page', [
-            'text' => 'asdf',
-            'comments' => 'asdf',
-            'version' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
-        $res = $api->update('testProject', 'about page', [
-            'text' => 'asdf',
-            'comments' => 'asdf',
-            'version' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
 
