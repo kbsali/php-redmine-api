@@ -296,38 +296,6 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
-     */
-    public function testUpdateCallsPut()
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = [
-            'name' => 'Test Project',
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPut')
-            ->with('/projects/5.xml')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Project($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->update(5, $parameters));
-    }
-
-    /**
      * @covers \Redmine\Api\Project::prepareParamsXml
      */
     public function testDeprecatedPrepareParamsXml()

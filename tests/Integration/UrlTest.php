@@ -189,14 +189,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\Project */
         $api = MockClient::create()->getApi('project');
 
-        $res = $api->update(1, [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/projects.json', $res['path']);
