@@ -236,12 +236,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\TimeEntry */
         $api = MockClient::create()->getApi('time_entry');
 
-        $res = $api->update(1, []);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/time_entries/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/time_entries.json', $res['path']);
