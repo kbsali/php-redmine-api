@@ -292,12 +292,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');
 
-        $res = $api->update(1, []);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/users/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/users.json', $res['path']);

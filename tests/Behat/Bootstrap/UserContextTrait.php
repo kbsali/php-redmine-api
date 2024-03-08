@@ -30,6 +30,26 @@ trait UserContextTrait
     }
 
     /**
+     * @When I update the user with id :id and the following data
+     */
+    public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var User */
+        $api = $this->getNativeCurlClient()->getApi('user');
+
+        $this->registerClientResponse(
+            $api->update($id, $data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
      * @When I show the user with id :userId
      */
     public function iShowTheUserWithId(int $userId)

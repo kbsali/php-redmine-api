@@ -19,27 +19,4 @@ class UserXmlTest extends TestCase
 
         $api->create();
     }
-
-    public function testUpdate()
-    {
-        /** @var \Redmine\Api\User */
-        $api = MockClient::create()->getApi('user');
-        $res = $api->update(1, [
-            'firstname' => 'Raul',
-        ]);
-        $response = json_decode($res, true);
-
-        $this->assertEquals('PUT', $response['method']);
-        $this->assertEquals('/users/1.xml', $response['path']);
-        $this->assertXmlStringEqualsXmlString(
-            <<< XML
-            <?xml version="1.0"?>
-            <user>
-                <id>1</id>
-                <firstname>Raul</firstname>
-            </user>
-            XML,
-            $response['data']
-        );
-    }
 }

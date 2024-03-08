@@ -4,7 +4,7 @@ Feature: Interacting with the REST API for users
     I want to make sure the Redmine server replies with the correct response
 
     @user
-    Scenario: Creating a user
+    Scenario: Creating an user
         Given I have a "NativeCurlClient" client
         When I create a user with the following data
             | property          | value                |
@@ -43,6 +43,25 @@ Feature: Interacting with the REST API for users
             | passwd_changed_on | []                   |
             | twofa_scheme      | []                   |
             | status            | 1                    |
+
+    @user
+    Scenario: Updating an user
+        Given I have a "NativeCurlClient" client
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I update the user with id "4" and the following data
+            | property          | value                |
+            | firstname         | new_first            |
+            | lastname          | new_last             |
+            | mail              | new_mail@example.com |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
 
     @user
     Scenario: Showing a user
