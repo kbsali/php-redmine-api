@@ -238,7 +238,7 @@ class Version extends AbstractApi
             'closed',
         ];
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
-            throw new InvalidParameterException('Possible values for status : ' . implode(', ', $arrStatus));
+            throw new InvalidParameterException('Possible values for status are: ' . implode(', ', $arrStatus));
         }
     }
 
@@ -252,7 +252,7 @@ class Version extends AbstractApi
             'system' => 'With all projects',
         ];
         if (isset($params['sharing']) && !isset($arrSharing[$params['sharing']])) {
-            throw new InvalidParameterException('Possible values for sharing : ' . implode(', ', array_keys($arrSharing)));
+            throw new InvalidParameterException('Possible values for sharing are: ' . implode(', ', array_keys($arrSharing)));
         }
     }
 
