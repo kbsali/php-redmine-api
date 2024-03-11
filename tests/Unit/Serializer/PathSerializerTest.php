@@ -52,12 +52,10 @@ class PathSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getPathData
      */
     #[DataProvider('getPathData')]
-    public function getPathShouldReturnExpectedString(string $path, array $params, string $expected)
+    public function testGetPathShouldReturnExpectedString(string $path, array $params, string $expected)
     {
         $serializer = PathSerializer::create($path, $params);
 

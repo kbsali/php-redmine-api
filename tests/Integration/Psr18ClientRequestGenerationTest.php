@@ -19,7 +19,6 @@ class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      *
      * @dataProvider createdGetRequestsData
      */
@@ -36,6 +35,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
     ) {
         $response = $this->createMock(ResponseInterface::class);
 
+        /** @var ClientInterface|\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput) {
             // Create a text representation of the HTTP request

@@ -48,7 +48,6 @@ class GroupTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -86,7 +85,6 @@ class GroupTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -124,7 +122,6 @@ class GroupTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -161,7 +158,6 @@ class GroupTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -199,7 +195,6 @@ class GroupTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -238,7 +233,6 @@ class GroupTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -279,7 +273,6 @@ class GroupTest extends TestCase
      *
      * @covers ::delete
      * @covers ::removeUser
-     * @test
      */
     public function testRemoveUserCallsDelete()
     {

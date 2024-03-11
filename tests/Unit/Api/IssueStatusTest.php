@@ -46,7 +46,6 @@ class IssueStatusTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -84,7 +83,6 @@ class IssueStatusTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -122,7 +120,6 @@ class IssueStatusTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -159,7 +156,6 @@ class IssueStatusTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -197,7 +193,6 @@ class IssueStatusTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -235,7 +230,6 @@ class IssueStatusTest extends TestCase
      * Test getIdByName().
      *
      * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {

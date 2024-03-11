@@ -32,8 +32,6 @@ class IssueTest extends TestCase
      * Test the constants.
      *
      * @dataProvider getPriorityConstantsData
-     *
-     * @test
      */
     #[DataProvider('getPriorityConstantsData')]
     public function testPriorityConstants($expected, $value)
@@ -72,7 +70,6 @@ class IssueTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -110,7 +107,6 @@ class IssueTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -149,7 +145,6 @@ class IssueTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -186,7 +181,6 @@ class IssueTest extends TestCase
      *
      * @covers ::attach
      * @covers ::put
-     * @test
      */
     public function testAttachCallsPut()
     {
@@ -233,7 +227,6 @@ class IssueTest extends TestCase
      * Test removeWatcher().
      *
      * @covers ::removeWatcher
-     * @test
      */
     public function testRemoveWatcherCallsPost()
     {
@@ -269,7 +262,6 @@ class IssueTest extends TestCase
      * @covers ::getProjectApi
      * @covers ::getTrackerApi
      * @covers ::getUserApi
-     * @test
      */
     public function testCreateWithClientCleansParameters()
     {
@@ -346,7 +338,6 @@ class IssueTest extends TestCase
      *
      * @covers ::update
      * @covers ::put
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -379,7 +370,6 @@ class IssueTest extends TestCase
      *
      * @covers ::update
      * @covers ::cleanParams
-     * @test
      */
     public function testUpdateCleansParameters()
     {
@@ -453,7 +443,6 @@ class IssueTest extends TestCase
      * Test setIssueStatus().
      *
      * @covers ::setIssueStatus
-     * @test
      */
     public function testSetIssueStatusWithClient()
     {
@@ -499,7 +488,6 @@ class IssueTest extends TestCase
      * Test setIssueStatus().
      *
      * @covers ::setIssueStatus
-     * @test
      */
     public function testSetIssueStatusWithHttpClient()
     {
@@ -542,7 +530,6 @@ class IssueTest extends TestCase
      * Test addNoteToIssue().
      *
      * @covers ::addNoteToIssue
-     * @test
      */
     public function testAddNoteToIssue()
     {
@@ -577,7 +564,6 @@ class IssueTest extends TestCase
     /**
      * Test assign an user to an issue.
      *
-     * @test
      */
     public function testAssignUserToAnIssue()
     {
@@ -609,7 +595,6 @@ class IssueTest extends TestCase
     /**
      * Test unassign an user from an issue.
      *
-     * @test
      */
     public function testUnassignUserFromAnIssue()
     {

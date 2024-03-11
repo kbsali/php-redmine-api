@@ -127,7 +127,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
@@ -213,7 +212,6 @@ class AbstractApiTest extends TestCase
 
     /**
      * @covers ::lastCallFailed
-     * @test
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
@@ -229,7 +227,6 @@ class AbstractApiTest extends TestCase
 
     /**
      * @covers ::lastCallFailed
-     * @test
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]

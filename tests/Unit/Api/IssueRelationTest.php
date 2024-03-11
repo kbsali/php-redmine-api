@@ -46,7 +46,6 @@ class IssueRelationTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
@@ -84,7 +83,6 @@ class IssueRelationTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -123,7 +121,6 @@ class IssueRelationTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {

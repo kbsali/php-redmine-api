@@ -46,7 +46,6 @@ class CustomFieldTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -84,7 +83,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -119,7 +117,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithHighLimit()
     {
@@ -157,7 +154,6 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()
     {
@@ -200,7 +196,6 @@ class CustomFieldTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -237,7 +232,6 @@ class CustomFieldTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -275,7 +269,6 @@ class CustomFieldTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -313,7 +306,6 @@ class CustomFieldTest extends TestCase
      * Test getIdByName().
      *
      * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {

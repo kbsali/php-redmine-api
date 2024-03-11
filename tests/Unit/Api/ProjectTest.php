@@ -49,7 +49,6 @@ class ProjectTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -87,7 +86,6 @@ class ProjectTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -126,7 +124,6 @@ class ProjectTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -154,7 +151,6 @@ class ProjectTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -191,7 +187,6 @@ class ProjectTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -229,7 +224,6 @@ class ProjectTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -267,7 +261,6 @@ class ProjectTest extends TestCase
      * Test getIdByName().
      *
      * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -302,7 +295,6 @@ class ProjectTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {

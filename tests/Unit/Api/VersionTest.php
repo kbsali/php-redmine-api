@@ -47,7 +47,6 @@ class VersionTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -85,7 +84,6 @@ class VersionTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -128,7 +126,6 @@ class VersionTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveWithNumericIdCallsDelete()
     {
@@ -157,7 +154,6 @@ class VersionTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveWithStringCallsDelete()
     {
@@ -187,7 +183,6 @@ class VersionTest extends TestCase
      * @covers ::update
      * @covers ::validateStatus
      *
-     * @test
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
@@ -215,7 +210,6 @@ class VersionTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -255,7 +249,6 @@ class VersionTest extends TestCase
      * @covers ::update
      * @covers ::put
      * @covers ::validateStatus
-     * @test
      */
     public function testUpdateWithValidStatusCallsPut()
     {
@@ -295,7 +288,6 @@ class VersionTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -330,7 +322,6 @@ class VersionTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingReturnsIdNameIfReverseIsFalseArray()
     {
@@ -365,7 +356,6 @@ class VersionTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -401,7 +391,6 @@ class VersionTest extends TestCase
      * Test listing().
      *
      * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -437,7 +426,6 @@ class VersionTest extends TestCase
      * Test getIdByName().
      *
      * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -474,7 +462,6 @@ class VersionTest extends TestCase
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
      *
-     * @test
      *
      * @param string $sharingValue
      */
@@ -506,7 +493,6 @@ class VersionTest extends TestCase
      * @covers       ::update
      * @covers       ::validateSharing
      * @dataProvider validSharingProvider
-     * @test
      *
      * @param string $sharingValue
      * @param string $sharingXmlElement
@@ -552,7 +538,6 @@ class VersionTest extends TestCase
      * @covers       ::update
      * @covers       ::validateSharing
      * @dataProvider validEmptySharingProvider
-     * @test
      *
      * @param string $sharingValue
      */
@@ -600,7 +585,6 @@ class VersionTest extends TestCase
      * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
      *
-     * @test
      *
      * @param string $sharingValue
      */

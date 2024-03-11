@@ -46,7 +46,6 @@ class WikiTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -84,7 +83,6 @@ class WikiTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -127,7 +125,6 @@ class WikiTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -156,7 +153,6 @@ class WikiTest extends TestCase
      *
      * @covers ::create
      * @covers ::post
-     * @test
      */
     public function testCreateCallsPost()
     {
@@ -188,7 +184,6 @@ class WikiTest extends TestCase
      *
      * @covers ::create
      * @covers ::post
-     * @test
      */
     public function testCreateWithParametersCallsPost()
     {
@@ -231,7 +226,6 @@ class WikiTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -263,7 +257,6 @@ class WikiTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateWithParametersCallsPut()
     {

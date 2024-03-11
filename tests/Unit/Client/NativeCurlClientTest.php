@@ -35,9 +35,8 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
-    public function shouldPassApiKeyToConstructor()
+    public function testApiKeyShouldBePassToConstructor()
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -51,9 +50,8 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
-    public function shouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor()
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -67,7 +65,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testGetLastResponseStatusCodeIsInitialNull()
     {
@@ -81,7 +78,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testGetLastResponseContentTypeIsInitialEmpty()
     {
@@ -95,7 +91,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testGetLastResponseBodyIsInitialEmpty()
     {
@@ -109,7 +104,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testStartAndStopImpersonateUser()
     {
@@ -169,7 +163,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetSslVersion()
     {
@@ -228,7 +221,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetSslVerifypeer()
     {
@@ -288,7 +280,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetSslVerifyhost()
     {
@@ -348,7 +339,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetCustomHttpHeaders()
     {
@@ -414,7 +404,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetCustomHost()
     {
@@ -476,7 +465,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testSetPort()
     {
@@ -535,7 +523,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testCustomPortWillSetFromSchema()
     {
@@ -589,7 +576,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testCustomPortWillSetFromUrl()
     {
@@ -643,7 +629,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
@@ -709,7 +694,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testHandlingOfResponseWithoutContent()
     {
@@ -751,7 +735,6 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
     public function testCurlErrorThrowsException()
     {
@@ -786,14 +769,13 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      *
      * @param string $apiName
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
     #[DataProvider('getApiClassesProvider')]
-    public function getApiShouldReturnApiInstance($apiName, $class)
+    public function testGetApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -830,9 +812,8 @@ class NativeCurlClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\NativeCurlClient
-     * @test
      */
-    public function getApiShouldThrowException()
+    public function testGetApiShouldThrowException()
     {
         $client = new NativeCurlClient(
             'http://test.local',

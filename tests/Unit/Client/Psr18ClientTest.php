@@ -23,9 +23,8 @@ class Psr18ClientTest extends TestCase
 {
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
-    public function shouldPassApiKeyToConstructor()
+    public function testShouldPassApiKeyToConstructor()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -69,9 +68,8 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
-    public function shouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -88,7 +86,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
     public function testGetLastResponseStatusCodeIsInitialZero()
     {
@@ -105,7 +102,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
     public function testGetLastResponseContentTypeIsInitialEmpty()
     {
@@ -122,7 +118,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
     public function testGetLastResponseBodyIsInitialEmpty()
     {
@@ -139,7 +134,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
     public function testStartAndStopImpersonateUser()
     {
@@ -173,7 +167,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
     public function testRequestGetReturnsFalse()
     {
@@ -202,7 +195,6 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
@@ -268,14 +260,13 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      *
      * @param string $apiName
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
     #[DataProvider('getApiClassesProvider')]
-    public function getApiShouldReturnApiInstance($apiName, $class)
+    public function testGetApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -333,9 +324,8 @@ class Psr18ClientTest extends TestCase
 
     /**
      * @covers \Redmine\Client\Psr18Client
-     * @test
      */
-    public function getApiShouldThrowException()
+    public function testGetApiShouldThrowException()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),

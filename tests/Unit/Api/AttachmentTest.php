@@ -23,7 +23,6 @@ class AttachmentTest extends TestCase
      *
      * @param int  $responseCode
      * @param bool $hasFailed
-     * @test
      */
     #[DataProvider('responseCodeProvider')]
     public function testLastCallFailedTrue($responseCode, $hasFailed)

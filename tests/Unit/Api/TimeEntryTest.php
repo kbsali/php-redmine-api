@@ -47,7 +47,6 @@ class TimeEntryTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
@@ -85,7 +84,6 @@ class TimeEntryTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -130,7 +128,6 @@ class TimeEntryTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -159,7 +156,6 @@ class TimeEntryTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {

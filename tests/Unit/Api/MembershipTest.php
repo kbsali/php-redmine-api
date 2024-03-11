@@ -48,7 +48,6 @@ class MembershipTest extends TestCase
      *
      * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
@@ -86,7 +85,6 @@ class MembershipTest extends TestCase
      * Test all().
      *
      * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -125,7 +123,6 @@ class MembershipTest extends TestCase
      *
      * @covers ::delete
      * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -161,7 +158,6 @@ class MembershipTest extends TestCase
      * Test removeMember().
      *
      * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberCallsDelete()
     {
@@ -208,7 +204,6 @@ class MembershipTest extends TestCase
      * Test removeMember().
      *
      * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberReturnsFalseIfUserIsNotMemberOfProject()
     {
@@ -236,7 +231,6 @@ class MembershipTest extends TestCase
      * Test removeMember().
      *
      * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberReturnsFalseIfMemberlistIsMissing()
     {
@@ -265,7 +259,6 @@ class MembershipTest extends TestCase
      *
      * @covers ::update
      *
-     * @test
      */
     public function testUpdateThrowsExceptionIfRoleIdsAreMissingInParameters()
     {
@@ -290,7 +283,6 @@ class MembershipTest extends TestCase
      *
      * @covers ::put
      * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
