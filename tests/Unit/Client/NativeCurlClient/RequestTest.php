@@ -37,10 +37,10 @@ class RequestTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -52,6 +52,7 @@ class RequestTest extends TestCase
             'access_token'
         );
 
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => $method,
             'getPath' => '/path',
@@ -109,10 +110,10 @@ class RequestTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 201],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -138,6 +139,7 @@ class RequestTest extends TestCase
             E_USER_DEPRECATED
         );
 
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => 'POST',
             'getPath' => '/uploads.json',

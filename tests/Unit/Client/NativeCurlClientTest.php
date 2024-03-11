@@ -135,10 +135,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -194,10 +194,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -254,10 +254,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -314,10 +314,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -375,10 +375,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -440,10 +440,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -501,10 +501,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -560,10 +560,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(1))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
@@ -614,10 +614,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(1))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
@@ -658,10 +658,10 @@ class NativeCurlClientTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -726,10 +726,10 @@ class NativeCurlClientTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
