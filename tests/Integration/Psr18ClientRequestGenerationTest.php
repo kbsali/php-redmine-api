@@ -35,41 +35,37 @@ class Psr18ClientRequestGenerationTest extends TestCase
         $response = $this->createMock(ResponseInterface::class);
 
         $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')->will(
-            $this->returnCallback(function ($request) use ($response, $expectedOutput) {
-                // Create a text representation of the HTTP request
-                $content = $request->getBody()->__toString();
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput) {
+            // Create a text representation of the HTTP request
+            $content = $request->getBody()->__toString();
 
-                $headers = '';
+            $headers = '';
 
-                foreach ($request->getHeaders() as $k => $v) {
-                    $headers .= $k . ': ' . $request->getHeaderLine($k) . \PHP_EOL;
-                }
+            foreach ($request->getHeaders() as $k => $v) {
+                $headers .= $k . ': ' . $request->getHeaderLine($k) . \PHP_EOL;
+            }
 
-                $statusLine = sprintf(
-                    '%s %s HTTP/%s',
-                    $request->getMethod(),
-                    $request->getUri()->__toString(),
-                    $request->getProtocolVersion()
-                );
+            $statusLine = sprintf(
+                '%s %s HTTP/%s',
+                $request->getMethod(),
+                $request->getUri()->__toString(),
+                $request->getProtocolVersion()
+            );
 
-                $fullRequest = $statusLine . \PHP_EOL .
-                    $headers . \PHP_EOL .
-                    $content
-                ;
+            $fullRequest = $statusLine . \PHP_EOL .
+                $headers . \PHP_EOL .
+                $content
+            ;
 
-                $this->assertSame($expectedOutput, $fullRequest);
+            $this->assertSame($expectedOutput, $fullRequest);
 
-                return $response;
-            })
-        );
+            return $response;
+        });
 
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->will(
-            $this->returnCallback(function ($method, $uri) {
-                return new Request($method, $uri);
-            })
-        );
+        $requestFactory->method('createRequest')->willReturnCallback(function ($method, $uri) {
+            return new Request($method, $uri);
+        });
 
         $streamFactory = new class () implements StreamFactoryInterface {
             public function createStream(string $content = ''): StreamInterface
