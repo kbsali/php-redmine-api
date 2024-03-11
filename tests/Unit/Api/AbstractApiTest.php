@@ -352,10 +352,11 @@ class AbstractApiTest extends TestCase
 
     /**
      * @covers ::retrieveData
+     * @covers ::getResponseAsArray
      *
      * @dataProvider retrieveDataData
      */
-    public function testRetrieveData($response, $contentType, $expected)
+    public function testRetrieveData($path, $contentType, $response, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -367,13 +368,24 @@ class AbstractApiTest extends TestCase
         $method = new ReflectionMethod($api, 'retrieveData');
         $method->setAccessible(true);
 
-        $this->assertSame($expected, $method->invoke($api, '/issues.json'));
+        $this->assertSame($expected, $method->invoke($api, $path));
     }
 
     public static function retrieveDataData(): array
     {
         return [
-            'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+            'test json decode by default' => [
+                '/issues.json',
+                'application/json',
+                '{"foo_bar": 12345}',
+                ['foo_bar' => 12345],
+            ],
+            'test xml decode by default' => [
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issues type="array"></issues>',
+                ['@attributes' => ['type' => 'array']],
+            ],
         ];
     }
 
