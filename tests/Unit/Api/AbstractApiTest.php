@@ -126,6 +126,37 @@ class AbstractApiTest extends TestCase
     }
 
     /**
+     * @covers ::put
+     */
+    public function testPutTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {
+            public function runPut($path, $data)
+            {
+                return $this->put($path, $data);
+            }
+        };
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\AbstractApi::put()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->runPut('/path.json', 'data');
+    }
+
+    /**
      * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
