@@ -224,10 +224,13 @@ class Version extends AbstractApi
         $this->validateStatus($params);
         $this->validateSharing($params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/versions/' . $id . '.xml',
             XmlSerializer::createFromArray(['version' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     private function validateStatus(array $params = [])

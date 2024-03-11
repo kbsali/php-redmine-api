@@ -147,10 +147,13 @@ class Membership extends AbstractApi
             throw new MissingParameterException('Theses parameters are mandatory: `role_ids`');
         }
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/memberships/' . $id . '.xml',
             XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

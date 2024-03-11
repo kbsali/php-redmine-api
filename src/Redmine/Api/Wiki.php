@@ -145,10 +145,19 @@ class Wiki extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
             XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body !== '') {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**
@@ -162,7 +171,9 @@ class Wiki extends AbstractApi
      */
     public function update($project, $page, array $params = [])
     {
-        return $this->create($project, $page, $params);
+        $this->create($project, $page, $params);
+
+        return $this->lastResponse->getContent();
     }
 
     /**

@@ -171,10 +171,13 @@ class TimeEntry extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/time_entries/' . $id . '.xml',
             XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

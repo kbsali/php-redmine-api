@@ -247,10 +247,13 @@ class User extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/users/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['user' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

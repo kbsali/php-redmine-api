@@ -211,10 +211,13 @@ class IssueCategory extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/issue_categories/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
