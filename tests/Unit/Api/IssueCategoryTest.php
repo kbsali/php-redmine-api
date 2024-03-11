@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Client\Client;
@@ -48,6 +49,7 @@ class IssueCategoryTest extends TestCase
      * @dataProvider getAllDAta
      * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
     {
         // Test values

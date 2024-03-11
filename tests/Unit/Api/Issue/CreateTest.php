@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -15,6 +16,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

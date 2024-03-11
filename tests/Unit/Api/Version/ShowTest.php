@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Version;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -14,6 +15,7 @@ class ShowTest extends TestCase
     /**
      * @dataProvider getShowData
      */
+    #[DataProvider('getShowData')]
     public function testShowReturnsCorrectResponse($version, $expectedPath, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(

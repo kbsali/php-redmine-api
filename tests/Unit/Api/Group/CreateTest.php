@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Group;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\MissingParameterException;
@@ -19,6 +20,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

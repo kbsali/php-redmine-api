@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\News;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\News;
 use Redmine\Client\Client;
@@ -73,6 +74,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+    #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new News(MockClient::create());

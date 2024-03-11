@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Serializer\PathSerializer;
 
@@ -55,6 +56,7 @@ class PathSerializerTest extends TestCase
      *
      * @dataProvider getPathData
      */
+    #[DataProvider('getPathData')]
     public function getPathShouldReturnExpectedString(string $path, array $params, string $expected)
     {
         $serializer = PathSerializer::create($path, $params);

@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
 use Redmine\Client\Client;
@@ -47,6 +48,7 @@ class RoleTest extends TestCase
      * @dataProvider getAllData
      * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects

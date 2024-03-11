@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Client\Client;
@@ -48,6 +49,7 @@ class TimeEntryTest extends TestCase
      * @dataProvider getAllData
      * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects

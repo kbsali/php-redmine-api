@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Wiki;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Client\Client;
@@ -74,6 +75,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+    #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new Wiki(MockClient::create());

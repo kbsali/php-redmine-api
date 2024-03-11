@@ -4,6 +4,7 @@ namespace Redmine\Tests\Unit\Client;
 
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -204,6 +205,7 @@ class Psr18ClientTest extends TestCase
      * @test
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
     {
         $stream = $this->createMock(StreamInterface::class);
@@ -272,6 +274,7 @@ class Psr18ClientTest extends TestCase
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
+    #[DataProvider('getApiClassesProvider')]
     public function getApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new Psr18Client(

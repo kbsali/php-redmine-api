@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Client\NativeCurlClientTest;
 
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Request;
@@ -22,6 +23,7 @@ class RequestTest extends TestCase
     /**
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content)
     {
         $namespace = 'Redmine\Client';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
@@ -67,6 +68,7 @@ class XmlSerializerTest extends TestCase
      *
      * @dataProvider getEncodedToNormalizedData
      */
+    #[DataProvider('getEncodedToNormalizedData')]
     public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
     {
         $serializer = XmlSerializer::createFromString($data);
@@ -105,6 +107,7 @@ class XmlSerializerTest extends TestCase
      *
      * @dataProvider getInvalidEncodedData
      */
+    #[DataProvider('getInvalidEncodedData')]
     public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
     {
         $this->expectException(SerializerException::class);
@@ -257,6 +260,7 @@ class XmlSerializerTest extends TestCase
      *
      * @dataProvider getNormalizedToEncodedData
      */
+    #[DataProvider('getNormalizedToEncodedData')]
     public function createFromArrayEncodesToExpectedString(array $data, $expected)
     {
         $serializer = XmlSerializer::createFromArray($data);
@@ -279,6 +283,7 @@ class XmlSerializerTest extends TestCase
      *
      * @dataProvider getInvalidSerializedData
      */
+    #[DataProvider('getInvalidSerializedData')]
     public function createFromArrayWithInvalidDataThrowsException(string $message, array $data)
     {
         $this->expectException(SerializerException::class);

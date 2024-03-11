@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\IssueCategory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Client\Client;
@@ -73,6 +74,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+    #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new IssueCategory(MockClient::create());

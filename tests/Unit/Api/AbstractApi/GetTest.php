@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\AbstractApi;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -46,6 +47,7 @@ class GetTest extends TestCase
     /**
      * @dataProvider getJsonDecodingFromGetMethodData
      */
+    #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);
@@ -80,6 +82,7 @@ class GetTest extends TestCase
     /**
      * @dataProvider getXmlDecodingFromGetMethodData
      */
+    #[DataProvider('getXmlDecodingFromGetMethodData')]
     public function testXmlDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);

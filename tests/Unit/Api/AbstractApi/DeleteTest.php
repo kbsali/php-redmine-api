@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\AbstractApi;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -44,6 +45,7 @@ class DeleteTest extends TestCase
     /**
      * @dataProvider getXmlDecodingFromDeleteMethodData
      */
+    #[DataProvider('getXmlDecodingFromDeleteMethodData')]
     public function testXmlDecodingFromDeleteMethod($response, $expected)
     {
         $client = $this->createMock(Client::class);

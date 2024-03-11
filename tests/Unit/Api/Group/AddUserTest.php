@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Group;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -15,6 +16,7 @@ class AddUserTest extends TestCase
     /**
      * @dataProvider getAddUserData
      */
+    #[DataProvider('getAddUserData')]
     public function testAddUserReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

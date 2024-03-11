@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\AbstractApi;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -46,6 +47,7 @@ class PostTest extends TestCase
     /**
      * @dataProvider getXmlDecodingFromPostMethodData
      */
+    #[DataProvider('getXmlDecodingFromPostMethodData')]
     public function testXmlDecodingFromPostMethod($response, $expected)
     {
         $client = $this->createMock(Client::class);

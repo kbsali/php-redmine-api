@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Api;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -129,6 +130,7 @@ class AbstractApiTest extends TestCase
      * @test
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
+    #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
     public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value)
     {
         $client = $this->createMock(Client::class);
@@ -214,6 +216,7 @@ class AbstractApiTest extends TestCase
      * @test
      * @dataProvider getLastCallFailedData
      */
+    #[DataProvider('getLastCallFailedData')]
     public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
     {
         $client = $this->createMock(Client::class);
@@ -229,6 +232,7 @@ class AbstractApiTest extends TestCase
      * @test
      * @dataProvider getLastCallFailedData
      */
+    #[DataProvider('getLastCallFailedData')]
     public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
     {
         $response = $this->createMock(Response::class);
@@ -324,6 +328,7 @@ class AbstractApiTest extends TestCase
      *
      * @dataProvider retrieveDataData
      */
+    #[DataProvider('retrieveDataData')]
     public function testRetrieveData($response, $contentType, $expected)
     {
         $client = $this->createMock(Client::class);
@@ -351,6 +356,7 @@ class AbstractApiTest extends TestCase
      *
      * @dataProvider getRetrieveDataToExceptionData
      */
+    #[DataProvider('getRetrieveDataToExceptionData')]
     public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage)
     {
         $client = $this->createMock(Client::class);
@@ -381,6 +387,7 @@ class AbstractApiTest extends TestCase
      *
      * @dataProvider getRetrieveAllData
      */
+    #[DataProvider('getRetrieveAllData')]
     public function testDeprecatedRetrieveAll($content, $contentType, $expected)
     {
         $client = $this->createMock(Client::class);

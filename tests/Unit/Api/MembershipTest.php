@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Api;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
@@ -49,6 +50,7 @@ class MembershipTest extends TestCase
      * @dataProvider getAllData
      * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects

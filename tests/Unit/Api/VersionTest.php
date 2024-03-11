@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Client\Client;
@@ -48,6 +49,7 @@ class VersionTest extends TestCase
      * @dataProvider getAllData
      * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -476,6 +478,7 @@ class VersionTest extends TestCase
      *
      * @param string $sharingValue
      */
+    #[DataProvider('invalidSharingProvider')]
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values
@@ -508,6 +511,7 @@ class VersionTest extends TestCase
      * @param string $sharingValue
      * @param string $sharingXmlElement
      */
+    #[DataProvider('validSharingProvider')]
     public function testUpdateWithValidSharing($sharingValue, $sharingXmlElement)
     {
         // Test values
@@ -552,6 +556,7 @@ class VersionTest extends TestCase
      *
      * @param string $sharingValue
      */
+    #[DataProvider('validEmptySharingProvider')]
     public function testUpdateWithValidEmptySharing($sharingValue)
     {
         // Test values
@@ -599,6 +604,7 @@ class VersionTest extends TestCase
      *
      * @param string $sharingValue
      */
+    #[DataProvider('invalidSharingProvider')]
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values

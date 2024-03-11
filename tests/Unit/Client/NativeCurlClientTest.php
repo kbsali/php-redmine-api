@@ -7,6 +7,7 @@ namespace Redmine\Tests\Unit\Client;
 use Exception;
 use InvalidArgumentException;
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
@@ -645,6 +646,7 @@ class NativeCurlClientTest extends TestCase
      * @test
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
     {
         $curl = $this->createMock(stdClass::class);
@@ -790,6 +792,7 @@ class NativeCurlClientTest extends TestCase
      * @param string $class
      * @dataProvider getApiClassesProvider
      */
+    #[DataProvider('getApiClassesProvider')]
     public function getApiShouldReturnApiInstance($apiName, $class)
     {
         $client = new NativeCurlClient(

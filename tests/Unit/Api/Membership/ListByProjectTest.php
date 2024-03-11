@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Membership;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
@@ -71,6 +72,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+     #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new Membership(MockClient::create());

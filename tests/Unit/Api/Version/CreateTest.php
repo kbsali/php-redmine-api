@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Version;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Exception\InvalidParameterException;
@@ -18,6 +19,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($identifier, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

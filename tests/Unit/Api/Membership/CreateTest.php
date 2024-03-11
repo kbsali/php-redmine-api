@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Membership;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Exception\MissingParameterException;
@@ -17,6 +18,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($identifier, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
@@ -106,6 +108,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider incompleteCreateParameterProvider
      */
+    #[DataProvider('incompleteCreateParameterProvider')]
     public function testCreateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
     {
         // Create the used mock objects

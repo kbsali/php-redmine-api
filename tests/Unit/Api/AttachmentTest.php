@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Client\Client;
@@ -24,6 +25,7 @@ class AttachmentTest extends TestCase
      * @param bool $hasFailed
      * @test
      */
+    #[DataProvider('responseCodeProvider')]
     public function testLastCallFailedTrue($responseCode, $hasFailed)
     {
         // Create the used mock objects

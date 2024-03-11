@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Client\Psr18ClientTest;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
@@ -26,6 +27,7 @@ class RequestTest extends TestCase
     /**
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content)
     {
         $httpClient = $this->createConfiguredMock(ClientInterface::class, [

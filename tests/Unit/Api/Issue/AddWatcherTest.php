@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -15,6 +16,7 @@ class AddWatcherTest extends TestCase
     /**
      * @dataProvider getAddWatcherData
      */
+    #[DataProvider('getAddWatcherData')]
     public function testCreateReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
