@@ -16,8 +16,8 @@ final class RedmineInstance
     public static function getSupportedVersions(): array
     {
         return [
-            RedmineVersion::V5_1_1,
-            RedmineVersion::V5_0_7,
+            RedmineVersion::V5_1_2,
+            RedmineVersion::V5_0_8,
         ];
     }
 
