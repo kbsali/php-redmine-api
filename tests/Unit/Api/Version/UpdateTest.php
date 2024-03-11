@@ -10,6 +10,8 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @covers \Redmine\Api\Version::update
+ * @covers \Redmine\Api\Version::validateStatus
+ * @covers \Redmine\Api\Version::validateSharing
  */
 class UpdateTest extends TestCase
 {
