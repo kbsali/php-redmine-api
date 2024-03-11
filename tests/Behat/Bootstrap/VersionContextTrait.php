@@ -45,6 +45,26 @@ trait VersionContextTrait
     }
 
     /**
+     * @When I update the version with id :id and the following data
+     */
+    public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->update($id, $data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
      * @When I show the version with id :versionId
      */
     public function iShowTheVersionWithId(int $versionId)

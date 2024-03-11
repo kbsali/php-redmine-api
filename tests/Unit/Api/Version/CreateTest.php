@@ -153,7 +153,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateThrowsExceptionWithEmptyParameters()
+    public function testCreateWithEmptyParametersThrowsMissingParameterException()
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
@@ -168,7 +168,7 @@ class CreateTest extends TestCase
         $api->create(5);
     }
 
-    public function testCreateThrowsExceptionWithMissingNameInParameters()
+    public function testCreateWithMissingNameInParametersThrowsMissingParameterException()
     {
         // Test values
         $parameters = [
@@ -188,7 +188,7 @@ class CreateTest extends TestCase
         $api->create(5, $parameters);
     }
 
-    public function testCreateThrowsExceptionWithInvalidStatus()
+    public function testCreateWithInvalidStatusThrowsInvalidParameterException()
     {
         // Test values
         $parameters = [
@@ -204,7 +204,7 @@ class CreateTest extends TestCase
         $api = new Version($client);
 
         $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('Possible values for status : open, locked, closed');
+        $this->expectExceptionMessage('Possible values for status are: open, locked, closed');
 
         // Perform the tests
         $api->create('test', $parameters);
