@@ -10,6 +10,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @covers \Redmine\Api\Wiki::update
+ * @covers \Redmine\Api\Wiki::create
  */
 class UpdateTest extends TestCase
 {
