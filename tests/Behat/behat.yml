@@ -6,7 +6,7 @@ default:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.1.2'
-        redmine_50007:
+        redmine_50008:
             paths:
                 - '%paths.base%/features'
             contexts:
