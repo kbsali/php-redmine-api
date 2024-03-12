@@ -11,7 +11,7 @@ use Redmine\Client\Client;
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
- #[CoversClass(Attachment::class)]
+#[CoversClass(Attachment::class)]
 class AttachmentTest extends TestCase
 {
     /**

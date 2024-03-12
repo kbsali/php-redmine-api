@@ -15,7 +15,6 @@ use Redmine\Client\NativeCurlClient;
 use Redmine\Http\HttpClient;
 use stdClass;
 
-
 #[CoversClass(NativeCurlClient::class)]
 class NativeCurlClientTest extends TestCase
 {
