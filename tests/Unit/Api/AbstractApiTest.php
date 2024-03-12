@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Api;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
@@ -14,9 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
-/**
- * @coversDefaultClass \Redmine\Api\AbstractApi
- */
+#[CoversClass(AbstractApi::class)]
 class AbstractApiTest extends TestCase
 {
     public function testCreateWithHttpClientWorks()
@@ -52,9 +51,6 @@ class AbstractApiTest extends TestCase
         new class (new \stdClass()) extends AbstractApi {};
     }
 
-    /**
-     * @covers ::get
-     */
     public function testGetTriggersDeprecationWarning()
     {
         $client = $this->createMock(HttpClient::class);
@@ -83,9 +79,6 @@ class AbstractApiTest extends TestCase
         $api->runGet('/path.json');
     }
 
-    /**
-     * @covers ::getLastResponse
-     */
     public function testGetLastResponseWithHttpClientWorks()
     {
         $client = $this->createMock(HttpClient::class);
@@ -95,9 +88,6 @@ class AbstractApiTest extends TestCase
         $this->assertInstanceOf(Response::class, $api->getLastResponse());
     }
 
-    /**
-     * @covers ::post
-     */
     public function testPostTriggersDeprecationWarning()
     {
         $client = $this->createMock(HttpClient::class);
@@ -164,9 +154,6 @@ class AbstractApiTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::lastCallFailed
-     */
     public function testLastCallFailedPreventsRaceCondition()
     {
         $client = AssertingHttpClient::create(
@@ -211,7 +198,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers ::lastCallFailed
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
@@ -226,7 +212,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers ::lastCallFailed
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
@@ -321,8 +306,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers ::retrieveData
-     *
      * @dataProvider retrieveDataData
      */
     #[DataProvider('retrieveDataData')]
@@ -349,8 +332,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers ::retrieveData
-     *
      * @dataProvider getRetrieveDataToExceptionData
      */
     #[DataProvider('getRetrieveDataToExceptionData')]
@@ -380,8 +361,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @covers ::retrieveAll
-     *
      * @dataProvider getRetrieveAllData
      */
     #[DataProvider('getRetrieveAllData')]
@@ -409,9 +388,6 @@ class AbstractApiTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::attachCustomFieldXML
-     */
     public function testDeprecatedAttachCustomFieldXML()
     {
         $client = $this->createMock(Client::class);

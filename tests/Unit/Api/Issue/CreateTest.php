@@ -2,15 +2,14 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Issue::create
- */
+#[CoversClass(Issue::class)]
 class CreateTest extends TestCase
 {
     /**
@@ -257,10 +256,6 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getIssueStatusApi
-     */
     public function testCreateWithHttpClientRetrievesIssueStatusId()
     {
         $client = AssertingHttpClient::create(
@@ -298,10 +293,6 @@ class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getProjectApi
-     */
     public function testCreateWithHttpClientRetrievesProjectId()
     {
         $client = AssertingHttpClient::create(
@@ -339,10 +330,6 @@ class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getIssueCategoryApi
-     */
     public function testCreateWithHttpClientRetrievesIssueCategoryId()
     {
         $client = AssertingHttpClient::create(
@@ -380,10 +367,6 @@ class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getTrackerApi
-     */
     public function testCreateWithHttpClientRetrievesTrackerId()
     {
         $client = AssertingHttpClient::create(
@@ -421,10 +404,6 @@ class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getUserApi
-     */
     public function testCreateWithHttpClientRetrievesUserId()
     {
         $client = AssertingHttpClient::create(
@@ -464,13 +443,6 @@ class CreateTest extends TestCase
 
     /**
      * Test cleanParams().
-     *
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getIssueCategoryApi
-     * @covers \Redmine\Api\Issue::getIssueStatusApi
-     * @covers \Redmine\Api\Issue::getProjectApi
-     * @covers \Redmine\Api\Issue::getTrackerApi
-     * @covers \Redmine\Api\Issue::getUserApi
      */
     public function testCreateWithClientCleansParameters()
     {

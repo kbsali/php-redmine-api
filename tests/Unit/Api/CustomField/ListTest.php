@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\CustomField;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 
-/**
- * @covers \Redmine\Api\CustomField::list
- */
+#[CoversClass(CustomField::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse()

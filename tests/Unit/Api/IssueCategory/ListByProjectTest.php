@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\IssueCategory;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
@@ -11,9 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
-/**
- * @covers \Redmine\Api\IssueCategory::listByProject
- */
+#[CoversClass(IssueCategory::class)]
 class ListByProjectTest extends TestCase
 {
     public function testListByProjectWithoutParametersReturnsResponse()

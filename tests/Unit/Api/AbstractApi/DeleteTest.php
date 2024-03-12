@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\AbstractApi;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
@@ -11,9 +12,7 @@ use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 
-/**
- * @covers \Redmine\Api\AbstractApi::delete
- */
+#[CoversClass(AbstractApi::class)]
 class DeleteTest extends TestCase
 {
     public function testDeleteWithHttpClient()

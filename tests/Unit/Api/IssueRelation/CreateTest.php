@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\IssueRelation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
@@ -10,9 +11,7 @@ use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\IssueRelation::create
- */
+#[CoversClass(IssueRelation::class)]
 class CreateTest extends TestCase
 {
     /**

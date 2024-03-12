@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssuePriority;
@@ -9,16 +10,13 @@ use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\IssuePriority
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(IssuePriority::class)]
 class IssuePriorityTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -44,7 +42,6 @@ class IssuePriorityTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
@@ -81,8 +78,6 @@ class IssuePriorityTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {

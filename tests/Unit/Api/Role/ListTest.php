@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\Role;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 
-/**
- * @covers \Redmine\Api\Role::list
- */
+#[CoversClass(Role::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse()

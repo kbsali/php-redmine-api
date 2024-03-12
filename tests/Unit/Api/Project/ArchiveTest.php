@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Api\Project;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Project::archive
- */
+#[CoversClass(Project::class)]
 class ArchiveTest extends TestCase
 {
     public function testArchiveReturnsTrue()

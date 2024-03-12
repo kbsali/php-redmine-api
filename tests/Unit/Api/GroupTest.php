@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
@@ -11,16 +12,13 @@ use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Group
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Group::class)]
 class GroupTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -46,7 +44,6 @@ class GroupTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
@@ -83,8 +80,6 @@ class GroupTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -120,8 +115,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingReturnsNameIdArray()
     {
@@ -156,8 +149,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -193,8 +184,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -230,9 +219,6 @@ class GroupTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
      */
     public function testRemoveCallsDelete()
     {
@@ -270,9 +256,6 @@ class GroupTest extends TestCase
 
     /**
      * Test removeUser().
-     *
-     * @covers ::delete
-     * @covers ::removeUser
      */
     public function testRemoveUserCallsDelete()
     {

@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Membership;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
@@ -10,9 +11,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Membership::create
- */
+#[CoversClass(Membership::class)]
 class CreateTest extends TestCase
 {
     /**

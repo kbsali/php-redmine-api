@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\Group;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Group::show
- */
+#[CoversClass(Group::class)]
 class ShowTest extends TestCase
 {
     /**

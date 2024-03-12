@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Group;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
@@ -12,9 +13,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Group::create
- */
+#[CoversClass(Group::class)]
 class CreateTest extends TestCase
 {
     /**

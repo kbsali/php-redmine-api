@@ -2,24 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Client\Client;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\IssueCategory
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(IssueCategory::class)]
 class IssueCategoryTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -45,7 +42,6 @@ class IssueCategoryTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllDAta
      */
     #[DataProvider('getAllData')]
@@ -85,8 +81,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -123,8 +117,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingReturnsNameIdArray()
     {
@@ -159,8 +151,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -196,8 +186,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -233,9 +221,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
      */
     public function testRemoveCallsDelete()
     {
@@ -266,9 +251,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
      */
     public function testRemoveCallsDeleteWithParameters()
     {
@@ -304,8 +286,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test getIdByName().
-     *
-     * @covers ::getIdByName
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -337,9 +317,6 @@ class IssueCategoryTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
      */
     public function testUpdateCallsPut()
     {

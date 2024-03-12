@@ -2,23 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Client\Client;
 
 /**
- * @coversDefaultClass \Redmine\Api\Attachment
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+ #[CoversClass(Attachment::class)]
 class AttachmentTest extends TestCase
 {
     /**
      * Test lastCallFailed().
      *
-     * @covers       ::__construct
-     * @covers       ::lastCallFailed
      * @dataProvider responseCodeProvider
      *
      * @param int  $responseCode

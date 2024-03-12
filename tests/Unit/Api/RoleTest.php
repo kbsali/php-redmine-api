@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
@@ -9,16 +10,13 @@ use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Role
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Role::class)]
 class RoleTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -44,7 +42,6 @@ class RoleTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
@@ -81,8 +78,6 @@ class RoleTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -118,8 +113,6 @@ class RoleTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingReturnsNameIdArray()
     {
@@ -154,8 +147,6 @@ class RoleTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -191,8 +182,6 @@ class RoleTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {

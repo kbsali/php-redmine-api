@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 
-/**
- * @coversDefaultClass \Redmine\Serializer\JsonSerializer
- */
+#[CoversClass(JsonSerializer::class)]
 class JsonSerializerTest extends TestCase
 {
     public static function getEncodedToNormalizedData(): array

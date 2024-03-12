@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\TimeEntry;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
@@ -10,9 +11,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\TimeEntry::create
- */
+#[CoversClass(TimeEntry::class)]
 class CreateTest extends TestCase
 {
     /**

@@ -2,15 +2,14 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Issue::addWatcher
- */
+#[CoversClass(Issue::class)]
 class AddWatcherTest extends TestCase
 {
     /**

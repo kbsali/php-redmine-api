@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api\Version;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
@@ -11,9 +12,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Version::create
- */
+#[CoversClass(Version::class)]
 class CreateTest extends TestCase
 {
     /**

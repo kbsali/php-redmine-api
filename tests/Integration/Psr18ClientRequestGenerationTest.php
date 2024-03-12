@@ -6,6 +6,7 @@ namespace Redmine\Tests\Integration;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
@@ -15,11 +16,10 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Psr18Client;
 
+#[CoversClass(Psr18Client::class)]
 class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
-     * @covers \Redmine\Client\Psr18Client
-     *
      * @dataProvider createdGetRequestsData
      */
     #[DataProvider('createdGetRequestsData')]

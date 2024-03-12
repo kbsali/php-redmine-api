@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\Tracker;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Tracker;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 
-/**
- * @covers \Redmine\Api\Tracker::list
- */
+#[CoversClass(Tracker::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse()

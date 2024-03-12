@@ -3,6 +3,7 @@
 namespace Redmine\Tests\Unit\Client\NativeCurlClientTest;
 
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
@@ -10,12 +11,7 @@ use Redmine\Http\Request;
 use Redmine\Http\Response;
 use stdClass;
 
-/**
- * @covers \Redmine\Client\NativeCurlClient::request
- * @covers \Redmine\Client\NativeCurlClient::runRequest
- * @covers \Redmine\Client\NativeCurlClient::createCurl
- * @covers \Redmine\Client\NativeCurlClient::createHttpHeader
- */
+#[CoversClass(NativeCurlClient::class)]
 class RequestTest extends TestCase
 {
     use PHPMock;

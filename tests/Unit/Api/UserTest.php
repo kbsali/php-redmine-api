@@ -2,6 +2,7 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
@@ -9,16 +10,13 @@ use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\User
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(User::class)]
 class UserTest extends TestCase
 {
     /**
      * Test getCurrentUser().
-     *
-     * @covers ::getCurrentUser
      */
     public function testGetCurrentUserReturnsClientGetResponse()
     {
@@ -53,8 +51,6 @@ class UserTest extends TestCase
 
     /**
      * Test getIdByUsername().
-     *
-     * @covers ::getIdByUsername
      */
     public function testGetIdByUsernameMakesGetRequest()
     {
@@ -89,8 +85,6 @@ class UserTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -116,7 +110,6 @@ class UserTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
@@ -153,8 +146,6 @@ class UserTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -194,9 +185,6 @@ class UserTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
      */
     public function testRemoveCallsDelete()
     {
@@ -222,9 +210,6 @@ class UserTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
      */
     public function testUpdateCallsPut()
     {
@@ -260,10 +245,6 @@ class UserTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @covers ::attachCustomFieldXML
      */
     public function testUpdateWithCustomField()
     {
@@ -308,8 +289,6 @@ class UserTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingReturnsNameIdArray()
     {
@@ -344,8 +323,6 @@ class UserTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -381,8 +358,6 @@ class UserTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
