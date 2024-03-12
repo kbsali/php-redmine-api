@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Wiki;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Wiki::update
- * @covers \Redmine\Api\Wiki::create
- */
+#[CoversClass(Wiki::class)]
 class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $page, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

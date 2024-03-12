@@ -2,14 +2,12 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Issue::setIssueStatus
- */
+#[CoversClass(Issue::class)]
 class SetIssueStatusTest extends TestCase
 {
     public function testSetIssueStatusReturnsCorrectResponse()

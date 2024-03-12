@@ -2,21 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api\Membership;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\Membership::update
- */
+#[CoversClass(Membership::class)]
 class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
@@ -104,6 +104,7 @@ class UpdateTest extends TestCase
     /**
      * @dataProvider incompleteUpdateParameterProvider
      */
+    #[DataProvider('incompleteUpdateParameterProvider')]
     public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
     {
         // Create the used mock objects

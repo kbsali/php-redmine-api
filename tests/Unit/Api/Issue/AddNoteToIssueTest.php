@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Issue::addNoteToIssue
- */
+#[CoversClass(Issue::class)]
 class AddNoteToIssueTest extends TestCase
 {
     /**
      * @dataProvider getAddNoteToIssueData
      */
+    #[DataProvider('getAddNoteToIssueData')]
     public function testAddNoteToIssueReturnsCorrectResponse($id, $note, $isPrivate, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

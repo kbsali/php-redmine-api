@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\TimeEntry;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\TimeEntry::update
- */
+#[CoversClass(TimeEntry::class)]
 class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

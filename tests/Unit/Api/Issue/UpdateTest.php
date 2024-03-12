@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Issue::update
- */
+#[CoversClass(Issue::class)]
 class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
@@ -112,14 +113,6 @@ class UpdateTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Redmine\Api\Issue::cleanParams
-     * @covers \Redmine\Api\Issue::getIssueCategoryApi
-     * @covers \Redmine\Api\Issue::getIssueStatusApi
-     * @covers \Redmine\Api\Issue::getProjectApi
-     * @covers \Redmine\Api\Issue::getTrackerApi
-     * @covers \Redmine\Api\Issue::getUserApi
-     */
     public function testUpdateCleansParameters()
     {
         $client = AssertingHttpClient::create(

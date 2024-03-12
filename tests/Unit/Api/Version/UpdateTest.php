@@ -2,22 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api\Version;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Version::update
- * @covers \Redmine\Api\Version::validateStatus
- * @covers \Redmine\Api\Version::validateSharing
- */
+#[CoversClass(Version::class)]
 class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

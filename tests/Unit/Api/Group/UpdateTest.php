@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Api\Group;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -15,6 +16,7 @@ class UpdateTest extends TestCase
     /**
      * @dataProvider getUpdateData
      */
+    #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(

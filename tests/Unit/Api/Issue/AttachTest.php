@@ -2,18 +2,19 @@
 
 namespace Redmine\Tests\Unit\Api\Issue;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Issue::attach
- */
+#[CoversClass(Issue::class)]
 class AttachTest extends TestCase
 {
     /**
      * @dataProvider getAttachData
      */
+    #[DataProvider('getAttachData')]
     public function testAttachReturnsCorrectResponse($issueId, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
