@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 
-/**
- * @coversDefaultClass \Redmine\Serializer\JsonSerializer
- */
+#[CoversClass(JsonSerializer::class)]
 class JsonSerializerTest extends TestCase
 {
     public static function getEncodedToNormalizedData(): array
@@ -60,11 +60,10 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getEncodedToNormalizedData
      */
-    public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
+    #[DataProvider('getEncodedToNormalizedData')]
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected)
     {
         $serializer = JsonSerializer::createFromString($data);
 
@@ -86,11 +85,10 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getInvalidEncodedData
      */
-    public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
+    #[DataProvider('getInvalidEncodedData')]
+    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data)
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
@@ -183,11 +181,10 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getNormalizedToEncodedData
      */
-    public function createFromArrayEncodesToExpectedString(array $data, $expected)
+    #[DataProvider('getNormalizedToEncodedData')]
+    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected)
     {
         $serializer = JsonSerializer::createFromArray($data);
 
@@ -205,11 +202,10 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getInvalidSerializedData
      */
-    public function createFromArrayWithInvalidDataThrowsException(string $message, array $data)
+    #[DataProvider('getInvalidSerializedData')]
+    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data)
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);

@@ -2,25 +2,23 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Client\Client;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
 /**
- * @coversDefaultClass \Redmine\Api\Project
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Project::class)]
 class ProjectTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -46,10 +44,9 @@ class ProjectTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -83,9 +80,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -121,10 +115,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -150,9 +140,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -187,9 +174,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -225,9 +209,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -263,9 +244,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test getIdByName().
-     *
-     * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -297,10 +275,6 @@ class ProjectTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -327,9 +301,6 @@ class ProjectTest extends TestCase
         $this->assertSame($response, $api->update(5, $parameters));
     }
 
-    /**
-     * @covers \Redmine\Api\Project::prepareParamsXml
-     */
     public function testDeprecatedPrepareParamsXml()
     {
         $client = $this->createMock(Client::class);

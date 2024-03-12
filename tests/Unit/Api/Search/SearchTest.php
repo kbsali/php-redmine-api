@@ -2,14 +2,14 @@
 
 namespace Redmine\Tests\Unit\Api\Search;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
 use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
-/**
- * @covers \Redmine\Api\Search::search
- */
+#[CoversClass(Search::class)]
 class SearchTest extends TestCase
 {
     public function testSearchTriggersDeprecationWarning()
@@ -36,6 +36,7 @@ class SearchTest extends TestCase
     /**
      * @dataProvider getAllData
      */
+    #[DataProvider('getAllData')]
     public function testSearchReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects

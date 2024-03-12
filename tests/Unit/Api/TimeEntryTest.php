@@ -2,23 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Client\Client;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\TimeEntry
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(TimeEntry::class)]
 class TimeEntryTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -44,10 +42,9 @@ class TimeEntryTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -81,9 +78,6 @@ class TimeEntryTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -125,10 +119,6 @@ class TimeEntryTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -154,10 +144,6 @@ class TimeEntryTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {

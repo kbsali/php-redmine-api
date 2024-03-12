@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\TimeEntry;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 
-/**
- * @covers \Redmine\Api\TimeEntry::list
- */
+#[CoversClass(TimeEntry::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse()

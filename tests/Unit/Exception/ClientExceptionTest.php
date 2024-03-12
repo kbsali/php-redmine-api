@@ -3,13 +3,12 @@
 namespace Redmine\Tests\Unit\Exception;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception as RedmineException;
 use Redmine\Exception\ClientException;
 
-/**
- * @coversDefaultClass \Redmine\Exception\ClientException
- */
+#[CoversClass(ClientException::class)]
 class ClientExceptionTest extends TestCase
 {
     public function testClientException()

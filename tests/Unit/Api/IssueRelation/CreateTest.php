@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api\IssueRelation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 use Redmine\Exception\MissingParameterException;
@@ -9,14 +11,13 @@ use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\IssueRelation::create
- */
+#[CoversClass(IssueRelation::class)]
 class CreateTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($issueId, $parameters, $expectedPath, $expectedBody, $responseCode, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(
@@ -100,6 +101,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider incompleteCreateParameterProvider
      */
+    #[DataProvider('incompleteCreateParameterProvider')]
     public function testCreateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
     {
         // Create the used mock objects

@@ -2,22 +2,21 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Wiki
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Wiki::class)]
 class WikiTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -43,10 +42,9 @@ class WikiTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -80,9 +78,6 @@ class WikiTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -122,10 +117,6 @@ class WikiTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -151,10 +142,6 @@ class WikiTest extends TestCase
 
     /**
      * Test create().
-     *
-     * @covers ::create
-     * @covers ::post
-     * @test
      */
     public function testCreateCallsPost()
     {
@@ -183,10 +170,6 @@ class WikiTest extends TestCase
 
     /**
      * Test create().
-     *
-     * @covers ::create
-     * @covers ::post
-     * @test
      */
     public function testCreateWithParametersCallsPost()
     {
@@ -226,10 +209,6 @@ class WikiTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -258,10 +237,6 @@ class WikiTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
      */
     public function testUpdateWithParametersCallsPut()
     {

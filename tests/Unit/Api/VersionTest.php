@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Client\Client;
@@ -9,16 +11,13 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Version
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Version::class)]
 class VersionTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -44,10 +43,9 @@ class VersionTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -81,9 +79,6 @@ class VersionTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -123,10 +118,6 @@ class VersionTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveWithNumericIdCallsDelete()
     {
@@ -152,10 +143,6 @@ class VersionTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveWithStringCallsDelete()
     {
@@ -182,10 +169,6 @@ class VersionTest extends TestCase
     /**
      * Test update().
      *
-     * @covers ::update
-     * @covers ::validateStatus
-     *
-     * @test
      */
     public function testUpdateThrowsExceptionWithInvalidStatus()
     {
@@ -210,10 +193,6 @@ class VersionTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::put
-     * @covers ::update
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -249,11 +228,6 @@ class VersionTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::update
-     * @covers ::put
-     * @covers ::validateStatus
-     * @test
      */
     public function testUpdateWithValidStatusCallsPut()
     {
@@ -291,9 +265,6 @@ class VersionTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -326,9 +297,6 @@ class VersionTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingReturnsIdNameIfReverseIsFalseArray()
     {
@@ -361,9 +329,6 @@ class VersionTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -397,9 +362,6 @@ class VersionTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -433,9 +395,6 @@ class VersionTest extends TestCase
 
     /**
      * Test getIdByName().
-     *
-     * @covers ::getIdByName
-     * @test
      */
     public function testGetIdByNameMakesGetRequest()
     {
@@ -468,14 +427,12 @@ class VersionTest extends TestCase
     /**
      * Test validateSharing().
      *
-     * @covers            ::create
-     * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
      *
-     * @test
      *
      * @param string $sharingValue
      */
+    #[DataProvider('invalidSharingProvider')]
     public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values
@@ -500,14 +457,12 @@ class VersionTest extends TestCase
     /**
      * Test validateSharing().
      *
-     * @covers       ::update
-     * @covers       ::validateSharing
      * @dataProvider validSharingProvider
-     * @test
      *
      * @param string $sharingValue
      * @param string $sharingXmlElement
      */
+    #[DataProvider('validSharingProvider')]
     public function testUpdateWithValidSharing($sharingValue, $sharingXmlElement)
     {
         // Test values
@@ -545,13 +500,11 @@ class VersionTest extends TestCase
     /**
      * Test validateSharing().
      *
-     * @covers       ::update
-     * @covers       ::validateSharing
      * @dataProvider validEmptySharingProvider
-     * @test
      *
      * @param string $sharingValue
      */
+    #[DataProvider('validEmptySharingProvider')]
     public function testUpdateWithValidEmptySharing($sharingValue)
     {
         // Test values
@@ -591,14 +544,12 @@ class VersionTest extends TestCase
     /**
      * Test validateSharing().
      *
-     * @covers            ::update
-     * @covers            ::validateSharing
      * @dataProvider      invalidSharingProvider
      *
-     * @test
      *
      * @param string $sharingValue
      */
+    #[DataProvider('invalidSharingProvider')]
     public function testUpdateThrowsExceptionWithInvalidSharing($sharingValue)
     {
         // Test values

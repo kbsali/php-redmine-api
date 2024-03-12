@@ -3,18 +3,15 @@
 namespace Redmine\Tests\Unit\Client\NativeCurlClientTest;
 
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Request;
 use Redmine\Http\Response;
 use stdClass;
 
-/**
- * @covers \Redmine\Client\NativeCurlClient::request
- * @covers \Redmine\Client\NativeCurlClient::runRequest
- * @covers \Redmine\Client\NativeCurlClient::createCurl
- * @covers \Redmine\Client\NativeCurlClient::createHttpHeader
- */
+#[CoversClass(NativeCurlClient::class)]
 class RequestTest extends TestCase
 {
     use PHPMock;
@@ -22,6 +19,7 @@ class RequestTest extends TestCase
     /**
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content)
     {
         $namespace = 'Redmine\Client';
@@ -37,10 +35,10 @@ class RequestTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -52,6 +50,7 @@ class RequestTest extends TestCase
             'access_token'
         );
 
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => $method,
             'getPath' => '/path',
@@ -109,10 +108,10 @@ class RequestTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 201],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -138,6 +137,7 @@ class RequestTest extends TestCase
             E_USER_DEPRECATED
         );
 
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
         $request = $this->createConfiguredMock(Request::class, [
             'getMethod' => 'POST',
             'getPath' => '/uploads.json',

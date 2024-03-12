@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Client\Client;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Group
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Group::class)]
 class GroupTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -45,10 +44,9 @@ class GroupTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -82,9 +80,6 @@ class GroupTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -120,9 +115,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingReturnsNameIdArray()
     {
@@ -157,9 +149,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetOnlyTheFirstTime()
     {
@@ -195,9 +184,6 @@ class GroupTest extends TestCase
 
     /**
      * Test listing().
-     *
-     * @covers ::listing
-     * @test
      */
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
@@ -233,10 +219,6 @@ class GroupTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -274,10 +256,6 @@ class GroupTest extends TestCase
 
     /**
      * Test removeUser().
-     *
-     * @covers ::delete
-     * @covers ::removeUser
-     * @test
      */
     public function testRemoveUserCallsDelete()
     {

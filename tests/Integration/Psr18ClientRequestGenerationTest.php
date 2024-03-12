@@ -6,6 +6,8 @@ namespace Redmine\Tests\Integration;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -14,14 +16,13 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Psr18Client;
 
+#[CoversClass(Psr18Client::class)]
 class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     *
      * @dataProvider createdGetRequestsData
      */
+    #[DataProvider('createdGetRequestsData')]
     public function testPsr18ClientCreatesCorrectRequests(
         string $url,
         string $apikeyOrUsername,
@@ -34,42 +35,39 @@ class Psr18ClientRequestGenerationTest extends TestCase
     ) {
         $response = $this->createMock(ResponseInterface::class);
 
+        /** @var ClientInterface|\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')->will(
-            $this->returnCallback(function ($request) use ($response, $expectedOutput) {
-                // Create a text representation of the HTTP request
-                $content = $request->getBody()->__toString();
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput) {
+            // Create a text representation of the HTTP request
+            $content = $request->getBody()->__toString();
 
-                $headers = '';
+            $headers = '';
 
-                foreach ($request->getHeaders() as $k => $v) {
-                    $headers .= $k . ': ' . $request->getHeaderLine($k) . \PHP_EOL;
-                }
+            foreach ($request->getHeaders() as $k => $v) {
+                $headers .= $k . ': ' . $request->getHeaderLine($k) . \PHP_EOL;
+            }
 
-                $statusLine = sprintf(
-                    '%s %s HTTP/%s',
-                    $request->getMethod(),
-                    $request->getUri()->__toString(),
-                    $request->getProtocolVersion()
-                );
+            $statusLine = sprintf(
+                '%s %s HTTP/%s',
+                $request->getMethod(),
+                $request->getUri()->__toString(),
+                $request->getProtocolVersion()
+            );
 
-                $fullRequest = $statusLine . \PHP_EOL .
-                    $headers . \PHP_EOL .
-                    $content
-                ;
+            $fullRequest = $statusLine . \PHP_EOL .
+                $headers . \PHP_EOL .
+                $content
+            ;
 
-                $this->assertSame($expectedOutput, $fullRequest);
+            $this->assertSame($expectedOutput, $fullRequest);
 
-                return $response;
-            })
-        );
+            return $response;
+        });
 
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->will(
-            $this->returnCallback(function ($method, $uri) {
-                return new Request($method, $uri);
-            })
-        );
+        $requestFactory->method('createRequest')->willReturnCallback(function ($method, $uri) {
+            return new Request($method, $uri);
+        });
 
         $streamFactory = new class () implements StreamFactoryInterface {
             public function createStream(string $content = ''): StreamInterface

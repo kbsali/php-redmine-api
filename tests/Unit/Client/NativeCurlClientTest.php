@@ -7,12 +7,15 @@ namespace Redmine\Tests\Unit\Client;
 use Exception;
 use InvalidArgumentException;
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\HttpClient;
 use stdClass;
 
+#[CoversClass(NativeCurlClient::class)]
 class NativeCurlClientTest extends TestCase
 {
     use PHPMock;
@@ -32,11 +35,7 @@ class NativeCurlClientTest extends TestCase
         CURLOPT_RETURNTRANSFER => 1,
     ];
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
-    public function shouldPassApiKeyToConstructor()
+    public function testApiKeyShouldBePassToConstructor()
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -48,11 +47,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $client);
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
-    public function shouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor()
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -64,10 +59,6 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testGetLastResponseStatusCodeIsInitialNull()
     {
         $client = new NativeCurlClient(
@@ -78,10 +69,6 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame(0, $client->getLastResponseStatusCode());
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testGetLastResponseContentTypeIsInitialEmpty()
     {
         $client = new NativeCurlClient(
@@ -92,10 +79,6 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseContentType());
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testGetLastResponseBodyIsInitialEmpty()
     {
         $client = new NativeCurlClient(
@@ -106,10 +89,6 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseBody());
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testStartAndStopImpersonateUser()
     {
         $expectedOptions = [
@@ -135,10 +114,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -166,10 +145,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetSslVersion()
     {
         $expectedOptions = [
@@ -194,10 +169,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -225,10 +200,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetSslVerifypeer()
     {
         $expectedOptions = [
@@ -254,10 +225,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -285,10 +256,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetSslVerifyhost()
     {
         $expectedOptions = [
@@ -314,10 +281,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -345,10 +312,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetCustomHttpHeaders()
     {
         $expectedOptions = [
@@ -375,10 +338,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -411,10 +374,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetCustomHost()
     {
         $expectedOptions = [
@@ -440,10 +399,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -473,10 +432,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testSetPort()
     {
         $expectedOptions = [
@@ -501,10 +456,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(3))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(6))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(6))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(3))
@@ -532,10 +487,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testCustomPortWillSetFromSchema()
     {
         $expectedOptions = [
@@ -560,10 +511,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(1))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
@@ -586,10 +537,6 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testCustomPortWillSetFromUrl()
     {
         $expectedOptions = [
@@ -614,10 +561,10 @@ class NativeCurlClientTest extends TestCase
         $curlExec->expects($this->exactly(1))->willReturn('');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, 200],
             [$curl, CURLINFO_CONTENT_TYPE, 'application/json'],
-        ])));
+        ]));
 
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
         $curlSetoptArray->expects($this->exactly(1))
@@ -641,10 +588,9 @@ class NativeCurlClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
     {
         $curl = $this->createMock(stdClass::class);
@@ -658,10 +604,10 @@ class NativeCurlClientTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -705,10 +651,6 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testHandlingOfResponseWithoutContent()
     {
         $content = '';
@@ -726,10 +668,10 @@ class NativeCurlClientTest extends TestCase
         $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->will($this->returnValueMap(([
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
             [$curl, CURLINFO_HTTP_CODE, $statusCode],
             [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ])));
+        ]));
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
@@ -747,10 +689,6 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
     public function testCurlErrorThrowsException()
     {
         $curl = $this->createMock(stdClass::class);
@@ -783,14 +721,10 @@ class NativeCurlClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     *
-     * @param string $apiName
-     * @param string $class
      * @dataProvider getApiClassesProvider
      */
-    public function getApiShouldReturnApiInstance($apiName, $class)
+    #[DataProvider('getApiClassesProvider')]
+    public function testGetApiShouldReturnApiInstance(string $apiName, string $class)
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -825,11 +759,7 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Redmine\Client\NativeCurlClient
-     * @test
-     */
-    public function getApiShouldThrowException()
+    public function testGetApiShouldThrowException()
     {
         $client = new NativeCurlClient(
             'http://test.local',

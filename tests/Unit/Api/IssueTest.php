@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Client\Client;
@@ -10,10 +12,9 @@ use Redmine\Tests\Fixtures\MockClient;
 use SimpleXMLElement;
 
 /**
- * @coversDefaultClass \Redmine\Api\Issue
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Issue::class)]
 class IssueTest extends TestCase
 {
     public static function getPriorityConstantsData(): array
@@ -31,9 +32,8 @@ class IssueTest extends TestCase
      * Test the constants.
      *
      * @dataProvider getPriorityConstantsData
-     *
-     * @test
      */
+    #[DataProvider('getPriorityConstantsData')]
     public function testPriorityConstants($expected, $value)
     {
         $this->assertSame($expected, $value);
@@ -41,8 +41,6 @@ class IssueTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -68,10 +66,9 @@ class IssueTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -105,9 +102,6 @@ class IssueTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParameters()
     {
@@ -143,10 +137,6 @@ class IssueTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -180,10 +170,6 @@ class IssueTest extends TestCase
 
     /**
      * Test attach().
-     *
-     * @covers ::attach
-     * @covers ::put
-     * @test
      */
     public function testAttachCallsPut()
     {
@@ -228,9 +214,6 @@ class IssueTest extends TestCase
 
     /**
      * Test removeWatcher().
-     *
-     * @covers ::removeWatcher
-     * @test
      */
     public function testRemoveWatcherCallsPost()
     {
@@ -258,15 +241,6 @@ class IssueTest extends TestCase
 
     /**
      * Test cleanParams() with Client for BC
-     *
-     * @covers ::create
-     * @covers ::cleanParams
-     * @covers ::getIssueCategoryApi
-     * @covers ::getIssueStatusApi
-     * @covers ::getProjectApi
-     * @covers ::getTrackerApi
-     * @covers ::getUserApi
-     * @test
      */
     public function testCreateWithClientCleansParameters()
     {
@@ -340,10 +314,6 @@ class IssueTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::update
-     * @covers ::put
-     * @test
      */
     public function testUpdateCallsPut()
     {
@@ -373,10 +343,6 @@ class IssueTest extends TestCase
 
     /**
      * Test update().
-     *
-     * @covers ::update
-     * @covers ::cleanParams
-     * @test
      */
     public function testUpdateCleansParameters()
     {
@@ -448,9 +414,6 @@ class IssueTest extends TestCase
 
     /**
      * Test setIssueStatus().
-     *
-     * @covers ::setIssueStatus
-     * @test
      */
     public function testSetIssueStatusWithClient()
     {
@@ -494,9 +457,6 @@ class IssueTest extends TestCase
 
     /**
      * Test setIssueStatus().
-     *
-     * @covers ::setIssueStatus
-     * @test
      */
     public function testSetIssueStatusWithHttpClient()
     {
@@ -537,9 +497,6 @@ class IssueTest extends TestCase
 
     /**
      * Test addNoteToIssue().
-     *
-     * @covers ::addNoteToIssue
-     * @test
      */
     public function testAddNoteToIssue()
     {
@@ -574,7 +531,6 @@ class IssueTest extends TestCase
     /**
      * Test assign an user to an issue.
      *
-     * @test
      */
     public function testAssignUserToAnIssue()
     {
@@ -606,7 +562,6 @@ class IssueTest extends TestCase
     /**
      * Test unassign an user from an issue.
      *
-     * @test
      */
     public function testUnassignUserFromAnIssue()
     {

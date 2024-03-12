@@ -2,18 +2,19 @@
 
 namespace Redmine\Tests\Unit\Api\Attachment;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Attachment::download
- */
+#[CoversClass(Attachment::class)]
 class DownloadTest extends TestCase
 {
     /**
      * @dataProvider getDownloadData
      */
+    #[DataProvider('getDownloadData')]
     public function testDownloadReturnsCorrectResponse($id, $expectedPath, $responseCode, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(

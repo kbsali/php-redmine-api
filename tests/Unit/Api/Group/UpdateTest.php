@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Group;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Group::update
- */
+#[CoversClass(Group::class)]
 class UpdateTest extends TestCase
 {
     public function testUpdateWithNameUpdatesGroup()

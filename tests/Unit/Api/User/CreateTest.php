@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api\User;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Exception\MissingParameterException;
@@ -9,14 +11,13 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\User::create
- */
+#[CoversClass(User::class)]
 class CreateTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
      */
+    #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
@@ -134,6 +135,7 @@ class CreateTest extends TestCase
     /**
      * @dataProvider incompleteCreateParameterProvider
      */
+    #[DataProvider('incompleteCreateParameterProvider')]
     public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters)
     {
         // Create the used mock objects

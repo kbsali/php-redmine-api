@@ -2,14 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\IssuePriority;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssuePriority;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 
-/**
- * @covers \Redmine\Api\IssuePriority::list
- */
+#[CoversClass(IssuePriority::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse()

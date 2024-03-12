@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api\Membership;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
@@ -10,9 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
-/**
- * @covers \Redmine\Api\Membership::listByProject
- */
+#[CoversClass(Membership::class)]
 class ListByProjectTest extends TestCase
 {
     public function testListByProjectWithoutParametersReturnsResponse()
@@ -71,6 +71,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+    #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new Membership(MockClient::create());

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\AbstractApi;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
@@ -11,9 +13,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
-/**
- * @covers \Redmine\Api\AbstractApi::get
- */
+#[CoversClass(AbstractApi::class)]
 class GetTest extends TestCase
 {
     public function testGetWithHttpClient()
@@ -46,6 +46,7 @@ class GetTest extends TestCase
     /**
      * @dataProvider getJsonDecodingFromGetMethodData
      */
+    #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);
@@ -80,6 +81,7 @@ class GetTest extends TestCase
     /**
      * @dataProvider getXmlDecodingFromGetMethodData
      */
+    #[DataProvider('getXmlDecodingFromGetMethodData')]
     public function testXmlDecodingFromGetMethod($response, $decode, $expected)
     {
         $client = $this->createMock(Client::class);
