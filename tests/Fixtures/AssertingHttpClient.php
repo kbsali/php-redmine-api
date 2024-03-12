@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Fixtures;
 
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\TestCase;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Request;
@@ -21,8 +23,8 @@ final class AssertingHttpClient implements HttpClient
         $dataSets = array_merge([$dataSet], $dataSets);
 
         /** @var \PHPUnit\Framework\MockObject\MockObject&HttpClient */
-        $mock = $testCase->getMockBuilder(HttpClient::class)->getMock();
-        $mock->expects($testCase->exactly(count($dataSets)))->method('request');
+        $mock = (new MockBuilder($testCase, HttpClient::class))->getMock();
+        $mock->expects(new InvokedCount(count($dataSets)))->method('request');
 
         $client = new self($testCase, $mock);
 
@@ -95,7 +97,7 @@ final class AssertingHttpClient implements HttpClient
         }
 
         /** @var \PHPUnit\Framework\MockObject\MockObject&Response */
-        $response = $this->testCase->getMockBuilder(Response::class)->getMock();
+        $response = (new MockBuilder($this->testCase, Response::class))->getMock();
 
         $response->method('getStatusCode')->willReturn($data['responseCode']);
         $response->method('getContentType')->willReturn($data['responseContentType']);

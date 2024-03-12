@@ -3,16 +3,14 @@
 namespace Redmine\Tests\Unit\Api\Project;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
-use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Project::close
- */
+#[CoversClass(Project::class)]
 class CloseTest extends TestCase
 {
     public function testCloseReturnsTrue()

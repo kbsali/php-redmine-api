@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Api\Attachment;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Attachment::remove
- */
+#[CoversClass(Attachment::class)]
 class RemoveTest extends TestCase
 {
     public function testRemoveReturnsString()

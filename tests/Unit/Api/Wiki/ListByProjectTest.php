@@ -2,6 +2,8 @@
 
 namespace Redmine\Tests\Unit\Api\Wiki;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Client\Client;
@@ -10,9 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\MockClient;
 use stdClass;
 
-/**
- * @covers \Redmine\Api\Wiki::listByProject
- */
+#[CoversClass(Wiki::class)]
 class ListByProjectTest extends TestCase
 {
     public function testListByProjectWithoutParametersReturnsResponse()
@@ -74,6 +74,7 @@ class ListByProjectTest extends TestCase
     /**
      * @dataProvider getInvalidProjectIdentifiers
      */
+    #[DataProvider('getInvalidProjectIdentifiers')]
     public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new Wiki(MockClient::create());

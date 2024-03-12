@@ -2,18 +2,19 @@
 
 namespace Redmine\Tests\Unit\Api\IssueCategory;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\IssueCategory::show
- */
+#[CoversClass(IssueCategory::class)]
 class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
      */
+    #[DataProvider('getShowData')]
     public function testShowReturnsCorrectResponse($id, $expectedPath, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(

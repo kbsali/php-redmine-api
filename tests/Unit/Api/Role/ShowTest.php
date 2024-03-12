@@ -2,18 +2,19 @@
 
 namespace Redmine\Tests\Unit\Api\Role;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-/**
- * @covers \Redmine\Api\Role::show
- */
+#[CoversClass(Role::class)]
 class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
      */
+    #[DataProvider('getShowData')]
     public function testShowReturnsCorrectResponse($id, $expectedPath, $response, $expectedReturn)
     {
         $client = AssertingHttpClient::create(

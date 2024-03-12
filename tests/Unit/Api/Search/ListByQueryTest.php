@@ -2,15 +2,13 @@
 
 namespace Redmine\Tests\Unit\Api\Search;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Tests\Fixtures\MockClient;
 
-/**
- * @covers \Redmine\Api\Search::listByQuery
- */
+#[CoversClass(Search::class)]
 class ListByQueryTest extends TestCase
 {
     public function testListByQueryWithoutParametersReturnsResponse()

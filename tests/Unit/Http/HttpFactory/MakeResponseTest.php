@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Http\HttpFactory;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Http\HttpFactory;
 use Redmine\Http\Response;
 
-/**
- * @covers \Redmine\Http\HttpFactory::makeResponse
- */
+#[CoversClass(HttpFactory::class)]
 class MakeResponseTest extends TestCase
 {
     public function testMakeResponse()

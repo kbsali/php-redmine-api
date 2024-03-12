@@ -3,23 +3,21 @@
 namespace Redmine\Tests\Unit\Api;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
-use Redmine\Exception\MissingParameterException;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
- * @coversDefaultClass \Redmine\Api\Membership
- *
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
+#[CoversClass(Membership::class)]
 class MembershipTest extends TestCase
 {
     /**
      * Test all().
-     *
-     * @covers ::all
      */
     public function testAllTriggersDeprecationWarning()
     {
@@ -45,10 +43,9 @@ class MembershipTest extends TestCase
     /**
      * Test all().
      *
-     * @covers ::all
      * @dataProvider getAllData
-     * @test
      */
+    #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
     {
         // Create the used mock objects
@@ -82,9 +79,6 @@ class MembershipTest extends TestCase
 
     /**
      * Test all().
-     *
-     * @covers ::all
-     * @test
      */
     public function testAllReturnsClientGetResponseWithParametersAndProject()
     {
@@ -120,10 +114,6 @@ class MembershipTest extends TestCase
 
     /**
      * Test remove().
-     *
-     * @covers ::delete
-     * @covers ::remove
-     * @test
      */
     public function testRemoveCallsDelete()
     {
@@ -157,9 +147,6 @@ class MembershipTest extends TestCase
 
     /**
      * Test removeMember().
-     *
-     * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberCallsDelete()
     {
@@ -204,9 +191,6 @@ class MembershipTest extends TestCase
 
     /**
      * Test removeMember().
-     *
-     * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberReturnsFalseIfUserIsNotMemberOfProject()
     {
@@ -232,9 +216,6 @@ class MembershipTest extends TestCase
 
     /**
      * Test removeMember().
-     *
-     * @covers ::removeMember
-     * @test
      */
     public function testRemoveMemberReturnsFalseIfMemberlistIsMissing()
     {

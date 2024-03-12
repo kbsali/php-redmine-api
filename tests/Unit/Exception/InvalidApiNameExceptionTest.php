@@ -3,13 +3,12 @@
 namespace Redmine\Tests\Unit\Exception;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception as RedmineException;
 use Redmine\Exception\InvalidApiNameException;
 
-/**
- * @coversDefaultClass \Redmine\Exception\InvalidApiNameException
- */
+#[CoversClass(InvalidApiNameException::class)]
 class InvalidApiNameExceptionTest extends TestCase
 {
     public function testInvalidApiNameException()

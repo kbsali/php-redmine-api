@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Serializer\PathSerializer;
 
-/**
- * @coversDefaultClass \Redmine\Serializer\PathSerializer
- */
+#[CoversClass(PathSerializer::class)]
 class PathSerializerTest extends TestCase
 {
     public static function getPathData(): array
@@ -51,11 +51,10 @@ class PathSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider getPathData
      */
-    public function getPathShouldReturnExpectedString(string $path, array $params, string $expected)
+    #[DataProvider('getPathData')]
+    public function testGetPathShouldReturnExpectedString(string $path, array $params, string $expected)
     {
         $serializer = PathSerializer::create($path, $params);
 

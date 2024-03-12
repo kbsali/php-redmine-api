@@ -4,15 +4,26 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Unit\Serializer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
-/**
- * @coversDefaultClass \Redmine\Serializer\XmlSerializer
- */
+#[CoversClass(XmlSerializer::class)]
 class XmlSerializerTest extends TestCase
 {
+    /**
+     * @dataProvider getEncodedToNormalizedData
+     */
+    #[DataProvider('getEncodedToNormalizedData')]
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected)
+    {
+        $serializer = XmlSerializer::createFromString($data);
+
+        $this->assertSame($expected, $serializer->getNormalized());
+    }
+
     public static function getEncodedToNormalizedData(): array
     {
         return [
@@ -63,15 +74,15 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getEncodedToNormalizedData
+     * @dataProvider getInvalidEncodedData
      */
-    public function createFromStringDecodesToExpectedNormalizedData(string $data, $expected)
+    #[DataProvider('getInvalidEncodedData')]
+    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data)
     {
-        $serializer = XmlSerializer::createFromString($data);
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
 
-        $this->assertSame($expected, $serializer->getNormalized());
+        XmlSerializer::createFromString($data);
     }
 
     public static function getInvalidEncodedData(): array
@@ -101,16 +112,14 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getInvalidEncodedData
+     * @dataProvider getNormalizedToEncodedData
      */
-    public function createFromStringWithInvalidStringThrowsException(string $message, string $data)
+    #[DataProvider('getNormalizedToEncodedData')]
+    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected)
     {
-        $this->expectException(SerializerException::class);
-        $this->expectExceptionMessage($message);
+        $serializer = XmlSerializer::createFromArray($data);
 
-        XmlSerializer::createFromString($data);
+        $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
     }
 
     public static function getNormalizedToEncodedData(): array
@@ -269,15 +278,15 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @test
-     *
-     * @dataProvider getNormalizedToEncodedData
+     * @dataProvider getInvalidSerializedData
      */
-    public function createFromArrayEncodesToExpectedString(array $data, $expected)
+    #[DataProvider('getInvalidSerializedData')]
+    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data)
     {
-        $serializer = XmlSerializer::createFromArray($data);
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage($message);
 
-        $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
+        XmlSerializer::createFromArray($data);
     }
 
     public static function getInvalidSerializedData(): array
@@ -288,18 +297,5 @@ class XmlSerializerTest extends TestCase
                 ['0' => ['foobar']],
             ]
         ];
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider getInvalidSerializedData
-     */
-    public function createFromArrayWithInvalidDataThrowsException(string $message, array $data)
-    {
-        $this->expectException(SerializerException::class);
-        $this->expectExceptionMessage($message);
-
-        XmlSerializer::createFromArray($data);
     }
 }

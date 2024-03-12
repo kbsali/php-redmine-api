@@ -4,6 +4,8 @@ namespace Redmine\Tests\Unit\Client;
 
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -18,13 +20,10 @@ use Redmine\Client\Psr18Client;
 use Redmine\Http\HttpClient;
 use stdClass;
 
+#[CoversClass(Psr18Client::class)]
 class Psr18ClientTest extends TestCase
 {
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
-    public function shouldPassApiKeyToConstructor()
+    public function testShouldPassApiKeyToConstructor()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -39,9 +38,6 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $client);
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     */
     public function testServerRequestFactoryIsAcceptedInConstructorForBC()
     {
         $client = new Psr18Client(
@@ -66,11 +62,7 @@ class Psr18ClientTest extends TestCase
         $client->requestGet('/path.xml');
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
-    public function shouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -85,10 +77,6 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
     public function testGetLastResponseStatusCodeIsInitialZero()
     {
         $client = new Psr18Client(
@@ -102,10 +90,6 @@ class Psr18ClientTest extends TestCase
         $this->assertSame(0, $client->getLastResponseStatusCode());
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
     public function testGetLastResponseContentTypeIsInitialEmpty()
     {
         $client = new Psr18Client(
@@ -119,10 +103,6 @@ class Psr18ClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseContentType());
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
     public function testGetLastResponseBodyIsInitialEmpty()
     {
         $client = new Psr18Client(
@@ -136,10 +116,6 @@ class Psr18ClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseBody());
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
     public function testStartAndStopImpersonateUser()
     {
         $request = $this->createMock(RequestInterface::class);
@@ -170,10 +146,6 @@ class Psr18ClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
     public function testRequestGetReturnsFalse()
     {
         $response = $this->createMock(ResponseInterface::class);
@@ -200,10 +172,9 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
      * @dataProvider getRequestReponseData
      */
+    #[DataProvider('getRequestReponseData')]
     public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
     {
         $stream = $this->createMock(StreamInterface::class);
@@ -265,14 +236,10 @@ class Psr18ClientTest extends TestCase
     }
 
     /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     *
-     * @param string $apiName
-     * @param string $class
      * @dataProvider getApiClassesProvider
      */
-    public function getApiShouldReturnApiInstance($apiName, $class)
+    #[DataProvider('getApiClassesProvider')]
+    public function testGetApiShouldReturnApiInstance(string $apiName, string $class)
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -310,9 +277,6 @@ class Psr18ClientTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client::__construct
-     */
     public function testCreateWithoutFactoryThrowsException()
     {
         $this->expectException(Exception::class);
@@ -328,11 +292,7 @@ class Psr18ClientTest extends TestCase
         );
     }
 
-    /**
-     * @covers \Redmine\Client\Psr18Client
-     * @test
-     */
-    public function getApiShouldThrowException()
+    public function testGetApiShouldThrowException()
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
