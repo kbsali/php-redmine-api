@@ -28,4 +28,18 @@ trait IssueRelationContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I delete the issue relation with the id :relationId
+     */
+    public function iDeleteTheIssueRelationWithTheId($relationId)
+    {
+        /** @var IssueRelation */
+        $api = $this->getNativeCurlClient()->getApi('issue_relation');
+
+        $this->registerClientResponse(
+            $api->remove($relationId),
+            $api->getLastResponse()
+        );
+    }
 }
