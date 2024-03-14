@@ -63,4 +63,46 @@ trait IssueContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I add the user id :userId as a watcher to the issue with id :issueId
+     */
+    public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId)
+    {
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientResponse(
+            $api->addWatcher($issueId, $userId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the user id :userId as a watcher from the issue with id :issueId
+     */
+    public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId)
+    {
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientResponse(
+            $api->removeWatcher($issueId, $userId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the issue with id :issueId
+     */
+    public function iRemoveTheIssueWithId($issueId)
+    {
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientResponse(
+            $api->remove($issueId),
+            $api->getLastResponse()
+        );
+    }
 }

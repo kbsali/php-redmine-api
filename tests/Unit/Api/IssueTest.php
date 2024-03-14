@@ -134,66 +134,6 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/issues/5'),
-                    $this->logicalXor(
-                        $this->stringEndsWith('.json'),
-                        $this->stringEndsWith('.xml')
-                    )
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Issue($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5));
-    }
-
-    /**
-     * Test removeWatcher().
-     */
-    public function testRemoveWatcherCallsPost()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with(
-                $this->stringStartsWith('/issues/5/watchers/10.xml')
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Issue($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->removeWatcher(5, 10));
-    }
-
-    /**
      * Test cleanParams() with Client for BC
      */
     public function testCreateWithClientCleansParameters()
