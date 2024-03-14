@@ -59,4 +59,18 @@ trait AttachmentContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I remove the attachment with the id :attachmentId
+     */
+    public function iRemoveTheAttachmentWithTheId($attachmentId)
+    {
+        /** @var Attachment */
+        $api = $this->getNativeCurlClient()->getApi('attachment');
+
+        $this->registerClientResponse(
+            $api->remove($attachmentId),
+            $api->getLastResponse()
+        );
+    }
 }

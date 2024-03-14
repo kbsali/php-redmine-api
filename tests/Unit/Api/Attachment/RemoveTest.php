@@ -22,7 +22,7 @@ class RemoveTest extends TestCase
                 'application/xml',
                 '',
                 204,
-                'application/xml',
+                '',
                 ''
             ]
         );
