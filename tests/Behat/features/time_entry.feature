@@ -161,3 +161,18 @@ Feature: Interacting with the REST API for time_entries
         And the response has the content type "application/json"
         And the response has the content ""
         And the returned data is false
+
+    @time_entry
+    Scenario: Removing a time_entry to a project
+        Given I have a "NativeCurlClient" client
+        And I have a time entry activiy with name "development"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a time entry with the following data
+            | property          | value                |
+            | project_id        | 1                    |
+            | hours             | 1                    |
+        When I remove the time entry with id "1"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
