@@ -77,4 +77,18 @@ trait VersionContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I remove the version with id :versionId
+     */
+    public function iRemoveTheVersionWithId($versionId)
+    {
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->remove($versionId),
+            $api->getLastResponse()
+        );
+    }
 }
