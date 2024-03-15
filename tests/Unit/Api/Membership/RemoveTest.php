@@ -15,7 +15,7 @@ class RemoveTest extends TestCase
      * @dataProvider getRemoveData
      */
     #[DataProvider('getRemoveData')]
-    public function testRemoveReturnsCorrectResponse($issueId, $expectedPath, $responseCode, $response)
+    public function testRemoveReturnsCorrectResponse($id, $expectedPath, $responseCode, $response)
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -34,7 +34,7 @@ class RemoveTest extends TestCase
         $api = new Membership($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->remove($issueId));
+        $this->assertSame($response, $api->remove($id));
     }
 
     public static function getRemoveData(): array

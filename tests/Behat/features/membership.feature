@@ -35,7 +35,7 @@ Feature: Interacting with the REST API for memberships
         And the returned data is exactly ""
 
     @membership
-    Scenario: Deleting a membership
+    Scenario: Removing a membership
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"
         And I create a project with name "Test Project" and identifier "test-project"
@@ -43,7 +43,22 @@ Feature: Interacting with the REST API for memberships
             | property          | value                |
             | user_id           | 1                    |
             | role_ids          | [3]                  |
-        When I delete the membership with id "1"
+        When I remove the membership with id "1"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @membership @wip
+    Scenario: Removing an user from a project
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        When I remove the user with id "1" from the project with identifier "test-project"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""

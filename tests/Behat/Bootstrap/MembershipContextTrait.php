@@ -58,15 +58,29 @@ trait MembershipContextTrait
     }
 
     /**
-     * @When I delete the membership with id :id
+     * @When I remove the membership with id :id
      */
-    public function iDeleteTheMembershipWithId($id)
+    public function iRemoveTheMembershipWithId($id)
     {
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
 
         $this->registerClientResponse(
             $api->remove($id),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the user with id :userId from the project with identifier :identifier
+     */
+    public function iRemoveTheUserWithIdFromTheProjectWithIdentifier($userId, $identifier)
+    {
+        /** @var Membership */
+        $api = $this->getNativeCurlClient()->getApi('membership');
+
+        $this->registerClientResponse(
+            $api->removeMember($identifier, (int) $userId),
             $api->getLastResponse()
         );
     }
