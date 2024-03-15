@@ -234,13 +234,13 @@ Feature: Interacting with the REST API for wikis
         And the returned data is exactly ""
 
     @wiki
-    Scenario: Deleting a wiki page
+    Scenario: Removing a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
         And I create a wiki page with name "Test Page" and project identifier "test-project" with the following data
             | property          | value                |
             | text              | # My first wiki page |
-        When I delete the wiki page with name "Test Page" and project identifier "test-project"
+        When I remove the wiki page with name "Test Page" and project identifier "test-project"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
