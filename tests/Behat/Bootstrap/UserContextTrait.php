@@ -62,4 +62,18 @@ trait UserContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I remove the user with id :userId
+     */
+    public function iRemoveTheUserWithId($userId)
+    {
+        /** @var User */
+        $api = $this->getNativeCurlClient()->getApi('user');
+
+        $this->registerClientResponse(
+            $api->remove($userId),
+            $api->getLastResponse()
+        );
+    }
 }
