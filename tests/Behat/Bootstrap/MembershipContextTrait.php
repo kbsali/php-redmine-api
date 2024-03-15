@@ -56,4 +56,18 @@ trait MembershipContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I delete the membership with id :id
+     */
+    public function iDeleteTheMembershipWithId($id)
+    {
+        /** @var Membership */
+        $api = $this->getNativeCurlClient()->getApi('membership');
+
+        $this->registerClientResponse(
+            $api->remove($id),
+            $api->getLastResponse()
+        );
+    }
 }

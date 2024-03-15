@@ -33,3 +33,18 @@ Feature: Interacting with the REST API for memberships
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @membership
+    Scenario: Deleting a membership
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        When I delete the membership with id "1"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
