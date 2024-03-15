@@ -49,7 +49,7 @@ Feature: Interacting with the REST API for memberships
         And the response has the content ""
         And the returned data is exactly ""
 
-    @membership @wip
+    @membership
     Scenario: Removing an user from a project
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"
