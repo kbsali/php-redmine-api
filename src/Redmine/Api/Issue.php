@@ -296,7 +296,7 @@ class Issue extends AbstractApi
      * @param int $id
      * @param int $watcherUserId
      *
-     * @return false|SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function removeWatcher($id, $watcherUserId)
     {
@@ -439,7 +439,7 @@ class Issue extends AbstractApi
      *
      * @param int $id the issue number
      *
-     * @return false|SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function remove($id)
     {

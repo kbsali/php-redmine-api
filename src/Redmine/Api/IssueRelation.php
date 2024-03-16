@@ -118,7 +118,7 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($id)
     {

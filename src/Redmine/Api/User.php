@@ -263,7 +263,7 @@ class User extends AbstractApi
      *
      * @param int $id id of the user
      *
-     * @return false|\SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function remove($id)
     {

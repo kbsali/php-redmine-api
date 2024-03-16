@@ -163,7 +163,7 @@ class Membership extends AbstractApi
      *
      * @param int $id id of the membership
      *
-     * @return false|\SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function remove($id)
     {

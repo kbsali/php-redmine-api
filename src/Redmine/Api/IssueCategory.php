@@ -230,7 +230,7 @@ class IssueCategory extends AbstractApi
      * @param int   $id     id of the category
      * @param array $params extra GET parameters
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($id, array $params = [])
     {

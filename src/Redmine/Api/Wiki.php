@@ -184,7 +184,7 @@ class Wiki extends AbstractApi
      * @param int|string $project the project name
      * @param string     $page    the page name
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($project, $page)
     {

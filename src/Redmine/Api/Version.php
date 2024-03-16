@@ -266,7 +266,7 @@ class Version extends AbstractApi
      *
      * @param int $id id of the version
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($id)
     {

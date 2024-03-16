@@ -203,7 +203,7 @@ class Group extends AbstractApi
      *
      * @param int $id id of the group
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($id)
     {
@@ -250,7 +250,7 @@ class Group extends AbstractApi
      * @param int $id     id of the group
      * @param int $userId id of the user
      *
-     * @return string
+     * @return string empty string on success
      */
     public function removeUser($id, $userId)
     {
