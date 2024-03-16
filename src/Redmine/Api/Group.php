@@ -207,7 +207,12 @@ class Group extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/groups/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/groups/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -249,6 +254,11 @@ class Group extends AbstractApi
      */
     public function removeUser($id, $userId)
     {
-        return $this->delete('/groups/' . $id . '/users/' . $userId . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/groups/' . $id . '/users/' . $userId . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

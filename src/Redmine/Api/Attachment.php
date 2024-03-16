@@ -102,6 +102,11 @@ class Attachment extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/attachments/' . urlencode(strval($id)) . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/attachments/' . urlencode(strval($id)) . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

@@ -396,6 +396,11 @@ class Project extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/projects/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/projects/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

@@ -267,6 +267,11 @@ class User extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/users/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/users/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

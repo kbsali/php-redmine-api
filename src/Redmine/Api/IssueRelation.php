@@ -122,7 +122,12 @@ class IssueRelation extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/relations/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/relations/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

@@ -191,6 +191,11 @@ class TimeEntry extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/time_entries/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/time_entries/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

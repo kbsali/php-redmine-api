@@ -188,8 +188,11 @@ class Wiki extends AbstractApi
      */
     public function remove($project, $page)
     {
-        return $this->delete(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
             '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml'
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

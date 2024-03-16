@@ -167,7 +167,12 @@ class Membership extends AbstractApi
      */
     public function remove($id)
     {
-        return $this->delete('/memberships/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/memberships/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

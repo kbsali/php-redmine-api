@@ -234,8 +234,11 @@ class IssueCategory extends AbstractApi
      */
     public function remove($id, array $params = [])
     {
-        return $this->delete(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
             PathSerializer::create('/issue_categories/' . urlencode(strval($id)) . '.xml', $params)->getPath()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }
