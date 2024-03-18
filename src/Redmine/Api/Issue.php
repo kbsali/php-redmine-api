@@ -260,10 +260,13 @@ class Issue extends AbstractApi
             $sanitizedParams['assigned_to_id'] = '';
         }
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/issues/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -417,10 +420,13 @@ class Issue extends AbstractApi
             'uploads' => $attachments,
         ];
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'PUT',
             '/issues/' . urlencode(strval($id)) . '.json',
             JsonSerializer::createFromArray(['issue' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

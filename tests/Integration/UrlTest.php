@@ -60,14 +60,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\Issue */
         $api = MockClient::create()->getApi('issue');
 
-        $res = $api->update(1, [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/issues.json', $res['path']);
@@ -91,32 +83,12 @@ class UrlTest extends TestCase
 
         // $res = $api->setIssueStatus(1, 'asdf');
         // $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'DELETE'));
-
-        $res = $api->addNoteToIssue(1, 'asdf');
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
-        $res = $api->attach(1, ['asdf']);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issues/1.json', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
     }
 
     public function testIssueCategory()
     {
         /** @var \Redmine\Api\IssueCategory */
         $api = MockClient::create()->getApi('issue_category');
-
-        $res = $api->update(1, [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/issue_categories/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
 
@@ -185,15 +157,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\Membership */
         $api = MockClient::create()->getApi('membership');
 
-        $res = $api->update(1, [
-            'user_id' => 1,
-            'role_ids' => [1],
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/memberships/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all('testProject');
 
         $this->assertEquals('/projects/testProject/memberships.json', $res['path']);
@@ -225,14 +188,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Project */
         $api = MockClient::create()->getApi('project');
-
-        $res = $api->update(1, [
-            'name' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
 
@@ -280,12 +235,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\TimeEntry */
         $api = MockClient::create()->getApi('time_entry');
-
-        $res = $api->update(1, []);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/time_entries/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all();
 
@@ -343,12 +292,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');
 
-        $res = $api->update(1, []);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/users/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all();
 
         $this->assertEquals('/users.json', $res['path']);
@@ -386,12 +329,6 @@ class UrlTest extends TestCase
         /** @var \Redmine\Api\Version */
         $api = MockClient::create()->getApi('version');
 
-        $res = $api->update(1, []);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/versions/1.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
         $res = $api->all('testProject');
 
         $this->assertEquals('/projects/testProject/versions.json', $res['path']);
@@ -413,25 +350,6 @@ class UrlTest extends TestCase
     {
         /** @var \Redmine\Api\Wiki */
         $api = MockClient::create()->getApi('wiki');
-        $res = $api->create('testProject', 'about page', [
-            'text' => 'asdf',
-            'comments' => 'asdf',
-            'version' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
-
-        $res = $api->update('testProject', 'about page', [
-            'text' => 'asdf',
-            'comments' => 'asdf',
-            'version' => 'asdf',
-        ]);
-        $res = json_decode($res, true);
-
-        $this->assertEquals('/projects/testProject/wiki/about+page.xml', $res['path']);
-        $this->assertEquals('PUT', $res['method']);
 
         $res = $api->all('testProject');
 

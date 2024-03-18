@@ -258,6 +258,22 @@ class XmlSerializerTest extends TestCase
                 </issue>
                 XML,
             ],
+            'test with role_ids' => [
+                [
+                    'membership' => [
+                        'role_ids' => [1, 2],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <membership>
+                    <role_ids type="array">
+                        <role_id>1</role_id>
+                        <role_id>2</role_id>
+                    </role_ids>
+                </membership>
+                XML,
+            ],
         ];
     }
 

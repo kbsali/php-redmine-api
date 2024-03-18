@@ -155,10 +155,13 @@ class Group extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/groups/' . $id . '.xml',
             XmlSerializer::createFromArray(['group' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

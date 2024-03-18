@@ -116,6 +116,34 @@ class AbstractApiTest extends TestCase
         $api->runPost('/path.json', 'data');
     }
 
+    public function testPutTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {
+            public function runPut($path, $data)
+            {
+                return $this->put($path, $data);
+            }
+        };
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\AbstractApi::put()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->runPut('/path.json', 'data');
+    }
+
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
@@ -309,7 +337,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider retrieveDataData
      */
     #[DataProvider('retrieveDataData')]
-    public function testRetrieveData($response, $contentType, $expected)
+    public function testRetrieveData($path, $contentType, $response, $expected)
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -321,13 +349,24 @@ class AbstractApiTest extends TestCase
         $method = new ReflectionMethod($api, 'retrieveData');
         $method->setAccessible(true);
 
-        $this->assertSame($expected, $method->invoke($api, '/issues.json'));
+        $this->assertSame($expected, $method->invoke($api, $path));
     }
 
     public static function retrieveDataData(): array
     {
         return [
-            'test decode by default' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
+            'test json decode by default' => [
+                '/issues.json',
+                'application/json',
+                '{"foo_bar": 12345}',
+                ['foo_bar' => 12345],
+            ],
+            'test xml decode by default' => [
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issues type="array"></issues>',
+                ['@attributes' => ['type' => 'array']],
+            ],
         ];
     }
 

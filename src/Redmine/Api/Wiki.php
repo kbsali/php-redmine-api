@@ -10,6 +10,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
+use SimpleXMLElement;
 
 /**
  * Listing Wiki pages.
@@ -133,7 +134,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param array      $params  the new wiki page data
      *
-     * @return string|false
+     * @return SimpleXMLElement|string|false
      */
     public function create($project, $page, array $params = [])
     {
@@ -144,10 +145,19 @@ class Wiki extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
             XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
-        );
+        ));
+
+        $body = $this->lastResponse->getContent();
+
+        if ($body !== '') {
+            return new SimpleXMLElement($body);
+        }
+
+        return $body;
     }
 
     /**
@@ -161,7 +171,9 @@ class Wiki extends AbstractApi
      */
     public function update($project, $page, array $params = [])
     {
-        return $this->create($project, $page, $params);
+        $this->create($project, $page, $params);
+
+        return $this->lastResponse->getContent();
     }
 
     /**

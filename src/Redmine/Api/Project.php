@@ -215,10 +215,13 @@ class Project extends AbstractApi
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
-        return $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . urlencode(strval($id)) . '.xml',
             XmlSerializer::createFromArray(['project' => $params])->getEncoded()
-        );
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -242,10 +245,11 @@ class Project extends AbstractApi
             ));
         }
 
-        $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . strval($projectIdentifier) . '/close.xml',
             ''
-        );
+        ));
 
         $lastResponse = $this->getLastResponse();
 
@@ -277,10 +281,11 @@ class Project extends AbstractApi
             ));
         }
 
-        $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . strval($projectIdentifier) . '/reopen.xml',
             ''
-        );
+        ));
 
         $lastResponse = $this->getLastResponse();
 
@@ -312,10 +317,11 @@ class Project extends AbstractApi
             ));
         }
 
-        $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . strval($projectIdentifier) . '/archive.xml',
             ''
-        );
+        ));
 
         $lastResponse = $this->getLastResponse();
 
@@ -347,10 +353,11 @@ class Project extends AbstractApi
             ));
         }
 
-        $this->put(
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'PUT',
             '/projects/' . strval($projectIdentifier) . '/unarchive.xml',
             ''
-        );
+        ));
 
         $lastResponse = $this->getLastResponse();
 

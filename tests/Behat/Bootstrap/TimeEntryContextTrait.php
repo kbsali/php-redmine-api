@@ -31,6 +31,26 @@ trait TimeEntryContextTrait
     }
 
     /**
+     * @When I update the time entry with id :id and the following data
+     */
+    public function iUpdateTheTimeEntryWithIdAndTheFollowingData($id, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var TimeEntry */
+        $api = $this->getNativeCurlClient()->getApi('time_entry');
+
+        $this->registerClientResponse(
+            $api->update($id, $data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
      * @When I show the time entry with the id :activityId
      */
     public function iShowTheTimeEntryWithTheId(int $activityId)

@@ -175,6 +175,9 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client put() method.
      *
+     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @param string $path
      * @param string $data
      *
@@ -182,6 +185,8 @@ abstract class AbstractApi implements Api
      */
     protected function put($path, $data)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
+
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'PUT',
             strval($path),

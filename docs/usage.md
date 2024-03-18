@@ -518,8 +518,8 @@ $client->getApi('group')->update($groupId, [
 // Project memberships
 $client->getApi('membership')->listByProject($projectId);
 $client->getApi('membership')->create($projectId, [
-    'user_id' => null,
-    'role_ids' => [],
+    'user_id' => 1,
+    'role_ids' => [5],
 ]);
 $client->getApi('membership')->remove($membershipId);
 

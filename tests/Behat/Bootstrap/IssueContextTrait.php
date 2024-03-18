@@ -31,6 +31,26 @@ trait IssueContextTrait
     }
 
     /**
+     * @When I update the issue with id :issueId and the following data
+     */
+    public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientResponse(
+            $api->update($issueId, $data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
      * @When I show the issue with id :issueId
      */
     public function iShowTheIssueWithId($issueId)
