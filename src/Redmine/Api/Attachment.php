@@ -63,7 +63,7 @@ class Attachment extends AbstractApi
      *
      * @return true if the request was successful
      */
-    public function update(int $id, array $params): bool
+    final public function update(int $id, array $params): bool
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'PATCH',

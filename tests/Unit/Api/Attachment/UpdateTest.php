@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Attachment::class)]
@@ -51,5 +52,28 @@ class UpdateTest extends TestCase
                 true,
             ],
         ];
+    }
+
+    public function testUpdateThrowsUnexpectedResponseException()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PATCH',
+                '/attachments/5.json',
+                'application/json',
+                '{"attachment":[]}',
+                403,
+                '',
+                '',
+            ]
+        );
+
+        $api = new Attachment($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
+
+        $api->update(5, []);
     }
 }
