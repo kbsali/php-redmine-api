@@ -182,6 +182,12 @@ final class XmlSerializer implements Stringable
             foreach ($v as $id) {
                 $array->addChild($specialParams[$k], $id);
             }
+        } elseif (is_array($v)) {
+            $array = $xml->addChild($k, '');
+            $array->addAttribute('type', 'array');
+            foreach ($v as $id) {
+                $array->addChild($k, $id);
+            }
         } else {
             $xml->$k = $v;
         }
