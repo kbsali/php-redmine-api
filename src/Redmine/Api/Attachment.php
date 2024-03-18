@@ -64,15 +64,17 @@ class Attachment extends AbstractApi
      */
     final public function update(int $id, array $params): bool
     {
+        // we are using `PUT` instead of `PATCH`
+        // @see https://github.com/kbsali/php-redmine-api/pull/395#issuecomment-2004089154
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
-            'PATCH',
+            'PUT',
             '/attachments/' . $id . '.json',
             JsonSerializer::createFromArray(['attachment' => $params])->getEncoded()
         ));
 
-        // if ($this->lastResponse->getStatusCode() !== 204) {
-        //     throw UnexpectedResponseException::create($this->lastResponse);
-        // }
+        if ($this->lastResponse->getStatusCode() !== 204) {
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         return true;
     }

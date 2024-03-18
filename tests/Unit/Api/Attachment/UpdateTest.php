@@ -21,7 +21,7 @@ class UpdateTest extends TestCase
         $client = AssertingHttpClient::create(
             $this,
             [
-                'PATCH',
+                'PUT',
                 $expectedPath,
                 'application/json',
                 $expectedContent,
@@ -59,7 +59,7 @@ class UpdateTest extends TestCase
         $client = AssertingHttpClient::create(
             $this,
             [
-                'PATCH',
+                'PUT',
                 '/attachments/5.json',
                 'application/json',
                 '{"attachment":[]}',
