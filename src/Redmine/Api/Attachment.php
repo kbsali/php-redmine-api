@@ -2,7 +2,9 @@
 
 namespace Redmine\Api;
 
+use InvalidArgumentException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
@@ -44,6 +46,36 @@ class Attachment extends AbstractApi
         } catch (SerializerException $e) {
             return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
         }
+    }
+
+    /**
+     * Update information about an attachment.
+     *
+     * @see https://www.redmine.org/projects/redmine/wiki/Rest_Attachments#PATCH
+     *
+     * @param int $id the attachment id
+     * @param array $params available $params:
+     *   - filename: filename of the attachment
+     *   - description: new description of the attachment
+     *
+     * @throws SerializerException if $params contains invalid values
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
+     *
+     * @return true if the request was successful
+     */
+    public function update(int $id, array $params): bool
+    {
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
+            'PATCH',
+            '/attachments/' . $id . '.json',
+            JsonSerializer::createFromArray(['attachment' => $params])->getEncoded()
+        ));
+
+        if ($this->lastResponse->getStatusCode() !== 204) {
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return true;
     }
 
     /**
