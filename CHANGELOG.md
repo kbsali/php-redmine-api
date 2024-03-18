@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New interface `Redmine\Http\HttpClient` for new minimalistic HTTP clients.
 - New interface `Redmine\Http\Request` for sending data with new minimalistic HTTP clients.
 - New method `Redmine\Api\...::getLastResponse()` to get the last response made by the API class.
+- Add support for custom arrays in `Redmine\Serializer\XmlSerializer`
 
 ### Changed
 

@@ -151,6 +151,25 @@ class XmlSerializerTest extends TestCase
                 </issue>
                 XML,
             ],
+            'test with custom array' => [
+                [
+                    'issue' => [
+                        'taglist' => [
+                            'approved',
+                            'finished',
+                        ],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                <taglist type="array">
+                    <taglist>approved</taglist>
+                    <taglist>finished</taglist>
+                </taglist>
+                </issue>
+                XML,
+            ],
             'test with ignored elements' => [
                 [
                     'issue' => [
