@@ -27,6 +27,21 @@ Feature: Interacting with the REST API for attachments
             | token             | 1.7b962f8af22e26802b87abfa0b07b21dbd03b984ec8d6888dabd3f69cff162f8 |
 
     @attachment
+    Scenario: Updating the details of an attachment
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
+            | property          | value                |
+            | filename          | testfile.txt         |
+        When I update the attachment with the id "1" with the following data
+            | property          | value                |
+            | filename          | testfile2.txt        |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is true
+
+    @attachment
     Scenario: Showing the details of an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data

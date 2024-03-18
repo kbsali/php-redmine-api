@@ -2,7 +2,6 @@
 
 namespace Redmine\Api;
 
-use InvalidArgumentException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpFactory;
@@ -71,9 +70,9 @@ class Attachment extends AbstractApi
             JsonSerializer::createFromArray(['attachment' => $params])->getEncoded()
         ));
 
-        if ($this->lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($this->lastResponse);
-        }
+        // if ($this->lastResponse->getStatusCode() !== 204) {
+        //     throw UnexpectedResponseException::create($this->lastResponse);
+        // }
 
         return true;
     }

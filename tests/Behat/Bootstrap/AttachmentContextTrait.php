@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\Attachment;
 
@@ -28,6 +27,26 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->upload(file_get_contents($filepath), $data),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I update the attachment with the id :attachmentId with the following data
+     */
+    public function iUpdateTheAttachmentWithTheIdWithTheFollowingData(int $attachmentId, TableNode $table)
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $data[$row['property']] = $row['value'];
+        }
+
+        /** @var Attachment */
+        $api = $this->getNativeCurlClient()->getApi('attachment');
+
+        $this->registerClientResponse(
+            $api->update($attachmentId, $data),
             $api->getLastResponse()
         );
     }
