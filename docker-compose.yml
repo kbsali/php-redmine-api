@@ -39,7 +39,7 @@ services:
             - ./.docker/redmine-50102_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-50008:
-        image: redmine:5.0.8
+        image: redmine:5.1.2
         user: "1000:1000"
         ports:
             - "5007:3000"
