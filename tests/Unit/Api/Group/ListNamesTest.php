@@ -8,10 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
-use Redmine\Exception\MissingParameterException;
-use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
 class ListNamesTest extends TestCase
