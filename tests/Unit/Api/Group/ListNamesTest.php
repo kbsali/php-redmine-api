@@ -42,21 +42,32 @@ class ListNamesTest extends TestCase
     public static function getListNamesData(): array
     {
         return [
-            'test with minimal parameters' => [
+            'test without groups' => [
+                '/groups.json',
+                201,
+                <<<JSON
+                {
+                    "groups": []
+                }
+                JSON,
+                []
+            ],
+            'test with multiple groups' => [
                 '/groups.json',
                 201,
                 <<<JSON
                 {
                     "groups": [
-                        {
-                            "id": 1,
-                            "name": "Group 1"
-                        }
+                        {"id": 9, "name": "Group 1"},
+                        {"id": 8, "name": "Group 2"},
+                        {"id": 7, "name": "Group 3"}
                     ]
                 }
                 JSON,
                 [
-                    1 => "Group 1",
+                    9 => "Group 1",
+                    8 => "Group 2",
+                    7 => "Group 3",
                 ]
             ],
         ];
