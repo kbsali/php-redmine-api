@@ -44,6 +44,26 @@ class Group extends AbstractApi
     }
 
     /**
+     * Returns an array of all groups with id/name pairs.
+     *
+     * @return array<int,string> list of groups (id => name)
+     */
+    final public function listNames(): array
+    {
+        if (empty($this->groups)) {
+            $this->groups = $this->list();
+        }
+
+        $list = [];
+
+        foreach ($this->groups['groups'] as $e) {
+            $list[(int) $e['id']] = $e['name'];
+        }
+
+        return $list;
+    }
+
+    /**
      * List groups.
      *
      * @deprecated v2.4.0 Use list() instead.
