@@ -120,3 +120,15 @@ Feature: Interacting with the REST API for attachments
         # The response body contains a 404 HTML page from Redmine
         # And the response has the content "<!DOCTYPE html><html lang="en">..."
         And the returned data is false
+
+    @attachment
+    Scenario: Deleting an attachment
+        Given I have a "NativeCurlClient" client
+        And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
+            | property          | value                |
+            | filename          | testfile.txt         |
+        When I remove the attachment with the id "1"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""

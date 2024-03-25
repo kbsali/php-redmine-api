@@ -49,3 +49,33 @@ Feature: Interacting with the REST API for issue relations
             | issue_to_id       | 2                    |
             | relation_type     | relates              |
             | delay             | null                 |
+
+    @issue_relation
+    Scenario: Deleting an issue relation
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | first issue          |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | second issue         |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        And I create an issue relation for issue id "1" with the following data
+            | property          | value                |
+            | issue_to_id       | 2                    |
+        When I delete the issue relation with the id "1"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""

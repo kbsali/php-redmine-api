@@ -116,29 +116,4 @@ class TimeEntryTest extends TestCase
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all($parameters));
     }
-
-    /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with('/time_entries/5.xml')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new TimeEntry($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5));
-    }
 }

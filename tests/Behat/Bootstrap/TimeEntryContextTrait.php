@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\TimeEntry;
 
@@ -60,6 +59,20 @@ trait TimeEntryContextTrait
 
         $this->registerClientResponse(
             $api->show($activityId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the time entry with id :activityId
+     */
+    public function iRemoveTheTimeEntryWithId($activityId)
+    {
+        /** @var TimeEntry */
+        $api = $this->getNativeCurlClient()->getApi('time_entry');
+
+        $this->registerClientResponse(
+            $api->remove($activityId),
             $api->getLastResponse()
         );
     }

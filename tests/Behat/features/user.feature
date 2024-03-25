@@ -113,3 +113,18 @@ Feature: Interacting with the REST API for users
         And the response has the content type "application/json"
         And the response has the content ""
         And the returned data is false
+
+    @user
+    Scenario: Removing an user
+        Given I have a "NativeCurlClient" client
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I remove the user with id "4"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""

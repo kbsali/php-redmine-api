@@ -296,11 +296,16 @@ class Issue extends AbstractApi
      * @param int $id
      * @param int $watcherUserId
      *
-     * @return false|SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function removeWatcher($id, $watcherUserId)
     {
-        return $this->delete('/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**
@@ -434,11 +439,16 @@ class Issue extends AbstractApi
      *
      * @param int $id the issue number
      *
-     * @return false|SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function remove($id)
     {
-        return $this->delete('/issues/' . urlencode(strval($id)) . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/issues/' . urlencode(strval($id)) . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 
     /**

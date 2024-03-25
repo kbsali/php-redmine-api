@@ -208,12 +208,17 @@ abstract class AbstractApi implements Api
     /**
      * Perform the client delete() method.
      *
+     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @param string $path
      *
      * @return string
      */
     protected function delete($path)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
+
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'DELETE',
             strval($path),

@@ -48,4 +48,18 @@ trait IssueCategoryContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I remove the issue category with id :id
+     */
+    public function iRemoveTheIssueCategoryWithId($id)
+    {
+        /** @var IssueCategory */
+        $api = $this->getNativeCurlClient()->getApi('issue_category');
+
+        $this->registerClientResponse(
+            $api->remove($id),
+            $api->getLastResponse()
+        );
+    }
 }

@@ -184,31 +184,6 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with('/users/5.xml')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new User($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5));
-    }
-
-    /**
      * Test listing().
      */
     public function testListingReturnsNameIdArray()

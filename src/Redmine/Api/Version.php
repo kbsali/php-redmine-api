@@ -266,10 +266,15 @@ class Version extends AbstractApi
      *
      * @param int $id id of the version
      *
-     * @return string
+     * @return string empty string on success
      */
     public function remove($id)
     {
-        return $this->delete('/versions/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/versions/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

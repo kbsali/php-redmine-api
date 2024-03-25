@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Redmine\Tests\Unit\Api\Attachment;
+namespace Redmine\Tests\Unit\Api\Group;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Redmine\Api\Attachment;
+use Redmine\Api\Group;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
-#[CoversClass(Attachment::class)]
+#[CoversClass(Group::class)]
 class RemoveTest extends TestCase
 {
     public function testRemoveReturnsString()
@@ -18,7 +18,7 @@ class RemoveTest extends TestCase
             $this,
             [
                 'DELETE',
-                '/attachments/5.xml',
+                '/groups/5.xml',
                 'application/xml',
                 '',
                 204,
@@ -27,7 +27,7 @@ class RemoveTest extends TestCase
             ]
         );
 
-        $api = new Attachment($client);
+        $api = new Group($client);
 
         $this->assertSame('', $api->remove(5));
     }

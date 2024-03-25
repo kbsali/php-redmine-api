@@ -101,3 +101,34 @@ Feature: Interacting with the REST API for groups
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @group
+    Scenario: Adding an user to a group
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        When I add the user with id "1" to the group with id "4"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @group
+    Scenario: Removing an user from a group
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        And I add the user with id "1" to the group with id "4"
+        When I remove the user with id "1" from the group with id "4"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @group
+    Scenario: Deleting a group
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        When I remove the group with id "4"
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""

@@ -220,71 +220,6 @@ class IssueCategoryTest extends TestCase
     }
 
     /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with(
-                $this->logicalXor(
-                    $this->stringStartsWith('/issue_categories/5.json'),
-                    $this->stringStartsWith('/issue_categories/5.xml')
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new IssueCategory($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5));
-    }
-
-    /**
-     * Test remove().
-     */
-    public function testRemoveCallsDeleteWithParameters()
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = ['not-used'];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/issue_categories/5'),
-                    $this->logicalXor(
-                        $this->stringContains('.json?'),
-                        $this->stringContains('.xml?')
-                    ),
-                    $this->stringContains('not-used')
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new IssueCategory($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5, $parameters));
-    }
-
-    /**
      * Test getIdByName().
      */
     public function testGetIdByNameMakesGetRequest()
@@ -313,42 +248,5 @@ class IssueCategoryTest extends TestCase
         // Perform the tests
         $this->assertFalse($api->getIdByName(5, 'IssueCategory 1'));
         $this->assertSame(5, $api->getIdByName(5, 'IssueCategory 5'));
-    }
-
-    /**
-     * Test update().
-     */
-    public function testUpdateCallsPut()
-    {
-        // Test values
-        $response = '';
-        $parameters = [
-            'name' => 'Test Category',
-            'assigned_to_id' => 2,
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPut')
-            ->with(
-                '/issue_categories/5.xml',
-                $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue_category>'),
-                    $this->stringEndsWith('</issue_category>' . "\n"),
-                    $this->stringContains('<name>Test Category</name>'),
-                    $this->stringContains('<assigned_to_id>2</assigned_to_id>')
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new IssueCategory($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->update(5, $parameters));
     }
 }

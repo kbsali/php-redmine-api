@@ -69,9 +69,9 @@ trait WikiContextTrait
     }
 
     /**
-     * @When I delete the wiki page with name :pageName and project identifier :identifier
+     * @When I remove the wiki page with name :pageName and project identifier :identifier
      */
-    public function iDeleteTheWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier)
+    public function iRemoveTheWikiPageWithNameAndProjectIdentifier($pageName, $identifier)
     {
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');

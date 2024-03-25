@@ -114,31 +114,6 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = 'API Response';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with('/projects/5.xml')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Project($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove(5));
-    }
-
-    /**
      * Test listing().
      */
     public function testListingReturnsNameIdArray()
@@ -271,34 +246,6 @@ class ProjectTest extends TestCase
         // Perform the tests
         $this->assertFalse($api->getIdByName('Project 1'));
         $this->assertSame(5, $api->getIdByName('Project 5'));
-    }
-
-    /**
-     * Test update().
-     */
-    public function testUpdateCallsPut()
-    {
-        // Test values
-        $response = 'API Response';
-        $parameters = [
-            'name' => 'Test Project',
-        ];
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestPut')
-            ->with('/projects/5.xml')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-
-        // Create the object under test
-        $api = new Project($client);
-
-        // Perform the tests
-        $this->assertSame($response, $api->update(5, $parameters));
     }
 
     public function testDeprecatedPrepareParamsXml()

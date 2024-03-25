@@ -90,4 +90,46 @@ trait GroupContextTrait
             $api->getLastResponse()
         );
     }
+
+    /**
+     * @When I add the user with id :userId to the group with id :groupId
+     */
+    public function iAddTheUserWithIdToTheGroupWithId($userId, $groupId)
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->addUser($groupId, $userId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the user with id :userId from the group with id :groupId
+     */
+    public function iRemoveTheUserWithIdFromTheGroupWithId($userId, $groupId)
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->removeUser($groupId, $userId),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the group with id :groupId
+     */
+    public function iRemoveTheGroupWithId($groupId)
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->remove($groupId),
+            $api->getLastResponse()
+        );
+    }
 }

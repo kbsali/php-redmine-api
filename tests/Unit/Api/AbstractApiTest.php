@@ -144,6 +144,34 @@ class AbstractApiTest extends TestCase
         $api->runPut('/path.json', 'data');
     }
 
+    public function testDeleteTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(HttpClient::class);
+
+        $api = new class ($client) extends AbstractApi {
+            public function runDelete($path)
+            {
+                return $this->delete($path);
+            }
+        };
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\AbstractApi::delete()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
+                    $errstr
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED
+        );
+
+        $api->runDelete('/path.json');
+    }
+
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */

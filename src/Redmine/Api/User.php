@@ -263,10 +263,15 @@ class User extends AbstractApi
      *
      * @param int $id id of the user
      *
-     * @return false|\SimpleXMLElement|string
+     * @return string empty string on success
      */
     public function remove($id)
     {
-        return $this->delete('/users/' . $id . '.xml');
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
+            'DELETE',
+            '/users/' . $id . '.xml'
+        ));
+
+        return $this->lastResponse->getContent();
     }
 }

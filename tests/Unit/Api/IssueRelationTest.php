@@ -110,41 +110,4 @@ class IssueRelationTest extends TestCase
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all(5, $parameters));
     }
-
-    /**
-     * Test remove().
-     */
-    public function testRemoveCallsDelete()
-    {
-        // Test values
-        $response = '["API Response"]';
-        $expectedReturn = '["API Response"]';
-
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestDelete')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/relations/5'),
-                    $this->logicalXor(
-                        $this->stringEndsWith('.json'),
-                        $this->stringEndsWith('.xml')
-                    )
-                )
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
-
-        // Create the object under test
-        $api = new IssueRelation($client);
-
-        // Perform the tests
-        $this->assertSame($expectedReturn, $api->remove(5));
-    }
 }

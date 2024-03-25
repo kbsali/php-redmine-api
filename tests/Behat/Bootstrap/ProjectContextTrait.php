@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\Project;
 
@@ -144,6 +143,20 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->unarchive($identifier),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
+     * @When I remove the project with identifier :identifier
+     */
+    public function iRemoveTheProjectWithIdentifier($identifier)
+    {
+        /** @var Project */
+        $api = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $api->remove($identifier),
             $api->getLastResponse()
         );
     }
