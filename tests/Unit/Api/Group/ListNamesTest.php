@@ -61,4 +61,37 @@ class ListNamesTest extends TestCase
             ],
         ];
     }
+
+    public function testListNamesCallsHttpClientOnlyOnce()
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/groups.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                <<<JSON
+                {
+                    "groups": [
+                        {
+                            "id": 1,
+                            "name": "Group 1"
+                        }
+                    ]
+                }
+                JSON,
+            ]
+        );
+
+        // Create the object under test
+        $api = new Group($client);
+
+        // Perform the tests
+        $this->assertSame([1 => 'Group 1'], $api->listNames());
+        $this->assertSame([1 => 'Group 1'], $api->listNames());
+        $this->assertSame([1 => 'Group 1'], $api->listNames());
+    }
 }

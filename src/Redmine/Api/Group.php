@@ -23,6 +23,8 @@ class Group extends AbstractApi
 {
     private $groups = [];
 
+    private $groupNames = null;
+
     /**
      * List groups.
      *
@@ -50,17 +52,17 @@ class Group extends AbstractApi
      */
     final public function listNames(): array
     {
-        if (empty($this->groups)) {
-            $this->groups = $this->list();
+        if ($this->groupNames !== null) {
+            return $this->groupNames;
         }
 
-        $list = [];
+        $this->groupNames = [];
 
-        foreach ($this->groups['groups'] as $e) {
-            $list[(int) $e['id']] = $e['name'];
+        foreach ($this->list()['groups'] as $group) {
+            $this->groupNames[(int) $group['id']] = $group['name'];
         }
 
-        return $list;
+        return $this->groupNames;
     }
 
     /**
