@@ -58,6 +58,20 @@ trait GroupContextTrait
     }
 
     /**
+     * @When I list the names of all groups
+     */
+    public function iListTheNamesOfAllGroups()
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse()
+        );
+    }
+
+    /**
      * @When I show the group with id :groupId
      */
     public function iShowTheGroupWithId(int $groupId)

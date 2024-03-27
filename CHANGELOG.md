@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.6.0...v2.x)
 
+### Added
+
+- New method `Redmine\Api\Group::listNames()` for listing the ids and names of all groups.
+
+### Deprecated
+
+- `Redmine\Api\Group::listing()` is deprecated, use `\Redmine\Api\Group::listNames()` instead.
+
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25
 
 ### Added

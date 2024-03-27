@@ -58,6 +58,27 @@ Feature: Interacting with the REST API for groups
             | name              | Test Group           |
 
     @group
+    Scenario: Listing names of all groups
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group 1"
+        And I create a group with name "Test Group 2"
+        And I create a group with name "Test Group 3"
+        And I create a group with name "Test Group 4"
+        And I create a group with name "Test Group 5"
+        When I list the names of all groups
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data is an array
+        And the returned data contains "5" items
+        And the returned data contains the following data
+            | property          | value                |
+            | 4                 | Test Group 1         |
+            | 5                 | Test Group 2         |
+            | 6                 | Test Group 3         |
+            | 7                 | Test Group 4         |
+            | 8                 | Test Group 5         |
+
+    @group
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
