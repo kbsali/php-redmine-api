@@ -101,12 +101,17 @@ class Group extends AbstractApi
     /**
      * Returns an array of groups with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Group::listNames()
+     *
      * @param bool $forceUpdate to force the update of the groups var
      *
      * @return array list of groups (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->groups) || $forceUpdate) {
             $this->groups = $this->list();
         }
