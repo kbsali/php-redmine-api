@@ -206,6 +206,36 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @Then the returned data is an array
+     */
+    public function theReturnedDataIsAnArray()
+    {
+        $this->assertIsArray($this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data contains :count items
+     */
+    public function theReturnedDataContainsItems(int $count)
+    {
+        $this->assertCount($count, $this->lastReturn);
+    }
+
+    /**
+     * @Then the returned data contains the following data
+     */
+    public function theReturnedDataContainsTheFollowingData(TableNode $table)
+    {
+        $returnData = $this->lastReturn;
+
+        if (! is_array($returnData)) {
+            throw new RuntimeException('The returned data is not an array.');
+        }
+
+        $this->assertTableNodeIsSameAsArray($table, $returnData);
+    }
+
+    /**
      * @Then the returned data has only the following properties
      */
     public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
@@ -257,54 +287,7 @@ final class FeatureContext extends TestCase implements Context
             throw new RuntimeException('The returned data on property "' . $property . '" is not an array.');
         }
 
-        foreach ($table as $row) {
-            $this->assertArrayHasKey($row['property'], $returnData);
-
-            $value = $returnData[$row['property']];
-
-            if ($value instanceof SimpleXMLElement) {
-                $value = strval($value);
-            }
-
-            $expected = $row['value'];
-
-            // Handle expected empty array
-            if ($value === [] && $expected === '[]') {
-                $expected = [];
-            }
-
-            // Handle expected int values
-            if (is_int($value) && ctype_digit($expected)) {
-                $expected = intval($expected);
-            }
-
-            // Handle expected float values
-            if (is_float($value) && is_numeric($expected)) {
-                $expected = floatval($expected);
-            }
-
-            // Handle expected null value
-            if ($value === null && $expected === 'null') {
-                $expected = null;
-            }
-
-            // Handle expected true value
-            if ($value === true && $expected === 'true') {
-                $expected = true;
-            }
-
-            // Handle expected false value
-            if ($value === false && $expected === 'false') {
-                $expected = false;
-            }
-
-            // Handle placeholder %redmine_id%
-            if (is_string($expected)) {
-                $expected = str_replace('%redmine_id%', strval($this->redmine->getVersionId()), $expected);
-            }
-
-            $this->assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
-        }
+        $this->assertTableNodeIsSameAsArray($table, $returnData);
     }
 
     /**
@@ -383,5 +366,57 @@ final class FeatureContext extends TestCase implements Context
         }
 
         return $array;
+    }
+
+    private function assertTableNodeIsSameAsArray(TableNode $table, array $data)
+    {
+        foreach ($table as $row) {
+            $this->assertArrayHasKey($row['property'], $data, 'Possible keys are: ' . implode(', ', array_keys($data)));
+
+            $value = $data[$row['property']];
+
+            if ($value instanceof SimpleXMLElement) {
+                $value = strval($value);
+            }
+
+            $expected = $row['value'];
+
+            // Handle expected empty array
+            if ($value === [] && $expected === '[]') {
+                $expected = [];
+            }
+
+            // Handle expected int values
+            if (is_int($value) && ctype_digit($expected)) {
+                $expected = intval($expected);
+            }
+
+            // Handle expected float values
+            if (is_float($value) && is_numeric($expected)) {
+                $expected = floatval($expected);
+            }
+
+            // Handle expected null value
+            if ($value === null && $expected === 'null') {
+                $expected = null;
+            }
+
+            // Handle expected true value
+            if ($value === true && $expected === 'true') {
+                $expected = true;
+            }
+
+            // Handle expected false value
+            if ($value === false && $expected === 'false') {
+                $expected = false;
+            }
+
+            // Handle placeholder %redmine_id%
+            if (is_string($expected)) {
+                $expected = str_replace('%redmine_id%', strval($this->redmine->getVersionId()), $expected);
+            }
+
+            $this->assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
+        }
     }
 }

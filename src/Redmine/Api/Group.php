@@ -23,6 +23,8 @@ class Group extends AbstractApi
 {
     private $groups = [];
 
+    private $groupNames = null;
+
     /**
      * List groups.
      *
@@ -41,6 +43,26 @@ class Group extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all groups with id/name pairs.
+     *
+     * @return array<int,string> list of groups (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->groupNames !== null) {
+            return $this->groupNames;
+        }
+
+        $this->groupNames = [];
+
+        foreach ($this->list()['groups'] as $group) {
+            $this->groupNames[(int) $group['id']] = $group['name'];
+        }
+
+        return $this->groupNames;
     }
 
     /**
@@ -79,12 +101,17 @@ class Group extends AbstractApi
     /**
      * Returns an array of groups with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Group::listNames()
+     *
      * @param bool $forceUpdate to force the update of the groups var
      *
      * @return array list of groups (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->groups) || $forceUpdate) {
             $this->groups = $this->list();
         }
