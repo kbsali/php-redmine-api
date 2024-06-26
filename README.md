@@ -35,7 +35,7 @@ that receive security updates.
 - Redmine 4.2.x
 
 Nevertheless, you can also use this library for all older Redmine versions.
-In this case, however, be aware that some features may not yet be supported by your Redmine server.
+In this case, however, be aware that some features might not be supported by your Redmine server.
 
 If a new Redmine version enables new features that are not yet supported with this library,
 you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/issues).

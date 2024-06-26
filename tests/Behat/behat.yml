@@ -18,3 +18,5 @@ default:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '4.2.10'
+            filters:
+                tags: "~@since50000"
