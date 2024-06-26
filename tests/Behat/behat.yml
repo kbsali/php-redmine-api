@@ -12,3 +12,9 @@ default:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.0.9'
+        redmine_40210:
+            paths:
+                - '%paths.base%/features'
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '4.2.10'

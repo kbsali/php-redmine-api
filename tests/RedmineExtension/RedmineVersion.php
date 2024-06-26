@@ -120,6 +120,22 @@ enum RedmineVersion: string
      */
     case V5_0_0 = '5.0.0';
 
+    /**
+     * Redmine 4.2.11
+     *
+     * @link https://www.redmine.org/versions/187
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_4_2#4211-2023-09-30
+     */
+    case V4_2_11 = '4.2.11';
+
+    /**
+     * Redmine 4.2.10
+     *
+     * @link https://www.redmine.org/versions/185
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_4_2#4210-2023-03-05
+     */
+    case V4_2_10 = '4.2.10';
+
     public function asString(): string
     {
         return $this->value;
