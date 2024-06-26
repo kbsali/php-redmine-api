@@ -1,6 +1,7 @@
 name: Check for new Redmine releases
 
 on:
+  workflow_dispatch:
   schedule:
     # Run this Action at every 5th minute
     - cron: "*/5 * * * *"
