@@ -24,7 +24,7 @@ class RemoveUserTest extends TestCase
                 204,
                 '',
                 '',
-            ]
+            ],
         );
 
         $api = new Group($client);

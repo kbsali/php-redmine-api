@@ -27,13 +27,13 @@ class NewsTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\News::all()` is deprecated since v2.4.0, use `Redmine\Api\News::list()` or `Redmine\Api\News::listByProject()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all(5);
@@ -91,7 +91,7 @@ class NewsTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/projects/5/news.json')
+                $this->stringStartsWith('/projects/5/news.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -124,7 +124,7 @@ class NewsTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringContains('not-used')
+                $this->stringContains('not-used'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

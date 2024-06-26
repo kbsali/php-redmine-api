@@ -27,7 +27,7 @@ class AttachTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Attach the object under test

@@ -29,7 +29,7 @@ class AddNoteToIssueTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test

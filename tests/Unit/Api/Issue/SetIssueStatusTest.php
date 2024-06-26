@@ -31,7 +31,7 @@ class SetIssueStatusTest extends TestCase
                 204,
                 '',
                 '',
-            ]
+            ],
         );
 
         // Create the object under test

@@ -39,7 +39,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->create($data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -53,7 +53,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->list(),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -67,7 +67,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->show($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -87,7 +87,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->update($identifier, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -101,7 +101,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->close($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -115,7 +115,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->reopen($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -129,7 +129,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->archive($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -143,7 +143,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->unarchive($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -157,7 +157,7 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->remove($identifier),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

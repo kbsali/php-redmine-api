@@ -28,7 +28,7 @@ class GetTest extends TestCase
                 200,
                 'application/json',
                 '{"foo_bar": 12345}',
-            ]
+            ],
         );
 
         $api = new class ($client) extends AbstractApi {};
@@ -39,7 +39,7 @@ class GetTest extends TestCase
         // Perform the tests
         $this->assertSame(
             ['foo_bar' => 12345],
-            $method->invoke($api, 'path.json')
+            $method->invoke($api, 'path.json'),
         );
     }
 

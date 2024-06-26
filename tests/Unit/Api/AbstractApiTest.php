@@ -67,13 +67,13 @@ class AbstractApiTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\AbstractApi::get()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->runGet('/path.json');
@@ -104,13 +104,13 @@ class AbstractApiTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\AbstractApi::post()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->runPost('/path.json', 'data');
@@ -132,13 +132,13 @@ class AbstractApiTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\AbstractApi::put()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->runPut('/path.json', 'data');
@@ -160,13 +160,13 @@ class AbstractApiTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\AbstractApi::delete()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->runDelete('/path.json');
@@ -227,7 +227,7 @@ class AbstractApiTest extends TestCase
                 'application/json',
                 '',
                 500,
-            ]
+            ],
         );
 
         $api1 = new class ($client) extends AbstractApi {

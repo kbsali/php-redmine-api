@@ -28,7 +28,7 @@ class PostTest extends TestCase
                 200,
                 'application/xml',
                 '<?xml version="1.0"?><issue/>',
-            ]
+            ],
         );
 
         $api = new class ($client) extends AbstractApi {};

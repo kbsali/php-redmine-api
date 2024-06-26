@@ -27,7 +27,7 @@ class RemoveWatcherTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test

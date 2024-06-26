@@ -101,7 +101,7 @@ final class FeatureContext extends TestCase implements Context
 
         $this->client = new NativeCurlClient(
             $this->redmine->getRedmineUrl(),
-            $this->redmine->getApiKey()
+            $this->redmine->getApiKey(),
         );
     }
 
@@ -125,7 +125,7 @@ final class FeatureContext extends TestCase implements Context
         $this->assertSame(
             $statusCode,
             $this->lastResponse->getStatusCode(),
-            'Raw response content: ' . $this->lastResponse->getContent()
+            'Raw response content: ' . $this->lastResponse->getContent(),
         );
     }
 
@@ -137,7 +137,7 @@ final class FeatureContext extends TestCase implements Context
         $this->assertStringStartsWith(
             $contentType,
             $this->lastResponse->getContentType(),
-            'Raw response content: ' . $this->lastResponse->getContent()
+            'Raw response content: ' . $this->lastResponse->getContent(),
         );
     }
 

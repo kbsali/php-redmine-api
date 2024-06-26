@@ -25,7 +25,7 @@ trait TimeEntryContextTrait
 
         $this->registerClientResponse(
             $api->create($data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -45,7 +45,7 @@ trait TimeEntryContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -59,7 +59,7 @@ trait TimeEntryContextTrait
 
         $this->registerClientResponse(
             $api->show($activityId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -73,7 +73,7 @@ trait TimeEntryContextTrait
 
         $this->registerClientResponse(
             $api->remove($activityId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

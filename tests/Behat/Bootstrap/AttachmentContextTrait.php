@@ -27,7 +27,7 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->upload(file_get_contents($filepath), $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -47,7 +47,7 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->update($attachmentId, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -61,7 +61,7 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->show($attachmentId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -75,7 +75,7 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->download($attachmentId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -89,7 +89,7 @@ trait AttachmentContextTrait
 
         $this->registerClientResponse(
             $api->remove($attachmentId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

@@ -29,7 +29,7 @@ class ListNamesTest extends TestCase
                 $responseCode,
                 'application/json',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test
@@ -94,7 +94,7 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-            ]
+            ],
         );
 
         // Create the object under test

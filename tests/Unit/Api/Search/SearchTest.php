@@ -21,13 +21,13 @@ class SearchTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Search::search()` is deprecated since v2.4.0, use `Redmine\Api\Search::listByQuery()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->search('query');

@@ -29,7 +29,7 @@ class UpdateTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test
@@ -74,7 +74,7 @@ class UpdateTest extends TestCase
                 500,
                 '',
                 '',
-            ]
+            ],
         );
 
         // Create the object under test

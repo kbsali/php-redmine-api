@@ -29,7 +29,7 @@ class UpdateTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Update the object under test

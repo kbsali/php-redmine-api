@@ -36,7 +36,7 @@ class RemoveMemberTest extends TestCase
                 $responseCode,
                 '',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test
@@ -80,7 +80,7 @@ class RemoveMemberTest extends TestCase
                 200,
                 'application/json',
                 '{"memberships":[{"id":5,"user":{"id":404}}]}',
-            ]
+            ],
         );
 
         // Create the object under test
@@ -102,7 +102,7 @@ class RemoveMemberTest extends TestCase
                 200,
                 'application/json',
                 '{"error":"this response is invalid"}',
-            ]
+            ],
         );
 
         // Create the object under test

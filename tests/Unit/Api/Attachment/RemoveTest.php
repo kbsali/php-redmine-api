@@ -24,7 +24,7 @@ class RemoveTest extends TestCase
                 204,
                 '',
                 '',
-            ]
+            ],
         );
 
         $api = new Attachment($client);

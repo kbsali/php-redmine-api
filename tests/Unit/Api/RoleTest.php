@@ -27,13 +27,13 @@ class RoleTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Role::all()` is deprecated since v2.4.0, use `Redmine\Api\Role::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -93,8 +93,8 @@ class RoleTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/roles.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -128,7 +128,7 @@ class RoleTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/roles.json')
+                $this->stringStartsWith('/roles.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -162,7 +162,7 @@ class RoleTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/roles.json')
+                $this->stringStartsWith('/roles.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -197,7 +197,7 @@ class RoleTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/roles.json')
+                $this->stringStartsWith('/roles.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))

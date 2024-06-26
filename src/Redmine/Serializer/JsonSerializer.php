@@ -70,7 +70,7 @@ final class JsonSerializer implements Stringable
                 $encoded,
                 true,
                 512,
-                \JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR,
             );
         } catch (JsonException $e) {
             throw new SerializerException('Catched error "' . $e->getMessage() . '" while decoding JSON: ' . $encoded, $e->getCode(), $e);
@@ -85,13 +85,13 @@ final class JsonSerializer implements Stringable
             $this->encoded = json_encode(
                 $normalized,
                 \JSON_THROW_ON_ERROR,
-                512
+                512,
             );
         } catch (JsonException $e) {
             throw new SerializerException(
                 'Could not encode JSON from array: ' . $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }

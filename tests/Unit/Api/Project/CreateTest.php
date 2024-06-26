@@ -30,7 +30,7 @@ class CreateTest extends TestCase
                 $responseCode,
                 'application/xml',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test
@@ -143,7 +143,7 @@ class CreateTest extends TestCase
                 500,
                 '',
                 '',
-            ]
+            ],
         );
 
         // Create the object under test

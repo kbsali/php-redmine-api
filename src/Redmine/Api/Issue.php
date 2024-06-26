@@ -163,7 +163,7 @@ class Issue extends AbstractApi
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
-            PathSerializer::create('/issues/' . urlencode(strval($id)) . '.json', $params)->getPath()
+            PathSerializer::create('/issues/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -217,7 +217,7 @@ class Issue extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/issues.xml',
-            XmlSerializer::createFromArray(['issue' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['issue' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -263,7 +263,7 @@ class Issue extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/issues/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded()
+            XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -280,7 +280,7 @@ class Issue extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/issues/' . urlencode(strval($id)) . '/watchers.xml',
-            XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded()
+            XmlSerializer::createFromArray(['user_id' => urlencode(strval($watcherUserId))])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -302,7 +302,7 @@ class Issue extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml'
+            '/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml',
         ));
 
         return $this->lastResponse->getContent();
@@ -428,7 +428,7 @@ class Issue extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'PUT',
             '/issues/' . urlencode(strval($id)) . '.json',
-            JsonSerializer::createFromArray(['issue' => $params])->getEncoded()
+            JsonSerializer::createFromArray(['issue' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -445,7 +445,7 @@ class Issue extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/issues/' . urlencode(strval($id)) . '.xml'
+            '/issues/' . urlencode(strval($id)) . '.xml',
         ));
 
         return $this->lastResponse->getContent();

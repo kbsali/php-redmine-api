@@ -27,13 +27,13 @@ class TimeEntryActivityTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\TimeEntryActivity::all()` is deprecated since v2.4.0, use `Redmine\Api\TimeEntryActivity::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -93,8 +93,8 @@ class TimeEntryActivityTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/enumerations/time_entry_activities.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -123,7 +123,7 @@ class TimeEntryActivityTest extends TestCase
         $client->expects($this->atLeastOnce())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+                $this->stringStartsWith('/enumerations/time_entry_activities.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -150,7 +150,7 @@ class TimeEntryActivityTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+                $this->stringStartsWith('/enumerations/time_entry_activities.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))
@@ -174,7 +174,7 @@ class TimeEntryActivityTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/enumerations/time_entry_activities.json')
+                $this->stringStartsWith('/enumerations/time_entry_activities.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

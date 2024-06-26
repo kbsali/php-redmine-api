@@ -138,7 +138,7 @@ class Project extends AbstractApi
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
-            PathSerializer::create('/projects/' . urlencode(strval($id)) . '.json', $params)->getPath()
+            PathSerializer::create('/projects/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -184,7 +184,7 @@ class Project extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/projects.xml',
-            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -218,7 +218,7 @@ class Project extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -241,14 +241,14 @@ class Project extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . strval($projectIdentifier) . '/close.xml',
-            ''
+            '',
         ));
 
         $lastResponse = $this->getLastResponse();
@@ -277,14 +277,14 @@ class Project extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . strval($projectIdentifier) . '/reopen.xml',
-            ''
+            '',
         ));
 
         $lastResponse = $this->getLastResponse();
@@ -313,14 +313,14 @@ class Project extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . strval($projectIdentifier) . '/archive.xml',
-            ''
+            '',
         ));
 
         $lastResponse = $this->getLastResponse();
@@ -349,14 +349,14 @@ class Project extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidArgumentException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . strval($projectIdentifier) . '/unarchive.xml',
-            ''
+            '',
         ));
 
         $lastResponse = $this->getLastResponse();
@@ -381,7 +381,7 @@ class Project extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
 
         return new SimpleXMLElement(
-            XmlSerializer::createFromArray(['project' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['project' => $params])->getEncoded(),
         );
     }
 
@@ -398,7 +398,7 @@ class Project extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/projects/' . $id . '.xml'
+            '/projects/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();

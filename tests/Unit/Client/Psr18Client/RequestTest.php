@@ -52,7 +52,7 @@ class RequestTest extends TestCase
             $requestFactory,
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $request = $this->createConfiguredMock(Request::class, [
@@ -101,7 +101,7 @@ class RequestTest extends TestCase
     {
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->expects($this->exactly(1))->method('sendRequest')->willThrowException(
-            new class ('error message') extends Exception implements ClientExceptionInterface {}
+            new class ('error message') extends Exception implements ClientExceptionInterface {},
         );
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
@@ -119,7 +119,7 @@ class RequestTest extends TestCase
             $requestFactory,
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $request = $this->createConfiguredMock(Request::class, [

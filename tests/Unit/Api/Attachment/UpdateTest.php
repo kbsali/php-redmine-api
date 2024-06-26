@@ -28,7 +28,7 @@ class UpdateTest extends TestCase
                 204,
                 '',
                 '',
-            ]
+            ],
         );
 
         // Create the object under test
@@ -66,7 +66,7 @@ class UpdateTest extends TestCase
                 403,
                 '',
                 '',
-            ]
+            ],
         );
 
         $api = new Attachment($client);

@@ -39,7 +39,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertInstanceOf(NativeCurlClient::class, $client);
@@ -52,7 +52,7 @@ class NativeCurlClientTest extends TestCase
         $client = new NativeCurlClient(
             'http://test.local',
             'username',
-            'password'
+            'password',
         );
 
         $this->assertInstanceOf(NativeCurlClient::class, $client);
@@ -63,7 +63,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame(0, $client->getLastResponseStatusCode());
@@ -73,7 +73,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame('', $client->getLastResponseContentType());
@@ -83,7 +83,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame('', $client->getLastResponseBody());
@@ -135,7 +135,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -190,7 +190,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -246,7 +246,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -302,7 +302,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -359,7 +359,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -420,7 +420,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -477,7 +477,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -531,7 +531,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'https://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -570,7 +570,7 @@ class NativeCurlClientTest extends TestCase
         $curlSetoptArray->expects($this->exactly(1))
             ->with(
                 $this->anything(),
-                $this->identicalTo($expectedOptions)
+                $this->identicalTo($expectedOptions),
             )
         ;
 
@@ -581,7 +581,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local:3456',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -616,7 +616,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame($boolReturn, $client->$method('/path', $data));
@@ -680,7 +680,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame(true, $client->requestPut('/path', '{"foo":"bar"}'));
@@ -711,7 +711,7 @@ class NativeCurlClientTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->expectException(Exception::class);
@@ -728,7 +728,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertInstanceOf($class, $client->getApi($apiName));
@@ -763,7 +763,7 @@ class NativeCurlClientTest extends TestCase
     {
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->expectException(InvalidArgumentException::class);

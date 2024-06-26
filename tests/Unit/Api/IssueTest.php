@@ -49,13 +49,13 @@ class IssueTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Issue::all()` is deprecated since v2.4.0, use `Redmine\Api\Issue::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -115,8 +115,8 @@ class IssueTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/issues.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -173,7 +173,7 @@ class IssueTest extends TestCase
                     ['issue_status', $getIdByNameApi],
                     ['tracker', $getIdByNameApi],
                     ['user', $getIdByUsernameApi],
-                ]
+                ],
             );
 
         $client->expects($this->once())
@@ -188,8 +188,8 @@ class IssueTest extends TestCase
                     $this->stringContains('<status_id>cleanedValue</status_id>'),
                     $this->stringContains('<tracker_id>cleanedValue</tracker_id>'),
                     $this->stringContains('<assigned_to_id>cleanedValue</assigned_to_id>'),
-                    $this->stringContains('<author_id>cleanedValue</author_id>')
-                )
+                    $this->stringContains('<author_id>cleanedValue</author_id>'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

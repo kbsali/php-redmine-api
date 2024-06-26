@@ -23,7 +23,7 @@ class UnarchiveTest extends TestCase
                 'application/xml',
                 '',
                 204,
-            ]
+            ],
         );
 
         $api = new Project($client);
@@ -41,7 +41,7 @@ class UnarchiveTest extends TestCase
                 'application/xml',
                 '',
                 403,
-            ]
+            ],
         );
 
         $api = new Project($client);
