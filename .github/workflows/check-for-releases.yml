@@ -3,8 +3,8 @@ name: Check for new Redmine releases
 on:
   workflow_dispatch:
   schedule:
-    # Run this Action at every 5th minute
-    - cron: "*/2 * * * *"
+    # Run this Action every day a 5:35am UTC
+    - cron: "37 5 * * *"
 
 jobs:
   redmine-release:
@@ -20,5 +20,5 @@ jobs:
           prefix: "Update the Behat tests: "
           #character-limit: 255
           dry-run: false
-          max-age: 511h
+          max-age: 3360h
           labels: "enhancement"
