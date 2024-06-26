@@ -1,0 +1,20 @@
+name: Check for new Redmine releases
+
+on:
+  schedule:
+    # Run this Action at every 5th minute
+    - cron: "*/5 * * * *"
+
+jobs:
+  redmine-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: git-for-windows/rss-to-issues@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          feed: https://www.redmine.org/projects/redmine/news.atom
+          prefix: "Update tests: "
+          character-limit: 255
+          dry-run: true
+          max-age: 100h
+          labels: "enhancement"
