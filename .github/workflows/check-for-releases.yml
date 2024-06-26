@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # Run this Action at every 5th minute
-    - cron: "*/5 * * * *"
+    - cron: "*/2 * * * *"
 
 jobs:
   redmine-release:
