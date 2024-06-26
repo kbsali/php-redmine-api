@@ -26,7 +26,7 @@ class RemoveWatcherTest extends TestCase
                 '',
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 

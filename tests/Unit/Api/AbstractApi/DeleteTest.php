@@ -26,7 +26,7 @@ class DeleteTest extends TestCase
                 '',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue/>'
+                '<?xml version="1.0"?><issue/>',
             ]
         );
 

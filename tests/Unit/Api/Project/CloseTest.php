@@ -22,7 +22,7 @@ class CloseTest extends TestCase
                 '/projects/5/close.xml',
                 'application/xml',
                 '',
-                204
+                204,
             ]
         );
 
@@ -40,7 +40,7 @@ class CloseTest extends TestCase
                 '/projects/5/close.xml',
                 'application/xml',
                 '',
-                403
+                403,
             ]
         );
 

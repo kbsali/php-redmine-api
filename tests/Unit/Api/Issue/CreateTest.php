@@ -27,7 +27,7 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
+                $response,
             ]
         );
 
@@ -243,7 +243,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><issue/>',
                 500,
                 '',
-                ''
+                '',
             ]
         );
 
@@ -267,7 +267,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}'
+                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
             ],
             [
                 'POST',
@@ -276,7 +276,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><issue><status_id>123</status_id></issue>',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 
@@ -304,7 +304,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"projects":[{"name":"Project Name","id":3}]}'
+                '{"projects":[{"name":"Project Name","id":3}]}',
             ],
             [
                 'POST',
@@ -313,7 +313,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><issue><project_id>3</project_id></issue>',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 
@@ -341,7 +341,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_categories":[{"name":"Category Name","id":45}]}'
+                '{"issue_categories":[{"name":"Category Name","id":45}]}',
             ],
             [
                 'POST',
@@ -350,7 +350,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><issue><project_id>3</project_id><category_id>45</category_id></issue>',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 
@@ -378,7 +378,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"trackers":[{"name":"Tracker Name","id":9}]}'
+                '{"trackers":[{"name":"Tracker Name","id":9}]}',
             ],
             [
                 'POST',
@@ -387,7 +387,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><issue><tracker_id>9</tracker_id></issue>',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 
@@ -415,7 +415,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}'
+                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
             ],
             [
                 'POST',
@@ -424,7 +424,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><issue><assigned_to_id>6</assigned_to_id><author_id>5</author_id></issue>',
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 
@@ -455,7 +455,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"projects":[{"name":"Project Name","id":3}]}'
+                '{"projects":[{"name":"Project Name","id":3}]}',
             ],
             [
                 'GET',
@@ -464,7 +464,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_categories":[{"name":"Category Name","id":45}]}'
+                '{"issue_categories":[{"name":"Category Name","id":45}]}',
             ],
             [
                 'GET',
@@ -473,7 +473,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}'
+                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
             ],
             [
                 'GET',
@@ -482,7 +482,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"trackers":[{"name":"Tracker Name","id":9}]}'
+                '{"trackers":[{"name":"Tracker Name","id":9}]}',
             ],
             [
                 'GET',
@@ -491,7 +491,7 @@ class CreateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}'
+                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
             ],
             [
                 'POST',
@@ -510,7 +510,7 @@ class CreateTest extends TestCase
                 XML,
                 200,
                 'application/xml',
-                '<?xml version="1.0"?><issue></issue>'
+                '<?xml version="1.0"?><issue></issue>',
             ]
         );
 

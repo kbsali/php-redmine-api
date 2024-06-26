@@ -27,7 +27,7 @@ class UpdateTest extends TestCase
                 $expectedContent,
                 204,
                 '',
-                ''
+                '',
             ]
         );
 

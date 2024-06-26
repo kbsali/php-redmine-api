@@ -28,7 +28,7 @@ class AddNoteToIssueTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 

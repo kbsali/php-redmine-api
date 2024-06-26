@@ -29,7 +29,7 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
+                $response,
             ]
         );
 

@@ -34,7 +34,7 @@ class RequestTest extends TestCase
                 'getBody' => $this->createConfiguredMock(StreamInterface::class, [
                     '__toString' => $content,
                 ]),
-            ])
+            ]),
         ]);
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [

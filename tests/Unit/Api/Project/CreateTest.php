@@ -29,7 +29,7 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
+                $response,
             ]
         );
 
@@ -142,7 +142,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
                 500,
                 '',
-                ''
+                '',
             ]
         );
 

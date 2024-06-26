@@ -27,7 +27,7 @@ class GetTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"foo_bar": 12345}'
+                '{"foo_bar": 12345}',
             ]
         );
 

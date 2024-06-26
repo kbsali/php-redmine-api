@@ -314,7 +314,7 @@ class XmlSerializerTest extends TestCase
             'invalid element name as start tag' => [
                 'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
                 ['0' => ['foobar']],
-            ]
+            ],
         ];
     }
 }

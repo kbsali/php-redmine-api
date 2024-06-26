@@ -219,14 +219,14 @@ class AbstractApiTest extends TestCase
                 '200.json',
                 'application/json',
                 '',
-                200
+                200,
             ],
             [
                 'GET',
                 '500.json',
                 'application/json',
                 '',
-                500
+                500,
             ]
         );
 

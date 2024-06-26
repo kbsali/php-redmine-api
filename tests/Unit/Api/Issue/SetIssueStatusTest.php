@@ -21,7 +21,7 @@ class SetIssueStatusTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}'
+                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
             ],
             [
                 'PUT',
@@ -30,7 +30,7 @@ class SetIssueStatusTest extends TestCase
                 '<?xml version="1.0"?><issue><id>5</id><status_id>123</status_id></issue>',
                 204,
                 '',
-                ''
+                '',
             ]
         );
 

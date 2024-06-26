@@ -28,7 +28,7 @@ class UpdateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 
@@ -73,7 +73,7 @@ class UpdateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><membership><role_ids>2</role_ids><user_id>4</user_id></membership>',
                 500,
                 '',
-                ''
+                '',
             ]
         );
 

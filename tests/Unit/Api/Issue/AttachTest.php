@@ -26,7 +26,7 @@ class AttachTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 

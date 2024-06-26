@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
                     "groups": []
                 }
                 JSON,
-                []
+                [],
             ],
             'test with multiple groups' => [
                 '/groups.json',
@@ -68,7 +68,7 @@ class ListNamesTest extends TestCase
                     9 => "Group 1",
                     8 => "Group 2",
                     7 => "Group 3",
-                ]
+                ],
             ],
         ];
     }

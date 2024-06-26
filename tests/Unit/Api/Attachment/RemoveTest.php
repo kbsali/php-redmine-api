@@ -23,7 +23,7 @@ class RemoveTest extends TestCase
                 '',
                 204,
                 '',
-                ''
+                '',
             ]
         );
 

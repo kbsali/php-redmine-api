@@ -26,7 +26,7 @@ class RemoveTest extends TestCase
                 '',
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 

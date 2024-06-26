@@ -28,7 +28,7 @@ class UpdateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 

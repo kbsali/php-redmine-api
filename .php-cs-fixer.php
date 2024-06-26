@@ -15,6 +15,7 @@ return $config->setRules([
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'phpdoc_order' => true,
+        'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arrays']], // Remove this rule after dropping support for PHP 7.4
     ])
     ->setFinder($finder)
     ->setRiskyAllowed(true)

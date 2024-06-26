@@ -24,7 +24,7 @@ class ArchiveTest extends TestCase
                 '/projects/5/archive.xml',
                 'application/xml',
                 '',
-                204
+                204,
             ]
         );
 
@@ -42,7 +42,7 @@ class ArchiveTest extends TestCase
                 '/projects/5/archive.xml',
                 'application/xml',
                 '',
-                403
+                403,
             ]
         );
 

@@ -26,7 +26,7 @@ class AttachManyTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
+                $response,
             ]
         );
 
