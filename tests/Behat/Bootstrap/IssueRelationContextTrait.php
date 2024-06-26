@@ -25,7 +25,7 @@ trait IssueRelationContextTrait
 
         $this->registerClientResponse(
             $api->create($issueId, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -39,7 +39,7 @@ trait IssueRelationContextTrait
 
         $this->registerClientResponse(
             $api->remove($relationId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

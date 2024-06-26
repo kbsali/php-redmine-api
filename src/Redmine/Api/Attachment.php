@@ -70,7 +70,7 @@ class Attachment extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'PUT',
             '/attachments/' . $id . '.json',
-            JsonSerializer::createFromArray(['attachment' => $params])->getEncoded()
+            JsonSerializer::createFromArray(['attachment' => $params])->getEncoded(),
         ));
 
         if ($this->lastResponse->getStatusCode() !== 204) {
@@ -91,7 +91,7 @@ class Attachment extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
             'GET',
-            '/attachments/download/' . urlencode(strval($id))
+            '/attachments/download/' . urlencode(strval($id)),
         ));
 
         if (200 !== $this->lastResponse->getStatusCode()) {
@@ -119,7 +119,7 @@ class Attachment extends AbstractApi
             'POST',
             PathSerializer::create('/uploads.json', $params)->getPath(),
             'application/octet-stream',
-            $attachment
+            $attachment,
         ));
 
         return $this->lastResponse->getContent();
@@ -138,7 +138,7 @@ class Attachment extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/attachments/' . urlencode(strval($id)) . '.xml'
+            '/attachments/' . urlencode(strval($id)) . '.xml',
         ));
 
         return $this->lastResponse->getContent();

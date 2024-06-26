@@ -26,7 +26,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->create($data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -46,7 +46,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->update($issueId, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -60,7 +60,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->show($issueId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -74,7 +74,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->addWatcher($issueId, $userId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -88,7 +88,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->removeWatcher($issueId, $userId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -102,7 +102,7 @@ trait IssueContextTrait
 
         $this->registerClientResponse(
             $api->remove($issueId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

@@ -26,8 +26,8 @@ class AttachTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Attach the object under test

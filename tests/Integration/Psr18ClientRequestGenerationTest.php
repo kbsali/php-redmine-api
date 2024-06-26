@@ -51,7 +51,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 '%s %s HTTP/%s',
                 $request->getMethod(),
                 $request->getUri()->__toString(),
-                $request->getProtocolVersion()
+                $request->getProtocolVersion(),
             );
 
             $fullRequest = $statusLine . \PHP_EOL .
@@ -92,7 +92,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             $streamFactory,
             $url,
             $apikeyOrUsername,
-            $pwd
+            $pwd,
         );
 
         if (null !== $impersonateUser) {

@@ -29,7 +29,7 @@ trait MembershipContextTrait
 
         $this->registerClientResponse(
             $api->create($identifier, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -53,7 +53,7 @@ trait MembershipContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -67,7 +67,7 @@ trait MembershipContextTrait
 
         $this->registerClientResponse(
             $api->remove($id),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -81,7 +81,7 @@ trait MembershipContextTrait
 
         $this->registerClientResponse(
             $api->removeMember($identifier, (int) $userId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

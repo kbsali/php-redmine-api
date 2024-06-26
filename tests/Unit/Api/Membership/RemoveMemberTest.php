@@ -26,7 +26,7 @@ class RemoveMemberTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"memberships":[{"id":2,"user":{"id":' . $userId . '}}]}'
+                '{"memberships":[{"id":2,"user":{"id":' . $userId . '}}]}',
             ],
             [
                 'DELETE',
@@ -35,8 +35,8 @@ class RemoveMemberTest extends TestCase
                 '',
                 $responseCode,
                 '',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -79,8 +79,8 @@ class RemoveMemberTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"memberships":[{"id":5,"user":{"id":404}}]}'
-            ]
+                '{"memberships":[{"id":5,"user":{"id":404}}]}',
+            ],
         );
 
         // Create the object under test
@@ -101,8 +101,8 @@ class RemoveMemberTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"error":"this response is invalid"}'
-            ]
+                '{"error":"this response is invalid"}',
+            ],
         );
 
         // Create the object under test

@@ -28,8 +28,8 @@ class UpdateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test

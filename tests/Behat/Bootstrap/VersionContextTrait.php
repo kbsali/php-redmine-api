@@ -20,7 +20,7 @@ trait VersionContextTrait
             new TableNode([
                 ['property', 'value'],
                 ['name', $versionName],
-            ])
+            ]),
         );
     }
 
@@ -40,7 +40,7 @@ trait VersionContextTrait
 
         $this->registerClientResponse(
             $api->create($identifier, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -60,7 +60,7 @@ trait VersionContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -74,7 +74,7 @@ trait VersionContextTrait
 
         $this->registerClientResponse(
             $api->show($versionId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -88,7 +88,7 @@ trait VersionContextTrait
 
         $this->registerClientResponse(
             $api->remove($versionId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

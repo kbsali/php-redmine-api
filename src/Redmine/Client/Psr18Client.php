@@ -53,9 +53,9 @@ final class Psr18Client implements Client, HttpClient
                     '%s(): Providing Argument #2 ($requestFactory) as %s is deprecated since v2.3.0, please provide as %s instead.',
                     __METHOD__,
                     ServerRequestFactoryInterface::class,
-                    RequestFactoryInterface::class
+                    RequestFactoryInterface::class,
                 ),
-                E_USER_DEPRECATED
+                E_USER_DEPRECATED,
             );
 
             $requestFactory = $this->handleServerRequestFactory($requestFactory);
@@ -65,7 +65,7 @@ final class Psr18Client implements Client, HttpClient
             throw new Exception(sprintf(
                 '%s(): Argument #2 ($requestFactory) must be of type %s',
                 __METHOD__,
-                RequestFactoryInterface::class
+                RequestFactoryInterface::class,
             ));
         }
 
@@ -88,13 +88,13 @@ final class Psr18Client implements Client, HttpClient
             $request->getMethod(),
             $request->getPath(),
             $request->getContent(),
-            $request->getContentType()
+            $request->getContentType(),
         );
 
         return HttpFactory::makeResponse(
             $response->getStatusCode(),
             $response->getHeaderLine('Content-Type'),
-            strval($response->getBody())
+            strval($response->getBody()),
         );
     }
 
@@ -231,7 +231,7 @@ final class Psr18Client implements Client, HttpClient
     {
         $request = $this->requestFactory->createRequest(
             $method,
-            $this->url . $path
+            $this->url . $path,
         );
 
         // Set Authentication header
@@ -239,7 +239,7 @@ final class Psr18Client implements Client, HttpClient
         if (null !== $this->password) {
             $request = $request->withHeader(
                 'Authorization',
-                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password)
+                'Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password),
             );
         } else {
             $request = $request->withHeader('X-Redmine-API-Key', $this->apikeyOrUsername);
@@ -257,18 +257,18 @@ final class Psr18Client implements Client, HttpClient
                     @trigger_error('Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
 
                     $request = $request->withBody(
-                        $this->streamFactory->createStreamFromFile($body)
+                        $this->streamFactory->createStreamFromFile($body),
                     );
                 } elseif ('' !== $body) {
                     $request = $request->withBody(
-                        $this->streamFactory->createStream($body)
+                        $this->streamFactory->createStream($body),
                     );
                 }
                 break;
             case 'PUT':
                 if ('' !== $body) {
                     $request = $request->withBody(
-                        $this->streamFactory->createStream($body)
+                        $this->streamFactory->createStream($body),
                     );
                 }
                 break;

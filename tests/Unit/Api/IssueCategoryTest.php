@@ -27,13 +27,13 @@ class IssueCategoryTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\IssueCategory::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueCategory::listByProject()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all(5);
@@ -97,8 +97,8 @@ class IssueCategoryTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/issue_categories.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -132,7 +132,7 @@ class IssueCategoryTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/projects/5/issue_categories')
+                $this->stringStartsWith('/projects/5/issue_categories'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -166,7 +166,7 @@ class IssueCategoryTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/projects/5/issue_categories')
+                $this->stringStartsWith('/projects/5/issue_categories'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -201,7 +201,7 @@ class IssueCategoryTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/projects/5/issue_categories')
+                $this->stringStartsWith('/projects/5/issue_categories'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))
@@ -232,7 +232,7 @@ class IssueCategoryTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/projects/5/issue_categories.json')
+                $this->stringStartsWith('/projects/5/issue_categories.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

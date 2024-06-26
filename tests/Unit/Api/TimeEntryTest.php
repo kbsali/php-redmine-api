@@ -27,13 +27,13 @@ class TimeEntryTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\TimeEntry::all()` is deprecated since v2.4.0, use `Redmine\Api\TimeEntry::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -99,8 +99,8 @@ class TimeEntryTest extends TestCase
                     $this->stringStartsWith('/time_entries.json?'),
                     $this->stringContains('project_id=5'),
                     $this->stringContains('user_id=10'),
-                    $this->stringContains('limit=2')
-                )
+                    $this->stringContains('limit=2'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

@@ -30,7 +30,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertInstanceOf(Psr18Client::class, $client);
@@ -53,7 +53,7 @@ class Psr18ClientTest extends TestCase
             ]),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertInstanceOf(Psr18Client::class, $client);
@@ -70,7 +70,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
             'username',
-            'password'
+            'password',
         );
 
         $this->assertInstanceOf(Psr18Client::class, $client);
@@ -84,7 +84,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame(0, $client->getLastResponseStatusCode());
@@ -97,7 +97,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame('', $client->getLastResponseContentType());
@@ -110,7 +110,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame('', $client->getLastResponseBody());
@@ -136,7 +136,7 @@ class Psr18ClientTest extends TestCase
             $requestFactory,
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $client->requestGet('/path');
@@ -165,7 +165,7 @@ class Psr18ClientTest extends TestCase
             $requestFactory,
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame(false, $client->requestGet('/path'));
@@ -200,7 +200,7 @@ class Psr18ClientTest extends TestCase
             $requestFactory,
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertSame($boolReturn, $client->$method('/path', $data));
@@ -246,7 +246,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->assertInstanceOf($class, $client->getApi($apiName));
@@ -288,7 +288,7 @@ class Psr18ClientTest extends TestCase
             new stdClass(),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
     }
 
@@ -299,7 +299,7 @@ class Psr18ClientTest extends TestCase
             $this->createMock(RequestFactoryInterface::class),
             $this->createMock(StreamFactoryInterface::class),
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         $this->expectException(InvalidArgumentException::class);

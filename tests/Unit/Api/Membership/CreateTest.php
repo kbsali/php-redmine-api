@@ -29,8 +29,8 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -76,8 +76,8 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
                 500,
                 '',
-                ''
-            ]
+                '',
+            ],
         );
 
         // Create the object under test

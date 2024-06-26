@@ -29,8 +29,8 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
