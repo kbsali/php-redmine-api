@@ -42,7 +42,7 @@ class IssueCategory extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
@@ -182,7 +182,7 @@ class IssueCategory extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/projects/' . $project . '/issue_categories.xml',
-            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -214,7 +214,7 @@ class IssueCategory extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/issue_categories/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['issue_category' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -236,7 +236,7 @@ class IssueCategory extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            PathSerializer::create('/issue_categories/' . urlencode(strval($id)) . '.xml', $params)->getPath()
+            PathSerializer::create('/issue_categories/' . urlencode(strval($id)) . '.xml', $params)->getPath(),
         ));
 
         return $this->lastResponse->getContent();

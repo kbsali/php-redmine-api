@@ -25,7 +25,7 @@ trait IssueCategoryContextTrait
 
         $this->registerClientResponse(
             $api->create($identifier, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -45,7 +45,7 @@ trait IssueCategoryContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -59,7 +59,7 @@ trait IssueCategoryContextTrait
 
         $this->registerClientResponse(
             $api->remove($id),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

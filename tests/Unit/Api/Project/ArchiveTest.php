@@ -24,8 +24,8 @@ class ArchiveTest extends TestCase
                 '/projects/5/archive.xml',
                 'application/xml',
                 '',
-                204
-            ]
+                204,
+            ],
         );
 
         $api = new Project($client);
@@ -42,8 +42,8 @@ class ArchiveTest extends TestCase
                 '/projects/5/archive.xml',
                 'application/xml',
                 '',
-                403
-            ]
+                403,
+            ],
         );
 
         $api = new Project($client);

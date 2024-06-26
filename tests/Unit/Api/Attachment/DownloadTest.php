@@ -26,8 +26,8 @@ class DownloadTest extends TestCase
                 '',
                 $responseCode,
                 'application/json',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test

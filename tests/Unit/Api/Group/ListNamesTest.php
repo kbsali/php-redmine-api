@@ -29,7 +29,7 @@ class ListNamesTest extends TestCase
                 $responseCode,
                 'application/json',
                 $response,
-            ]
+            ],
         );
 
         // Create the object under test
@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
                     "groups": []
                 }
                 JSON,
-                []
+                [],
             ],
             'test with multiple groups' => [
                 '/groups.json',
@@ -68,7 +68,7 @@ class ListNamesTest extends TestCase
                     9 => "Group 1",
                     8 => "Group 2",
                     7 => "Group 3",
-                ]
+                ],
             ],
         ];
     }
@@ -94,7 +94,7 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-            ]
+            ],
         );
 
         // Create the object under test

@@ -88,7 +88,7 @@ class TimeEntry extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
-            '/time_entries/' . urlencode(strval($id)) . '.json'
+            '/time_entries/' . urlencode(strval($id)) . '.json',
         ));
 
         $body = $this->lastResponse->getContent();
@@ -137,7 +137,7 @@ class TimeEntry extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/time_entries.xml',
-            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -174,7 +174,7 @@ class TimeEntry extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/time_entries/' . $id . '.xml',
-            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['time_entry' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -193,7 +193,7 @@ class TimeEntry extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/time_entries/' . $id . '.xml'
+            '/time_entries/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();

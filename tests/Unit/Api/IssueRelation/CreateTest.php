@@ -29,8 +29,8 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/json',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -69,8 +69,8 @@ class CreateTest extends TestCase
                 '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
                 500,
                 '',
-                ''
-            ]
+                '',
+            ],
         );
 
         // Create the object under test

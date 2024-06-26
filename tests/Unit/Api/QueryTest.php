@@ -27,13 +27,13 @@ class QueryTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Query::all()` is deprecated since v2.4.0, use `Redmine\Api\Query::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -93,8 +93,8 @@ class QueryTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/queries.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

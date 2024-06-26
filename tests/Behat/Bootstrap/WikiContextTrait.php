@@ -18,7 +18,7 @@ trait WikiContextTrait
         $this->iCreateAWikiPageWithNameAndProjectIdentifierWithTheFollowingData(
             $pageName,
             $identifier,
-            new TableNode([['property', 'value']])
+            new TableNode([['property', 'value']]),
         );
     }
 
@@ -34,7 +34,7 @@ trait WikiContextTrait
 
         $this->registerClientResponse(
             $api->create($identifier, $pageName, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -48,7 +48,7 @@ trait WikiContextTrait
 
         $this->registerClientResponse(
             $api->show($identifier, $pageName),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -64,7 +64,7 @@ trait WikiContextTrait
 
         $this->registerClientResponse(
             $api->update($identifier, $pageName, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -78,7 +78,7 @@ trait WikiContextTrait
 
         $this->registerClientResponse(
             $api->remove($identifier, $pageName),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 

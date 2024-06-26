@@ -85,7 +85,7 @@ final class XmlSerializer implements Stringable
             throw new SerializerException(
                 'Catched errors: "' . implode('", "', $errors) . '" while decoding XML: ' . $encoded,
                 $e->getCode(),
-                $e
+                $e,
             );
         } finally {
             libxml_use_internal_errors($prevSetting);
@@ -127,7 +127,7 @@ final class XmlSerializer implements Stringable
             throw new SerializerException(
                 'Could not create XML from array: "' . implode('", "', $errors) . '"',
                 $e->getCode(),
-                $e
+                $e,
             );
         } finally {
             libxml_use_internal_errors($prevSetting);

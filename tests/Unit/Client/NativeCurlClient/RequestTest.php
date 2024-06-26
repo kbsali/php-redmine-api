@@ -47,7 +47,7 @@ class RequestTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
@@ -120,7 +120,7 @@ class RequestTest extends TestCase
 
         $client = new NativeCurlClient(
             'http://test.local',
-            'access_token'
+            'access_token',
         );
 
         // PHPUnit 10 compatible way to test trigger_error().
@@ -128,13 +128,13 @@ class RequestTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     'Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         /** @var Request|\PHPUnit\Framework\MockObject\MockObject */

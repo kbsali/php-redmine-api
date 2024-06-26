@@ -124,7 +124,7 @@ class IssueRelation extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/relations/' . $id . '.xml'
+            '/relations/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();
@@ -164,7 +164,7 @@ class IssueRelation extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'POST',
             '/issues/' . urlencode(strval($issueId)) . '/relations.json',
-            JsonSerializer::createFromArray(['relation' => $params])->getEncoded()
+            JsonSerializer::createFromArray(['relation' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
