@@ -18,7 +18,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           feed: https://www.redmine.org/projects/redmine/news.atom
           prefix: "Update tests: "
-          character-limit: 255
+          #character-limit: 255
           dry-run: true
           max-age: 511h
           labels: "enhancement"
