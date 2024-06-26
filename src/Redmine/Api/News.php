@@ -34,7 +34,7 @@ class News extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 

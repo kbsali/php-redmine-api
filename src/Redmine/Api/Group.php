@@ -151,7 +151,7 @@ class Group extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/groups.xml',
-            XmlSerializer::createFromArray(['group' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['group' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -185,7 +185,7 @@ class Group extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/groups/' . $id . '.xml',
-            XmlSerializer::createFromArray(['group' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['group' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -207,7 +207,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
-            PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath()
+            PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -236,7 +236,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/groups/' . $id . '.xml'
+            '/groups/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();
@@ -257,7 +257,7 @@ class Group extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/groups/' . $id . '/users.xml',
-            XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded()
+            XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -283,7 +283,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/groups/' . $id . '/users/' . $userId . '.xml'
+            '/groups/' . $id . '/users/' . $userId . '.xml',
         ));
 
         return $this->lastResponse->getContent();

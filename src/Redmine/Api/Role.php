@@ -105,7 +105,7 @@ class Role extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
             'GET',
-            '/roles/' . urlencode(strval($id)) . '.json'
+            '/roles/' . urlencode(strval($id)) . '.json',
         ));
 
         $body = $this->lastResponse->getContent();

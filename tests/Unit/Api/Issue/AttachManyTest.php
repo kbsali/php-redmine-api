@@ -26,8 +26,8 @@ class AttachManyTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // AttachMany the object under test

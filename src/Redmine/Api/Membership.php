@@ -40,7 +40,7 @@ class Membership extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
@@ -112,7 +112,7 @@ class Membership extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/projects/' . $project . '/memberships.xml',
-            XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['membership' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -150,7 +150,7 @@ class Membership extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/memberships/' . $id . '.xml',
-            XmlSerializer::createFromArray(['membership' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['membership' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -169,7 +169,7 @@ class Membership extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/memberships/' . $id . '.xml'
+            '/memberships/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();

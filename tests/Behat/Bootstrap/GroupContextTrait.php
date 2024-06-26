@@ -39,7 +39,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->create($data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -53,7 +53,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->list(),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -67,7 +67,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->listNames(),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -81,7 +81,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->show($groupId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -101,7 +101,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->update($groupId, $data),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -115,7 +115,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->addUser($groupId, $userId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -129,7 +129,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->removeUser($groupId, $userId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 
@@ -143,7 +143,7 @@ trait GroupContextTrait
 
         $this->registerClientResponse(
             $api->remove($groupId),
-            $api->getLastResponse()
+            $api->getLastResponse(),
         );
     }
 }

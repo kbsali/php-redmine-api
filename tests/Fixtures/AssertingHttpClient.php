@@ -80,7 +80,7 @@ final class AssertingHttpClient implements HttpClient
                 'Mssing request data for Request "%s %s" with Content-Type "%s".',
                 $request->getMethod(),
                 $request->getPath(),
-                $request->getContentType()
+                $request->getContentType(),
             ));
         }
 

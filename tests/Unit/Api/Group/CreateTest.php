@@ -31,8 +31,8 @@ class CreateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 'application/xml',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -118,8 +118,8 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
                 500,
                 '',
-                ''
-            ]
+                '',
+            ],
         );
 
         // Create the object under test

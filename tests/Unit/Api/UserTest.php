@@ -31,8 +31,8 @@ class UserTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/users/current.json'),
-                    $this->stringContains(urlencode('memberships,groups'))
-                )
+                    $this->stringContains(urlencode('memberships,groups')),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -62,7 +62,7 @@ class UserTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/users.json')
+                $this->stringStartsWith('/users.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -95,13 +95,13 @@ class UserTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\User::all()` is deprecated since v2.4.0, use `Redmine\Api\User::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -165,8 +165,8 @@ class UserTest extends TestCase
                 $this->logicalAnd(
                     $this->stringStartsWith('/users.json?'),
                     $this->stringContains('offset=10'),
-                    $this->stringContains('limit=2')
-                )
+                    $this->stringContains('limit=2'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -200,7 +200,7 @@ class UserTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/users.json')
+                $this->stringStartsWith('/users.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -234,7 +234,7 @@ class UserTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/users.json')
+                $this->stringStartsWith('/users.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -269,7 +269,7 @@ class UserTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/users.json')
+                $this->stringStartsWith('/users.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))

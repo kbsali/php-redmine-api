@@ -27,13 +27,13 @@ class CustomFieldTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\CustomField::all()` is deprecated since v2.4.0, use `Redmine\Api\CustomField::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -91,7 +91,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringContains('not-used')
+                $this->stringContains('not-used'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -126,7 +126,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->exactly(3))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(3))
@@ -163,7 +163,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -200,7 +200,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -234,7 +234,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -269,7 +269,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))
@@ -300,7 +300,7 @@ class CustomFieldTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

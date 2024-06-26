@@ -29,13 +29,13 @@ class GroupTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Group::all()` is deprecated since v2.4.0, use `Redmine\Api\Group::list()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all();
@@ -95,8 +95,8 @@ class GroupTest extends TestCase
             ->with(
                 $this->logicalAnd(
                     $this->stringStartsWith('/groups.json'),
-                    $this->stringContains('not-used')
-                )
+                    $this->stringContains('not-used'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -133,13 +133,13 @@ class GroupTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Group::listing()` is deprecated since v2.7.0, use `Redmine\Api\Group::listNames()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->listing();
@@ -162,7 +162,7 @@ class GroupTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/groups.json')
+                $this->stringStartsWith('/groups.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -196,7 +196,7 @@ class GroupTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/groups.json')
+                $this->stringStartsWith('/groups.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
@@ -231,7 +231,7 @@ class GroupTest extends TestCase
         $client->expects($this->exactly(2))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/groups.json')
+                $this->stringStartsWith('/groups.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(2))
