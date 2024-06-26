@@ -17,8 +17,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           feed: https://www.redmine.org/projects/redmine/news.atom
-          prefix: "Update tests: "
+          prefix: "Update the Behat tests: "
           #character-limit: 255
-          dry-run: true
+          dry-run: false
           max-age: 511h
           labels: "enhancement"
