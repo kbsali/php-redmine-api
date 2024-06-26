@@ -20,5 +20,5 @@ jobs:
           prefix: "Update the Behat tests: "
           #character-limit: 255
           dry-run: false
-          max-age: 3360h
+          max-age: 72h
           labels: "enhancement"
