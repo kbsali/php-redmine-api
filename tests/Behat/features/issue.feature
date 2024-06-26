@@ -1,9 +1,9 @@
+@issue
 Feature: Interacting with the REST API for issues
     In order to interact with REST API for issues
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @issue
     Scenario: Creating an issue with miminal data
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -113,7 +113,6 @@ Feature: Interacting with the REST API for issues
             | id                | 1                    |
             | name              | Redmine Admin        |
 
-    @issue
     Scenario: Updating an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -139,7 +138,7 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue @error
+    @error
     Scenario: Showing a not existing issue
         Given I have a "NativeCurlClient" client
         When I show the issue with id "10"
@@ -148,7 +147,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is false
 
-    @issue
     Scenario: Adding a watcher to an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -168,7 +166,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue
     Scenario: Removing a watcher from an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -189,7 +186,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue
     Scenario: Removing an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

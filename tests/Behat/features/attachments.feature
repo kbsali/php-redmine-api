@@ -1,9 +1,9 @@
+@attachment
 Feature: Interacting with the REST API for attachments
     In order to interact with REST API for attachments
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @attachment
     Scenario: Uploading an attachment
         Given I have a "NativeCurlClient" client
         When I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -26,7 +26,7 @@ Feature: Interacting with the REST API for attachments
             | id                | 1                                                                  |
             | token             | 1.7b962f8af22e26802b87abfa0b07b21dbd03b984ec8d6888dabd3f69cff162f8 |
 
-    @attachment
+
     Scenario: Updating the details of an attachment
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -41,7 +41,6 @@ Feature: Interacting with the REST API for attachments
         And the response has the content ""
         And the returned data is true
 
-    @attachment
     Scenario: Showing the details of an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -80,7 +79,7 @@ Feature: Interacting with the REST API for attachments
             | id                | 1                                                                    |
             | name              | Redmine Admin                                                        |
 
-    @attachment @error
+    @error
     Scenario: Try to show details of a non-existing attachment
         Given I have a "NativeCurlClient" client
         When I show the attachment with the id "1"
@@ -89,7 +88,6 @@ Feature: Interacting with the REST API for attachments
         And the response has the content ""
         And the returned data is false
 
-    @attachment
     Scenario: Downloading an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -111,7 +109,7 @@ Feature: Interacting with the REST API for attachments
 
             """
 
-    @attachment @error
+    @error
     Scenario: Try to download a non-existing attachment
         Given I have a "NativeCurlClient" client
         When I download the attachment with the id "1"
@@ -121,7 +119,6 @@ Feature: Interacting with the REST API for attachments
         # And the response has the content "<!DOCTYPE html><html lang="en">..."
         And the returned data is false
 
-    @attachment
     Scenario: Deleting an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
