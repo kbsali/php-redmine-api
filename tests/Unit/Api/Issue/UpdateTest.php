@@ -28,8 +28,8 @@ class UpdateTest extends TestCase
                 $expectedBody,
                 $responseCode,
                 '',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -124,7 +124,7 @@ class UpdateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"projects":[{"name":"Project Name","id":3}]}'
+                '{"projects":[{"name":"Project Name","id":3}]}',
             ],
             [
                 'GET',
@@ -133,7 +133,7 @@ class UpdateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_categories":[{"name":"Category Name","id":45}]}'
+                '{"issue_categories":[{"name":"Category Name","id":45}]}',
             ],
             [
                 'GET',
@@ -142,7 +142,7 @@ class UpdateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}'
+                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
             ],
             [
                 'GET',
@@ -151,7 +151,7 @@ class UpdateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"trackers":[{"name":"Tracker Name","id":9}]}'
+                '{"trackers":[{"name":"Tracker Name","id":9}]}',
             ],
             [
                 'GET',
@@ -160,7 +160,7 @@ class UpdateTest extends TestCase
                 '',
                 200,
                 'application/json',
-                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}'
+                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
             ],
             [
                 'PUT',
@@ -180,8 +180,8 @@ class UpdateTest extends TestCase
                 XML,
                 204,
                 '',
-                ''
-            ]
+                '',
+            ],
         );
 
         $parameters = [

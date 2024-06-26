@@ -157,8 +157,8 @@ class User extends AbstractApi
                 [
                     'memberships',
                     'groups',
-                ]
-            )
+                ],
+            ),
         );
         $params['include'] = implode(',', $params['include']);
 
@@ -214,7 +214,7 @@ class User extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
             '/users.xml',
-            XmlSerializer::createFromArray(['user' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['user' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -250,7 +250,7 @@ class User extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/users/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['user' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['user' => $params])->getEncoded(),
         ));
 
         return $this->lastResponse->getContent();
@@ -269,7 +269,7 @@ class User extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/users/' . $id . '.xml'
+            '/users/' . $id . '.xml',
         ));
 
         return $this->lastResponse->getContent();

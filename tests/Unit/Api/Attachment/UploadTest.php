@@ -26,8 +26,8 @@ class UploadTest extends TestCase
                 $expectedAttachment,
                 $responseCode,
                 'application/json',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
@@ -61,7 +61,7 @@ class UploadTest extends TestCase
             'test attachment with params' => [
                 'attachment-content',
                 [
-                    'filename' => 'testfile.txt'
+                    'filename' => 'testfile.txt',
                 ],
                 'attachment-content',
                 '/uploads.json?filename=testfile.txt',
@@ -72,7 +72,7 @@ class UploadTest extends TestCase
             'test attachment with filepath' => [
                 '/path/to/testfile_01.txt',
                 [
-                    'filename' => 'testfile.txt'
+                    'filename' => 'testfile.txt',
                 ],
                 '/path/to/testfile_01.txt',
                 '/uploads.json?filename=testfile.txt',

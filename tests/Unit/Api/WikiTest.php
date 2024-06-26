@@ -27,13 +27,13 @@ class WikiTest extends TestCase
             function ($errno, $errstr): bool {
                 $this->assertSame(
                     '`Redmine\Api\Wiki::all()` is deprecated since v2.4.0, use `Redmine\Api\Wiki::listByProject()` instead.',
-                    $errstr
+                    $errstr,
                 );
 
                 restore_error_handler();
                 return true;
             },
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         $api->all(5);
@@ -97,8 +97,8 @@ class WikiTest extends TestCase
                 $this->logicalAnd(
                     $this->stringStartsWith('/projects/5/wiki/index.json'),
                     $this->stringContains('offset=10'),
-                    $this->stringContains('limit=2')
-                )
+                    $this->stringContains('limit=2'),
+                ),
             )
             ->willReturn(true);
         $client->expects($this->once())

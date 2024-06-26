@@ -79,7 +79,7 @@ class ListTest extends TestCase
         $client->expects($this->exactly(3))
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(3))
@@ -113,7 +113,7 @@ class ListTest extends TestCase
         $client->expects($this->once())
             ->method('requestGet')
             ->with(
-                $this->stringStartsWith('/custom_fields.json')
+                $this->stringStartsWith('/custom_fields.json'),
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

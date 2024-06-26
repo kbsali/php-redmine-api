@@ -40,7 +40,7 @@ class Wiki extends AbstractApi
         if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
             throw new InvalidParameterException(sprintf(
                 '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
-                __METHOD__
+                __METHOD__,
             ));
         }
 
@@ -148,7 +148,7 @@ class Wiki extends AbstractApi
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
-            XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded()
+            XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded(),
         ));
 
         $body = $this->lastResponse->getContent();
@@ -190,7 +190,7 @@ class Wiki extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml'
+            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
         ));
 
         return $this->lastResponse->getContent();

@@ -70,13 +70,13 @@ final class NativeCurlClient implements Client, HttpClient
             $request->getMethod(),
             $request->getPath(),
             $request->getContent(),
-            $request->getContentType()
+            $request->getContentType(),
         );
 
         return HttpFactory::makeResponse(
             $this->lastResponseStatusCode,
             $this->lastResponseContentType,
-            $this->lastResponseBody
+            $this->lastResponseBody,
         );
     }
 

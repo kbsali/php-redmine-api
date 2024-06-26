@@ -26,8 +26,8 @@ class ShowTest extends TestCase
                 '',
                 200,
                 'application/json',
-                $response
-            ]
+                $response,
+            ],
         );
 
         // Create the object under test
