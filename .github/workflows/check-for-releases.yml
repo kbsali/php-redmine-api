@@ -8,9 +8,12 @@ on:
 
 jobs:
   redmine-release:
+    name: Check for Redmine updates
     runs-on: ubuntu-latest
+
     steps:
-      - uses: git-for-windows/rss-to-issues@v0
+      - name: Check for updates
+        uses: git-for-windows/rss-to-issues@v0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           feed: https://www.redmine.org/projects/redmine/news.atom
