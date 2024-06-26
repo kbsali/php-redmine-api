@@ -13,7 +13,7 @@ services:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
-        image: redmine:5.1.2
+        image: redmine:5.1.3
         user: "1000:1000"
         ports:
             - "3000:3000"
@@ -24,28 +24,30 @@ services:
             - ./.docker/redmine-dev_data/files:/usr/src/redmine/files
             - ./.docker/redmine-dev_data/sqlite:/usr/src/redmine/sqlite
 
-    # Make sure the following services are supported in /tests/RedmineExtension/RedmineInstance.php
+    # Make sure the following services are configured in:
+    # - /tests/RedmineExtension/RedmineInstance.php
+    # - /tests/Behat/behat.yml
 
-    redmine-50102:
-        image: redmine:5.1.2
+    redmine-50103:
+        image: redmine:5.1.3
         user: "1000:1000"
         ports:
-            - "5101:3000"
+            - "5103:3000"
         environment:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50102_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50102_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50103_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50103_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-50008:
-        image: redmine:5.0.8
+    redmine-50009:
+        image: redmine:5.0.9
         user: "1000:1000"
         ports:
-            - "5007:3000"
+            - "5009:3000"
         environment:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50008_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50008_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50009_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50009_data/sqlite:/usr/src/redmine/sqlite
