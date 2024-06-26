@@ -3,7 +3,7 @@ name: Check for new Redmine releases
 on:
   workflow_dispatch:
   schedule:
-    # Run this Action every day a 5:35am UTC
+    # Run this Action every day a 5:37am UTC
     - cron: "37 5 * * *"
 
 jobs:
