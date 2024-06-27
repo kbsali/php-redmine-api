@@ -58,16 +58,16 @@ class ListNamesTest extends TestCase
                 <<<JSON
                 {
                     "groups": [
-                        {"id": 9, "name": "Group 1"},
+                        {"id": 7, "name": "Group 3"},
                         {"id": 8, "name": "Group 2"},
-                        {"id": 7, "name": "Group 3"}
+                        {"id": 9, "name": "Group 1"}
                     ]
                 }
                 JSON,
                 [
-                    9 => "Group 1",
-                    8 => "Group 2",
                     7 => "Group 3",
+                    8 => "Group 2",
+                    9 => "Group 1",
                 ],
             ],
         ];
