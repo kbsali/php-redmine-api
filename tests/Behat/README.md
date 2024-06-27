@@ -13,7 +13,14 @@ docker compose up -d
 Now you can run the tests:
 
 ```bash
+# all tests
 docker compose exec php composer behat
+# only a specific redmine version
+docker compose exec php composer behat -- --suite=redmine_50103
+# only specific endpoints
+docker compose exec php composer behat -- --tags=issue,group
+# only specific endpoints on a specific redmine version
+docker compose exec php composer behat -- --suite=redmine_50103 --tags=issue,group
 ```
 
 ## Redmine specific features
@@ -53,7 +60,7 @@ This can be handled on the `step` layer:
             """
 ```
 
-### Modified Rest-API Endpoints
+### New Rest-API Endpoints
 
 A new Redmine version could be introduce new REST-API endpoints that are missing in the older version.
 This can be handled on the `scenario` or `feature` layer.
@@ -86,5 +93,41 @@ default:
             [...]
             filters:
                 tags: "~@since50000"
+
+```
+
+### Removed Rest-API Endpoints
+
+A new Redmine version could remove REST-API endpoints that are missing in the newer versions.
+This can be handled on the `scenario` or `feature` layer.
+
+1. Tag features or scenarios e.g. with `@until60000`.
+
+```
+@until60000
+Feature: Interacting with the a REST API endpoint removed in 6.0.0
+    [...]
+```
+
+or
+
+```
+    @until60000
+    Scenario: Using a deprecated feature
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        [...]
+```
+
+2. Exclude the tag from the specific suite in the `behat.yml` (note the `~` prefix):
+
+```
+default:
+    suites:
+        [...]
+        redmine_60000:
+            [...]
+            filters:
+                tags: "~@until60000"
 
 ```
