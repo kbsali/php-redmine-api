@@ -12,12 +12,13 @@ final class RedmineInstance
 {
     /**
      * Make sure that supported versions have a service in /docker-composer.yml
+     * and are configured in /tests/Behat/behat.yml
      */
     public static function getSupportedVersions(): array
     {
         return [
-            RedmineVersion::V5_1_2,
-            RedmineVersion::V5_0_8,
+            RedmineVersion::V5_1_3,
+            RedmineVersion::V5_0_9,
         ];
     }
 

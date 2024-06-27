@@ -1,0 +1,24 @@
+name: Check for new Redmine releases
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run this Action every day a 5:37am UTC
+    - cron: "37 5 * * *"
+
+jobs:
+  redmine-release:
+    name: Check for Redmine updates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for updates
+        uses: git-for-windows/rss-to-issues@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          feed: https://www.redmine.org/projects/redmine/news.atom
+          prefix: "Update the Behat tests: "
+          #character-limit: 255
+          dry-run: false
+          max-age: 72h
+          labels: "enhancement"
