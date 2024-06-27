@@ -21,7 +21,7 @@ final class UnexpectedResponseException extends RuntimeException implements Redm
      */
     private $response = null;
 
-    public static function create(Response $response, Throwable $prev = null): self
+    public static function create(Response $response, ?Throwable $prev = null): self
     {
         $e = new self(
             'The Redmine server replied with an unexpected response.',

@@ -45,7 +45,7 @@ final class Psr18Client implements Client, HttpClient
         StreamFactoryInterface $streamFactory,
         string $url,
         string $apikeyOrUsername,
-        string $password = null
+        ?string $password = null
     ) {
         if (! $requestFactory instanceof RequestFactoryInterface && $requestFactory instanceof ServerRequestFactoryInterface) {
             @trigger_error(
