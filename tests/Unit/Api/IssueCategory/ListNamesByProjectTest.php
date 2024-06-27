@@ -63,16 +63,16 @@ class ListNamesByProjectTest extends TestCase
                 <<<JSON
                 {
                     "issue_categories": [
-                        {"id": 9, "name": "IssueCategory 1"},
+                        {"id": 7, "name": "IssueCategory 3"},
                         {"id": 8, "name": "IssueCategory 2"},
-                        {"id": 7, "name": "IssueCategory 3"}
+                        {"id": 9, "name": "IssueCategory 1"}
                     ]
                 }
                 JSON,
                 [
-                    9 => "IssueCategory 1",
-                    8 => "IssueCategory 2",
                     7 => "IssueCategory 3",
+                    8 => "IssueCategory 2",
+                    9 => "IssueCategory 1",
                 ],
             ],
         ];
