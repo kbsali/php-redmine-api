@@ -41,7 +41,7 @@ services:
             - ./.docker/redmine-50103_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-50009:
-        image: redmine:5.0.9
+        image: redmine:5.1.3
         user: "1000:1000"
         ports:
             - "5009:3000"
@@ -55,7 +55,7 @@ services:
     redmine-40210:
         # Redmine 4.2.11 is not available on Docker Hub
         # @link https://hub.docker.com/_/redmine/tags?page=&page_size=&ordering=&name=4.2.11
-        image: redmine:4.2.10
+        image: redmine:5.1.3
         user: "1000:1000"
         ports:
             - "4210:3000"
