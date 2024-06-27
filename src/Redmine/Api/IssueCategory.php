@@ -126,7 +126,7 @@ class IssueCategory extends AbstractApi
      * Returns an array of categories with name/id pairs.
      *
      * @deprecated v2.7.0 Use listNamesByProject() instead.
-     * @see Group::listNames()
+     * @see IssueCategory::listNamesByProject()
      *
      * @param string|int $project     project id or literal identifier
      * @param bool       $forceUpdate to force the update of the projects var
