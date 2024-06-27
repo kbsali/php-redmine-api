@@ -1,9 +1,9 @@
+@version
 Feature: Interacting with the REST API for versions
     In order to interact with REST API for versions
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @version
     Scenario: Creating a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -52,7 +52,6 @@ Feature: Interacting with the REST API for versions
             | id                | 1                    |
             | name              | Test Project         |
 
-    @version
     Scenario: Updating a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -67,7 +66,6 @@ Feature: Interacting with the REST API for versions
         And the response has the content ""
         And the returned data is exactly ""
 
-    @version
     Scenario: Showing a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -107,7 +105,7 @@ Feature: Interacting with the REST API for versions
             | estimated_hours   | 0.0                  |
             | spent_hours       | 0.0                  |
 
-    @version @error
+    @error
     Scenario: Showing a not existing version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -117,7 +115,6 @@ Feature: Interacting with the REST API for versions
         And the response has the content ""
         And the returned data is false
 
-    @version
     Scenario: Removing a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

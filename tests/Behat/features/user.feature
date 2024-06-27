@@ -1,9 +1,10 @@
+@user
 Feature: Interacting with the REST API for users
     In order to interact with REST API for users
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @user
+
     Scenario: Creating an user
         Given I have a "NativeCurlClient" client
         When I create a user with the following data
@@ -44,7 +45,6 @@ Feature: Interacting with the REST API for users
             | twofa_scheme      | []                   |
             | status            | 1                    |
 
-    @user
     Scenario: Updating an user
         Given I have a "NativeCurlClient" client
         And I create a user with the following data
@@ -63,7 +63,6 @@ Feature: Interacting with the REST API for users
         And the response has the content ""
         And the returned data is exactly ""
 
-    @user
     Scenario: Showing a user
         Given I have a "NativeCurlClient" client
         When I show the user with id "1"
@@ -105,7 +104,7 @@ Feature: Interacting with the REST API for users
             | groups            | []                   |
             | memberships       | []                   |
 
-    @user @error
+    @error
     Scenario: Showing a not existing user
         Given I have a "NativeCurlClient" client
         When I show the user with id "10"
@@ -114,7 +113,6 @@ Feature: Interacting with the REST API for users
         And the response has the content ""
         And the returned data is false
 
-    @user
     Scenario: Removing an user
         Given I have a "NativeCurlClient" client
         And I create a user with the following data

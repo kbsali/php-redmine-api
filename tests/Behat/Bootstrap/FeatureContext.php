@@ -291,6 +291,24 @@ final class FeatureContext extends TestCase implements Context
     }
 
     /**
+     * @Then the returned data :property property contains the following data with Redmine version :versionComparision
+     */
+    public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion($property, string $versionComparision, TableNode $table)
+    {
+        $parts = explode(' ', $versionComparision);
+
+        $redmineVersion = RedmineVersion::tryFrom($parts[1]);
+
+        if ($redmineVersion === null) {
+            throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
+        }
+
+        if (version_compare($this->redmine->getVersionString(), $parts[1], $parts[0])) {
+            $this->theReturnedDataPropertyContainsTheFollowingData($property, $table);
+        }
+    }
+
+    /**
      * @Then the returned data :property property has only the following properties
      */
     public function theReturnedDataPropertyHasOnlyTheFollowingProperties($property, PyStringNode $string)

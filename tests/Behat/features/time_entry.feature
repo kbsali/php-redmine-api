@@ -1,9 +1,9 @@
+@time_entry
 Feature: Interacting with the REST API for time_entries
     In order to interact with REST API for time_entries
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @time_entry
     Scenario: Creating a time_entry to a project
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"
@@ -69,7 +69,6 @@ Feature: Interacting with the REST API for time_entries
             | id                | 1                    |
             | name              | development          |
 
-    @time_entry
     Scenario: Updating a time_entry to a project
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"
@@ -87,7 +86,6 @@ Feature: Interacting with the REST API for time_entries
         And the response has the content ""
         And the returned data is exactly ""
 
-    @time_entry
     Scenario: Showing a time_entry to a project
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"
@@ -151,7 +149,7 @@ Feature: Interacting with the REST API for time_entries
             | id                | 1                    |
             | name              | development          |
 
-    @time_entry @entry
+    @error
     Scenario: Try to show a non-existing time_entry
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"
@@ -162,7 +160,6 @@ Feature: Interacting with the REST API for time_entries
         And the response has the content ""
         And the returned data is false
 
-    @time_entry
     Scenario: Removing a time_entry to a project
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"

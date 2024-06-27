@@ -1,9 +1,9 @@
+@group
 Feature: Interacting with the REST API for groups
     In order to interact with REST API for groups
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @group
     Scenario: Creating a group with minimal parameters
         Given I have a "NativeCurlClient" client
         When I create a group with name "Test Group"
@@ -20,7 +20,6 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
-    @group
     Scenario: Listing of zero groups
         Given I have a "NativeCurlClient" client
         When I list all groups
@@ -33,7 +32,6 @@ Feature: Interacting with the REST API for groups
         And the returned data "groups" property is an array
         And the returned data "groups" property contains "0" items
 
-    @group
     Scenario: Listing of one group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -57,7 +55,6 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
-    @group
     Scenario: Listing names of all groups
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group D"
@@ -78,7 +75,6 @@ Feature: Interacting with the REST API for groups
             | 7                 | Test Group B         |
             | 8                 | Test Group A         |
 
-    @group
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -100,7 +96,7 @@ Feature: Interacting with the REST API for groups
             | id                | 4                    |
             | name              | Test Group           |
 
-    @group @error
+    @error
     Scenario: Try to show a non-existing group
         Given I have a "NativeCurlClient" client
         When I show the group with id "40"
@@ -109,7 +105,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content ""
         And the returned data is false
 
-    @group
     Scenario: Updating a group
         Given I have a "NativeCurlClient" client
         And I create a group with the following data
@@ -123,7 +118,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content ""
         And the returned data is exactly ""
 
-    @group
     Scenario: Adding an user to a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -133,7 +127,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content ""
         And the returned data is exactly ""
 
-    @group
     Scenario: Removing an user from a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
@@ -144,7 +137,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content ""
         And the returned data is exactly ""
 
-    @group
     Scenario: Deleting a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"

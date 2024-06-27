@@ -1,9 +1,9 @@
+@issue
 Feature: Interacting with the REST API for issues
     In order to interact with REST API for issues
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @issue
     Scenario: Creating an issue with miminal data
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -77,17 +77,26 @@ Feature: Interacting with the REST API for issues
         And the returned data "status" property is an array
         And the returned data "status" property contains "1" items
         And the returned data "status.@attributes" property is an array
-        And the returned data "status.@attributes" property has only the following properties
+        And the returned data "status.@attributes" property has only the following properties with Redmine version ">= 5.0.0"
             """
             id
             name
             is_closed
             """
-        And the returned data "status.@attributes" property contains the following data
+        But the returned data "status.@attributes" property has only the following properties with Redmine version "< 5.0.0"
+            """
+            id
+            name
+            """
+        And the returned data "status.@attributes" property contains the following data with Redmine version ">= 5.0.0"
             | property          | value                |
             | id                | 1                    |
             | name              | New                  |
             | is_closed         | false                |
+        But the returned data "status.@attributes" property contains the following data with Redmine version "< 5.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | name              | New                  |
         And the returned data "priority" property is an array
         And the returned data "priority" property contains "1" items
         And the returned data "priority.@attributes" property is an array
@@ -113,7 +122,6 @@ Feature: Interacting with the REST API for issues
             | id                | 1                    |
             | name              | Redmine Admin        |
 
-    @issue
     Scenario: Updating an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -139,7 +147,7 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue @error
+    @error
     Scenario: Showing a not existing issue
         Given I have a "NativeCurlClient" client
         When I show the issue with id "10"
@@ -148,7 +156,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is false
 
-    @issue
     Scenario: Adding a watcher to an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -168,7 +175,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue
     Scenario: Removing a watcher from an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -189,7 +195,6 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue
     Scenario: Removing an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
