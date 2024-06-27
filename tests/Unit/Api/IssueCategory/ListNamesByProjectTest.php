@@ -6,12 +6,13 @@ namespace Redmine\Tests\Unit\Api\IssueCategory;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use stdClass;
+use Redmine\Tests\Fixtures\TestDataProvider;
 
 #[CoversClass(IssueCategory::class)]
 class ListNamesByProjectTest extends TestCase
@@ -112,9 +113,9 @@ class ListNamesByProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider getInvalidProjectIdentifiers
+     * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
      */
-    #[DataProvider('getInvalidProjectIdentifiers')]
+    #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
     public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
     {
         $api = new IssueCategory($this->createMock(HttpClient::class));
@@ -123,17 +124,5 @@ class ListNamesByProjectTest extends TestCase
         $this->expectExceptionMessage('Redmine\Api\IssueCategory::listNamesByProject(): Argument #1 ($projectIdentifier) must be of type int or string');
 
         $api->listNamesByProject($projectIdentifier);
-    }
-
-    public static function getInvalidProjectIdentifiers(): array
-    {
-        return [
-            'null' => [null],
-            'true' => [true],
-            'false' => [false],
-            'float' => [0.0],
-            'array' => [[]],
-            'object' => [new stdClass()],
-        ];
     }
 }
