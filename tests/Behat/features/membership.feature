@@ -1,9 +1,9 @@
+@membership
 Feature: Interacting with the REST API for memberships
     In order to interact with REST API for memberships
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @membership
     Scenario: Creating a membership
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"
@@ -16,7 +16,6 @@ Feature: Interacting with the REST API for memberships
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
 
-    @membership
     Scenario: Updating a membership
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"
@@ -34,7 +33,6 @@ Feature: Interacting with the REST API for memberships
         And the response has the content ""
         And the returned data is exactly ""
 
-    @membership
     Scenario: Removing a membership
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"
@@ -49,7 +47,6 @@ Feature: Interacting with the REST API for memberships
         And the response has the content ""
         And the returned data is exactly ""
 
-    @membership
     Scenario: Removing an user from a project
         Given I have a "NativeCurlClient" client
         And I have a role with the name "Developer"

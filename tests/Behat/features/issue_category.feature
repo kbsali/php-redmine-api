@@ -1,9 +1,9 @@
+@issue_category
 Feature: Interacting with the REST API for issue categories
     In order to interact with REST API for issue categories
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @issue_category
     Scenario: Creating an issue category with miminal data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -36,7 +36,6 @@ Feature: Interacting with the REST API for issue categories
             | id                | 1                    |
             | name              | Test Project         |
 
-    @issue_category
     Scenario: Creating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -83,7 +82,6 @@ Feature: Interacting with the REST API for issue categories
             | id                | 1                    |
             | name              | Redmine Admin        |
 
-    @issue_category
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -100,7 +98,6 @@ Feature: Interacting with the REST API for issue categories
         And the response has the content ""
         And the returned data is exactly ""
 
-    @issue_category
     Scenario: Deleting an issue category
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

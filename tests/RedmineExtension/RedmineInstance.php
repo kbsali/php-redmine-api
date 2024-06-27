@@ -19,6 +19,7 @@ final class RedmineInstance
         return [
             RedmineVersion::V5_1_3,
             RedmineVersion::V5_0_9,
+            RedmineVersion::V4_2_10,
         ];
     }
 

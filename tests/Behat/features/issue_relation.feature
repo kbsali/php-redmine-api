@@ -1,9 +1,9 @@
+@issue_relation
 Feature: Interacting with the REST API for issue relations
     In order to interact with REST API for issue relations
     As a user
     I want to make sure the Redmine server replies with the correct response
 
-    @issue_relation
     Scenario: Creating an issue relation with miminal data
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -50,7 +50,6 @@ Feature: Interacting with the REST API for issue relations
             | relation_type     | relates              |
             | delay             | null                 |
 
-    @issue_relation
     Scenario: Deleting an issue relation
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

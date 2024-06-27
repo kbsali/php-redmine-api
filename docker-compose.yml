@@ -51,3 +51,17 @@ services:
         volumes:
             - ./.docker/redmine-50009_data/files:/usr/src/redmine/files
             - ./.docker/redmine-50009_data/sqlite:/usr/src/redmine/sqlite
+
+    redmine-40210:
+        # Redmine 4.2.11 is not available on Docker Hub
+        # @link https://hub.docker.com/_/redmine/tags?page=&page_size=&ordering=&name=4.2.11
+        image: redmine:4.2.10
+        user: "1000:1000"
+        ports:
+            - "4210:3000"
+        environment:
+            REDMINE_SECRET_KEY_BASE: supersecretkey
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-40210_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-40210_data/sqlite:/usr/src/redmine/sqlite
