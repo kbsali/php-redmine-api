@@ -83,6 +83,75 @@ Feature: Interacting with the REST API for issue categories
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    Scenario: Listing of zero issue categories
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I list all issue categories for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            issue_categories
+            total_count
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | issue_categories  | []                   |
+            | total_count       | 0                    |
+
+    Scenario: Listing of multiple issue categories
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue category for project identifier "test-project" and with the following data
+            | property          | value                |
+            | name              | Category name B      |
+        And I create an issue category for project identifier "test-project" and with the following data
+            | property          | value                |
+            | name              | Category name A      |
+        When I list all issue categories for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            issue_categories
+            total_count
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | total_count       | 2                    |
+        And the returned data "issue_categories" property is an array
+        And the returned data "issue_categories" property contains "2" items
+        And the returned data "issue_categories.0" property is an array
+        And the returned data "issue_categories.0" property has only the following properties
+            """
+            id
+            project
+            name
+            """
+        And the returned data "issue_categories.0" property contains the following data
+            | property          | value                |
+            | id                | 2                    |
+            | name              | Category name A       |
+        And the returned data "issue_categories.0.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+        And the returned data "issue_categories.1" property is an array
+        And the returned data "issue_categories.1" property has only the following properties
+            """
+            id
+            project
+            name
+            """
+        And the returned data "issue_categories.1" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Category name B      |
+        And the returned data "issue_categories.1.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+
     @issue_category
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
