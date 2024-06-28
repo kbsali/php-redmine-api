@@ -17,6 +17,8 @@ class CustomField extends AbstractApi
 {
     private $customFields = [];
 
+    private $customFieldNames = null;
+
     /**
      * List custom fields.
      *
@@ -35,6 +37,30 @@ class CustomField extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all custom fields with id/name pairs.
+     *
+     * @return array<int,string> list of custom fields (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->customFieldNames !== null) {
+            return $this->customFieldNames;
+        }
+
+        $this->customFieldNames = [];
+
+        $list = $this->list();
+
+        if (array_key_exists('custom_fields', $list)) {
+            foreach ($list['custom_fields'] as $customField) {
+                $this->customFieldNames[(int) $customField['id']] = (string) $customField['name'];
+            }
+        }
+
+        return $this->customFieldNames;
     }
 
     /**
