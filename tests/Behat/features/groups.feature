@@ -57,11 +57,11 @@ Feature: Interacting with the REST API for groups
 
     Scenario: Listing names of all groups
         Given I have a "NativeCurlClient" client
-        And I create a group with name "Test Group 1"
-        And I create a group with name "Test Group 2"
-        And I create a group with name "Test Group 3"
-        And I create a group with name "Test Group 4"
-        And I create a group with name "Test Group 5"
+        And I create a group with name "Test Group D"
+        And I create a group with name "Test Group E"
+        And I create a group with name "Test Group C"
+        And I create a group with name "Test Group B"
+        And I create a group with name "Test Group A"
         When I list the names of all groups
         Then the response has the status code "200"
         And the response has the content type "application/json"
@@ -69,11 +69,11 @@ Feature: Interacting with the REST API for groups
         And the returned data contains "5" items
         And the returned data contains the following data
             | property          | value                |
-            | 4                 | Test Group 1         |
-            | 5                 | Test Group 2         |
-            | 6                 | Test Group 3         |
-            | 7                 | Test Group 4         |
-            | 8                 | Test Group 5         |
+            | 4                 | Test Group D         |
+            | 5                 | Test Group E         |
+            | 6                 | Test Group C         |
+            | 7                 | Test Group B         |
+            | 8                 | Test Group A         |
 
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client

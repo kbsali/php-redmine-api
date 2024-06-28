@@ -24,6 +24,8 @@ class IssueCategory extends AbstractApi
 {
     private $issueCategories = [];
 
+    private $issueCategoriesNames = [];
+
     /**
      * List issue categories for a given project.
      *
@@ -51,6 +53,41 @@ class IssueCategory extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all issue categories by a project with id/name pairs.
+     *
+     * @param string|int $projectIdentifier project id or literal identifier
+     *
+     * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     *
+     * @return array<int,string> list of issue category names (id => name)
+     */
+    final public function listNamesByProject($projectIdentifier): array
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidParameterException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__,
+            ));
+        }
+
+        if (array_key_exists($projectIdentifier, $this->issueCategoriesNames)) {
+            return $this->issueCategoriesNames[$projectIdentifier];
+        }
+
+        $this->issueCategoriesNames[$projectIdentifier] = [];
+
+        $list = $this->listByProject($projectIdentifier);
+
+        if (array_key_exists('issue_categories', $list)) {
+            foreach ($list['issue_categories'] as $category) {
+                $this->issueCategoriesNames[$projectIdentifier][(int) $category['id']] = $category['name'];
+            }
+        }
+
+        return $this->issueCategoriesNames[$projectIdentifier];
     }
 
     /**
@@ -88,6 +125,9 @@ class IssueCategory extends AbstractApi
     /**
      * Returns an array of categories with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNamesByProject() instead.
+     * @see IssueCategory::listNamesByProject()
+     *
      * @param string|int $project     project id or literal identifier
      * @param bool       $forceUpdate to force the update of the projects var
      *
@@ -95,6 +135,8 @@ class IssueCategory extends AbstractApi
      */
     public function listing($project, $forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+
         if (true === $forceUpdate || empty($this->issueCategories)) {
             $this->issueCategories = $this->listByProject($project);
         }

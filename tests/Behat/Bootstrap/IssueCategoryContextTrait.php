@@ -30,6 +30,34 @@ trait IssueCategoryContextTrait
     }
 
     /**
+     * @When I list all issue categories for project identifier :identifier
+     */
+    public function iListAllIssueCategoriesForProjectIdentifier($identifier)
+    {
+        /** @var IssueCategory */
+        $api = $this->getNativeCurlClient()->getApi('issue_category');
+
+        $this->registerClientResponse(
+            $api->listByProject($identifier),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all issue category names for project identifier :identifier
+     */
+    public function iListAllIssueCategoryNamesForProjectIdentifier($identifier)
+    {
+        /** @var IssueCategory */
+        $api = $this->getNativeCurlClient()->getApi('issue_category');
+
+        $this->registerClientResponse(
+            $api->listNamesByProject($identifier),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the issue category with id :id and the following data
      */
     public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table)
