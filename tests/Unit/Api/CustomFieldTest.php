@@ -288,6 +288,38 @@ class CustomFieldTest extends TestCase
     }
 
     /**
+     * Test listing().
+     */
+    public function testListingTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new CustomField($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\CustomField::listing()` is deprecated since v2.7.0, use `Redmine\Api\CustomField::listNames()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->listing();
+    }
+
+    /**
      * Test getIdByName().
      */
     public function testGetIdByNameMakesGetRequest()
