@@ -23,6 +23,7 @@ use SimpleXMLElement;
 final class FeatureContext extends TestCase implements Context
 {
     use AttachmentContextTrait;
+    use CustomFieldContextTrait;
     use GroupContextTrait;
     use IssueCategoryContextTrait;
     use IssueContextTrait;
