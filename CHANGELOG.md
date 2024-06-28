@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New method `Redmine\Api\CustomField::listNames()` for listing the ids and names of all custom fields.
 - New method `Redmine\Api\Group::listNames()` for listing the ids and names of all groups.
 - New method `Redmine\Api\IssueCategory::listNamesByProject()` for listing the ids and names of all issue categories of a project.
 
 ### Deprecated
 
+- `Redmine\Api\CustomField::listing()` is deprecated, use `\Redmine\Api\CustomField::listNames()` instead.
 - `Redmine\Api\Group::listing()` is deprecated, use `\Redmine\Api\Group::listNames()` instead.
 - `Redmine\Api\IssueCategory::listing()` is deprecated, use `\Redmine\Api\IssueCategory::listNamesByProject()` instead.
 

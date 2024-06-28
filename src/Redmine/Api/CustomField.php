@@ -17,6 +17,8 @@ class CustomField extends AbstractApi
 {
     private $customFields = [];
 
+    private $customFieldNames = null;
+
     /**
      * List custom fields.
      *
@@ -35,6 +37,30 @@ class CustomField extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all custom fields with id/name pairs.
+     *
+     * @return array<int,string> list of custom fields (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->customFieldNames !== null) {
+            return $this->customFieldNames;
+        }
+
+        $this->customFieldNames = [];
+
+        $list = $this->list();
+
+        if (array_key_exists('custom_fields', $list)) {
+            foreach ($list['custom_fields'] as $customField) {
+                $this->customFieldNames[(int) $customField['id']] = (string) $customField['name'];
+            }
+        }
+
+        return $this->customFieldNames;
     }
 
     /**
@@ -73,6 +99,9 @@ class CustomField extends AbstractApi
     /**
      * Returns an array of custom fields with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see CustomField::listNames()
+     *
      * @param bool  $forceUpdate to force the update of the custom fields var
      * @param array $params      optional parameters to be passed to the api (offset, limit, ...)
      *
@@ -80,6 +109,8 @@ class CustomField extends AbstractApi
      */
     public function listing($forceUpdate = false, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->customFields) || $forceUpdate) {
             $this->customFields = $this->list($params);
         }

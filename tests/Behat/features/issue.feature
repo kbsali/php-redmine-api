@@ -122,6 +122,70 @@ Feature: Interacting with the REST API for issues
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @custom_field
+    Scenario: Creating an issue with custom field
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a custom field for issues with the name "Note"
+        And I enable the tracker with ID "1" for custom field with ID "1"
+        When I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | custom_fields     | [{"id":1,"value":"Note for custom field"}] |
+        Then the response has the status code "201"
+        And the response has the content type "application/xml"
+        And the returned data is an instance of "SimpleXMLElement"
+        And the returned data has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            custom_fields
+            created_on
+            updated_on
+            closed_on
+            """
+        And the returned data has proterties with the following data
+            | property              | value                |
+            | id                    | 1                    |
+            | subject               | issue subject        |
+            | description           | []                   |
+            | due_date              | []                   |
+            | done_ratio            | 0                    |
+            | is_private            | false                |
+            | estimated_hours       | []                   |
+            | total_estimated_hours | []                   |
+        And the returned data "custom_fields.custom_field" property has only the following properties
+            """
+            @attributes
+            value
+            """
+        And the returned data "custom_fields.custom_field.@attributes" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Note                 |
+        And the returned data "custom_fields.custom_field" property contains the following data
+            | property          | value                |
+            | value             | Note for custom field |
+
     Scenario: Updating an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

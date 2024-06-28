@@ -15,11 +15,7 @@ trait IssueContextTrait
      */
     public function iCreateAnIssueWithTheFollowingData(TableNode $table)
     {
-        $data = [];
-
-        foreach ($table as $row) {
-            $data[$row['property']] = $row['value'];
-        }
+        $data = $this->prepareIssueData($table);
 
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -35,11 +31,7 @@ trait IssueContextTrait
      */
     public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table)
     {
-        $data = [];
-
-        foreach ($table as $row) {
-            $data[$row['property']] = $row['value'];
-        }
+        $data = $this->prepareIssueData($table);
 
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -104,5 +96,24 @@ trait IssueContextTrait
             $api->remove($issueId),
             $api->getLastResponse(),
         );
+    }
+
+    private function prepareIssueData(TableNode $table): array
+    {
+        $data = [];
+
+        foreach ($table as $row) {
+            $key = $row['property'];
+            $value = $row['value'];
+
+            // Support for json in custom_fields
+            if ($key === 'custom_fields') {
+                $value = json_decode($value, true);
+            }
+
+            $data[$key] = $value;
+        }
+
+        return $data;
     }
 }
