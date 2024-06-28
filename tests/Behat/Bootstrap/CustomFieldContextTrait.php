@@ -57,4 +57,18 @@ trait CustomFieldContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I list all custom field names
+     */
+    public function iListAllCustomFieldNames()
+    {
+        /** @var CustomField */
+        $api = $this->getNativeCurlClient()->getApi('custom_fields');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
 }

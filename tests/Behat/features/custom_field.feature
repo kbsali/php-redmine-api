@@ -101,3 +101,17 @@ Feature: Interacting with the REST API for custom fields
             | visible               | true                 |
             | trackers              | []                   |
             | roles                 | []                   |
+
+    Scenario: Listing of multiple custom field names
+        Given I have a "NativeCurlClient" client
+        And I create a custom field for issues with the name "Note B"
+        And I create a custom field for issues with the name "Note A"
+        When I list all custom field names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data is an array
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property              | value                |
+            | 1                     | Note B               |
+            | 2                     | Note A               |
