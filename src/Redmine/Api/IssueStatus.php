@@ -17,6 +17,8 @@ class IssueStatus extends AbstractApi
 {
     private $issueStatuses = [];
 
+    private $issueStatusNames = null;
+
     /**
      * List issue statuses.
      *
@@ -35,6 +37,30 @@ class IssueStatus extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all issue statuses with id/name pairs.
+     *
+     * @return array<int,string> list of issue statuses (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->issueStatusNames !== null) {
+            return $this->issueStatusNames;
+        }
+
+        $this->issueStatusNames = [];
+
+        $list = $this->list();
+
+        if (array_key_exists('issue_statuses', $list)) {
+            foreach ($list['issue_statuses'] as $issueStatus) {
+                $this->issueStatusNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+            }
+        }
+
+        return $this->issueStatusNames;
     }
 
     /**

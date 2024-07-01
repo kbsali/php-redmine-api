@@ -38,4 +38,18 @@ trait IssueStatusContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I list all issue status names
+     */
+    public function iListAllIssueStatusNames()
+    {
+        /** @var IssueStatus */
+        $api = $this->getNativeCurlClient()->getApi('issue_status');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
 }

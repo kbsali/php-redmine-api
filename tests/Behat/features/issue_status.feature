@@ -53,3 +53,17 @@ Feature: Interacting with the REST API for issue statuses
             | id                    | 2                    |
             | name                  | Done                 |
             | is_closed             | false                |
+
+    Scenario: Listing of multiple issue status names
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue status with the name "Done"
+        When I list all issue status names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data is an array
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property              | value                |
+            | 1                     | New                  |
+            | 2                     | Done                 |
