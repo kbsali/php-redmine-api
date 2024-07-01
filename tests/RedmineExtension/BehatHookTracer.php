@@ -22,14 +22,6 @@ final class BehatHookTracer implements InstanceRegistration
      */
     private static array $instances = [];
 
-    /**
-     * @return RedmineVersion[]
-     */
-    public static function getSupportedRedmineVersions(): array
-    {
-        return RedmineInstance::getSupportedVersions();
-    }
-
     public static function getRedmineInstance(RedmineVersion $redmineVersion): RedmineInstance
     {
         if (static::$tracer === null) {

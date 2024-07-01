@@ -23,7 +23,6 @@ services:
             - ./.docker/redmine-dev_data/sqlite:/usr/src/redmine/sqlite
 
     # Make sure the following services are configured in:
-    # - /tests/RedmineExtension/RedmineInstance.php
     # - /tests/Behat/behat.yml
 
     redmine-50103:
