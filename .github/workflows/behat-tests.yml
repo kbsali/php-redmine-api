@@ -21,13 +21,16 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Debug docker
+        run: docker compose --version && docker-compose --version
+
       - name: Start containers
         run: |
-          docker-compose -f "docker-compose.yml" up -d --build
+          docker compose -f "docker-compose.yml" up -d --build
 
       - name: Setup PHP, with co
         run: |
-          docker-compose -f "docker-compose.yml" exec php composer update
+          docker compose -f "docker-compose.yml" exec php composer update
 
       - name: Run behat tests
-        run: docker-compose -f "docker-compose.yml" exec php composer behat
+        run: docker compose -f "docker-compose.yml" exec php composer behat
