@@ -34,7 +34,7 @@ jobs:
 
       - name: Debug docker files
         run: |
-          docker compose -f "docker-compose.yml" exec php ls -al ./.docker/redmine_50103_data/sqlite
+          docker compose -f "docker-compose.yml" exec php ls -al ./.docker/redmine-50103_data/sqlite
 
       - name: Run behat tests
         run: docker compose -f "docker-compose.yml" exec php composer behat
