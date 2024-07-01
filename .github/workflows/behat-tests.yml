@@ -1,0 +1,33 @@
+name: Behat-Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests (Behat with PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php: ["8.3"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Start containers
+        run: |
+          docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Setup PHP, with co
+        run: |
+          docker-compose -f "docker-compose.yml" exec php composer update
+
+      - name: Run behat tests
+        run: docker-compose -f "docker-compose.yml" exec php composer behat
