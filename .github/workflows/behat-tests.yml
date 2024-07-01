@@ -16,18 +16,12 @@ jobs:
         php: ["8.3"]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build and cache Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
           push: true
           tags: user/app:latest
           cache-from: type=registry,ref=user/app:latest
