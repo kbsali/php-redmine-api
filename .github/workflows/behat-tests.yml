@@ -24,6 +24,14 @@ jobs:
       - name: Show docker info
         run: docker compose version
 
+      - name: Build and cache Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Start containers
         run: |
           docker compose -f "docker-compose.yml" up -d --build
@@ -31,6 +39,10 @@ jobs:
       - name: Setup PHP with composer
         run: |
           docker compose -f "docker-compose.yml" exec php composer update
+
+      - name: Debug docker files
+        run: |
+          docker compose -f "docker-compose.yml" exec php tree ./.docker
 
       - name: Run behat tests
         run: docker compose -f "docker-compose.yml" exec php composer behat
