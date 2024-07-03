@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Group::listNames()` for listing the ids and names of all groups.
 - New method `Redmine\Api\IssueCategory::listNamesByProject()` for listing the ids and names of all issue categories of a project.
 - New method `Redmine\Api\IssueStatus::listNames()` for listing the ids and names of all issue statuses.
+- New method `Redmine\Api\Project::listNames()` for listing the ids and names of all projects.
 
 ### Deprecated
 

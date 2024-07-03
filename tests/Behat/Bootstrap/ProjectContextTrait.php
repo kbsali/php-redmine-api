@@ -58,6 +58,20 @@ trait ProjectContextTrait
     }
 
     /**
+     * @When I list all project names
+     */
+    public function iListAllProjectNames()
+    {
+        /** @var Project */
+        $api = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I show the project with identifier :identifier
      */
     public function iShowTheProjectWithIdentifier(string $identifier)

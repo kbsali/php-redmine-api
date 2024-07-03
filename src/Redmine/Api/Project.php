@@ -24,6 +24,8 @@ class Project extends AbstractApi
 {
     private $projects = [];
 
+    private $projectNames = null;
+
     /**
      * List projects.
      *
@@ -42,6 +44,30 @@ class Project extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all projects with id/name pairs.
+     *
+     * @return array<int,string> list of projects (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->projectNames !== null) {
+            return $this->projectNames;
+        }
+
+        $this->projectNames = [];
+
+        $list = $this->list();
+
+        if (array_key_exists('projects', $list)) {
+            foreach ($list['projects'] as $issueStatus) {
+                $this->projectNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+            }
+        }
+
+        return $this->projectNames;
     }
 
     /**
