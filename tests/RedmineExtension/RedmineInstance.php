@@ -11,27 +11,10 @@ use PDO;
 final class RedmineInstance
 {
     /**
-     * Make sure that supported versions have a service in /docker-composer.yml
-     * and are configured in /tests/Behat/behat.yml
-     */
-    public static function getSupportedVersions(): array
-    {
-        return [
-            RedmineVersion::V5_1_3,
-            RedmineVersion::V5_0_9,
-            RedmineVersion::V4_2_10,
-        ];
-    }
-
-    /**
      * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
      */
     public static function create(InstanceRegistration $tracer, RedmineVersion $version): void
     {
-        if (! in_array($version, static::getSupportedVersions())) {
-            throw new InvalidArgumentException('Redmine ' . $version->asString() . ' is not supported.');
-        }
-
         $tracer->registerInstance(new self($tracer, $version));
     }
 
@@ -77,6 +60,8 @@ final class RedmineInstance
         $this->redmineUrl = 'http://redmine-' . $versionId . ':3000';
         $this->apiKey = sha1($versionId . (string) time());
 
+        $this->runHealthChecks($version);
+
         $this->createDatabaseBackup();
         $this->createFilesBackup();
         $this->runDatabaseMigration();
@@ -102,6 +87,33 @@ final class RedmineInstance
     public function getApiKey(): string
     {
         return $this->apiKey;
+    }
+
+    private function runHealthChecks(RedmineVersion $version): void
+    {
+        $ch = curl_init($this->redmineUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($data === false || $statusCode !== 200) {
+            throw new InvalidArgumentException(sprintf(
+                'Could not connect to Redmine server at %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.yml.',
+                $this->redmineUrl,
+                $version->asString(),
+            ));
+        }
+
+        if (! file_exists($this->rootPath . $this->workingDB)) {
+            throw new InvalidArgumentException(sprintf(
+                'Could not find database file in %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.yml.',
+                $this->rootPath . $this->workingDB,
+                $version->asString(),
+            ));
+        }
     }
 
     public function reset(InstanceRegistration $tracer): void
