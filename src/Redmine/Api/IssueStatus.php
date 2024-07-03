@@ -17,6 +17,8 @@ class IssueStatus extends AbstractApi
 {
     private $issueStatuses = [];
 
+    private $issueStatusNames = null;
+
     /**
      * List issue statuses.
      *
@@ -35,6 +37,30 @@ class IssueStatus extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all issue statuses with id/name pairs.
+     *
+     * @return array<int,string> list of issue statuses (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->issueStatusNames !== null) {
+            return $this->issueStatusNames;
+        }
+
+        $this->issueStatusNames = [];
+
+        $list = $this->list();
+
+        if (array_key_exists('issue_statuses', $list)) {
+            foreach ($list['issue_statuses'] as $issueStatus) {
+                $this->issueStatusNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+            }
+        }
+
+        return $this->issueStatusNames;
     }
 
     /**
@@ -73,12 +99,17 @@ class IssueStatus extends AbstractApi
     /**
      * Returns an array of issue statuses with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see IssueStatus::listNames()
+     *
      * @param bool $forceUpdate to force the update of the statuses var
      *
      * @return array list of issue statuses (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->issueStatuses) || $forceUpdate) {
             $this->issueStatuses = $this->list();
         }

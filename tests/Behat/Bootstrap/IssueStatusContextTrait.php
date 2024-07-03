@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
+use Redmine\Api\IssueStatus;
+
 trait IssueStatusContextTrait
 {
     /**
@@ -20,6 +22,34 @@ trait IssueStatusContextTrait
                 ':is_closed' => 0,
                 ':position' => 1,
             ],
+        );
+    }
+
+    /**
+     * @When I list all issue statuses
+     */
+    public function iListAllIssueStatuses()
+    {
+        /** @var IssueStatus */
+        $api = $this->getNativeCurlClient()->getApi('issue_status');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all issue status names
+     */
+    public function iListAllIssueStatusNames()
+    {
+        /** @var IssueStatus */
+        $api = $this->getNativeCurlClient()->getApi('issue_status');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
         );
     }
 }
