@@ -100,12 +100,17 @@ class Role extends AbstractApi
     /**
      * Returns an array of roles with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Role::listNames()
+     *
      * @param bool $forceUpdate to force the update of the roles var
      *
      * @return array list of roles (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->roles) || $forceUpdate) {
             $this->roles = $this->list();
         }
