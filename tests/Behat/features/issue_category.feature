@@ -158,6 +158,15 @@ Feature: Interacting with the REST API for issue categories
             | 1                 | Category name B      |
             | 2                 | Category name A      |
 
+    Scenario: Listing a lot of issue category names
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create "108" issue categories for project identifier "test-project"
+        When I list all issue category names for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "108" items
+
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

@@ -10,6 +10,21 @@ use Redmine\Api\IssueCategory;
 trait IssueCategoryContextTrait
 {
     /**
+     * @Given I create :count issue categories for project identifier :identifier
+     */
+    public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier)
+    {
+        while ($count > 0) {
+            $this->iCreateAnIssueCategoryForProjectIdentifierAndWithTheName(
+                $identifier,
+                'Issue Category ' . $count,
+            );
+
+            $count--;
+        }
+    }
+
+    /**
      * @When I create an issue category for project identifier :identifier and with the name :name
      */
     public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name)
