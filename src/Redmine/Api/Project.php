@@ -119,6 +119,9 @@ class Project extends AbstractApi
     /**
      * Returns an array of projects with name/id pairs (or id/name if $reserse is false).
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Project::listNames()
+     *
      * @param bool  $forceUpdate to force the update of the projects var
      * @param bool  $reverse     to return an array indexed by name rather than id
      * @param array $params      to allow offset/limit (and more) to be passed
@@ -127,6 +130,8 @@ class Project extends AbstractApi
      */
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (true === $forceUpdate || empty($this->projects)) {
             $this->projects = $this->list($params);
         }
