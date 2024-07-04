@@ -59,13 +59,26 @@ class Project extends AbstractApi
 
         $this->projectNames = [];
 
-        $list = $this->list();
+        $limit = 100;
+        $offset = 0;
 
-        if (array_key_exists('projects', $list)) {
-            foreach ($list['projects'] as $issueStatus) {
-                $this->projectNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+        do {
+            $list = $this->list([
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
+
+            $listCount = 0;
+            $offset += $limit;
+
+            if (array_key_exists('projects', $list)) {
+                $listCount = count($list['projects']);
+
+                foreach ($list['projects'] as $issueStatus) {
+                    $this->projectNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+                }
             }
-        }
+        } while ($listCount === $limit);
 
         return $this->projectNames;
     }

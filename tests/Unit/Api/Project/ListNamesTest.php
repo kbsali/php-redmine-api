@@ -43,7 +43,7 @@ class ListNamesTest extends TestCase
     {
         return [
             'test without projects' => [
-                '/projects.json',
+                '/projects.json?limit=100&offset=0',
                 201,
                 <<<JSON
                 {
@@ -53,7 +53,7 @@ class ListNamesTest extends TestCase
                 [],
             ],
             'test with multiple projects' => [
-                '/projects.json',
+                '/projects.json?limit=100&offset=0',
                 201,
                 <<<JSON
                 {
@@ -73,13 +73,72 @@ class ListNamesTest extends TestCase
         ];
     }
 
+    public function testListNamesWithALotOfProjectsHandlesPagination()
+    {
+        $assertData = [];
+        $projectsRequest1 = [];
+        $projectsRequest2 = [];
+        $projectsRequest3 = [];
+
+        for ($i = 1; $i <= 100; $i++) {
+            $name = 'Project ' . $i;
+
+            $assertData[$i] = $name;
+            $projectsRequest1[] = ['id' => $i, 'name' => $name];
+        }
+
+        for ($i = 101; $i <= 200; $i++) {
+            $name = 'Project ' . $i;
+
+            $assertData[$i] = $name;
+            $projectsRequest2[] = ['id' => $i, 'name' => $name];
+        }
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['projects' => $projectsRequest1]),
+            ],
+            [
+                'GET',
+                '/projects.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['projects' => $projectsRequest2]),
+            ],
+            [
+                'GET',
+                '/projects.json?limit=100&offset=200',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['projects' => $projectsRequest3]),
+            ],
+        );
+
+        // Create the object under test
+        $api = new Project($client);
+
+        // Perform the tests
+        $this->assertSame($assertData, $api->listNames());
+    }
+
     public function testListNamesCallsHttpClientOnlyOnce()
     {
         $client = AssertingHttpClient::create(
             $this,
             [
                 'GET',
-                '/projects.json',
+                '/projects.json?limit=100&offset=0',
                 'application/json',
                 '',
                 200,

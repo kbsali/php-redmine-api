@@ -163,6 +163,14 @@ Feature: Interacting with the REST API for projects
             | 1                 | Test Project B       |
             | 2                 | Test Project A       |
 
+    Scenario: Listing of multiple project names
+        Given I have a "NativeCurlClient" client
+        And I create "108" projects
+        When I list all project names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "108" items
+
     Scenario: Updating a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
