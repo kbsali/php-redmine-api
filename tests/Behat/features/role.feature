@@ -39,3 +39,17 @@ Feature: Interacting with the REST API for roles
             | property              | value                |
             | id                    | 4                    |
             | name                  | Developer            |
+
+    Scenario: Listing of multiple role names
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Reporter"
+        And I have a role with the name "Developer"
+        When I list all role names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data is an array
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property              | value                |
+            | 3                     | Reporter             |
+            | 4                     | Developer            |

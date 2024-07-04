@@ -44,4 +44,18 @@ trait RoleContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I list all role names
+     */
+    public function iListAllRoleNames()
+    {
+        /** @var Role */
+        $api = $this->getNativeCurlClient()->getApi('role');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
 }

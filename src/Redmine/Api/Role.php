@@ -19,6 +19,8 @@ class Role extends AbstractApi
 {
     private $roles = [];
 
+    private $roleNames = null;
+
     /**
      * List roles.
      *
@@ -37,6 +39,29 @@ class Role extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all roles with id/name pairs.
+     *
+     * @return array<int,string> list of roles (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->roleNames !== null) {
+            return $this->roleNames;
+        }
+
+        $this->roleNames = [];
+        $list = $this->list();
+
+        if (array_key_exists('roles', $list)) {
+            foreach ($list['roles'] as $role) {
+                $this->roleNames[(int) $role['id']] = $role['name'];
+            }
+        }
+
+        return $this->roleNames;
     }
 
     /**
