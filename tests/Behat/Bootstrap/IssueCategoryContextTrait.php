@@ -10,6 +10,19 @@ use Redmine\Api\IssueCategory;
 trait IssueCategoryContextTrait
 {
     /**
+     * @When I create an issue category for project identifier :identifier and with the name :name
+     */
+    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name)
+    {
+        $table = new TableNode([
+            ['property', 'value'],
+            ['name', $name],
+        ]);
+
+        $this->iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, $table);
+    }
+
+    /**
      * @When I create an issue category for project identifier :identifier and with the following data
      */
     public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table)
