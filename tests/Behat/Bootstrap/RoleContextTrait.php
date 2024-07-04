@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
+use Redmine\Api\Role;
+
 trait RoleContextTrait
 {
     /**
@@ -26,6 +28,20 @@ trait RoleContextTrait
                 ':all_roles_managed' => 1,
                 ':settings' => '',
             ],
+        );
+    }
+
+    /**
+     * @When I list all roles
+     */
+    public function iListAllRoles()
+    {
+        /** @var Role */
+        $api = $this->getNativeCurlClient()->getApi('role');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse(),
         );
     }
 }
