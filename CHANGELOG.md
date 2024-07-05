@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\IssueCategory::listNamesByProject()` for listing the ids and names of all issue categories of a project.
 - New method `Redmine\Api\IssueStatus::listNames()` for listing the ids and names of all issue statuses.
 - New method `Redmine\Api\Project::listNames()` for listing the ids and names of all projects.
+- New method `Redmine\Api\Role::listNames()` for listing the ids and names of all roles.
 
 ### Deprecated
 
@@ -22,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\IssueCategory::listing()` is deprecated, use `\Redmine\Api\IssueCategory::listNamesByProject()` instead.
 - `Redmine\Api\IssueStatus::listing()` is deprecated, use `\Redmine\Api\IssueStatus::listNamesByProject()` instead.
 - `Redmine\Api\Project::listing()` is deprecated, use `\Redmine\Api\Project::listNamesByProject()` instead.
+- `Redmine\Api\Role::listing()` is deprecated, use `\Redmine\Api\Role::listNamesByProject()` instead.
 
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25
 
