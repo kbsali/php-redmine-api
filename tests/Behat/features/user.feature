@@ -34,7 +34,7 @@ Feature: Interacting with the REST API for users
             """
         And the returned data has proterties with the following data
             | property          | value                |
-            | id                | 4                    |
+            | id                | 5                    |
             | login             | username             |
             | admin             | false                |
             | firstname         | first                |
@@ -53,7 +53,7 @@ Feature: Interacting with the REST API for users
             | firstname         | first                |
             | lastname          | last                 |
             | mail              | mail@example.com     |
-        When I update the user with id "4" and the following data
+        When I update the user with id "5" and the following data
             | property          | value                |
             | firstname         | new_first            |
             | lastname          | new_last             |
@@ -121,7 +121,7 @@ Feature: Interacting with the REST API for users
             | firstname         | first                |
             | lastname          | last                 |
             | mail              | mail@example.com     |
-        When I remove the user with id "4"
+        When I remove the user with id "5"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
