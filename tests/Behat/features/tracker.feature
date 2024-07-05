@@ -31,13 +31,20 @@ Feature: Interacting with the REST API for trackers
         And the returned data "trackers" property is an array
         And the returned data "trackers" property contains "2" items
         And the returned data "trackers.0" property is an array
-        And the returned data "trackers.0" property has only the following properties
+        And the returned data "trackers.0" property has only the following properties with Redmine version ">= 5.0.0"
             """
             id
             name
             default_status
             description
             enabled_standard_fields
+            """
+        But the returned data "trackers.0" property has only the following properties with Redmine version "< 5.0.0"
+            """
+            id
+            name
+            default_status
+            description
             """
         And the returned data "trackers.0" property contains the following data
             | property          | value                |
@@ -48,7 +55,7 @@ Feature: Interacting with the REST API for trackers
             | property          | value                |
             | id                | 1                    |
             | name              | New                  |
-        And the returned data "trackers.0.enabled_standard_fields" property contains the following data
+        And the returned data "trackers.0.enabled_standard_fields" property contains the following data with Redmine version ">= 5.1.0"
             | property          | value                |
             | 0                 | assigned_to_id       |
             | 1                 | category_id          |
@@ -60,3 +67,14 @@ Feature: Interacting with the REST API for trackers
             | 7                 | done_ratio           |
             | 8                 | description          |
             | 9                 | priority_id          |
+        But the returned data "trackers.0.enabled_standard_fields" property contains the following data with Redmine version ">= 5.0.0"
+            | property          | value                |
+            | 0                 | assigned_to_id       |
+            | 1                 | category_id          |
+            | 2                 | fixed_version_id     |
+            | 3                 | parent_issue_id      |
+            | 4                 | start_date           |
+            | 5                 | due_date             |
+            | 6                 | estimated_hours      |
+            | 7                 | done_ratio           |
+            | 8                 | description          |
