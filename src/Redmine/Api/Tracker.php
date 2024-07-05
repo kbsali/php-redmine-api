@@ -17,6 +17,8 @@ class Tracker extends AbstractApi
 {
     private $trackers = [];
 
+    private $trackerNames = null;
+
     /**
      * List trackers.
      *
@@ -35,6 +37,29 @@ class Tracker extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all trackers with id/name pairs.
+     *
+     * @return array<int,string> list of trackers (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->trackerNames !== null) {
+            return $this->trackerNames;
+        }
+
+        $this->trackerNames = [];
+        $list = $this->list();
+
+        if (array_key_exists('trackers', $list)) {
+            foreach ($list['trackers'] as $role) {
+                $this->trackerNames[(int) $role['id']] = $role['name'];
+            }
+        }
+
+        return $this->trackerNames;
     }
 
     /**

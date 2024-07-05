@@ -78,3 +78,17 @@ Feature: Interacting with the REST API for trackers
             | 6                 | estimated_hours      |
             | 7                 | done_ratio           |
             | 8                 | description          |
+
+    Scenario: Listing of multiple tracker names
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have a tracker with the name "Feature" and default status id "1"
+        And I have a tracker with the name "Defect" and default status id "1"
+        When I list all tracker names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property          | value                |
+            | 1                 | Feature              |
+            | 2                 | Defect               |

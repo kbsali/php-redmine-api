@@ -40,4 +40,18 @@ trait TrackerContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I list all tracker names
+     */
+    public function iListAllTrackerNames()
+    {
+        /** @var Tracker */
+        $api = $this->getNativeCurlClient()->getApi('tracker');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
 }
