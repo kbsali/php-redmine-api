@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
+use Redmine\Api\Tracker;
+
 trait TrackerContextTrait
 {
     /**
@@ -22,6 +24,20 @@ trait TrackerContextTrait
                 ':fields_bits' => 0,
                 ':default_status_id' => $statusId,
             ],
+        );
+    }
+
+    /**
+     * @When I list all trackers
+     */
+    public function iListAllTrackers()
+    {
+        /** @var Tracker */
+        $api = $this->getNativeCurlClient()->getApi('tracker');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse(),
         );
     }
 }
