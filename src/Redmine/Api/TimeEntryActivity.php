@@ -17,6 +17,8 @@ class TimeEntryActivity extends AbstractApi
 {
     private $timeEntryActivities = [];
 
+    private $timeEntryActivityNames = null;
+
     /**
      * List time entry activities.
      *
@@ -33,6 +35,29 @@ class TimeEntryActivity extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all time entry activities with id/name pairs.
+     *
+     * @return array<int,string> list of time entry activities (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->timeEntryActivityNames !== null) {
+            return $this->timeEntryActivityNames;
+        }
+
+        $this->timeEntryActivityNames = [];
+        $list = $this->list();
+
+        if (array_key_exists('time_entry_activities', $list)) {
+            foreach ($list['time_entry_activities'] as $activity) {
+                $this->timeEntryActivityNames[(int) $activity['id']] = $activity['name'];
+            }
+        }
+
+        return $this->timeEntryActivityNames;
     }
 
     /**
@@ -69,12 +94,17 @@ class TimeEntryActivity extends AbstractApi
     /**
      * Returns an array of time entry activities with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see TimeEntryActivity::listNames()
+     *
      * @param bool $forceUpdate to force the update of the statuses var
      *
      * @return array list of time entry activities (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->timeEntryActivities) || $forceUpdate) {
             $this->timeEntryActivities = $this->list();
         }

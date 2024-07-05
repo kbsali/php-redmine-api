@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
+use Redmine\Api\TimeEntryActivity;
+
 trait TimeEntryActivityContextTrait
 {
     /**
@@ -18,10 +20,38 @@ trait TimeEntryActivityContextTrait
             [
                 ':name' => $activityName,
                 ':position' => 1,
-                ':is_default' => 1,
+                ':is_default' => 0,
                 ':type' => 'TimeEntryActivity',
                 ':active' => 1,
             ],
+        );
+    }
+
+    /**
+     * @When I list all time entry activities
+     */
+    public function iListAllTimeEntryActivities()
+    {
+        /** @var TimeEntryActivity */
+        $api = $this->getNativeCurlClient()->getApi('time_entry_activity');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all time entry activity names
+     */
+    public function iListAllTimeEntryActivityNames()
+    {
+        /** @var TimeEntryActivity */
+        $api = $this->getNativeCurlClient()->getApi('time_entry_activity');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
         );
     }
 }

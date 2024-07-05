@@ -17,7 +17,7 @@ Feature: Interacting with the REST API for groups
             """
         And the returned data has proterties with the following data
             | property          | value                |
-            | id                | 4                    |
+            | id                | 5                    |
             | name              | Test Group           |
 
     Scenario: Listing of zero groups
@@ -52,7 +52,7 @@ Feature: Interacting with the REST API for groups
             """
         And the returned data "groups.0" property contains the following data
             | property          | value                |
-            | id                | 4                    |
+            | id                | 5                    |
             | name              | Test Group           |
 
     Scenario: Listing names of all groups
@@ -69,16 +69,16 @@ Feature: Interacting with the REST API for groups
         And the returned data contains "5" items
         And the returned data contains the following data
             | property          | value                |
-            | 4                 | Test Group D         |
-            | 5                 | Test Group E         |
-            | 6                 | Test Group C         |
-            | 7                 | Test Group B         |
-            | 8                 | Test Group A         |
+            | 5                 | Test Group D         |
+            | 6                 | Test Group E         |
+            | 7                 | Test Group C         |
+            | 8                 | Test Group B         |
+            | 9                 | Test Group A         |
 
     Scenario: Showing a specific group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
-        When I show the group with id "4"
+        When I show the group with id "5"
         Then the response has the status code "200"
         And the response has the content type "application/json"
         And the returned data has only the following properties
@@ -93,7 +93,7 @@ Feature: Interacting with the REST API for groups
             """
         And the returned data "group" property contains the following data
             | property          | value                |
-            | id                | 4                    |
+            | id                | 5                    |
             | name              | Test Group           |
 
     @error
@@ -110,7 +110,7 @@ Feature: Interacting with the REST API for groups
         And I create a group with the following data
             | property          | value                |
             | name              | Test Group           |
-        When I update the group with id "4" with the following data
+        When I update the group with id "5" with the following data
             | property          | value                |
             | name              | new group name       |
         Then the response has the status code "204"
@@ -121,7 +121,7 @@ Feature: Interacting with the REST API for groups
     Scenario: Adding an user to a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
-        When I add the user with id "1" to the group with id "4"
+        When I add the user with id "1" to the group with id "5"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
@@ -130,8 +130,8 @@ Feature: Interacting with the REST API for groups
     Scenario: Removing an user from a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
-        And I add the user with id "1" to the group with id "4"
-        When I remove the user with id "1" from the group with id "4"
+        And I add the user with id "1" to the group with id "5"
+        When I remove the user with id "1" from the group with id "5"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
@@ -140,7 +140,7 @@ Feature: Interacting with the REST API for groups
     Scenario: Deleting a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"
-        When I remove the group with id "4"
+        When I remove the group with id "5"
         Then the response has the status code "204"
         And the response has an empty content type
         And the response has the content ""
