@@ -12,6 +12,7 @@ Feature: Interacting with the REST API for time_entries
             | property          | value                |
             | project_id        | 1                    |
             | hours             | 1                    |
+            | activity_id       | 1                    |
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
@@ -77,6 +78,7 @@ Feature: Interacting with the REST API for time_entries
             | property          | value                |
             | project_id        | 1                    |
             | hours             | 1                    |
+            | activity_id       | 1                    |
         When I update the time entry with id "1" and the following data
             | property          | value                |
             | project_id        | 1                    |
@@ -94,6 +96,7 @@ Feature: Interacting with the REST API for time_entries
             | property          | value                |
             | project_id        | 1                    |
             | hours             | 1                    |
+            | activity_id       | 1                    |
         When I show the time entry with the id "1"
         Then the response has the status code "200"
         And the response has the content type "application/json"
@@ -168,6 +171,7 @@ Feature: Interacting with the REST API for time_entries
             | property          | value                |
             | project_id        | 1                    |
             | hours             | 1                    |
+            | activity_id       | 1                    |
         When I remove the time entry with id "1"
         Then the response has the status code "204"
         And the response has an empty content type
