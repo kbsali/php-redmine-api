@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\IssueStatus::listNames()` for listing the ids and names of all issue statuses.
 - New method `Redmine\Api\Project::listNames()` for listing the ids and names of all projects.
 - New method `Redmine\Api\Role::listNames()` for listing the ids and names of all roles.
+- New method `Redmine\Api\TimeEntryActivity::listNames()` for listing the ids and names of all time entry activities.
 
 ### Deprecated
 

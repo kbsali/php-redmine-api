@@ -16,7 +16,6 @@ Feature: Interacting with the REST API for time entry activities
         And the returned data "time_entry_activities" property is an array
         And the returned data "time_entry_activities" property contains "0" items
 
-    @wip
     Scenario: Listing of multiple time entry activities
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "Development"
@@ -58,4 +57,18 @@ Feature: Interacting with the REST API for time entry activities
             | name              | Support              |
             | is_default        | false                |
             | active            | true                 |
+
+    Scenario: Listing of multiple time entry activity names
+        Given I have a "NativeCurlClient" client
+        And I have a time entry activiy with name "Development"
+        And I have a time entry activiy with name "Support"
+        When I list all time entry activity names
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data is an array
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property          | value                |
+            | 1                 | Development          |
+            | 2                 | Support              |
 

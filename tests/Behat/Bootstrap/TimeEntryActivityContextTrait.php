@@ -40,4 +40,18 @@ trait TimeEntryActivityContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I list all time entry activity names
+     */
+    public function iListAllTimeEntryActivityNames()
+    {
+        /** @var TimeEntryActivity */
+        $api = $this->getNativeCurlClient()->getApi('time_entry_activity');
+
+        $this->registerClientResponse(
+            $api->listNames(),
+            $api->getLastResponse(),
+        );
+    }
 }
