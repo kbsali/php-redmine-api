@@ -44,6 +44,18 @@ trait ProjectContextTrait
     }
 
     /**
+     * @Given I create :count projects
+     */
+    public function iCreateProjects(int $count)
+    {
+        while ($count > 0) {
+            $this->iCreateAProjectWithNameAndIdentifier('Test Project ' . $count, 'test-project-' . $count);
+
+            $count--;
+        }
+    }
+
+    /**
      * @When I list all projects
      */
     public function iListAllProjects()
@@ -53,6 +65,20 @@ trait ProjectContextTrait
 
         $this->registerClientResponse(
             $api->list(),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all project names
+     */
+    public function iListAllProjectNames()
+    {
+        /** @var Project */
+        $api = $this->getNativeCurlClient()->getApi('project');
+
+        $this->registerClientResponse(
+            $api->listNames(),
             $api->getLastResponse(),
         );
     }
