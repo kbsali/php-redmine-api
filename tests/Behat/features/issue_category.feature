@@ -7,9 +7,7 @@ Feature: Interacting with the REST API for issue categories
     Scenario: Creating an issue category with miminal data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        When I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name        |
+        When I create an issue category for project identifier "test-project" and with the name "Category name"
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
@@ -101,12 +99,8 @@ Feature: Interacting with the REST API for issue categories
     Scenario: Listing of multiple issue categories
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name B      |
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name A      |
+        And I create an issue category for project identifier "test-project" and with the name "Category name B"
+        And I create an issue category for project identifier "test-project" and with the name "Category name A"
         When I list all issue categories for project identifier "test-project"
         Then the response has the status code "200"
         And the response has the content type "application/json"
@@ -154,12 +148,8 @@ Feature: Interacting with the REST API for issue categories
     Scenario: Listing of multiple issue category names
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name B      |
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name A      |
+        And I create an issue category for project identifier "test-project" and with the name "Category name B"
+        And I create an issue category for project identifier "test-project" and with the name "Category name A"
         When I list all issue category names for project identifier "test-project"
         Then the response has the status code "200"
         And the response has the content type "application/json"
@@ -168,13 +158,19 @@ Feature: Interacting with the REST API for issue categories
             | 1                 | Category name B      |
             | 2                 | Category name A      |
 
+    Scenario: Listing a lot of issue category names
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create "108" issue categories for project identifier "test-project"
+        When I list all issue category names for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "108" items
+
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name        |
-            | assigned_to_id    | 1                    |
+        And I create an issue category for project identifier "test-project" and with the name "Category name"
         When I update the issue category with id "1" and the following data
             | property          | value                |
             | name              | New category name    |
@@ -187,10 +183,7 @@ Feature: Interacting with the REST API for issue categories
     Scenario: Deleting an issue category
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the following data
-            | property          | value                |
-            | name              | Category name        |
-            | assigned_to_id    | 1                    |
+        And I create an issue category for project identifier "test-project" and with the name "Category name"
         When I remove the issue category with id "1"
         Then the response has the status code "204"
         And the response has an empty content type
