@@ -166,6 +166,38 @@ class TimeEntryActivityTest extends TestCase
         $this->assertSame($expectedReturn, $api->listing(true));
     }
 
+    /**
+     * Test listing().
+     */
+    public function testListingTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"time_entry_activities":[{"id":1,"name":"TimeEntryActivity 1"},{"id":5,"name":"TimeEntryActivity 5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new TimeEntryActivity($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\TimeEntryActivity::listing()` is deprecated since v2.7.0, use `Redmine\Api\TimeEntryActivity::listNames()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->listing();
+    }
+
     public function testGetIdByNameMakesGetRequest()
     {
         $response = '{"time_entry_activities":[{"id":2,"name":"TimeEntryActivities 2"}]}';
