@@ -50,7 +50,12 @@
         "sort-packages": true
     },
     "scripts": {
-        "behat": "behat --config tests/Behat/behat.yml --format progress",
+        "bdt": [
+            "@behat --format=progress --suite=redmine_50103",
+            "@behat --format=progress --suite=redmine_50009",
+            "@behat --format=progress --suite=redmine_40210"
+        ],
+        "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
