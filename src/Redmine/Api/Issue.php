@@ -355,7 +355,11 @@ class Issue extends AbstractApi
         if (isset($params['category']) && isset($params['project_id'])) {
             $issueCategoryApi = $this->getIssueCategoryApi();
 
-            $params['category_id'] = $issueCategoryApi->getIdByName($params['project_id'], $params['category']);
+            $params['category_id'] = array_search(
+                $params['category'],
+                $issueCategoryApi->listNamesByProject($params['project_id']),
+                true,
+            );
             unset($params['category']);
         }
 
