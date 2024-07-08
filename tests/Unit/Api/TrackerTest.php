@@ -216,6 +216,38 @@ class TrackerTest extends TestCase
     }
 
     /**
+     * Test listing().
+     */
+    public function testListingTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"trackers":[{"id":1,"name":"Tracker 1"},{"id":5,"name":"Tracker 5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new Tracker($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\Tracker::listing()` is deprecated since v2.7.0, use `Redmine\Api\Tracker::listNames()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->listing();
+    }
+
+    /**
      * Test getIdByName().
      */
     public function testGetIdByNameMakesGetRequest()

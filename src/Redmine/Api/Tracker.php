@@ -17,6 +17,8 @@ class Tracker extends AbstractApi
 {
     private $trackers = [];
 
+    private $trackerNames = null;
+
     /**
      * List trackers.
      *
@@ -35,6 +37,29 @@ class Tracker extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all trackers with id/name pairs.
+     *
+     * @return array<int,string> list of trackers (id => name)
+     */
+    final public function listNames(): array
+    {
+        if ($this->trackerNames !== null) {
+            return $this->trackerNames;
+        }
+
+        $this->trackerNames = [];
+        $list = $this->list();
+
+        if (array_key_exists('trackers', $list)) {
+            foreach ($list['trackers'] as $role) {
+                $this->trackerNames[(int) $role['id']] = $role['name'];
+            }
+        }
+
+        return $this->trackerNames;
     }
 
     /**
@@ -73,12 +98,17 @@ class Tracker extends AbstractApi
     /**
      * Returns an array of trackers with name/id pairs.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Tracker::listNames()
+     *
      * @param bool $forceUpdate to force the update of the trackers var
      *
      * @return array list of trackers (id => name)
      */
     public function listing($forceUpdate = false)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->trackers) || $forceUpdate) {
             $this->trackers = $this->list();
         }
