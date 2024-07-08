@@ -199,13 +199,11 @@ class IssueTest extends TestCase
             ->method('requestPost')
             ->with(
                 '/issues.xml',
-                $this->stringEqualsStringIgnoringLineEndings(
-                    <<< XML
-                    <?xml version="1.0"?>
-                    <issue><project_id>1</project_id><category_id>5</category_id><status_id>cleanedValue</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
+                <<< XML
+                <?xml version="1.0"?>
+                <issue><project_id>1</project_id><category_id>5</category_id><status_id>cleanedValue</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
 
-                    XML,
-                ),
+                XML,
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))
