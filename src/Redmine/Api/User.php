@@ -23,6 +23,8 @@ class User extends AbstractApi
 {
     private $users = [];
 
+    private $userLogins = null;
+
     /**
      * List users.
      *
@@ -41,6 +43,43 @@ class User extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all users with id/login pairs.
+     *
+     * @return array<int,string> list of users (id => login)
+     */
+    final public function listLogins(): array
+    {
+        if ($this->userLogins !== null) {
+            return $this->userLogins;
+        }
+
+        $this->userLogins = [];
+
+        $limit = 100;
+        $offset = 0;
+
+        do {
+            $list = $this->list([
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
+
+            $listCount = 0;
+            $offset += $limit;
+
+            if (array_key_exists('users', $list)) {
+                $listCount = count($list['users']);
+
+                foreach ($list['users'] as $user) {
+                    $this->userLogins[(int) $user['id']] = (string) $user['login'];
+                }
+            }
+        } while ($listCount === $limit);
+
+        return $this->userLogins;
     }
 
     /**
@@ -79,6 +118,9 @@ class User extends AbstractApi
     /**
      * Returns an array of users with login/id pairs.
      *
+     * @deprecated v2.7.0 Use listLogins() instead.
+     * @see User::listLogins()
+     *
      * @param bool  $forceUpdate to force the update of the users var
      * @param array $params      to allow offset/limit (and more) to be passed
      *
@@ -86,6 +128,8 @@ class User extends AbstractApi
      */
     public function listing($forceUpdate = false, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+
         if (empty($this->users) || $forceUpdate) {
             $this->users = $this->list($params);
         }

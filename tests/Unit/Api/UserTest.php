@@ -286,4 +286,36 @@ class UserTest extends TestCase
         $this->assertSame($expectedReturn, $api->listing(true));
         $this->assertSame($expectedReturn, $api->listing(true));
     }
+
+    /**
+     * Test listing().
+     */
+    public function testListingTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new User($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\User::listing()` is deprecated since v2.7.0, use `Redmine\Api\User::listLogins()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->listing();
+    }
 }
