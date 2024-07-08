@@ -162,6 +162,24 @@ Feature: Interacting with the REST API for versions
             | id                | 1                    |
             | name              | Test Project         |
 
+    @wip
+    Scenario: Listing of multiple version names
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project 1" and identifier "test-project-1"
+        And I create a project with name "Test Project 2" and identifier "test-project-2"
+        And I create a version with name "Test-Version 1B" and project identifier "test-project-1"
+        And I create a version with name "Test-Version 1A" and project identifier "test-project-1"
+        And I create a version with name "Test-Version 2B" and project identifier "test-project-2"
+        And I create a version with name "Test-Version 2A" and project identifier "test-project-2"
+        When I list all version names for project identifier "test-project-2"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "2" items
+        And the returned data contains the following data
+            | property          | value                |
+            | 3                 | Test-Version 2B      |
+            | 4                 | Test-Version 2A      |
+
     Scenario: Updating a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

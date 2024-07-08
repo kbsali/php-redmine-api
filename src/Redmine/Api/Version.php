@@ -23,6 +23,8 @@ class Version extends AbstractApi
 {
     private $versions = [];
 
+    private $versionNames = [];
+
     /**
      * List versions of a project.
      *
@@ -49,6 +51,41 @@ class Version extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
+    }
+
+    /**
+     * Returns an array of all versions by a project with id/name pairs.
+     *
+     * @param string|int $projectIdentifier project id or literal identifier
+     *
+     * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     *
+     * @return array<int,string> list of version names (id => name)
+     */
+    final public function listNamesByProject($projectIdentifier): array
+    {
+        if (! is_int($projectIdentifier) && ! is_string($projectIdentifier)) {
+            throw new InvalidParameterException(sprintf(
+                '%s(): Argument #1 ($projectIdentifier) must be of type int or string',
+                __METHOD__,
+            ));
+        }
+
+        if (array_key_exists($projectIdentifier, $this->versionNames)) {
+            return $this->versionNames[$projectIdentifier];
+        }
+
+        $this->versionNames[$projectIdentifier] = [];
+
+        $list = $this->listByProject($projectIdentifier);
+
+        if (array_key_exists('versions', $list)) {
+            foreach ($list['versions'] as $version) {
+                $this->versionNames[$projectIdentifier][(int) $version['id']] = $version['name'];
+            }
+        }
+
+        return $this->versionNames[$projectIdentifier];
     }
 
     /**

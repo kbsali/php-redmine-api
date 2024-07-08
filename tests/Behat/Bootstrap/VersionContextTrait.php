@@ -73,6 +73,20 @@ trait VersionContextTrait
     }
 
     /**
+     * @When I list all version names for project identifier :identifier
+     */
+    public function iListAllVersionNamesForProjectIdentifier($identifier)
+    {
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->listNamesByProject($identifier),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the version with id :id and the following data
      */
     public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table)
