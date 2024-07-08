@@ -137,15 +137,7 @@ class IssueCategory extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
-        if (true === $forceUpdate || empty($this->issueCategories)) {
-            $this->issueCategories = $this->listByProject($project);
-        }
-        $ret = [];
-        foreach ($this->issueCategories['issue_categories'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
+        return $this->doListing($project, $forceUpdate);
     }
 
     /**
@@ -158,7 +150,7 @@ class IssueCategory extends AbstractApi
      */
     public function getIdByName($project, $name)
     {
-        $arr = $this->listing($project);
+        $arr = $this->doListing($project);
         if (!isset($arr[$name])) {
             return false;
         }
@@ -282,5 +274,20 @@ class IssueCategory extends AbstractApi
         ));
 
         return $this->lastResponse->getContent();
+    }
+
+    private function doListing($project, $forceUpdate = false)
+    {
+        if (true === $forceUpdate || empty($this->issueCategories)) {
+            $this->issueCategories = $this->listByProject($project);
+        }
+
+        $ret = [];
+
+        foreach ($this->issueCategories['issue_categories'] as $e) {
+            $ret[$e['name']] = (int) $e['id'];
+        }
+
+        return $ret;
     }
 }
