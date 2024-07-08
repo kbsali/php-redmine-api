@@ -6,7 +6,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Api\IssueCategory;
 use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -142,7 +145,7 @@ class IssueTest extends TestCase
         $response = '<?xml version="1.0"?><issue></issue>';
         $parameters = [
             'project' => 'Project Name',
-            'category' => 'Category Name',
+            'category' => 'Category 5 Name',
             'status' => 'Status Name',
             'tracker' => 'Tracker Name',
             'assigned_to' => 'Assigned to User Name',
@@ -150,12 +153,12 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $getIdByNameApi = $this->createMock('Redmine\Api\Project');
-        $getIdByNameApi->expects($this->exactly(3))
+        $projectApi = $this->createMock('Redmine\Api\Project');
+        $projectApi->expects($this->exactly(1))
             ->method('getIdByName')
-            ->willReturn('cleanedValue');
-        $issueCategoryGetIdByNameApi = $this->createMock('Redmine\Api\IssueCategory');
-        $issueCategoryGetIdByNameApi->expects($this->exactly(1))
+            ->willReturn(1);
+        $getIdByNameApi = $this->createMock('Redmine\Api\Tracker');
+        $getIdByNameApi->expects($this->exactly(2))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
         $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
@@ -163,32 +166,45 @@ class IssueTest extends TestCase
             ->method('getIdByUsername')
             ->willReturn('cleanedValue');
 
+        $httpClient = $this->createMock(HttpClient::class);
+        $httpClient->expects($this->exactly(1))
+            ->method('request')
+            ->willReturn(
+                $this->createConfiguredMock(
+                    Response::class,
+                    [
+                        'getStatusCode' => 200,
+                        'getContentType' => 'application/json',
+                        'getContent' => '{"issue_categories":[{"id":5,"name":"Category 5 Name"}]}',
+                    ],
+                ),
+            )
+        ;
+
         $client = $this->createMock(Client::class);
         $client->expects($this->exactly(5))
             ->method('getApi')
             ->willReturnMap(
                 [
-                    ['project', $getIdByNameApi],
-                    ['issue_category', $issueCategoryGetIdByNameApi],
+                    ['project', $projectApi],
+                    ['issue_category', new IssueCategory($httpClient)],
                     ['issue_status', $getIdByNameApi],
                     ['tracker', $getIdByNameApi],
                     ['user', $getIdByUsernameApi],
                 ],
-            );
+            )
+        ;
 
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
                 '/issues.xml',
-                $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
-                    $this->stringContains('<project_id>cleanedValue</project_id>'),
-                    $this->stringContains('<category_id>cleanedValue</category_id>'),
-                    $this->stringContains('<status_id>cleanedValue</status_id>'),
-                    $this->stringContains('<tracker_id>cleanedValue</tracker_id>'),
-                    $this->stringContains('<assigned_to_id>cleanedValue</assigned_to_id>'),
-                    $this->stringContains('<author_id>cleanedValue</author_id>'),
+                $this->stringEqualsStringIgnoringLineEndings(
+                    <<< XML
+                    <?xml version="1.0"?>
+                    <issue><project_id>1</project_id><category_id>5</category_id><status_id>cleanedValue</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
+
+                    XML,
                 ),
             )
             ->willReturn(true);
