@@ -125,6 +125,9 @@ class Version extends AbstractApi
     /**
      * Returns an array of name/id pairs (or id/name if not $reverse) of versions for $project.
      *
+     * @deprecated v2.7.0 Use listNamesByProject() instead.
+     * @see Version::listNamesByProject()
+     *
      * @param string|int $project     project id or literal identifier
      * @param bool       $forceUpdate to force the update of the projects var
      * @param bool       $reverse     to return an array indexed by name rather than id
@@ -134,6 +137,8 @@ class Version extends AbstractApi
      */
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+
         if (true === $forceUpdate || empty($this->versions)) {
             $this->versions = $this->listByProject($project, $params);
         }
