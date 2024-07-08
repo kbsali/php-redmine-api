@@ -117,6 +117,9 @@ class CustomField extends AbstractApi
     /**
      * Get a custom field id given its name.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see CustomField::listNames()
+     *
      * @param string|int $name   customer field name
      * @param array      $params optional parameters to be passed to the api (offset, limit, ...)
      *
@@ -124,6 +127,8 @@ class CustomField extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing(false, $params);
 
         if (!isset($arr[$name])) {

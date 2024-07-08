@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 - `Redmine\Api\CustomField::listing()` is deprecated, use `\Redmine\Api\CustomField::listNames()` instead.
+- `Redmine\Api\CustomField::getIdByName()` is deprecated, use `\Redmine\Api\CustomField::listNames()` instead.
 - `Redmine\Api\Group::listing()` is deprecated, use `\Redmine\Api\Group::listNames()` instead.
 - `Redmine\Api\IssueCategory::listing()` is deprecated, use `\Redmine\Api\IssueCategory::listNamesByProject()` instead.
 - `Redmine\Api\IssueStatus::listing()` is deprecated, use `\Redmine\Api\IssueStatus::listNames()` instead.
