@@ -168,6 +168,31 @@ Feature: Interacting with the REST API for users
             | mail              | mail@example.net     |
             | twofa_scheme      | null                 |
 
+    Scenario: Listing of multiple user logins
+        Given I have a "NativeCurlClient" client
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.net     |
+        When I list all user logins
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "2" items
+        And the returned data has proterties with the following data
+            | property          | value                |
+            | 1                 | admin                |
+            | 5                 | username             |
+
+    Scenario: Listing of multiple user logins
+        Given I have a "NativeCurlClient" client
+        And I create "108" users
+        When I list all user logins
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data contains "109" items
+
     Scenario: Updating an user
         Given I have a "NativeCurlClient" client
         And I create a user with the following data
