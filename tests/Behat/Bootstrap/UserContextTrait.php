@@ -30,6 +30,34 @@ trait UserContextTrait
     }
 
     /**
+     * @When I show the user with id :userId
+     */
+    public function iShowTheUserWithId(int $userId)
+    {
+        /** @var User */
+        $api = $this->getNativeCurlClient()->getApi('user');
+
+        $this->registerClientResponse(
+            $api->show($userId),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all users
+     */
+    public function iListAllUsers()
+    {
+        /** @var User */
+        $api = $this->getNativeCurlClient()->getApi('user');
+
+        $this->registerClientResponse(
+            $api->list(),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the user with id :id and the following data
      */
     public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table)
@@ -45,20 +73,6 @@ trait UserContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse(),
-        );
-    }
-
-    /**
-     * @When I show the user with id :userId
-     */
-    public function iShowTheUserWithId(int $userId)
-    {
-        /** @var User */
-        $api = $this->getNativeCurlClient()->getApi('user');
-
-        $this->registerClientResponse(
-            $api->show($userId),
             $api->getLastResponse(),
         );
     }
