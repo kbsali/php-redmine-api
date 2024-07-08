@@ -52,20 +52,6 @@ Feature: Interacting with the REST API for versions
             | id                | 1                    |
             | name              | Test Project         |
 
-    Scenario: Updating a version
-        Given I have a "NativeCurlClient" client
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I create a version with project identifier "test-project" with the following data
-            | property          | value                |
-            | name              | Test-Version         |
-        When I update the version with id "1" and the following data
-            | property          | value                |
-            | name              | New Version name     |
-        Then the response has the status code "204"
-        And the response has an empty content type
-        And the response has the content ""
-        And the returned data is exactly ""
-
     Scenario: Showing a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -114,6 +100,81 @@ Feature: Interacting with the REST API for versions
         And the response has the content type "application/json"
         And the response has the content ""
         And the returned data is false
+
+    Scenario: Listing of zero versions
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I list all versions for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            versions
+            total_count
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | versions          | []                   |
+            | total_count       | 0                    |
+
+    Scenario: Listing of multiple versions
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "Test-Version B" and project identifier "test-project"
+        And I create a version with name "Test-Version A" and project identifier "test-project"
+        When I list all versions for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            versions
+            total_count
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | total_count       | 2                    |
+        And the returned data "versions" property is an array
+        And the returned data "versions" property contains "2" items
+        And the returned data "versions.0" property is an array
+        And the returned data "versions.0" property has only the following properties
+            """
+            id
+            project
+            name
+            description
+            status
+            due_date
+            sharing
+            wiki_page_title
+            created_on
+            updated_on
+            """
+        And the returned data "versions.0" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test-Version B       |
+            | description       |                      |
+            | status            | open                 |
+            | sharing           | none                 |
+            | wiki_page_title   | null                 |
+        And the returned data "versions.0.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+
+    Scenario: Updating a version
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        When I update the version with id "1" and the following data
+            | property          | value                |
+            | name              | New Version name     |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
 
     Scenario: Removing a version
         Given I have a "NativeCurlClient" client

@@ -45,6 +45,34 @@ trait VersionContextTrait
     }
 
     /**
+     * @When I show the version with id :versionId
+     */
+    public function iShowTheVersionWithId(int $versionId)
+    {
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->show($versionId),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
+     * @When I list all versions for project identifier :identifier
+     */
+    public function iListAllVersionsForProjectIdentifier($identifier)
+    {
+        /** @var Version */
+        $api = $this->getNativeCurlClient()->getApi('version');
+
+        $this->registerClientResponse(
+            $api->listByProject($identifier),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the version with id :id and the following data
      */
     public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table)
@@ -60,20 +88,6 @@ trait VersionContextTrait
 
         $this->registerClientResponse(
             $api->update($id, $data),
-            $api->getLastResponse(),
-        );
-    }
-
-    /**
-     * @When I show the version with id :versionId
-     */
-    public function iShowTheVersionWithId(int $versionId)
-    {
-        /** @var Version */
-        $api = $this->getNativeCurlClient()->getApi('version');
-
-        $this->registerClientResponse(
-            $api->show($versionId),
             $api->getLastResponse(),
         );
     }
