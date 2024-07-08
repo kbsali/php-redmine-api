@@ -10,27 +10,35 @@ Pull the Redmine docker images and start them by running:
 docker compose up -d
 ```
 
-Now you can run the tests:
+Now you can run all behaviour-driven tests grouped by Redmine version using the `bdt` command:
 
 ```bash
 # all tests
-docker compose exec php composer behat
-# only a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50103
-# only specific endpoints
-docker compose exec php composer behat -- --tags=issue,group
-# only specific endpoints on a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50103 --tags=issue,group
+docker compose exec php composer bdt
 ```
 
-## Redmine specific features
+If you need more control about the behat tests or want to change the output format,
+you can use the `behat` command directly:
 
-Some Redmine features are specific for a Redmine version. There are two ways to handle this situations.
+```bash
+# test only a specific redmine version
+docker compose exec php composer behat -- --suite=redmine_50103
+# test only specific endpoints
+docker compose exec php composer behat -- --tags=issue,group
+# test only specific endpoints on a specific redmine version
+docker compose exec php composer behat -- --suite=redmine_50103 --tags=issue,group
+# test only a specific redmine version and format the output as `progress` (default is `pretty`)
+docker compose exec php composer behat -- --suite=redmine_50103 --format=progress
+```
+
+## Redmine version specific features
+
+Some Redmine features are specific for a Redmine version. Theses situations are handled in different ways.
 
 ### Modified Rest-API Responses
 
 It is possible that a new Redmine version returns new or changed elements in a response.
-This can be handled on the `step` layer:
+This can be handled on the `step` layer (note the missing `homepage` property in `< 5.1.0`):
 
 ```
         And the returned data "projects.0" property has only the following properties with Redmine version ">= 5.1.0"
@@ -40,11 +48,6 @@ This can be handled on the `step` layer:
             identifier
             description
             homepage
-            status
-            is_public
-            inherit_members
-            created_on
-            updated_on
             """
         But the returned data "projects.0" property has only the following properties with Redmine version "< 5.1.0"
             """
@@ -52,17 +55,13 @@ This can be handled on the `step` layer:
             name
             identifier
             description
-            status
-            is_public
-            inherit_members
-            created_on
-            updated_on
             """
 ```
 
 ### New Rest-API Endpoints
 
-A new Redmine version could be introduce new REST-API endpoints that are missing in the older version.
+A new Redmine version could introduce new REST-API endpoints.
+Tests for this endpoint should not be run on older Redmine versions.
 This can be handled on the `scenario` or `feature` layer.
 
 1. Tag features or scenarios e.g. with `@since50000`.
@@ -98,7 +97,8 @@ default:
 
 ### Removed Rest-API Endpoints
 
-A new Redmine version could remove REST-API endpoints that are missing in the newer versions.
+A new Redmine version could remove REST-API endpoints.
+Tests for this endpoint should not be run on newer Redmine versions.
 This can be handled on the `scenario` or `feature` layer.
 
 1. Tag features or scenarios e.g. with `@until60000`.
