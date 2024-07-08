@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Role::listNames()` for listing the ids and names of all roles.
 - New method `Redmine\Api\TimeEntryActivity::listNames()` for listing the ids and names of all time entry activities.
 - New method `Redmine\Api\Tracker::listNames()` for listing the ids and names of all trackers.
+- New method `Redmine\Api\User::listLogins()` for listing the ids and logins of all users.
 - New method `Redmine\Api\Version::listNamesByProject()` for listing the ids and names of all versions of a project.
 
 ### Deprecated
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Role::listing()` is deprecated, use `\Redmine\Api\Role::listNames()` instead.
 - `Redmine\Api\TimeEntryActivity::listing()` is deprecated, use `\Redmine\Api\TimeEntryActivity::listNames()` instead.
 - `Redmine\Api\Tracker::listing()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
+- `Redmine\Api\User::listing()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
 - `Redmine\Api\Version::listing()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
 
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25
