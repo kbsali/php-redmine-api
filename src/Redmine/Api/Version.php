@@ -139,15 +139,7 @@ class Version extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
-        if (true === $forceUpdate || empty($this->versions)) {
-            $this->versions = $this->listByProject($project, $params);
-        }
-        $ret = [];
-        foreach ($this->versions['versions'] as $e) {
-            $ret[(int) $e['id']] = $e['name'];
-        }
-
-        return $reverse ? array_flip($ret) : $ret;
+        return $this->doListing($project, $forceUpdate, $reverse, $params);
     }
 
     /**
@@ -161,7 +153,8 @@ class Version extends AbstractApi
      */
     public function getIdByName($project, $name, array $params = [])
     {
-        $arr = $this->listing($project, false, true, $params);
+        $arr = $this->doListing($project, false, true, $params);
+
         if (!isset($arr[$name])) {
             return false;
         }
@@ -318,5 +311,20 @@ class Version extends AbstractApi
         ));
 
         return $this->lastResponse->getContent();
+    }
+
+    private function doListing($project, bool $forceUpdate, bool $reverse, array $params)
+    {
+        if (true === $forceUpdate || empty($this->versions)) {
+            $this->versions = $this->listByProject($project, $params);
+        }
+
+        $ret = [];
+
+        foreach ($this->versions['versions'] as $e) {
+            $ret[(int) $e['id']] = $e['name'];
+        }
+
+        return $reverse ? array_flip($ret) : $ret;
     }
 }
