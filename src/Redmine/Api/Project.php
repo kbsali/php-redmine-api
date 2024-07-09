@@ -138,6 +138,9 @@ class Project extends AbstractApi
     /**
      * Get a project id given its name.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Project::listNames()
+     *
      * @param string $name
      * @param array  $params to allow offset/limit (and more) to be passed
      *
@@ -145,6 +148,8 @@ class Project extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing(false, true, $params);
 
         if (!isset($arr[$name])) {

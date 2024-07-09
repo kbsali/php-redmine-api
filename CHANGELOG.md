@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\IssueStatus::listing()` is deprecated, use `\Redmine\Api\IssueStatus::listNames()` instead.
 - `Redmine\Api\IssueStatus::getIdByName()` is deprecated, use `\Redmine\Api\IssueStatus::listNames()` instead.
 - `Redmine\Api\Project::listing()` is deprecated, use `\Redmine\Api\Project::listNames()` instead.
+- `Redmine\Api\Project::getIdByName()` is deprecated, use `\Redmine\Api\Project::listNames()` instead.
 - `Redmine\Api\Role::listing()` is deprecated, use `\Redmine\Api\Role::listNames()` instead.
 - `Redmine\Api\TimeEntryActivity::listing()` is deprecated, use `\Redmine\Api\TimeEntryActivity::listNames()` instead.
 - `Redmine\Api\Tracker::listing()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
