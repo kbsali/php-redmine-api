@@ -281,4 +281,33 @@ class IssueCategoryTest extends TestCase
         $this->assertFalse($api->getIdByName(5, 'IssueCategory 1'));
         $this->assertSame(5, $api->getIdByName(5, 'IssueCategory 5'));
     }
+
+    public function testGetIdByNameTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new IssueCategory($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\IssueCategory::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\IssueCategory::listNamesByProject()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->getIdByName(5, 'Category Name');
+    }
 }

@@ -130,17 +130,7 @@ class User extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->users) || $forceUpdate) {
-            $this->users = $this->list($params);
-        }
-        $ret = [];
-        if (is_array($this->users) && isset($this->users['users'])) {
-            foreach ($this->users['users'] as $e) {
-                $ret[$e['login']] = (int) $e['id'];
-            }
-        }
-
-        return $ret;
+        return $this->doListing($forceUpdate, $params);
     }
 
     /**
@@ -160,6 +150,9 @@ class User extends AbstractApi
     /**
      * Get a user id given its username.
      *
+     * @deprecated v2.7.0 Use listLogins() instead.
+     * @see User::listLogins()
+     *
      * @param string $username
      * @param array  $params   to allow offset/limit (and more) to be passed
      *
@@ -167,7 +160,10 @@ class User extends AbstractApi
      */
     public function getIdByUsername($username, array $params = [])
     {
-        $arr = $this->listing(false, $params);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+
+        $arr = $this->doListing(false, $params);
+
         if (!isset($arr[$username])) {
             return false;
         }
@@ -317,5 +313,22 @@ class User extends AbstractApi
         ));
 
         return $this->lastResponse->getContent();
+    }
+
+    private function doListing(bool $forceUpdate, array $params)
+    {
+        if (empty($this->users) || $forceUpdate) {
+            $this->users = $this->list($params);
+        }
+
+        $ret = [];
+
+        if (is_array($this->users) && isset($this->users['users'])) {
+            foreach ($this->users['users'] as $e) {
+                $ret[$e['login']] = (int) $e['id'];
+            }
+        }
+
+        return $ret;
     }
 }

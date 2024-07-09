@@ -105,19 +105,14 @@ class TimeEntryActivity extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->timeEntryActivities) || $forceUpdate) {
-            $this->timeEntryActivities = $this->list();
-        }
-        $ret = [];
-        foreach ($this->timeEntryActivities['time_entry_activities'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
+        return $this->doListing((bool) $forceUpdate);
     }
 
     /**
      * Get a activities id given its name.
+     *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Project::listNames()
      *
      * @param string $name
      *
@@ -125,11 +120,29 @@ class TimeEntryActivity extends AbstractApi
      */
     public function getIdByName($name)
     {
-        $arr = $this->listing();
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
+        $arr = $this->doListing(false);
+
         if (!isset($arr[$name])) {
             return false;
         }
 
         return $arr[(string) $name];
+    }
+
+    private function doListing(bool $forceUpdate)
+    {
+        if (empty($this->timeEntryActivities) || $forceUpdate) {
+            $this->timeEntryActivities = $this->list();
+        }
+
+        $ret = [];
+
+        foreach ($this->timeEntryActivities['time_entry_activities'] as $e) {
+            $ret[$e['name']] = (int) $e['id'];
+        }
+
+        return $ret;
     }
 }

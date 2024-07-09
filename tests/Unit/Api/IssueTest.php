@@ -6,7 +6,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Api\IssueCategory;
+use Redmine\Api\IssueStatus;
+use Redmine\Api\Project;
+use Redmine\Api\Tracker;
+use Redmine\Api\User;
 use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
+use Redmine\Http\Response;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -141,55 +149,87 @@ class IssueTest extends TestCase
         // Test values
         $response = '<?xml version="1.0"?><issue></issue>';
         $parameters = [
-            'project' => 'Project Name',
-            'category' => 'Category Name',
-            'status' => 'Status Name',
-            'tracker' => 'Tracker Name',
-            'assigned_to' => 'Assigned to User Name',
-            'author' => 'Author Name',
+            'project' => 'Project 1 Name',
+            'category' => 'Category 5 Name',
+            'status' => 'Status 6 Name',
+            'tracker' => 'Tracker 2 Name',
+            'assigned_to' => 'user_3',
+            'author' => 'user_4',
         ];
 
         // Create the used mock objects
-        $getIdByNameApi = $this->createMock('Redmine\Api\Project');
-        $getIdByNameApi->expects($this->exactly(3))
-            ->method('getIdByName')
-            ->willReturn('cleanedValue');
-        $issueCategoryGetIdByNameApi = $this->createMock('Redmine\Api\IssueCategory');
-        $issueCategoryGetIdByNameApi->expects($this->exactly(1))
-            ->method('getIdByName')
-            ->willReturn('cleanedValue');
-        $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
-        $getIdByUsernameApi->expects($this->exactly(2))
-            ->method('getIdByUsername')
-            ->willReturn('cleanedValue');
+        $httpClient = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"projects":[{"id":1,"name":"Project 1 Name"},{"id":2,"name":"Project 1 Name"}]}',
+            ],
+            [
+                'GET',
+                '/projects/1/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_categories":[{"id":5,"name":"Category 5 Name"}]}',
+            ],
+            [
+                'GET',
+                '/issue_statuses.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_statuses":[{"id":6,"name":"Status 6 Name"}]}',
+            ],
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"trackers":[{"id":2,"name":"Tracker 2 Name"}]}',
+            ],
+            [
+                'GET',
+                '/users.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"users":[{"id":3,"login":"user_3"},{"id":4,"login":"user_4"}]}',
+            ],
+        );
 
         $client = $this->createMock(Client::class);
         $client->expects($this->exactly(5))
             ->method('getApi')
             ->willReturnMap(
                 [
-                    ['project', $getIdByNameApi],
-                    ['issue_category', $issueCategoryGetIdByNameApi],
-                    ['issue_status', $getIdByNameApi],
-                    ['tracker', $getIdByNameApi],
-                    ['user', $getIdByUsernameApi],
+                    ['project', new Project($httpClient)],
+                    ['issue_category', new IssueCategory($httpClient)],
+                    ['issue_status', new IssueStatus($httpClient)],
+                    ['tracker', new Tracker($httpClient)],
+                    ['user', new User($httpClient)],
                 ],
-            );
+            )
+        ;
 
         $client->expects($this->once())
             ->method('requestPost')
             ->with(
                 '/issues.xml',
-                $this->logicalAnd(
-                    $this->stringStartsWith('<?xml version="1.0"?>' . "\n" . '<issue>'),
-                    $this->stringEndsWith('</issue>' . "\n"),
-                    $this->stringContains('<project_id>cleanedValue</project_id>'),
-                    $this->stringContains('<category_id>cleanedValue</category_id>'),
-                    $this->stringContains('<status_id>cleanedValue</status_id>'),
-                    $this->stringContains('<tracker_id>cleanedValue</tracker_id>'),
-                    $this->stringContains('<assigned_to_id>cleanedValue</assigned_to_id>'),
-                    $this->stringContains('<author_id>cleanedValue</author_id>'),
-                ),
+                <<< XML
+                <?xml version="1.0"?>
+                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
+
+                XML,
             )
             ->willReturn(true);
         $client->expects($this->exactly(1))

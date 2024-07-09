@@ -110,19 +110,14 @@ class IssueStatus extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->issueStatuses) || $forceUpdate) {
-            $this->issueStatuses = $this->list();
-        }
-        $ret = [];
-        foreach ($this->issueStatuses['issue_statuses'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
+        return $this->doListing($forceUpdate);
     }
 
     /**
      * Get a status id given its name.
+     *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see IssueStatus::listNames()
      *
      * @param string $name
      *
@@ -130,11 +125,29 @@ class IssueStatus extends AbstractApi
      */
     public function getIdByName($name)
     {
-        $arr = $this->listing();
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
+        $arr = $this->doListing(false);
+
         if (!isset($arr[$name])) {
             return false;
         }
 
         return $arr[(string) $name];
+    }
+
+    private function doListing(bool $forceUpdate)
+    {
+        if (empty($this->issueStatuses) || $forceUpdate) {
+            $this->issueStatuses = $this->list();
+        }
+
+        $ret = [];
+
+        foreach ($this->issueStatuses['issue_statuses'] as $e) {
+            $ret[$e['name']] = (int) $e['id'];
+        }
+
+        return $ret;
     }
 }

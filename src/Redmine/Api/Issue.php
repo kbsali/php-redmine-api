@@ -319,7 +319,7 @@ class Issue extends AbstractApi
         $issueStatusApi = $this->getIssueStatusApi();
 
         return $this->update($id, [
-            'status_id' => $issueStatusApi->getIdByName($status),
+            'status_id' => array_search($status, $issueStatusApi->listNames(), true),
         ]);
     }
 
@@ -348,42 +348,67 @@ class Issue extends AbstractApi
         if (isset($params['project'])) {
             $projectApi = $this->getProjectApi();
 
-            $params['project_id'] = $projectApi->getIdByName($params['project']);
+            // TODO: project names are not unique; there could be collisions
+            $params['project_id'] = array_search(
+                $params['project'],
+                $projectApi->listNames(),
+                true,
+            );
             unset($params['project']);
         }
 
         if (isset($params['category']) && isset($params['project_id'])) {
             $issueCategoryApi = $this->getIssueCategoryApi();
 
-            $params['category_id'] = $issueCategoryApi->getIdByName($params['project_id'], $params['category']);
+            $params['category_id'] = array_search(
+                $params['category'],
+                $issueCategoryApi->listNamesByProject($params['project_id']),
+                true,
+            );
             unset($params['category']);
         }
 
         if (isset($params['status'])) {
             $issueStatusApi = $this->getIssueStatusApi();
 
-            $params['status_id'] = $issueStatusApi->getIdByName($params['status']);
+            $params['status_id'] = array_search(
+                $params['status'],
+                $issueStatusApi->listNames(),
+                true,
+            );
             unset($params['status']);
         }
 
         if (isset($params['tracker'])) {
             $trackerApi = $this->getTrackerApi();
 
-            $params['tracker_id'] = $trackerApi->getIdByName($params['tracker']);
+            $params['tracker_id'] = array_search(
+                $params['tracker'],
+                $trackerApi->listNames(),
+                true,
+            );
             unset($params['tracker']);
         }
 
         if (isset($params['assigned_to'])) {
             $userApi = $this->getUserApi();
 
-            $params['assigned_to_id'] = $userApi->getIdByUsername($params['assigned_to']);
+            $params['assigned_to_id'] = array_search(
+                $params['assigned_to'],
+                $userApi->listLogins(),
+                true,
+            );
             unset($params['assigned_to']);
         }
 
         if (isset($params['author'])) {
             $userApi = $this->getUserApi();
 
-            $params['author_id'] = $userApi->getIdByUsername($params['author']);
+            $params['author_id'] = array_search(
+                $params['author'],
+                $userApi->listLogins(),
+                true,
+            );
             unset($params['author']);
         }
 

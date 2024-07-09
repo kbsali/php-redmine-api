@@ -119,7 +119,7 @@ class UpdateTest extends TestCase
             $this,
             [
                 'GET',
-                '/projects.json',
+                '/projects.json?limit=100&offset=0',
                 'application/json',
                 '',
                 200,
@@ -155,7 +155,7 @@ class UpdateTest extends TestCase
             ],
             [
                 'GET',
-                '/users.json',
+                '/users.json?limit=100&offset=0',
                 'application/json',
                 '',
                 200,
