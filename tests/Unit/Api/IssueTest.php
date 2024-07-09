@@ -9,6 +9,7 @@ use Redmine\Api\Issue;
 use Redmine\Api\IssueCategory;
 use Redmine\Api\IssueStatus;
 use Redmine\Api\Project;
+use Redmine\Api\Tracker;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
@@ -150,16 +151,12 @@ class IssueTest extends TestCase
             'project' => 'Project 1 Name',
             'category' => 'Category 5 Name',
             'status' => 'Status 6 Name',
-            'tracker' => 'Tracker Name',
+            'tracker' => 'Tracker 2 Name',
             'assigned_to' => 'Assigned to User Name',
             'author' => 'Author Name',
         ];
 
         // Create the used mock objects
-        $getIdByNameApi = $this->createMock('Redmine\Api\Tracker');
-        $getIdByNameApi->expects($this->exactly(1))
-            ->method('getIdByName')
-            ->willReturn('cleanedValue');
         $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
         $getIdByUsernameApi->expects($this->exactly(2))
             ->method('getIdByUsername')
@@ -194,6 +191,15 @@ class IssueTest extends TestCase
                 'application/json',
                 '{"issue_statuses":[{"id":6,"name":"Status 6 Name"}]}',
             ],
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"trackers":[{"id":2,"name":"Tracker 2 Name"}]}',
+            ],
         );
 
         $client = $this->createMock(Client::class);
@@ -204,7 +210,7 @@ class IssueTest extends TestCase
                     ['project', new Project($httpClient)],
                     ['issue_category', new IssueCategory($httpClient)],
                     ['issue_status', new IssueStatus($httpClient)],
-                    ['tracker', $getIdByNameApi],
+                    ['tracker', new Tracker($httpClient)],
                     ['user', $getIdByUsernameApi],
                 ],
             )
@@ -216,7 +222,7 @@ class IssueTest extends TestCase
                 '/issues.xml',
                 <<< XML
                 <?xml version="1.0"?>
-                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
+                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
 
                 XML,
             )

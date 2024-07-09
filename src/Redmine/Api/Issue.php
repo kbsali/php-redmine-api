@@ -382,7 +382,11 @@ class Issue extends AbstractApi
         if (isset($params['tracker'])) {
             $trackerApi = $this->getTrackerApi();
 
-            $params['tracker_id'] = $trackerApi->getIdByName($params['tracker']);
+            $params['tracker_id'] = array_search(
+                $params['tracker'],
+                $trackerApi->listNames(),
+                true,
+            );
             unset($params['tracker']);
         }
 
