@@ -277,4 +277,33 @@ class IssueStatusTest extends TestCase
         $this->assertFalse($api->getIdByName('IssueStatus 1'));
         $this->assertSame(5, $api->getIdByName('IssueStatus 5'));
     }
+
+    public function testGetIdByNameTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"issue_statuses":[{"id":1,"name":"IssueStatus 1"},{"id":5,"name":"IssueStatus 5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new IssueStatus($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\IssueStatus::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\IssueStatus::listNames()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->getIdByName('IssueStatus 5');
+    }
 }
