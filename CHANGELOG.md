@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\Tracker::listing()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
 - `Redmine\Api\Tracker::getIdByName()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
 - `Redmine\Api\User::listing()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
+- `Redmine\Api\User::getIdByUsername()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
 - `Redmine\Api\Version::listing()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
 
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25

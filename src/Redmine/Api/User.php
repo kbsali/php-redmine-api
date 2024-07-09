@@ -150,6 +150,9 @@ class User extends AbstractApi
     /**
      * Get a user id given its username.
      *
+     * @deprecated v2.7.0 Use listLogins() instead.
+     * @see User::listLogins()
+     *
      * @param string $username
      * @param array  $params   to allow offset/limit (and more) to be passed
      *
@@ -157,6 +160,8 @@ class User extends AbstractApi
      */
     public function getIdByUsername($username, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing(false, $params);
 
         if (!isset($arr[$username])) {

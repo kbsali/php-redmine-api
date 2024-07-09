@@ -55,7 +55,7 @@ class UserTest extends TestCase
     public function testGetIdByUsernameMakesGetRequest()
     {
         // Test values
-        $response = '{"users":[{"id":5,"login":"User 5"}]}';
+        $response = '{"users":[{"id":5,"login":"user_5"}]}';
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,8 +79,37 @@ class UserTest extends TestCase
         $api = new User($client);
 
         // Perform the tests
-        $this->assertFalse($api->getIdByUsername('User 1'));
-        $this->assertSame(5, $api->getIdByUsername('User 5'));
+        $this->assertFalse($api->getIdByUsername('user_1'));
+        $this->assertSame(5, $api->getIdByUsername('user_5'));
+    }
+
+    public function testGetIdByUsernameTriggersDeprecationWarning()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('requestGet')
+            ->willReturn(true);
+        $client->method('getLastResponseBody')
+            ->willReturn('{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}');
+        $client->method('getLastResponseContentType')
+            ->willReturn('application/json');
+
+        $api = new User($client);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Api\User::getIdByUsername()` is deprecated since v2.7.0, use `Redmine\Api\User::listLogins()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $api->getIdByUsername('user_5');
     }
 
     /**
@@ -189,10 +218,10 @@ class UserTest extends TestCase
     public function testListingReturnsNameIdArray()
     {
         // Test values
-        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
+        $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
         $expectedReturn = [
-            'User 1' => 1,
-            'User 5' => 5,
+            'user_1' => 1,
+            'user_5' => 5,
         ];
 
         // Create the used mock objects
@@ -223,10 +252,10 @@ class UserTest extends TestCase
     public function testListingCallsGetOnlyTheFirstTime()
     {
         // Test values
-        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
+        $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
         $expectedReturn = [
-            'User 1' => 1,
-            'User 5' => 5,
+            'user_1' => 1,
+            'user_5' => 5,
         ];
 
         // Create the used mock objects
@@ -258,10 +287,10 @@ class UserTest extends TestCase
     public function testListingCallsGetEveryTimeWithForceUpdate()
     {
         // Test values
-        $response = '{"users":[{"id":1,"login":"User 1"},{"id":5,"login":"User 5"}]}';
+        $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
         $expectedReturn = [
-            'User 1' => 1,
-            'User 5' => 5,
+            'user_1' => 1,
+            'user_5' => 5,
         ];
 
         // Create the used mock objects
