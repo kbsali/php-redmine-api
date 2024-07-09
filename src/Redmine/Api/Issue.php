@@ -348,7 +348,12 @@ class Issue extends AbstractApi
         if (isset($params['project'])) {
             $projectApi = $this->getProjectApi();
 
-            $params['project_id'] = $projectApi->getIdByName($params['project']);
+            // TODO: project names are not unique; there could be collisions
+            $params['project_id'] = array_search(
+                $params['project'],
+                $projectApi->listNames(),
+                true,
+            );
             unset($params['project']);
         }
 

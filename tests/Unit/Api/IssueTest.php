@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Api\IssueCategory;
 use Redmine\Api\IssueStatus;
+use Redmine\Api\Project;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
@@ -146,7 +147,7 @@ class IssueTest extends TestCase
         // Test values
         $response = '<?xml version="1.0"?><issue></issue>';
         $parameters = [
-            'project' => 'Project Name',
+            'project' => 'Project 1 Name',
             'category' => 'Category 5 Name',
             'status' => 'Status 6 Name',
             'tracker' => 'Tracker Name',
@@ -155,10 +156,6 @@ class IssueTest extends TestCase
         ];
 
         // Create the used mock objects
-        $projectApi = $this->createMock('Redmine\Api\Project');
-        $projectApi->expects($this->exactly(1))
-            ->method('getIdByName')
-            ->willReturn(1);
         $getIdByNameApi = $this->createMock('Redmine\Api\Tracker');
         $getIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
@@ -170,6 +167,15 @@ class IssueTest extends TestCase
 
         $httpClient = AssertingHttpClient::create(
             $this,
+            [
+                'GET',
+                '/projects.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"projects":[{"id":1,"name":"Project 1 Name"},{"id":2,"name":"Project 1 Name"}]}',
+            ],
             [
                 'GET',
                 '/projects/1/issue_categories.json',
@@ -195,7 +201,7 @@ class IssueTest extends TestCase
             ->method('getApi')
             ->willReturnMap(
                 [
-                    ['project', $projectApi],
+                    ['project', new Project($httpClient)],
                     ['issue_category', new IssueCategory($httpClient)],
                     ['issue_status', new IssueStatus($httpClient)],
                     ['tracker', $getIdByNameApi],
