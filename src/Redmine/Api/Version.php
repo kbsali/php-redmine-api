@@ -145,6 +145,9 @@ class Version extends AbstractApi
     /**
      * Get an version id given its name and related project.
      *
+     * @deprecated v2.7.0 Use listNamesByProject() instead.
+     * @see Version::listNamesByProject()
+     *
      * @param string|int $project project id or literal identifier
      * @param string     $name The version name
      * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
@@ -153,6 +156,8 @@ class Version extends AbstractApi
      */
     public function getIdByName($project, $name, array $params = [])
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing($project, false, true, $params);
 
         if (!isset($arr[$name])) {
