@@ -143,6 +143,9 @@ class IssueCategory extends AbstractApi
     /**
      * Get a category id given its name and related project.
      *
+     * @deprecated v2.7.0 Use listNamesByProject() instead.
+     * @see IssueCategory::listNamesByProject()
+     *
      * @param string|int $project project id or literal identifier
      * @param string     $name
      *
@@ -150,7 +153,10 @@ class IssueCategory extends AbstractApi
      */
     public function getIdByName($project, $name)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing($project);
+
         if (!isset($arr[$name])) {
             return false;
         }
