@@ -10,6 +10,7 @@ use Redmine\Api\IssueCategory;
 use Redmine\Api\IssueStatus;
 use Redmine\Api\Project;
 use Redmine\Api\Tracker;
+use Redmine\Api\User;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
@@ -152,16 +153,11 @@ class IssueTest extends TestCase
             'category' => 'Category 5 Name',
             'status' => 'Status 6 Name',
             'tracker' => 'Tracker 2 Name',
-            'assigned_to' => 'Assigned to User Name',
-            'author' => 'Author Name',
+            'assigned_to' => 'user_3',
+            'author' => 'user_4',
         ];
 
         // Create the used mock objects
-        $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
-        $getIdByUsernameApi->expects($this->exactly(2))
-            ->method('getIdByUsername')
-            ->willReturn('cleanedValue');
-
         $httpClient = AssertingHttpClient::create(
             $this,
             [
@@ -200,6 +196,15 @@ class IssueTest extends TestCase
                 'application/json',
                 '{"trackers":[{"id":2,"name":"Tracker 2 Name"}]}',
             ],
+            [
+                'GET',
+                '/users.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"users":[{"id":3,"login":"user_3"},{"id":4,"login":"user_4"}]}',
+            ],
         );
 
         $client = $this->createMock(Client::class);
@@ -211,7 +216,7 @@ class IssueTest extends TestCase
                     ['issue_category', new IssueCategory($httpClient)],
                     ['issue_status', new IssueStatus($httpClient)],
                     ['tracker', new Tracker($httpClient)],
-                    ['user', $getIdByUsernameApi],
+                    ['user', new User($httpClient)],
                 ],
             )
         ;
@@ -222,7 +227,7 @@ class IssueTest extends TestCase
                 '/issues.xml',
                 <<< XML
                 <?xml version="1.0"?>
-                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
+                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
 
                 XML,
             )

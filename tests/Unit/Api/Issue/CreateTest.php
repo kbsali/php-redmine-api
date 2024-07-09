@@ -410,12 +410,12 @@ class CreateTest extends TestCase
             $this,
             [
                 'GET',
-                '/users.json',
+                '/users.json?limit=100&offset=0',
                 'application/json',
                 '',
                 200,
                 'application/json',
-                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
+                '{"users":[{"login":"user_5","id":5},{"login":"user_6","id":6}]}',
             ],
             [
                 'POST',
@@ -432,7 +432,7 @@ class CreateTest extends TestCase
         $api = new Issue($client);
 
         // Perform the tests
-        $xmlElement = $api->create(['assigned_to' => 'Assigned to User Name', 'author' => 'Author Name']);
+        $xmlElement = $api->create(['assigned_to' => 'user_6', 'author' => 'user_5']);
 
         $this->assertInstanceOf(SimpleXMLElement::class, $xmlElement);
         $this->assertXmlStringEqualsXmlString(
@@ -486,12 +486,12 @@ class CreateTest extends TestCase
             ],
             [
                 'GET',
-                '/users.json',
+                '/users.json?limit=100&offset=0',
                 'application/json',
                 '',
                 200,
                 'application/json',
-                '{"users":[{"login":"Author Name","id":5},{"login":"Assigned to User Name","id":6}]}',
+                '{"users":[{"login":"user_5","id":5},{"login":"user_6","id":6}]}',
             ],
             [
                 'POST',
@@ -519,8 +519,8 @@ class CreateTest extends TestCase
             'category' => 'Category Name',
             'status' => 'Status Name',
             'tracker' => 'Tracker Name',
-            'assigned_to' => 'Assigned to User Name',
-            'author' => 'Author Name',
+            'assigned_to' => 'user_6',
+            'author' => 'user_5',
         ];
 
         // Create the object under test

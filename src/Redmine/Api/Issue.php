@@ -393,14 +393,22 @@ class Issue extends AbstractApi
         if (isset($params['assigned_to'])) {
             $userApi = $this->getUserApi();
 
-            $params['assigned_to_id'] = $userApi->getIdByUsername($params['assigned_to']);
+            $params['assigned_to_id'] = array_search(
+                $params['assigned_to'],
+                $userApi->listLogins(),
+                true,
+            );
             unset($params['assigned_to']);
         }
 
         if (isset($params['author'])) {
             $userApi = $this->getUserApi();
 
-            $params['author_id'] = $userApi->getIdByUsername($params['author']);
+            $params['author_id'] = array_search(
+                $params['author'],
+                $userApi->listLogins(),
+                true,
+            );
             unset($params['author']);
         }
 
