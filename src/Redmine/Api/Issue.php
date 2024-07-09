@@ -319,7 +319,7 @@ class Issue extends AbstractApi
         $issueStatusApi = $this->getIssueStatusApi();
 
         return $this->update($id, [
-            'status_id' => $issueStatusApi->getIdByName($status),
+            'status_id' => array_search($status, $issueStatusApi->listNames(), true),
         ]);
     }
 
@@ -366,7 +366,11 @@ class Issue extends AbstractApi
         if (isset($params['status'])) {
             $issueStatusApi = $this->getIssueStatusApi();
 
-            $params['status_id'] = $issueStatusApi->getIdByName($params['status']);
+            $params['status_id'] = array_search(
+                $params['status'],
+                $issueStatusApi->listNames(),
+                true,
+            );
             unset($params['status']);
         }
 

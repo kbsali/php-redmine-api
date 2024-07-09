@@ -7,9 +7,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Api\IssueCategory;
+use Redmine\Api\IssueStatus;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -146,7 +148,7 @@ class IssueTest extends TestCase
         $parameters = [
             'project' => 'Project Name',
             'category' => 'Category 5 Name',
-            'status' => 'Status Name',
+            'status' => 'Status 6 Name',
             'tracker' => 'Tracker Name',
             'assigned_to' => 'Assigned to User Name',
             'author' => 'Author Name',
@@ -158,7 +160,7 @@ class IssueTest extends TestCase
             ->method('getIdByName')
             ->willReturn(1);
         $getIdByNameApi = $this->createMock('Redmine\Api\Tracker');
-        $getIdByNameApi->expects($this->exactly(2))
+        $getIdByNameApi->expects($this->exactly(1))
             ->method('getIdByName')
             ->willReturn('cleanedValue');
         $getIdByUsernameApi = $this->createMock('Redmine\Api\User');
@@ -166,20 +168,27 @@ class IssueTest extends TestCase
             ->method('getIdByUsername')
             ->willReturn('cleanedValue');
 
-        $httpClient = $this->createMock(HttpClient::class);
-        $httpClient->expects($this->exactly(1))
-            ->method('request')
-            ->willReturn(
-                $this->createConfiguredMock(
-                    Response::class,
-                    [
-                        'getStatusCode' => 200,
-                        'getContentType' => 'application/json',
-                        'getContent' => '{"issue_categories":[{"id":5,"name":"Category 5 Name"}]}',
-                    ],
-                ),
-            )
-        ;
+        $httpClient = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/1/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_categories":[{"id":5,"name":"Category 5 Name"}]}',
+            ],
+            [
+                'GET',
+                '/issue_statuses.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_statuses":[{"id":6,"name":"Status 6 Name"}]}',
+            ],
+        );
 
         $client = $this->createMock(Client::class);
         $client->expects($this->exactly(5))
@@ -188,7 +197,7 @@ class IssueTest extends TestCase
                 [
                     ['project', $projectApi],
                     ['issue_category', new IssueCategory($httpClient)],
-                    ['issue_status', $getIdByNameApi],
+                    ['issue_status', new IssueStatus($httpClient)],
                     ['tracker', $getIdByNameApi],
                     ['user', $getIdByUsernameApi],
                 ],
@@ -201,7 +210,7 @@ class IssueTest extends TestCase
                 '/issues.xml',
                 <<< XML
                 <?xml version="1.0"?>
-                <issue><project_id>1</project_id><category_id>5</category_id><status_id>cleanedValue</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
+                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>cleanedValue</tracker_id><assigned_to_id>cleanedValue</assigned_to_id><author_id>cleanedValue</author_id></issue>
 
                 XML,
             )
