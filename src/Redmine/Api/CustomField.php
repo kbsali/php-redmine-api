@@ -138,7 +138,7 @@ class CustomField extends AbstractApi
         return $arr[(string) $name];
     }
 
-    private function doListing($forceUpdate = false, array $params = [])
+    private function doListing(bool $forceUpdate, array $params)
     {
         if (empty($this->customFields) || $forceUpdate) {
             $this->customFields = $this->list($params);

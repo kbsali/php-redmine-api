@@ -155,7 +155,7 @@ class IssueCategory extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
-        $arr = $this->doListing($project);
+        $arr = $this->doListing($project, false);
 
         if (!isset($arr[$name])) {
             return false;
@@ -282,7 +282,7 @@ class IssueCategory extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function doListing($project, $forceUpdate = false)
+    private function doListing($project, bool $forceUpdate)
     {
         if (true === $forceUpdate || empty($this->issueCategories)) {
             $this->issueCategories = $this->listByProject($project);

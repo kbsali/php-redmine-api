@@ -132,15 +132,7 @@ class Project extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (true === $forceUpdate || empty($this->projects)) {
-            $this->projects = $this->list($params);
-        }
-        $ret = [];
-        foreach ($this->projects['projects'] as $e) {
-            $ret[(int) $e['id']] = $e['name'];
-        }
-
-        return $reverse ? array_flip($ret) : $ret;
+        return $this->doListing($forceUpdate, $reverse, $params);
     }
 
     /**
@@ -153,7 +145,8 @@ class Project extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
-        $arr = $this->listing(false, true, $params);
+        $arr = $this->doListing(false, true, $params);
+
         if (!isset($arr[$name])) {
             return false;
         }
@@ -446,5 +439,20 @@ class Project extends AbstractApi
         ));
 
         return $this->lastResponse->getContent();
+    }
+
+    private function doListing(bool $forceUpdate, bool $reverse, array $params)
+    {
+        if (true === $forceUpdate || empty($this->projects)) {
+            $this->projects = $this->list($params);
+        }
+
+        $ret = [];
+
+        foreach ($this->projects['projects'] as $e) {
+            $ret[(int) $e['id']] = $e['name'];
+        }
+
+        return $reverse ? array_flip($ret) : $ret;
     }
 }
