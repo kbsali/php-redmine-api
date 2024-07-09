@@ -111,12 +111,17 @@ class TimeEntryActivity extends AbstractApi
     /**
      * Get a activities id given its name.
      *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Project::listNames()
+     *
      * @param string $name
      *
      * @return int|false
      */
     public function getIdByName($name)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing(false);
 
         if (!isset($arr[$name])) {
