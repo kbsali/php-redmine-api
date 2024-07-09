@@ -109,15 +109,7 @@ class Tracker extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->trackers) || $forceUpdate) {
-            $this->trackers = $this->list();
-        }
-        $ret = [];
-        foreach ($this->trackers['trackers'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
+        return $this->doListing($forceUpdate);
     }
 
     /**
@@ -129,11 +121,27 @@ class Tracker extends AbstractApi
      */
     public function getIdByName($name)
     {
-        $arr = $this->listing();
+        $arr = $this->doListing(false);
+
         if (!isset($arr[$name])) {
             return false;
         }
 
         return $arr[(string) $name];
+    }
+
+    private function doListing(bool $forceUpdate)
+    {
+        if (empty($this->trackers) || $forceUpdate) {
+            $this->trackers = $this->list();
+        }
+
+        $ret = [];
+
+        foreach ($this->trackers['trackers'] as $e) {
+            $ret[$e['name']] = (int) $e['id'];
+        }
+
+        return $ret;
     }
 }
