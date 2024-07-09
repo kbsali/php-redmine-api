@@ -113,7 +113,10 @@ class Tracker extends AbstractApi
     }
 
     /**
-     * Get a tracket id given its name.
+     * Get a tracker id given its name.
+     *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see Tracker::listNames()
      *
      * @param string|int $name tracker name
      *
@@ -121,6 +124,8 @@ class Tracker extends AbstractApi
      */
     public function getIdByName($name)
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
         $arr = $this->doListing(false);
 
         if (!isset($arr[$name])) {
