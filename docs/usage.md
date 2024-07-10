@@ -223,20 +223,26 @@ You can now use the `getApi()` method to create and get a specific Redmine API. 
 
 To check for failed requests you can afterwards check the status code via `$client->getLastResponseStatusCode()`.
 
+#### Tracker API
+
 ```php
-// ----------------------------
-// Trackers
+
 $client->getApi('tracker')->list();
 $client->getApi('tracker')->listing();
+```
 
-// ----------------------------
-// Issue statuses
+#### IssueStatus API
+
+```php
 $client->getApi('issue_status')->list();
 $client->getApi('issue_status')->listing();
 $client->getApi('issue_status')->getIdByName('New');
 
-// ----------------------------
-// Project
+```
+
+#### Project API
+
+```php
 $client->getApi('project')->list();
 $client->getApi('project')->list([
     'limit' => 10,
@@ -258,9 +264,11 @@ $client->getApi('project')->reopen($projectId);
 $client->getApi('project')->archive($projectId);
 $client->getApi('project')->unarchive($projectId);
 $client->getApi('project')->remove($projectId);
+```
 
-// ----------------------------
-// Users
+#### User API
+
+```php
 $client->getApi('user')->list();
 $client->getApi('user')->listing();
 $client->getApi('user')->getCurrentUser([
@@ -290,9 +298,11 @@ $client->getApi('user')->create([
     'lastname' => 'test',
     'mail' => 'test@example.com',
 ]);
+```
 
-// ----------------------------
-// Issues
+#### Issue API
+
+```php
 $client->getApi('issue')->show($issueId);
 $client->getApi('issue')->list([
     'limit' => 100,
@@ -377,8 +387,39 @@ $client->getApi('issue')->create([
     ],
 ]);
 
-// ----------------------------
-// Issue categories
+// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
+$issues['all'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => '*',
+])['total_count'];
+
+$issues['opened'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => 'open',
+])['total_count'];
+
+$issues['closed'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => 'closed',
+])['total_count'];
+
+print_r($issues);
+/*
+Array
+(
+    [all] => 8
+    [opened] => 7
+    [closed] => 1
+)
+*/
+```
+
+#### IssueCategory API
+
+```php
 $client->getApi('issue_category')->listByProject('project1');
 $client->getApi('issue_category')->listing($projectId);
 $client->getApi('issue_category')->show($categoryId);
@@ -393,9 +434,11 @@ $client->getApi('issue_category')->remove($categoryId);
 $client->getApi('issue_category')->remove($categoryId, [
     'reassign_to_id' => $userId,
 ]);
+```
 
-// ----------------------------
-// Versions
+#### Version API
+
+```php
 $client->getApi('version')->listByProject('test');
 $client->getApi('version')->listing('test');
 $client->getApi('version')->show($versionId);
@@ -407,31 +450,41 @@ $client->getApi('version')->update($versionId, [
     'name' => 'v1121',
 ]);
 $client->getApi('version')->remove($versionId);
+```
 
-// ----------------------------
-// Attachments
+#### Attachment API
+
+```php
 $client->getApi('attachment')->show($attachmentId);
 
 $file_content = $client->getApi('attachment')->download($attachmentId);
 file_put_contents('example.png', $file_content);
+```
 
-// ----------------------------
-// News
+#### News API
+
+```php
 $client->getApi('news')->list();
 $client->getApi('news')->listByProject('test');
+```
 
-// ----------------------------
-// Roles
+#### Role API
+
+```php
 $client->getApi('role')->list();
 $client->getApi('role')->show(1);
 $client->getApi('role')->listing();
+```
 
-// ----------------------------
-// Queries
+#### Query API
+
+```php
 $client->getApi('query')->list();
+```
 
-// ----------------------------
-// Time entries
+#### TimeEntry API
+
+```php
 $client->getApi('time_entry')->list();
 $client->getApi('time_entry')->show($timeEntryId);
 $client->getApi('time_entry')->list([
@@ -471,19 +524,25 @@ $client->getApi('time_entry')->update($timeEntryId, [
     ],
 ]);
 $client->getApi('time_entry')->remove($timeEntryId);
+```
 
-// ----------------------------
-// Time entry activities
+#### TimeEntryActivity API
+
+```php
 $client->getApi('time_entry_activity')->list();
+```
 
-// ----------------------------
-// Issue relations
+#### IssueRelation API
+
+```php
 $client->getApi('issue_relation')->listByIssueId($issueId);
 $client->getApi('issue_relation')->show($issueRelationId);
 $client->getApi('issue_relation')->remove($issueRelationId);
+```
 
-// ----------------------------
-// Group (of members)
+#### Group of members API
+
+```php
 $client->getApi('group')->list();
 $client->getApi('group')->listing();
 $client->getApi('group')->show($groupId, ['include' => 'users,memberships']);
@@ -513,22 +572,28 @@ $client->getApi('group')->update($groupId, [
         ],
     ],
 ]);
+```
 
-// ----------------------------
-// Project memberships
+#### Project Membership API
+
+```php
 $client->getApi('membership')->listByProject($projectId);
 $client->getApi('membership')->create($projectId, [
     'user_id' => 1,
     'role_ids' => [5],
 ]);
 $client->getApi('membership')->remove($membershipId);
+```
 
-// ----------------------------
-// Issue priorities
+#### IssuePriority API
+
+```php
 $client->getApi('issue_priority')->list();
+```
 
-// ----------------------------
-// Wiki
+#### Wiki API
+
+```php
 $client->getApi('wiki')->listByProject('testProject');
 $client->getApi('wiki')->show('testProject', 'about');
 $client->getApi('wiki')->show('testProject', 'about', $version);
@@ -543,41 +608,17 @@ $client->getApi('wiki')->update('testProject', 'about', [
     'version' => null,
 ]);
 $client->getApi('wiki')->remove('testProject', 'about');
+```
 
-// ----------------------------
-// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
-$issues['all'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => '*',
-])['total_count'];
+#### Search API
 
-$issues['opened'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => 'open',
-])['total_count'];
-
-$issues['closed'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => 'closed',
-])['total_count'];
-
-print_r($issues);
-/*
-Array
-(
-    [all] => 8
-    [opened] => 7
-    [closed] => 1
-)
-*/
-
+```php
 // ----------------------------
 // Search
 $client->getApi('search')->search('Myproject', ['limit' => 100]);
 ```
+
+#### CustomField API
 
 #### API entry points implementation state:
 
