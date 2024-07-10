@@ -638,28 +638,6 @@ $client->getApi('custom_field')->list();
 $client->getApi('custom_field')->listNames();
 ```
 
-#### API entry points implementation state:
-
-* :heavy_check_mark: Attachments
-* :heavy_check_mark: Groups
-* :heavy_check_mark: Custom Fields
-* :heavy_check_mark: Issues
-* :heavy_check_mark: Issue Categories
-* :heavy_check_mark: Issue Priorities
-* :x: *Issue Relations - only partially implemented*
-* :heavy_check_mark: Issue Statuses
-* :heavy_check_mark: News
-* :heavy_check_mark: Projects
-* :heavy_check_mark: Project Memberships
-* :heavy_check_mark: Queries
-* :heavy_check_mark: Roles
-* :heavy_check_mark: Time Entries
-* :heavy_check_mark: Time Entry Activities
-* :heavy_check_mark: Trackers
-* :heavy_check_mark: Users
-* :heavy_check_mark: Versions
-* :heavy_check_mark: Wiki
-
 If some features are missing in `getApi()` you are welcome to create a PR. Besides, it is always possible to use the low-level API.
 
 ### Low-level API
