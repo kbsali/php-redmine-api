@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Tracker::listNames()` for listing the ids and names of all trackers.
 - New method `Redmine\Api\User::listLogins()` for listing the ids and logins of all users.
 - New method `Redmine\Api\Version::listNamesByProject()` for listing the ids and names of all versions of a project.
+- Support for Redmine 4.2.x was added.
+
+### Changed
+
+- Behaviour-driven tests are run against Redmine 4.2.10, 5.0.9 and 5.1.3.
 
 ### Deprecated
 
@@ -42,6 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Redmine\Api\User::getIdByUsername()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
 - `Redmine\Api\Version::listing()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
 - `Redmine\Api\Version::getIdByName()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
+
+### Removed
+
+- Tests and development files were removed from releases.
 
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25
 
