@@ -111,19 +111,14 @@ class CustomField extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->customFields) || $forceUpdate) {
-            $this->customFields = $this->list($params);
-        }
-        $ret = [];
-        foreach ($this->customFields['custom_fields'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
+        return $this->doListing($forceUpdate, $params);
     }
 
     /**
-     * Get a tracket id given its name.
+     * Get a custom field id given its name.
+     *
+     * @deprecated v2.7.0 Use listNames() instead.
+     * @see CustomField::listNames()
      *
      * @param string|int $name   customer field name
      * @param array      $params optional parameters to be passed to the api (offset, limit, ...)
@@ -132,11 +127,29 @@ class CustomField extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
-        $arr = $this->listing(false, $params);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+
+        $arr = $this->doListing(false, $params);
+
         if (!isset($arr[$name])) {
             return false;
         }
 
         return $arr[(string) $name];
+    }
+
+    private function doListing(bool $forceUpdate, array $params)
+    {
+        if (empty($this->customFields) || $forceUpdate) {
+            $this->customFields = $this->list($params);
+        }
+
+        $ret = [];
+
+        foreach ($this->customFields['custom_fields'] as $e) {
+            $ret[$e['name']] = (int) $e['id'];
+        }
+
+        return $ret;
     }
 }

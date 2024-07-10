@@ -25,15 +25,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 - `Redmine\Api\CustomField::listing()` is deprecated, use `\Redmine\Api\CustomField::listNames()` instead.
+- `Redmine\Api\CustomField::getIdByName()` is deprecated, use `\Redmine\Api\CustomField::listNames()` instead.
 - `Redmine\Api\Group::listing()` is deprecated, use `\Redmine\Api\Group::listNames()` instead.
 - `Redmine\Api\IssueCategory::listing()` is deprecated, use `\Redmine\Api\IssueCategory::listNamesByProject()` instead.
+- `Redmine\Api\IssueCategory::getIdByName()` is deprecated, use `\Redmine\Api\IssueCategory::listNamesByProject()` instead.
 - `Redmine\Api\IssueStatus::listing()` is deprecated, use `\Redmine\Api\IssueStatus::listNames()` instead.
+- `Redmine\Api\IssueStatus::getIdByName()` is deprecated, use `\Redmine\Api\IssueStatus::listNames()` instead.
 - `Redmine\Api\Project::listing()` is deprecated, use `\Redmine\Api\Project::listNames()` instead.
+- `Redmine\Api\Project::getIdByName()` is deprecated, use `\Redmine\Api\Project::listNames()` instead.
 - `Redmine\Api\Role::listing()` is deprecated, use `\Redmine\Api\Role::listNames()` instead.
 - `Redmine\Api\TimeEntryActivity::listing()` is deprecated, use `\Redmine\Api\TimeEntryActivity::listNames()` instead.
+- `Redmine\Api\TimeEntryActivity::getIdByName()` is deprecated, use `\Redmine\Api\TimeEntryActivity::listNames()` instead.
 - `Redmine\Api\Tracker::listing()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
+- `Redmine\Api\Tracker::getIdByName()` is deprecated, use `\Redmine\Api\Tracker::listNames()` instead.
 - `Redmine\Api\User::listing()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
+- `Redmine\Api\User::getIdByUsername()` is deprecated, use `\Redmine\Api\User::listLogins()` instead.
 - `Redmine\Api\Version::listing()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
+- `Redmine\Api\Version::getIdByName()` is deprecated, use `\Redmine\Api\Version::listNamesByProject()` instead.
 
 ## [v2.6.0](https://github.com/kbsali/php-redmine-api/compare/v2.5.0...v2.6.0) - 2024-03-25
 
