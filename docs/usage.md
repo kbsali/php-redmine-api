@@ -223,28 +223,31 @@ You can now use the `getApi()` method to create and get a specific Redmine API. 
 
 To check for failed requests you can afterwards check the status code via `$client->getLastResponseStatusCode()`.
 
+#### Tracker API
+
 ```php
-// ----------------------------
-// Trackers
+
 $client->getApi('tracker')->list();
-$client->getApi('tracker')->listing();
+$client->getApi('tracker')->listNames();
+```
 
-// ----------------------------
-// Issue statuses
+#### IssueStatus API
+
+```php
 $client->getApi('issue_status')->list();
-$client->getApi('issue_status')->listing();
-$client->getApi('issue_status')->getIdByName('New');
+$client->getApi('issue_status')->listNames();
 
-// ----------------------------
-// Project
+```
+
+#### Project API
+
+```php
 $client->getApi('project')->list();
 $client->getApi('project')->list([
     'limit' => 10,
 ]);
-$client->getApi('project')->listing();
-$client->getApi('project')->listing();
+$client->getApi('project')->listNames();
 $client->getApi('project')->show($projectId);
-$client->getApi('project')->getIdByName('Elvis');
 $client->getApi('project')->create([
     'name' => 'some name',
     'identifier' => 'the_identifier',
@@ -258,11 +261,13 @@ $client->getApi('project')->reopen($projectId);
 $client->getApi('project')->archive($projectId);
 $client->getApi('project')->unarchive($projectId);
 $client->getApi('project')->remove($projectId);
+```
 
-// ----------------------------
-// Users
+#### User API
+
+```php
 $client->getApi('user')->list();
-$client->getApi('user')->listing();
+$client->getApi('user')->listLogins();
 $client->getApi('user')->getCurrentUser([
     'include' => [
         'memberships',
@@ -271,7 +276,6 @@ $client->getApi('user')->getCurrentUser([
         'status',
     ],
 ]);
-$client->getApi('user')->getIdByUsername('kbsali');
 $client->getApi('user')->show($userId, [
     'include' => [
         'memberships',
@@ -290,9 +294,11 @@ $client->getApi('user')->create([
     'lastname' => 'test',
     'mail' => 'test@example.com',
 ]);
+```
 
-// ----------------------------
-// Issues
+#### Issue API
+
+```php
 $client->getApi('issue')->show($issueId);
 $client->getApi('issue')->list([
     'limit' => 100,
@@ -348,8 +354,11 @@ $client->getApi('issue')->update($issueId, [
     'priority_id' => 5,
     'due_date' => date('Y-m-d'),
 ]);
+$client->getApi('issue')->addWatcher($issueId, $userId);
+$client->getApi('issue')->removeWatcher($issueId, $userId);
 $client->getApi('issue')->setIssueStatus($issueId, 'Resolved');
 $client->getApi('issue')->addNoteToIssue($issueId, 'some comment');
+$client->getApi('issue')->addNoteToIssue($issueId, 'private note', true);
 $client->getApi('issue')->remove($issueId);
 
 // To upload a file + attach it to an existing issue with $issueId
@@ -377,12 +386,42 @@ $client->getApi('issue')->create([
     ],
 ]);
 
-// ----------------------------
-// Issue categories
+// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
+$issues['all'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => '*',
+])['total_count'];
+
+$issues['opened'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => 'open',
+])['total_count'];
+
+$issues['closed'] = $client->getApi('issue')->list([
+    'limit' => 1,
+    'tracker_id' => 1,
+    'status_id' => 'closed',
+])['total_count'];
+
+print_r($issues);
+/*
+Array
+(
+    [all] => 8
+    [opened] => 7
+    [closed] => 1
+)
+*/
+```
+
+#### IssueCategory API
+
+```php
 $client->getApi('issue_category')->listByProject('project1');
-$client->getApi('issue_category')->listing($projectId);
+$client->getApi('issue_category')->listNamesByProject($projectId);
 $client->getApi('issue_category')->show($categoryId);
-$client->getApi('issue_category')->getIdByName($projectId, 'Administration');
 $client->getApi('issue_category')->create('otherProject', [
     'name' => 'test category',
 ]);
@@ -393,13 +432,14 @@ $client->getApi('issue_category')->remove($categoryId);
 $client->getApi('issue_category')->remove($categoryId, [
     'reassign_to_id' => $userId,
 ]);
+```
 
-// ----------------------------
-// Versions
+#### Version API
+
+```php
 $client->getApi('version')->listByProject('test');
-$client->getApi('version')->listing('test');
+$client->getApi('version')->listNamesByProject('test');
 $client->getApi('version')->show($versionId);
-$client->getApi('version')->getIdByName('test', 'v2');
 $client->getApi('version')->create('test', [
     'name' => 'v3432',
 ]);
@@ -407,31 +447,49 @@ $client->getApi('version')->update($versionId, [
     'name' => 'v1121',
 ]);
 $client->getApi('version')->remove($versionId);
+```
 
-// ----------------------------
-// Attachments
+#### Attachment API
+
+```php
 $client->getApi('attachment')->show($attachmentId);
+$client->getApi('attachment')->upload(file_get_contents('example.png'), [
+    'filename' => 'example.png',
+]);
+$client->getApi('attachment')->update($attachmentId, [
+    'filename' => 'example.png',
+]);
 
 $file_content = $client->getApi('attachment')->download($attachmentId);
 file_put_contents('example.png', $file_content);
 
-// ----------------------------
-// News
+$client->getApi('attachment')->remove($attachmentId);
+```
+
+#### News API
+
+```php
 $client->getApi('news')->list();
 $client->getApi('news')->listByProject('test');
+```
 
-// ----------------------------
-// Roles
+#### Role API
+
+```php
 $client->getApi('role')->list();
+$client->getApi('role')->listNames();
 $client->getApi('role')->show(1);
-$client->getApi('role')->listing();
+```
 
-// ----------------------------
-// Queries
+#### Query API
+
+```php
 $client->getApi('query')->list();
+```
 
-// ----------------------------
-// Time entries
+#### TimeEntry API
+
+```php
 $client->getApi('time_entry')->list();
 $client->getApi('time_entry')->show($timeEntryId);
 $client->getApi('time_entry')->list([
@@ -471,21 +529,32 @@ $client->getApi('time_entry')->update($timeEntryId, [
     ],
 ]);
 $client->getApi('time_entry')->remove($timeEntryId);
+```
 
-// ----------------------------
-// Time entry activities
+#### TimeEntryActivity API
+
+```php
 $client->getApi('time_entry_activity')->list();
+$client->getApi('time_entry_activity')->listNames();
+```
 
-// ----------------------------
-// Issue relations
+#### IssueRelation API
+
+```php
 $client->getApi('issue_relation')->listByIssueId($issueId);
 $client->getApi('issue_relation')->show($issueRelationId);
+$client->getApi('issue_relation')->create($issueId, [
+    'relation_type' => 'relates',
+    'issue_to_id' => $issueToId,
+]);
 $client->getApi('issue_relation')->remove($issueRelationId);
+```
 
-// ----------------------------
-// Group (of members)
+#### Group of members API
+
+```php
 $client->getApi('group')->list();
-$client->getApi('group')->listing();
+$client->getApi('group')->listNames();
 $client->getApi('group')->show($groupId, ['include' => 'users,memberships']);
 $client->getApi('group')->remove($groupId);
 $client->getApi('group')->addUser($groupId, $userId);
@@ -513,22 +582,33 @@ $client->getApi('group')->update($groupId, [
         ],
     ],
 ]);
+```
 
-// ----------------------------
-// Project memberships
+#### Project Membership API
+
+```php
 $client->getApi('membership')->listByProject($projectId);
 $client->getApi('membership')->create($projectId, [
     'user_id' => 1,
     'role_ids' => [5],
 ]);
+$client->getApi('membership')->update($membershipId, [
+    'user_id' => 1,
+    'role_ids' => [5],
+]);
 $client->getApi('membership')->remove($membershipId);
+$client->getApi('membership')->removeMember($projectId, $userId);
+```
 
-// ----------------------------
-// Issue priorities
+#### IssuePriority API
+
+```php
 $client->getApi('issue_priority')->list();
+```
 
-// ----------------------------
-// Wiki
+#### Wiki API
+
+```php
 $client->getApi('wiki')->listByProject('testProject');
 $client->getApi('wiki')->show('testProject', 'about');
 $client->getApi('wiki')->show('testProject', 'about', $version);
@@ -543,63 +623,20 @@ $client->getApi('wiki')->update('testProject', 'about', [
     'version' => null,
 ]);
 $client->getApi('wiki')->remove('testProject', 'about');
-
-// ----------------------------
-// Issues' stats (see https://github.com/kbsali/php-redmine-api/issues/44)
-$issues['all'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => '*',
-])['total_count'];
-
-$issues['opened'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => 'open',
-])['total_count'];
-
-$issues['closed'] = $client->getApi('issue')->list([
-    'limit' => 1,
-    'tracker_id' => 1,
-    'status_id' => 'closed',
-])['total_count'];
-
-print_r($issues);
-/*
-Array
-(
-    [all] => 8
-    [opened] => 7
-    [closed] => 1
-)
-*/
-
-// ----------------------------
-// Search
-$client->getApi('search')->search('Myproject', ['limit' => 100]);
 ```
 
-#### API entry points implementation state:
+#### Search API
 
-* :heavy_check_mark: Attachments
-* :heavy_check_mark: Groups
-* :heavy_check_mark: Custom Fields
-* :heavy_check_mark: Issues
-* :heavy_check_mark: Issue Categories
-* :heavy_check_mark: Issue Priorities
-* :x: *Issue Relations - only partially implemented*
-* :heavy_check_mark: Issue Statuses
-* :heavy_check_mark: News
-* :heavy_check_mark: Projects
-* :heavy_check_mark: Project Memberships
-* :heavy_check_mark: Queries
-* :heavy_check_mark: Roles
-* :heavy_check_mark: Time Entries
-* :heavy_check_mark: Time Entry Activities
-* :heavy_check_mark: Trackers
-* :heavy_check_mark: Users
-* :heavy_check_mark: Versions
-* :heavy_check_mark: Wiki
+```php
+$client->getApi('search')->listByQuery('search query', ['limit' => 100]);
+```
+
+#### CustomField API
+
+```php
+$client->getApi('custom_field')->list();
+$client->getApi('custom_field')->listNames();
+```
 
 If some features are missing in `getApi()` you are welcome to create a PR. Besides, it is always possible to use the low-level API.
 

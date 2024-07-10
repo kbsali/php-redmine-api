@@ -308,7 +308,7 @@ You can now use the `getApi()` method to create and get a specific Redmine API.
 <?php
 
 $client->getApi('user')->list();
-$client->getApi('user')->listing();
+$client->getApi('user')->listLogins();
 
 $client->getApi('issue')->create([
     'project_id'  => 'test',
