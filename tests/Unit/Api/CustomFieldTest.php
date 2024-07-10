@@ -178,7 +178,7 @@ class CustomFieldTest extends TestCase
 
         // Perform the tests
         $retrievedDataSet = $api->all($allParameters);
-        $this->assertTrue(is_array($retrievedDataSet));
+        $this->assertIsArray($retrievedDataSet);
         $this->assertArrayHasKey('limit', $retrievedDataSet);
         $this->assertArrayHasKey('items', $retrievedDataSet);
     }
