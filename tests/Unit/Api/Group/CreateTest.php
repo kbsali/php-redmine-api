@@ -20,7 +20,7 @@ class CreateTest extends TestCase
      * @dataProvider getCreateData
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -107,7 +107,7 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString()
+    public function testCreateReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -131,7 +131,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateThrowsExceptionIfNameIsMissing()
+    public function testCreateThrowsExceptionIfNameIsMissing(): void
     {
         // Test values
         $postParameter = [];

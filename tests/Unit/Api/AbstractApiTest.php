@@ -18,7 +18,7 @@ use SimpleXMLElement;
 #[CoversClass(AbstractApi::class)]
 class AbstractApiTest extends TestCase
 {
-    public function testCreateWithHttpClientWorks()
+    public function testCreateWithHttpClientWorks(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -30,7 +30,7 @@ class AbstractApiTest extends TestCase
         $this->assertSame($client, $method->invoke($api));
     }
 
-    public function testCreateWitClientWorks()
+    public function testCreateWitClientWorks(): void
     {
         $client = $this->createMock(Client::class);
 
@@ -42,7 +42,7 @@ class AbstractApiTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
     }
 
-    public function testCreateWithoutClitentOrHttpClientThrowsException()
+    public function testCreateWithoutClitentOrHttpClientThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `stdClass` given');
@@ -51,7 +51,7 @@ class AbstractApiTest extends TestCase
         new class (new \stdClass()) extends AbstractApi {};
     }
 
-    public function testGetTriggersDeprecationWarning()
+    public function testGetTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -79,7 +79,7 @@ class AbstractApiTest extends TestCase
         $api->runGet('/path.json');
     }
 
-    public function testGetLastResponseWithHttpClientWorks()
+    public function testGetLastResponseWithHttpClientWorks(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -88,7 +88,7 @@ class AbstractApiTest extends TestCase
         $this->assertInstanceOf(Response::class, $api->getLastResponse());
     }
 
-    public function testPostTriggersDeprecationWarning()
+    public function testPostTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -116,7 +116,7 @@ class AbstractApiTest extends TestCase
         $api->runPost('/path.json', 'data');
     }
 
-    public function testPutTriggersDeprecationWarning()
+    public function testPutTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -144,7 +144,7 @@ class AbstractApiTest extends TestCase
         $api->runPut('/path.json', 'data');
     }
 
-    public function testDeleteTriggersDeprecationWarning()
+    public function testDeleteTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(HttpClient::class);
 
@@ -176,7 +176,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      */
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
-    public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value)
+    public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value): void
     {
         $client = $this->createMock(Client::class);
 
@@ -210,7 +210,7 @@ class AbstractApiTest extends TestCase
         ];
     }
 
-    public function testLastCallFailedPreventsRaceCondition()
+    public function testLastCallFailedPreventsRaceCondition(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -257,7 +257,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
-    public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
@@ -271,7 +271,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
-    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean)
+    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean): void
     {
         $response = $this->createMock(Response::class);
         $response->method('getStatusCode')->willReturn($statusCode);
@@ -365,7 +365,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider retrieveDataData
      */
     #[DataProvider('retrieveDataData')]
-    public function testRetrieveData($path, $contentType, $response, $expected)
+    public function testRetrieveData($path, $contentType, $response, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -402,7 +402,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getRetrieveDataToExceptionData
      */
     #[DataProvider('getRetrieveDataToExceptionData')]
-    public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage)
+    public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -431,7 +431,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getRetrieveAllData
      */
     #[DataProvider('getRetrieveAllData')]
-    public function testDeprecatedRetrieveAll($content, $contentType, $expected)
+    public function testDeprecatedRetrieveAll($content, $contentType, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -455,7 +455,7 @@ class AbstractApiTest extends TestCase
         ];
     }
 
-    public function testDeprecatedAttachCustomFieldXML()
+    public function testDeprecatedAttachCustomFieldXML(): void
     {
         $client = $this->createMock(Client::class);
 

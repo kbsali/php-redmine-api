@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 #[CoversClass(CustomField::class)]
 class ListTest extends TestCase
 {
-    public function testListWithoutParametersReturnsResponse()
+    public function testListWithoutParametersReturnsResponse(): void
     {
         // Test values
         $response = '["API Response"]';
@@ -37,7 +37,7 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list());
     }
 
-    public function testListWithParametersReturnsResponse()
+    public function testListWithParametersReturnsResponse(): void
     {
         // Test values
         $allParameters = ['not-used'];
@@ -64,7 +64,7 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list($allParameters));
     }
 
-    public function testListWithHighLimitParametersReturnsResponse()
+    public function testListWithHighLimitParametersReturnsResponse(): void
     {
         // Test values
         $response = '{"limit":"100","items":[]}';
@@ -96,7 +96,7 @@ class ListTest extends TestCase
         $this->assertSame($expectedResponse, $api->list($allParameters));
     }
 
-    public function testListCallsEndpointUntilOffsetIsHigherThanTotalCount()
+    public function testListCallsEndpointUntilOffsetIsHigherThanTotalCount(): void
     {
         // Test values
         $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
@@ -130,7 +130,7 @@ class ListTest extends TestCase
         $this->assertSame($returnDataSet, $api->list($allParameters));
     }
 
-    public function testListThrowsException()
+    public function testListThrowsException(): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

@@ -18,7 +18,7 @@ class MembershipTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Membership(MockClient::create());
 
@@ -45,7 +45,7 @@ class MembershipTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class MembershipTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParametersAndProject()
+    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
     {
         // Test values
         $parameters = ['not-used'];

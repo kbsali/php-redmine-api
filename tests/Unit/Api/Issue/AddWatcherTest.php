@@ -16,7 +16,7 @@ class AddWatcherTest extends TestCase
      * @dataProvider getAddWatcherData
      */
     #[DataProvider('getAddWatcherData')]
-    public function testAddWatcherReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testAddWatcherReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -58,7 +58,7 @@ class AddWatcherTest extends TestCase
         ];
     }
 
-    public function testAddWatcherReturnsEmptyString()
+    public function testAddWatcherReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,

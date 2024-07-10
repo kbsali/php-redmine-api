@@ -16,7 +16,7 @@ class AddUserTest extends TestCase
      * @dataProvider getAddUserData
      */
     #[DataProvider('getAddUserData')]
-    public function testAddUserReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testAddUserReturnsCorrectResponse($groupId, $userId, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -58,7 +58,7 @@ class AddUserTest extends TestCase
         ];
     }
 
-    public function testAddUserReturnsEmptyString()
+    public function testAddUserReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,

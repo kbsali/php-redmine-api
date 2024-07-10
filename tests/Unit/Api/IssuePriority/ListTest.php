@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 #[CoversClass(IssuePriority::class)]
 class ListTest extends TestCase
 {
-    public function testListWithoutParametersReturnsResponse()
+    public function testListWithoutParametersReturnsResponse(): void
     {
         // Test values
         $response = '["API Response"]';
@@ -37,7 +37,7 @@ class ListTest extends TestCase
         $this->assertSame($expectedReturn, $api->list());
     }
 
-    public function testListWithParametersReturnsResponse()
+    public function testListWithParametersReturnsResponse(): void
     {
         // Test values
         $allParameters = ['not-used'];
@@ -64,7 +64,7 @@ class ListTest extends TestCase
         $this->assertSame($expectedReturn, $api->list($allParameters));
     }
 
-    public function testListThrowsException()
+    public function testListThrowsException(): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

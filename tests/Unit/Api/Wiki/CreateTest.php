@@ -18,7 +18,7 @@ class CreateTest extends TestCase
      * @dataProvider getCreateData
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($id, $page, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testCreateReturnsCorrectResponse($id, $page, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

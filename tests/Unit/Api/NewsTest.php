@@ -18,7 +18,7 @@ class NewsTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new News(MockClient::create());
 
@@ -45,7 +45,7 @@ class NewsTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class NewsTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithProject()
+    public function testAllReturnsClientGetResponseWithProject(): void
     {
         // Test values
         $projectId = 5;
@@ -111,7 +111,7 @@ class NewsTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParametersAndProject()
+    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
     {
         // Test values
         $projectId = 5;

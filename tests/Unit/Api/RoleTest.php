@@ -18,7 +18,7 @@ class RoleTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Role(MockClient::create());
 
@@ -45,7 +45,7 @@ class RoleTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class RoleTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParametersAndProject()
+    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -114,7 +114,7 @@ class RoleTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"roles":[{"id":1,"name":"Role 1"},{"id":5,"name":"Role 5"}]}';
@@ -148,7 +148,7 @@ class RoleTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"roles":[{"id":1,"name":"Role 1"},{"id":5,"name":"Role 5"}]}';
@@ -183,7 +183,7 @@ class RoleTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"roles":[{"id":1,"name":"Role 1"},{"id":5,"name":"Role 5"}]}';
@@ -218,7 +218,7 @@ class RoleTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

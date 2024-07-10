@@ -12,7 +12,7 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(Search::class)]
 class SearchTest extends TestCase
 {
-    public function testSearchTriggersDeprecationWarning()
+    public function testSearchTriggersDeprecationWarning(): void
     {
         $api = new Search(MockClient::create());
 
@@ -37,7 +37,7 @@ class SearchTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testSearchReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testSearchReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -68,7 +68,7 @@ class SearchTest extends TestCase
         ];
     }
 
-    public function testSearchReturnsClientGetResponseWithParameters()
+    public function testSearchReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = ['not-used'];

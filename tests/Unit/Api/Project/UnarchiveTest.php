@@ -13,7 +13,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Project::class)]
 class UnarchiveTest extends TestCase
 {
-    public function testUnarchiveReturnsTrue()
+    public function testUnarchiveReturnsTrue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -31,7 +31,7 @@ class UnarchiveTest extends TestCase
         $this->assertTrue($api->unarchive(5));
     }
 
-    public function testUnarchiveThrowsUnexpectedResponseException()
+    public function testUnarchiveThrowsUnexpectedResponseException(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -52,7 +52,7 @@ class UnarchiveTest extends TestCase
         $api->unarchive(5);
     }
 
-    public function testUnarchiveWithoutIntOrStringThrowsInvalidArgumentException()
+    public function testUnarchiveWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
         $client = $this->createMock(HttpClient::class);
 

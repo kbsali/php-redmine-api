@@ -63,7 +63,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
-    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected)
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected): void
     {
         $serializer = JsonSerializer::createFromString($data);
 
@@ -88,7 +88,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
-    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data)
+    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data): void
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
@@ -184,7 +184,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
-    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected)
+    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected): void
     {
         $serializer = JsonSerializer::createFromArray($data);
 
@@ -205,7 +205,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
-    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data)
+    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data): void
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);

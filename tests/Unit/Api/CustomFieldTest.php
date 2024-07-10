@@ -18,7 +18,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new CustomField(MockClient::create());
 
@@ -45,7 +45,7 @@ class CustomFieldTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $allParameters = ['not-used'];
@@ -111,7 +111,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithHighLimit()
+    public function testAllReturnsClientGetResponseWithHighLimit(): void
     {
         // Test values
         $response = '{"limit":"100","items":[]}';
@@ -146,7 +146,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount()
+    public function testAllCallsEndpointUntilOffsetIsHigherThanTotalCount(): void
     {
         // Test values
         $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
@@ -186,7 +186,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
@@ -220,7 +220,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
@@ -255,7 +255,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
@@ -290,7 +290,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -322,7 +322,7 @@ class CustomFieldTest extends TestCase
     /**
      * Test getIdByName().
      */
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         // Test values
         $response = '{"custom_fields":[{"id":5,"name":"CustomField 5"}]}';
@@ -350,7 +350,7 @@ class CustomFieldTest extends TestCase
         $this->assertSame(5, $api->getIdByName('CustomField 5'));
     }
 
-    public function testGetIdByNameTriggersDeprecationWarning()
+    public function testGetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

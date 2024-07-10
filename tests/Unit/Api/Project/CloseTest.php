@@ -13,7 +13,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Project::class)]
 class CloseTest extends TestCase
 {
-    public function testCloseReturnsTrue()
+    public function testCloseReturnsTrue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -31,7 +31,7 @@ class CloseTest extends TestCase
         $this->assertTrue($api->close(5));
     }
 
-    public function testCloseThrowsUnexpectedResponseException()
+    public function testCloseThrowsUnexpectedResponseException(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -52,7 +52,7 @@ class CloseTest extends TestCase
         $api->close(5);
     }
 
-    public function testCloseWithoutIntOrStringThrowsInvalidArgumentException()
+    public function testCloseWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
         $client = $this->createMock(HttpClient::class);
 

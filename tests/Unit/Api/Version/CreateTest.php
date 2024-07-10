@@ -19,7 +19,7 @@ class CreateTest extends TestCase
      * @dataProvider getCreateData
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($identifier, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testCreateReturnsCorrectResponse($identifier, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -130,7 +130,7 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString()
+    public function testCreateReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -154,7 +154,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateWithEmptyParametersThrowsMissingParameterException()
+    public function testCreateWithEmptyParametersThrowsMissingParameterException(): void
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
@@ -169,7 +169,7 @@ class CreateTest extends TestCase
         $api->create(5);
     }
 
-    public function testCreateWithMissingNameInParametersThrowsMissingParameterException()
+    public function testCreateWithMissingNameInParametersThrowsMissingParameterException(): void
     {
         // Test values
         $parameters = [
@@ -189,7 +189,7 @@ class CreateTest extends TestCase
         $api->create(5, $parameters);
     }
 
-    public function testCreateWithInvalidStatusThrowsInvalidParameterException()
+    public function testCreateWithInvalidStatusThrowsInvalidParameterException(): void
     {
         // Test values
         $parameters = [

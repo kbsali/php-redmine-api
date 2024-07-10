@@ -18,7 +18,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new IssueCategory(MockClient::create());
 
@@ -45,7 +45,7 @@ class IssueCategoryTest extends TestCase
      * @dataProvider getAllDAta
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse): void
     {
         // Test values
         $projectId = 5;
@@ -82,7 +82,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParametersAndProject()
+    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
     {
         // Test values
         $projectId = 5;
@@ -118,7 +118,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
@@ -152,7 +152,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
@@ -187,7 +187,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
@@ -222,7 +222,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -254,7 +254,7 @@ class IssueCategoryTest extends TestCase
     /**
      * Test getIdByName().
      */
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         // Test values
         $response = '{"issue_categories":[{"id":5,"name":"IssueCategory 5"}]}';
@@ -282,7 +282,7 @@ class IssueCategoryTest extends TestCase
         $this->assertSame(5, $api->getIdByName(5, 'IssueCategory 5'));
     }
 
-    public function testGetIdByNameTriggersDeprecationWarning()
+    public function testGetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

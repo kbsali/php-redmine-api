@@ -12,7 +12,7 @@ use Redmine\Http\Request;
 #[CoversClass(HttpFactory::class)]
 class MakeRequestTest extends TestCase
 {
-    public function testMakeRequest()
+    public function testMakeRequest(): void
     {
         $response = HttpFactory::makeRequest('GET', 'path.json', 'application/json', 'content');
 

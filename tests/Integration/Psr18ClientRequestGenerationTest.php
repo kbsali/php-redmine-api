@@ -32,7 +32,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         string $path,
         $data,
         $expectedOutput
-    ) {
+    ): void {
         $response = $this->createMock(ResponseInterface::class);
 
         /** @var ClientInterface|\PHPUnit\Framework\MockObject\MockObject */

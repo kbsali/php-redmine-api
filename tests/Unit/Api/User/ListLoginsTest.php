@@ -17,7 +17,7 @@ class ListLoginsTest extends TestCase
      * @dataProvider getListLoginsData
      */
     #[DataProvider('getListLoginsData')]
-    public function testListLoginsReturnsCorrectResponse($expectedPath, $responseCode, $response, $expectedResponse)
+    public function testListLoginsReturnsCorrectResponse($expectedPath, $responseCode, $response, $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -73,7 +73,7 @@ class ListLoginsTest extends TestCase
         ];
     }
 
-    public function testListLoginsWithALotOfUsersHandlesPagination()
+    public function testListLoginsWithALotOfUsersHandlesPagination(): void
     {
         $assertData = [];
         $usersRequest1 = [];
@@ -132,7 +132,7 @@ class ListLoginsTest extends TestCase
         $this->assertSame($assertData, $api->listLogins());
     }
 
-    public function testListLoginsCallsHttpClientOnlyOnce()
+    public function testListLoginsCallsHttpClientOnlyOnce(): void
     {
         $client = AssertingHttpClient::create(
             $this,

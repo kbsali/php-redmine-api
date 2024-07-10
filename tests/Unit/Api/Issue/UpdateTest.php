@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
      * @dataProvider getUpdateData
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -113,7 +113,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateCleansParameters()
+    public function testUpdateCleansParameters(): void
     {
         $client = AssertingHttpClient::create(
             $this,

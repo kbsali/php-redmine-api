@@ -8,7 +8,7 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class UserXmlTest extends TestCase
 {
-    public function testCreateBlank()
+    public function testCreateBlank(): void
     {
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');

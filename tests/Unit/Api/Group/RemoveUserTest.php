@@ -12,7 +12,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Group::class)]
 class RemoveUserTest extends TestCase
 {
-    public function testRemoveUserReturnsString()
+    public function testRemoveUserReturnsString(): void
     {
         $client = AssertingHttpClient::create(
             $this,

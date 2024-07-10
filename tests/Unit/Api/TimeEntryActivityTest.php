@@ -18,7 +18,7 @@ class TimeEntryActivityTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new TimeEntryActivity(MockClient::create());
 
@@ -45,7 +45,7 @@ class TimeEntryActivityTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class TimeEntryActivityTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -111,7 +111,7 @@ class TimeEntryActivityTest extends TestCase
         $this->assertSame($expectedReturn, $api->all($parameters));
     }
 
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         $response = '{"time_entry_activities":[{"id":1,"name":"TimeEntryActivities 1"},{"id":2,"name":"TimeEntryActivities 2"}]}';
         $expectedReturn = [
@@ -138,7 +138,7 @@ class TimeEntryActivityTest extends TestCase
         $this->assertSame($expectedReturn, $api->listing());
     }
 
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         $response = '{"time_entry_activities":[{"id":1,"name":"TimeEntryActivities 1"},{"id":2,"name":"TimeEntryActivities 2"}]}';
         $expectedReturn = [
@@ -169,7 +169,7 @@ class TimeEntryActivityTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -198,7 +198,7 @@ class TimeEntryActivityTest extends TestCase
         $api->listing();
     }
 
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         $response = '{"time_entry_activities":[{"id":2,"name":"TimeEntryActivities 2"}]}';
 
@@ -222,7 +222,7 @@ class TimeEntryActivityTest extends TestCase
         $this->assertSame(2, $api->getIdByName('TimeEntryActivities 2'));
     }
 
-    public function testGetIdByNameTriggersDeprecationWarning()
+    public function testGetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

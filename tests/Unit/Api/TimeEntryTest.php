@@ -18,7 +18,7 @@ class TimeEntryTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new TimeEntry(MockClient::create());
 
@@ -45,7 +45,7 @@ class TimeEntryTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class TimeEntryTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = [

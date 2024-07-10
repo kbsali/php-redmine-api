@@ -12,7 +12,7 @@ use Redmine\Http\Response;
 #[CoversClass(HttpFactory::class)]
 class MakeResponseTest extends TestCase
 {
-    public function testMakeResponse()
+    public function testMakeResponse(): void
     {
         $response = HttpFactory::makeResponse(200, 'application/json', 'content');
 

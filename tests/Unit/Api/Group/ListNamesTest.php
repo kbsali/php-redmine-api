@@ -17,7 +17,7 @@ class ListNamesTest extends TestCase
      * @dataProvider getListNamesData
      */
     #[DataProvider('getListNamesData')]
-    public function testListNamesReturnsCorrectResponse($expectedPath, $responseCode, $response, $expectedResponse)
+    public function testListNamesReturnsCorrectResponse($expectedPath, $responseCode, $response, $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -73,7 +73,7 @@ class ListNamesTest extends TestCase
         ];
     }
 
-    public function testListNamesCallsHttpClientOnlyOnce()
+    public function testListNamesCallsHttpClientOnlyOnce(): void
     {
         $client = AssertingHttpClient::create(
             $this,

@@ -15,7 +15,7 @@ use ReflectionMethod;
 #[CoversClass(AbstractApi::class)]
 class DeleteTest extends TestCase
 {
-    public function testDeleteWithHttpClient()
+    public function testDeleteWithHttpClient(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -45,7 +45,7 @@ class DeleteTest extends TestCase
      * @dataProvider getXmlDecodingFromDeleteMethodData
      */
     #[DataProvider('getXmlDecodingFromDeleteMethodData')]
-    public function testXmlDecodingFromDeleteMethod($response, $expected)
+    public function testXmlDecodingFromDeleteMethod($response, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);

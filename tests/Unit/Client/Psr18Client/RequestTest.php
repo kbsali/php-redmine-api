@@ -25,7 +25,7 @@ class RequestTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content)
+    public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content): void
     {
         $httpClient = $this->createConfiguredMock(ClientInterface::class, [
             'sendRequest' => $this->createConfiguredMock(ResponseInterface::class, [
@@ -97,7 +97,7 @@ class RequestTest extends TestCase
         ];
     }
 
-    public function testRequestThrowsClientException()
+    public function testRequestThrowsClientException(): void
     {
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->expects($this->exactly(1))->method('sendRequest')->willThrowException(
