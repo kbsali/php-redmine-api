@@ -228,15 +228,14 @@ To check for failed requests you can afterwards check the status code via `$clie
 ```php
 
 $client->getApi('tracker')->list();
-$client->getApi('tracker')->listing();
+$client->getApi('tracker')->listNames();
 ```
 
 #### IssueStatus API
 
 ```php
 $client->getApi('issue_status')->list();
-$client->getApi('issue_status')->listing();
-$client->getApi('issue_status')->getIdByName('New');
+$client->getApi('issue_status')->listNames();
 
 ```
 
@@ -247,10 +246,8 @@ $client->getApi('project')->list();
 $client->getApi('project')->list([
     'limit' => 10,
 ]);
-$client->getApi('project')->listing();
-$client->getApi('project')->listing();
+$client->getApi('project')->listNames();
 $client->getApi('project')->show($projectId);
-$client->getApi('project')->getIdByName('Elvis');
 $client->getApi('project')->create([
     'name' => 'some name',
     'identifier' => 'the_identifier',
@@ -270,7 +267,7 @@ $client->getApi('project')->remove($projectId);
 
 ```php
 $client->getApi('user')->list();
-$client->getApi('user')->listing();
+$client->getApi('user')->listLogins();
 $client->getApi('user')->getCurrentUser([
     'include' => [
         'memberships',
@@ -279,7 +276,6 @@ $client->getApi('user')->getCurrentUser([
         'status',
     ],
 ]);
-$client->getApi('user')->getIdByUsername('kbsali');
 $client->getApi('user')->show($userId, [
     'include' => [
         'memberships',
@@ -358,8 +354,11 @@ $client->getApi('issue')->update($issueId, [
     'priority_id' => 5,
     'due_date' => date('Y-m-d'),
 ]);
+$client->getApi('issue')->addWatcher($issueId, $userId);
+$client->getApi('issue')->removeWatcher($issueId, $userId);
 $client->getApi('issue')->setIssueStatus($issueId, 'Resolved');
 $client->getApi('issue')->addNoteToIssue($issueId, 'some comment');
+$client->getApi('issue')->addNoteToIssue($issueId, 'private note', true);
 $client->getApi('issue')->remove($issueId);
 
 // To upload a file + attach it to an existing issue with $issueId
@@ -421,9 +420,8 @@ Array
 
 ```php
 $client->getApi('issue_category')->listByProject('project1');
-$client->getApi('issue_category')->listing($projectId);
+$client->getApi('issue_category')->listNamesByProject($projectId);
 $client->getApi('issue_category')->show($categoryId);
-$client->getApi('issue_category')->getIdByName($projectId, 'Administration');
 $client->getApi('issue_category')->create('otherProject', [
     'name' => 'test category',
 ]);
@@ -440,9 +438,8 @@ $client->getApi('issue_category')->remove($categoryId, [
 
 ```php
 $client->getApi('version')->listByProject('test');
-$client->getApi('version')->listing('test');
+$client->getApi('version')->listNamesByProject('test');
 $client->getApi('version')->show($versionId);
-$client->getApi('version')->getIdByName('test', 'v2');
 $client->getApi('version')->create('test', [
     'name' => 'v3432',
 ]);
@@ -456,9 +453,17 @@ $client->getApi('version')->remove($versionId);
 
 ```php
 $client->getApi('attachment')->show($attachmentId);
+$client->getApi('attachment')->upload(file_get_contents('example.png'), [
+    'filename' => 'example.png',
+]);
+$client->getApi('attachment')->update($attachmentId, [
+    'filename' => 'example.png',
+]);
 
 $file_content = $client->getApi('attachment')->download($attachmentId);
 file_put_contents('example.png', $file_content);
+
+$client->getApi('attachment')->remove($attachmentId);
 ```
 
 #### News API
@@ -472,8 +477,8 @@ $client->getApi('news')->listByProject('test');
 
 ```php
 $client->getApi('role')->list();
+$client->getApi('role')->listNames();
 $client->getApi('role')->show(1);
-$client->getApi('role')->listing();
 ```
 
 #### Query API
@@ -530,6 +535,7 @@ $client->getApi('time_entry')->remove($timeEntryId);
 
 ```php
 $client->getApi('time_entry_activity')->list();
+$client->getApi('time_entry_activity')->listNames();
 ```
 
 #### IssueRelation API
@@ -537,6 +543,10 @@ $client->getApi('time_entry_activity')->list();
 ```php
 $client->getApi('issue_relation')->listByIssueId($issueId);
 $client->getApi('issue_relation')->show($issueRelationId);
+$client->getApi('issue_relation')->create($issueId, [
+    'relation_type' => 'relates',
+    'issue_to_id' => $issueToId,
+]);
 $client->getApi('issue_relation')->remove($issueRelationId);
 ```
 
@@ -544,7 +554,7 @@ $client->getApi('issue_relation')->remove($issueRelationId);
 
 ```php
 $client->getApi('group')->list();
-$client->getApi('group')->listing();
+$client->getApi('group')->listNames();
 $client->getApi('group')->show($groupId, ['include' => 'users,memberships']);
 $client->getApi('group')->remove($groupId);
 $client->getApi('group')->addUser($groupId, $userId);
@@ -582,7 +592,12 @@ $client->getApi('membership')->create($projectId, [
     'user_id' => 1,
     'role_ids' => [5],
 ]);
+$client->getApi('membership')->update($membershipId, [
+    'user_id' => 1,
+    'role_ids' => [5],
+]);
 $client->getApi('membership')->remove($membershipId);
+$client->getApi('membership')->removeMember($projectId, $userId);
 ```
 
 #### IssuePriority API
@@ -613,12 +628,15 @@ $client->getApi('wiki')->remove('testProject', 'about');
 #### Search API
 
 ```php
-// ----------------------------
-// Search
-$client->getApi('search')->search('Myproject', ['limit' => 100]);
+$client->getApi('search')->listByQuery('search query', ['limit' => 100]);
 ```
 
 #### CustomField API
+
+```php
+$client->getApi('custom_field')->list();
+$client->getApi('custom_field')->listNames();
+```
 
 #### API entry points implementation state:
 
