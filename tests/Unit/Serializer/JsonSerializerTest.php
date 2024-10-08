@@ -63,7 +63,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
-    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, string $expected): void
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected): void
     {
         $serializer = JsonSerializer::createFromString($data);
 
@@ -184,7 +184,7 @@ class JsonSerializerTest extends TestCase
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
-    public function testCreateFromArrayEncodesToExpectedString(array $data, string $expected): void
+    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected): void
     {
         $serializer = JsonSerializer::createFromArray($data);
 

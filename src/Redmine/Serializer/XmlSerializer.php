@@ -144,9 +144,9 @@ final class XmlSerializer implements Stringable
     }
 
     /**
-     * @param array<mixed> $params
+     * @param string|array<mixed> $params
      */
-    private function createXmlElement(string $rootElementName, array $params): SimpleXMLElement
+    private function createXmlElement(string $rootElementName, $params): SimpleXMLElement
     {
         $value = '';
         if (! is_array($params)) {
