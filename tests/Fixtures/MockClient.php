@@ -16,7 +16,7 @@ final class MockClient implements Client
 {
     use ClientApiTrait;
 
-    public static function create()
+    public static function create(): self
     {
         return new self();
     }
@@ -35,9 +35,9 @@ final class MockClient implements Client
      */
     public $useOriginalGetMethod = false;
 
-    public $responseBodyMock;
-    public $responseCodeMock;
-    public $responseContentTypeMock;
+    public string $responseBodyMock;
+    public int $responseCodeMock;
+    public string $responseContentTypeMock;
 
     private function __construct() {}
 

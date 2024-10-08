@@ -76,6 +76,9 @@ final class FeatureContext extends TestCase implements Context
 
     private mixed $lastReturn;
 
+    /**
+     * @var array<mixed>
+     */
     private array $lastReturnAsArray;
 
     public function __construct(string $redmineVersion)

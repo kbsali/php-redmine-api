@@ -35,8 +35,12 @@ final class AssertingHttpClient implements HttpClient
         return $client;
     }
 
-    private $testCase;
-    private $client;
+    private TestCase $testCase;
+    private HttpClient $client;
+
+    /**
+     * @var array<mixed>
+     */
     private $fifoStack = [];
 
     private function __construct(TestCase $testCase, HttpClient $client)
