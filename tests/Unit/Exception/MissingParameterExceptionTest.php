@@ -10,7 +10,7 @@ use Redmine\Exception\MissingParameterException;
 
 class MissingParameterExceptionTest extends TestCase
 {
-    public function testMissingParameterException()
+    public function testMissingParameterException(): void
     {
         $exception = new MissingParameterException();
 

@@ -22,8 +22,14 @@ use SimpleXMLElement;
  */
 class IssueCategory extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $issueCategories = [];
 
+    /**
+     * @var array<mixed>
+     */
     private $issueCategoriesNames = [];
 
     /**
@@ -31,13 +37,13 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
-     * @param string|int $projectIdentifier project id or literal identifier
-     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $projectIdentifier project id or literal identifier
+     * @param array<mixed> $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of issue categories found
+     * @return array<mixed> list of issue categories found
      */
     final public function listByProject($projectIdentifier, array $params = []): array
     {
@@ -98,10 +104,10 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of issue categories found or error message or false
+     * @return array<mixed>|string|false list of issue categories found or error message or false
      */
     public function all($project, array $params = [])
     {
@@ -131,7 +137,7 @@ class IssueCategory extends AbstractApi
      * @param string|int $project     project id or literal identifier
      * @param bool       $forceUpdate to force the update of the projects var
      *
-     * @return array list of projects (id => project name)
+     * @return array<string,int> list of projects (project name => id)
      */
     public function listing($project, $forceUpdate = false)
     {
@@ -171,7 +177,7 @@ class IssueCategory extends AbstractApi
      *
      * @param int $id the issue category id
      *
-     * @return array|false|string information about the category as array or false|string on error
+     * @return array<mixed>|false|string information about the category as array or false|string on error
      */
     public function show($id)
     {
@@ -198,8 +204,8 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#POST
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  the new issue category data
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  the new issue category data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -239,7 +245,8 @@ class IssueCategory extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#PUT
      *
-     * @param int $id the issue category id
+     * @param int          $id     the issue category id
+     * @param array<mixed> $params
      *
      * @return string|false
      */
@@ -267,8 +274,8 @@ class IssueCategory extends AbstractApi
      * available $params :
      * - reassign_to_id : when there are issues assigned to the category you are deleting, this parameter lets you reassign these issues to the category with this id
      *
-     * @param int   $id     id of the category
-     * @param array $params extra GET parameters
+     * @param int          $id     id of the category
+     * @param array<mixed> $params extra GET parameters
      *
      * @return string empty string on success
      */
@@ -282,10 +289,15 @@ class IssueCategory extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function doListing($project, bool $forceUpdate)
+    /**
+     * @param int|string $projectIdentifier
+     *
+     * @return array<string,int>
+     */
+    private function doListing($projectIdentifier, bool $forceUpdate): array
     {
         if (true === $forceUpdate || empty($this->issueCategories)) {
-            $this->issueCategories = $this->listByProject($project);
+            $this->issueCategories = $this->listByProject($projectIdentifier);
         }
 
         $ret = [];

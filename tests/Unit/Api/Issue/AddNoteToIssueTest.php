@@ -17,7 +17,7 @@ class AddNoteToIssueTest extends TestCase
      * @dataProvider getAddNoteToIssueData
      */
     #[DataProvider('getAddNoteToIssueData')]
-    public function testAddNoteToIssueReturnsCorrectResponse($id, $note, $isPrivate, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testAddNoteToIssueReturnsCorrectResponse($id, $note, $isPrivate, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

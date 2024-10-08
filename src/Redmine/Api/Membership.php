@@ -20,6 +20,9 @@ use SimpleXMLElement;
  */
 class Membership extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $memberships = [];
 
     /**
@@ -27,13 +30,13 @@ class Membership extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
-     * @param string|int $projectIdentifier project id or literal identifier
-     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $projectIdentifier project id or literal identifier
+     * @param array<mixed> $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of memberships found
+     * @return array<mixed> list of memberships found
      */
     final public function listByProject($projectIdentifier, array $params = []): array
     {
@@ -59,10 +62,10 @@ class Membership extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of memberships found or error message or false
+     * @return array<mixed>|string|false list of memberships found or error message or false
      */
     public function all($project, array $params = [])
     {
@@ -90,8 +93,8 @@ class Membership extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#POST
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  the new membership data
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  the new membership data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -129,8 +132,8 @@ class Membership extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#PUT
      *
-     * @param int   $id     id of the membership
-     * @param array $params the new membership data
+     * @param int          $id     id of the membership
+     * @param array<mixed> $params the new membership data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -180,9 +183,9 @@ class Membership extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#DELETE
      *
-     * @param int   $projectId id of project
-     * @param int   $userId    id of user
-     * @param array $params    optional parameters to be passed to the api (offset, limit, ...)
+     * @param int          $projectId id of project
+     * @param int          $userId    id of user
+     * @param array<mixed> $params    optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return false|\SimpleXMLElement|string
      */

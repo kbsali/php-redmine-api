@@ -17,8 +17,14 @@ use Redmine\Serializer\JsonSerializer;
  */
 class Role extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $roles = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $roleNames = null;
 
     /**
@@ -26,11 +32,11 @@ class Role extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of roles found
+     * @return array<mixed> list of roles found
      */
     final public function list(array $params = []): array
     {
@@ -72,9 +78,9 @@ class Role extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Roles#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of roles found or error message or false
+     * @return array<mixed>|string|false list of roles found or error message or false
      */
     public function all(array $params = [])
     {
@@ -105,7 +111,7 @@ class Role extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the roles var
      *
-     * @return array list of roles (id => name)
+     * @return array<string,int> list of roles (name => id)
      */
     public function listing($forceUpdate = false)
     {
@@ -129,7 +135,7 @@ class Role extends AbstractApi
      *
      * @param int $id the role id
      *
-     * @return array|false|string information about the role as array or false|string on error
+     * @return array<mixed>|false|string information about the role as array or false|string on error
      */
     public function show($id)
     {

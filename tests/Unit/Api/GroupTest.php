@@ -20,7 +20,7 @@ class GroupTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Group(MockClient::create());
 
@@ -47,7 +47,7 @@ class GroupTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -81,7 +81,7 @@ class GroupTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -116,7 +116,7 @@ class GroupTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -148,7 +148,7 @@ class GroupTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';
@@ -182,7 +182,7 @@ class GroupTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';
@@ -217,7 +217,7 @@ class GroupTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"groups":[{"id":1,"name":"Group 1"},{"id":5,"name":"Group 5"}]}';

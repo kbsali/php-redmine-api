@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\TestDataProvider;
 #[CoversClass(Version::class)]
 class ListByProjectTest extends TestCase
 {
-    public function testListByProjectWithoutParametersReturnsResponse()
+    public function testListByProjectWithoutParametersReturnsResponse(): void
     {
         // Test values
         $response = '["API Response"]';
@@ -41,7 +41,7 @@ class ListByProjectTest extends TestCase
         $this->assertSame($expectedReturn, $api->listByProject(5));
     }
 
-    public function testListByProjectWithParametersReturnsResponse()
+    public function testListByProjectWithParametersReturnsResponse(): void
     {
         // Test values
         $parameters = [
@@ -75,7 +75,7 @@ class ListByProjectTest extends TestCase
      * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
-    public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
+    public function testListByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void
     {
         $api = new Version(MockClient::create());
 
@@ -85,7 +85,7 @@ class ListByProjectTest extends TestCase
         $api->listByProject($projectIdentifier);
     }
 
-    public function testListByProjectThrowsException()
+    public function testListByProjectThrowsException(): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
      * @dataProvider getUpdateData
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

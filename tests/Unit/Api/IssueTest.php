@@ -40,7 +40,7 @@ class IssueTest extends TestCase
      * @dataProvider getPriorityConstantsData
      */
     #[DataProvider('getPriorityConstantsData')]
-    public function testPriorityConstants($expected, $value)
+    public function testPriorityConstants($expected, $value): void
     {
         $this->assertSame($expected, $value);
     }
@@ -48,7 +48,7 @@ class IssueTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Issue(MockClient::create());
 
@@ -75,7 +75,7 @@ class IssueTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -109,7 +109,7 @@ class IssueTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -144,7 +144,7 @@ class IssueTest extends TestCase
     /**
      * Test cleanParams() with Client for BC
      */
-    public function testCreateWithClientCleansParameters()
+    public function testCreateWithClientCleansParameters(): void
     {
         // Test values
         $response = '<?xml version="1.0"?><issue></issue>';

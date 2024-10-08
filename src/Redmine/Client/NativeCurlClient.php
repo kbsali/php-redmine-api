@@ -24,8 +24,20 @@ final class NativeCurlClient implements Client, HttpClient
     private int $lastResponseStatusCode = 0;
     private string $lastResponseContentType = '';
     private string $lastResponseBody = '';
+
+    /**
+     * @var array<int,mixed>
+     */
     private array $curlOptions = [];
+
+    /**
+     * @var array<string>
+     */
     private array $httpHeaders = [];
+
+    /**
+     * @var array<string>
+     */
     private array $httpHeadersNames = [];
     private ?int $port = null;
 
@@ -194,6 +206,8 @@ final class NativeCurlClient implements Client, HttpClient
 
     /**
      * Set multiple HTTP headers.
+     *
+     * @param array<mixed> $headers
      */
     private function setHttpHeaders(array $headers): void
     {
@@ -339,6 +353,9 @@ final class NativeCurlClient implements Client, HttpClient
         return $curl;
     }
 
+    /**
+     * @return array<string>
+     */
     private function createHttpHeader(string $path, string $contentType = ''): array
     {
         // Additional request headers

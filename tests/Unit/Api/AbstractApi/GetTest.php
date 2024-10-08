@@ -16,7 +16,7 @@ use SimpleXMLElement;
 #[CoversClass(AbstractApi::class)]
 class GetTest extends TestCase
 {
-    public function testGetWithHttpClient()
+    public function testGetWithHttpClient(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -47,7 +47,7 @@ class GetTest extends TestCase
      * @dataProvider getJsonDecodingFromGetMethodData
      */
     #[DataProvider('getJsonDecodingFromGetMethodData')]
-    public function testJsonDecodingFromGetMethod($response, $decode, $expected)
+    public function testJsonDecodingFromGetMethod($response, $decode, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
@@ -82,7 +82,7 @@ class GetTest extends TestCase
      * @dataProvider getXmlDecodingFromGetMethodData
      */
     #[DataProvider('getXmlDecodingFromGetMethodData')]
-    public function testXmlDecodingFromGetMethod($response, $decode, $expected)
+    public function testXmlDecodingFromGetMethod($response, $decode, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);

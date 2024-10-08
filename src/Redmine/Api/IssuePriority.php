@@ -15,6 +15,9 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class IssuePriority extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $issuePriorities = [];
 
     /**
@@ -22,11 +25,11 @@ class IssuePriority extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of issue priorities found
+     * @return array<mixed> list of issue priorities found
      */
     final public function list(array $params = []): array
     {
@@ -45,9 +48,9 @@ class IssuePriority extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of issue priorities found or error message or false
+     * @return array<mixed>|string|false list of issue priorities found or error message or false
      */
     public function all(array $params = [])
     {

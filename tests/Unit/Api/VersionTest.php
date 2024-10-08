@@ -19,7 +19,7 @@ class VersionTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Version(MockClient::create());
 
@@ -46,7 +46,7 @@ class VersionTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -80,7 +80,7 @@ class VersionTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = [
@@ -119,7 +119,7 @@ class VersionTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
@@ -151,7 +151,7 @@ class VersionTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsIdNameIfReverseIsFalseArray()
+    public function testListingReturnsIdNameIfReverseIsFalseArray(): void
     {
         // Test values
         $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
@@ -183,7 +183,7 @@ class VersionTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
@@ -216,7 +216,7 @@ class VersionTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
@@ -249,7 +249,7 @@ class VersionTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -281,7 +281,7 @@ class VersionTest extends TestCase
     /**
      * Test getIdByName().
      */
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         // Test values
         $response = '{"versions":[{"id":5,"name":"Version 5"}]}';
@@ -309,7 +309,7 @@ class VersionTest extends TestCase
         $this->assertSame(5, $api->getIdByName(5, 'Version 5'));
     }
 
-    public function testGetIdByNameTriggersDeprecationWarning()
+    public function testGetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -346,7 +346,7 @@ class VersionTest extends TestCase
      * @param string $sharingValue
      */
     #[DataProvider('invalidSharingProvider')]
-    public function testCreateThrowsExceptionWithInvalidSharing($sharingValue)
+    public function testCreateThrowsExceptionWithInvalidSharing($sharingValue): void
     {
         // Test values
         $parameters = [

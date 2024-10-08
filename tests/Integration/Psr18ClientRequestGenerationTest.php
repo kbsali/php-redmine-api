@@ -32,7 +32,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         string $path,
         $data,
         $expectedOutput
-    ) {
+    ): void {
         $response = $this->createMock(ResponseInterface::class);
 
         /** @var ClientInterface|\PHPUnit\Framework\MockObject\MockObject */
@@ -69,7 +69,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             return new Request($method, $uri);
         });
 
-        $streamFactory = new class () implements StreamFactoryInterface {
+        $streamFactory = new class implements StreamFactoryInterface {
             public function createStream(string $content = ''): StreamInterface
             {
                 return Utils::streamFor($content);

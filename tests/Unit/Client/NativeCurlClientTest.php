@@ -35,7 +35,7 @@ class NativeCurlClientTest extends TestCase
         CURLOPT_RETURNTRANSFER => 1,
     ];
 
-    public function testApiKeyShouldBePassToConstructor()
+    public function testApiKeyShouldBePassToConstructor(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -47,7 +47,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $client);
     }
 
-    public function testShouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -59,7 +59,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
     }
 
-    public function testGetLastResponseStatusCodeIsInitialNull()
+    public function testGetLastResponseStatusCodeIsInitialNull(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -69,7 +69,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame(0, $client->getLastResponseStatusCode());
     }
 
-    public function testGetLastResponseContentTypeIsInitialEmpty()
+    public function testGetLastResponseContentTypeIsInitialEmpty(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -79,7 +79,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseContentType());
     }
 
-    public function testGetLastResponseBodyIsInitialEmpty()
+    public function testGetLastResponseBodyIsInitialEmpty(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -89,7 +89,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseBody());
     }
 
-    public function testStartAndStopImpersonateUser()
+    public function testStartAndStopImpersonateUser(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -145,7 +145,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetSslVersion()
+    public function testSetSslVersion(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
@@ -200,7 +200,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetSslVerifypeer()
+    public function testSetSslVerifypeer(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -256,7 +256,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetSslVerifyhost()
+    public function testSetSslVerifyhost(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -312,7 +312,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetCustomHttpHeaders()
+    public function testSetCustomHttpHeaders(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -374,7 +374,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetCustomHost()
+    public function testSetCustomHost(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -432,7 +432,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testSetPort()
+    public function testSetPort(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -487,7 +487,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testCustomPortWillSetFromSchema()
+    public function testCustomPortWillSetFromSchema(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -537,7 +537,7 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testCustomPortWillSetFromUrl()
+    public function testCustomPortWillSetFromUrl(): void
     {
         $expectedOptions = [
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -591,7 +591,7 @@ class NativeCurlClientTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
+    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content): void
     {
         $curl = $this->createMock(stdClass::class);
 
@@ -651,7 +651,7 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    public function testHandlingOfResponseWithoutContent()
+    public function testHandlingOfResponseWithoutContent(): void
     {
         $content = '';
         $statusCode = 204;
@@ -689,7 +689,7 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
-    public function testCurlErrorThrowsException()
+    public function testCurlErrorThrowsException(): void
     {
         $curl = $this->createMock(stdClass::class);
 
@@ -724,7 +724,7 @@ class NativeCurlClientTest extends TestCase
      * @dataProvider getApiClassesProvider
      */
     #[DataProvider('getApiClassesProvider')]
-    public function testGetApiShouldReturnApiInstance(string $apiName, string $class)
+    public function testGetApiShouldReturnApiInstance(string $apiName, string $class): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -759,7 +759,7 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    public function testGetApiShouldThrowException()
+    public function testGetApiShouldThrowException(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -767,7 +767,7 @@ class NativeCurlClientTest extends TestCase
         );
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`, `search`');
+        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `search`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`');
 
         $client->getApi('do_not_exist');
     }

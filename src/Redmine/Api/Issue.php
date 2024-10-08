@@ -87,11 +87,11 @@ class Issue extends AbstractApi
      * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
      * - query_id : id of the previously saved query
      *
-     * @param array $params the additional parameters (cf available $params above)
+     * @param array<mixed> $params the additional parameters (cf available $params above)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of issues found
+     * @return array<mixed> list of issues found
      */
     final public function list(array $params = []): array
     {
@@ -120,9 +120,9 @@ class Issue extends AbstractApi
      * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
      * - query_id : id of the previously saved query
      *
-     * @param array $params the additional parameters (cf available $params above)
+     * @param array<mixed> $params the additional parameters (cf available $params above)
      *
-     * @return array|string|false list of issues found or error message or false
+     * @return array<mixed>|string|false list of issues found or error message or false
      */
     public function all(array $params = [])
     {
@@ -150,10 +150,10 @@ class Issue extends AbstractApi
      * available $params :
      * include: fetch associated data (optional). Possible values: children, attachments, relations, changesets and journals
      *
-     * @param int    $id     the issue id
-     * @param array  $params extra associated data
+     * @param int          $id     the issue id
+     * @param array<mixed> $params extra associated data
      *
-     * @return array|false|string information about the issue as array or false|string on error
+     * @return array<mixed>|false|string information about the issue as array or false|string on error
      */
     public function show($id, array $params = [])
     {
@@ -185,7 +185,7 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
-     * @param array $params the new issue data
+     * @param array<mixed> $params the new issue data
      *
      * @return string|SimpleXMLElement|false
      */
@@ -234,7 +234,8 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param int $id the issue number
+     * @param int          $id     the issue number
+     * @param array<mixed> $params
      *
      * @return string|SimpleXMLElement|false
      */
@@ -341,9 +342,11 @@ class Issue extends AbstractApi
     /**
      * Transforms literal identifiers to integer ids.
      *
-     * @return array
+     * @param array<mixed> $params
+     *
+     * @return array<mixed>
      */
-    private function cleanParams(array $params = [])
+    private function cleanParams(array $params = []): array
     {
         if (isset($params['project'])) {
             $projectApi = $this->getProjectApi();
@@ -420,8 +423,8 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param int    $id         the issue number
-     * @param array  $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
+     * @param int          $id         the issue number
+     * @param array<mixed> $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
      *
      * @return bool|string
      */
@@ -435,11 +438,11 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * @param int    $id          the issue number
-     * @param array  $attachments [
-     *                            ['token' => '...', 'filename' => '...', 'content_type' => '...'],
-     *                            ['token' => '...', 'filename' => '...', 'content_type' => '...']
-     *                            ]
+     * @param int          $id          the issue number
+     * @param array<mixed> $attachments [
+     *                                  ['token' => '...', 'filename' => '...', 'content_type' => '...'],
+     *                                  ['token' => '...', 'filename' => '...', 'content_type' => '...']
+     *                                  ]
      *
      * @return bool|string
      */

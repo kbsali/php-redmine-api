@@ -21,8 +21,14 @@ use SimpleXMLElement;
  */
 class Version extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $versions = [];
 
+    /**
+     * @var array<array<int,string>>
+     */
     private $versionNames = [];
 
     /**
@@ -30,12 +36,12 @@ class Version extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *
-     * @param string|int $projectIdentifier project id or literal identifier
-     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $projectIdentifier project id or literal identifier
+     * @param array<mixed> $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of versions found
+     * @return array<array<array<string>>> list of versions found
      */
     final public function listByProject($projectIdentifier, array $params = []): array
     {
@@ -96,10 +102,10 @@ class Version extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of versions found or error message or false
+     * @return array<mixed>|string|false list of versions found or error message or false
      */
     public function all($project, array $params = [])
     {
@@ -128,12 +134,12 @@ class Version extends AbstractApi
      * @deprecated v2.7.0 Use listNamesByProject() instead.
      * @see Version::listNamesByProject()
      *
-     * @param string|int $project     project id or literal identifier
-     * @param bool       $forceUpdate to force the update of the projects var
-     * @param bool       $reverse     to return an array indexed by name rather than id
-     * @param array      $params      optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project     project id or literal identifier
+     * @param bool         $forceUpdate to force the update of the projects var
+     * @param bool         $reverse     to return an array indexed by name rather than id
+     * @param array<mixed> $params      optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of versions (id => version name)
+     * @return array<mixed> list of versions (id => version name)
      */
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
@@ -148,9 +154,9 @@ class Version extends AbstractApi
      * @deprecated v2.7.0 Use listNamesByProject() instead.
      * @see Version::listNamesByProject()
      *
-     * @param string|int $project project id or literal identifier
-     * @param string     $name The version name
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project project id or literal identifier
+     * @param string       $name The version name
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
      */
@@ -174,7 +180,7 @@ class Version extends AbstractApi
      *
      * @param int $id the version id
      *
-     * @return array|false|string information about the version as array of false|string on error
+     * @return array<mixed>|false|string information about the version as array of false|string on error
      */
     public function show($id)
     {
@@ -201,8 +207,8 @@ class Version extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#POST
      *
-     * @param string|int $project project id or literal identifier
-     * @param array      $params  the new version data
+     * @param string|int   $project project id or literal identifier
+     * @param array<mixed> $params  the new version data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -247,7 +253,8 @@ class Version extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#PUT
      *
-     * @param int $id the version id
+     * @param int          $id the version id
+     * @param array<mixed> $params
      *
      * @return string|false
      */
@@ -273,19 +280,30 @@ class Version extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function validateStatus(array $params = [])
+    /**
+     * @param array<mixed> $params
+     *
+     * @throws InvalidParameterException
+     */
+    private function validateStatus(array $params = []): void
     {
         $arrStatus = [
             'open',
             'locked',
             'closed',
         ];
+
         if (isset($params['status']) && !in_array($params['status'], $arrStatus)) {
             throw new InvalidParameterException('Possible values for status are: ' . implode(', ', $arrStatus));
         }
     }
 
-    private function validateSharing(array $params = [])
+    /**
+     * @param array<mixed> $params
+     *
+     * @throws InvalidParameterException
+     */
+    private function validateSharing(array $params = []): void
     {
         $arrSharing = [
             'none' => 'Not shared',
@@ -294,6 +312,7 @@ class Version extends AbstractApi
             'tree' => 'With project tree',
             'system' => 'With all projects',
         ];
+
         if (isset($params['sharing']) && !isset($arrSharing[$params['sharing']])) {
             throw new InvalidParameterException('Possible values for sharing are: ' . implode(', ', array_keys($arrSharing)));
         }
@@ -318,10 +337,16 @@ class Version extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function doListing($project, bool $forceUpdate, bool $reverse, array $params)
+    /**
+     * @param string|int   $projectIdentifier project id or literal identifier
+     * @param array<mixed> $params
+     *
+     * @return array<mixed>
+     */
+    private function doListing($projectIdentifier, bool $forceUpdate, bool $reverse, array $params): array
     {
         if (true === $forceUpdate || empty($this->versions)) {
-            $this->versions = $this->listByProject($project, $params);
+            $this->versions = $this->listByProject($projectIdentifier, $params);
         }
 
         $ret = [];

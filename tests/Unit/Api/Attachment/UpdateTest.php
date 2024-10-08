@@ -16,7 +16,7 @@ class UpdateTest extends TestCase
      * @dataProvider getUpdateData
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse($id, array $params, $expectedPath, $expectedContent, $expectedReturn)
+    public function testUpdateReturnsCorrectResponse($id, array $params, $expectedPath, $expectedContent, $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -54,7 +54,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateThrowsUnexpectedResponseException()
+    public function testUpdateThrowsUnexpectedResponseException(): void
     {
         $client = AssertingHttpClient::create(
             $this,

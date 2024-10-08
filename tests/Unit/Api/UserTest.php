@@ -18,7 +18,7 @@ class UserTest extends TestCase
     /**
      * Test getCurrentUser().
      */
-    public function testGetCurrentUserReturnsClientGetResponse()
+    public function testGetCurrentUserReturnsClientGetResponse(): void
     {
         // Test values
         $response = '["API Response"]';
@@ -52,7 +52,7 @@ class UserTest extends TestCase
     /**
      * Test getIdByUsername().
      */
-    public function testGetIdByUsernameMakesGetRequest()
+    public function testGetIdByUsernameMakesGetRequest(): void
     {
         // Test values
         $response = '{"users":[{"id":5,"login":"user_5"}]}';
@@ -83,7 +83,7 @@ class UserTest extends TestCase
         $this->assertSame(5, $api->getIdByUsername('user_5'));
     }
 
-    public function testGetIdByUsernameTriggersDeprecationWarning()
+    public function testGetIdByUsernameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -115,7 +115,7 @@ class UserTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new User(MockClient::create());
 
@@ -142,7 +142,7 @@ class UserTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -176,7 +176,7 @@ class UserTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = [
@@ -215,7 +215,7 @@ class UserTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
@@ -249,7 +249,7 @@ class UserTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
@@ -284,7 +284,7 @@ class UserTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
@@ -319,7 +319,7 @@ class UserTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

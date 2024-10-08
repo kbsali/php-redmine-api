@@ -18,6 +18,9 @@ use Redmine\Serializer\JsonSerializer;
  */
 class IssueRelation extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $relations = [];
 
     /**
@@ -25,12 +28,12 @@ class IssueRelation extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
-     * @param int   $issueId the issue id
-     * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param int          $issueId the issue id
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of relations found
+     * @return array<mixed> list of relations found
      */
     final public function listByIssueId(int $issueId, array $params = []): array
     {
@@ -49,10 +52,10 @@ class IssueRelation extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
-     * @param int   $issueId the issue id
-     * @param array $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param int          $issueId the issue id
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of relations found or error message or false
+     * @return array<mixed>|string|false list of relations found or error message or false
      */
     public function all($issueId, array $params = [])
     {
@@ -82,7 +85,7 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
-     * @return array relation's details or empty array on error
+     * @return array<mixed> relation's details or empty array on error
      */
     public function show($id)
     {
@@ -140,12 +143,12 @@ class IssueRelation extends AbstractApi
      *   (in: "relates", "duplicates", "duplicated", "blocks", "blocked", "precedes", "follows", "copied_to", "copied_from")
      * - delay (optional): the delay for a "precedes" or "follows" relation
      *
-     * @param int   $issueId the ID of the issue we are creating the relation on
-     * @param array $params  the new issue relation data
+     * @param int          $issueId the ID of the issue we are creating the relation on
+     * @param array<mixed> $params  the new issue relation data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return array
+     * @return array<mixed>
      */
     public function create($issueId, array $params = [])
     {

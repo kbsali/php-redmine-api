@@ -10,7 +10,7 @@ use Redmine\Exception\InvalidParameterException;
 
 class InvalidParameterExceptionTest extends TestCase
 {
-    public function testInvalidParameterException()
+    public function testInvalidParameterException(): void
     {
         $exception = new InvalidParameterException();
 

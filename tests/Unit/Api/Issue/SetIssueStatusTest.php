@@ -10,7 +10,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Issue::class)]
 class SetIssueStatusTest extends TestCase
 {
-    public function testSetIssueStatusReturnsCorrectResponse()
+    public function testSetIssueStatusReturnsCorrectResponse(): void
     {
         $client = AssertingHttpClient::create(
             $this,

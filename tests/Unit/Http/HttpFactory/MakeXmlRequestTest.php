@@ -12,7 +12,7 @@ use Redmine\Http\Request;
 #[CoversClass(HttpFactory::class)]
 class MakeXmlRequestTest extends TestCase
 {
-    public function testMakeXmlRequest()
+    public function testMakeXmlRequest(): void
     {
         $response = HttpFactory::makeXmlRequest('GET', 'path.xml', 'content');
 

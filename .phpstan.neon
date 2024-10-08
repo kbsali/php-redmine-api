@@ -1,5 +1,5 @@
 parameters:
-    level: 5
+    level: 6
 
     paths:
         - src/
@@ -9,3 +9,17 @@ parameters:
         - vendor
 
     treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        -
+            # Ignore missing or imprecise parameter types for methods in tests
+            message: '(^Method .+ has parameter .+ with no.* type specified.*\.$)'
+            path: tests
+        -
+            # Ignore imprecise return types for methods in tests
+            message: '(^Method .+ return type has no.* type specified.+\.$)'
+            path: tests
+        -
+            # Ignore missing return types for methods in tests
+            message: '(^Method .+ has no return type specified\.$)'
+            path: tests

@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
      * @dataProvider getUpdateData
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -173,7 +173,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateWithInvalidStatusThrowsInvalidParameterException()
+    public function testUpdateWithInvalidStatusThrowsInvalidParameterException(): void
     {
         // Test values
         $parameters = [
@@ -195,7 +195,7 @@ class UpdateTest extends TestCase
         $api->update(5, $parameters);
     }
 
-    public function testUpdateWithInvalidSharingThrowsInvalidParameterException()
+    public function testUpdateWithInvalidSharingThrowsInvalidParameterException(): void
     {
         // Test values
         $parameters = [

@@ -20,7 +20,7 @@ class ProjectTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Project(MockClient::create());
 
@@ -47,7 +47,7 @@ class ProjectTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -81,7 +81,7 @@ class ProjectTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParameters()
+    public function testAllReturnsClientGetResponseWithParameters(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -116,7 +116,7 @@ class ProjectTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
@@ -150,7 +150,7 @@ class ProjectTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
@@ -185,7 +185,7 @@ class ProjectTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
@@ -220,7 +220,7 @@ class ProjectTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -252,7 +252,7 @@ class ProjectTest extends TestCase
     /**
      * Test getIdByName().
      */
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         // Test values
         $response = '{"projects":[{"id":5,"name":"Project 5"}]}';
@@ -280,7 +280,7 @@ class ProjectTest extends TestCase
         $this->assertSame(5, $api->getIdByName('Project 5'));
     }
 
-    public function testGetIdByNameTriggersDeprecationWarning()
+    public function testGetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -309,7 +309,7 @@ class ProjectTest extends TestCase
         $api->getIdByName('Project 1');
     }
 
-    public function testDeprecatedPrepareParamsXml()
+    public function testDeprecatedPrepareParamsXml(): void
     {
         $client = $this->createMock(Client::class);
 

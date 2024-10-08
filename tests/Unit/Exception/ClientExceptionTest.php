@@ -11,7 +11,7 @@ use Redmine\Exception\ClientException;
 #[CoversClass(ClientException::class)]
 class ClientExceptionTest extends TestCase
 {
-    public function testClientException()
+    public function testClientException(): void
     {
         $exception = new ClientException();
 

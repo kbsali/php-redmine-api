@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 #[CoversClass(Search::class)]
 class ListByQueryTest extends TestCase
 {
-    public function testListByQueryWithoutParametersReturnsResponse()
+    public function testListByQueryWithoutParametersReturnsResponse(): void
     {
         // Test values
         $response = '["API Response"]';
@@ -37,7 +37,7 @@ class ListByQueryTest extends TestCase
         $this->assertSame($expectedReturn, $api->listByQuery('query'));
     }
 
-    public function testListByQueryWithParametersReturnsResponse()
+    public function testListByQueryWithParametersReturnsResponse(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -64,7 +64,7 @@ class ListByQueryTest extends TestCase
         $this->assertSame($expectedReturn, $api->listByQuery('query', $parameters));
     }
 
-    public function testListByQueryThrowsException()
+    public function testListByQueryThrowsException(): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

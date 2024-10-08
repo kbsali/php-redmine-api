@@ -15,18 +15,24 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class TimeEntryActivity extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $timeEntryActivities = [];
 
+    /**
+     * @var null|array<string>
+     */
     private $timeEntryActivityNames = null;
 
     /**
      * List time entry activities.
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of time entry activities found
+     * @return array<mixed> list of time entry activities found
      */
     final public function list(array $params = []): array
     {
@@ -66,9 +72,9 @@ class TimeEntryActivity extends AbstractApi
      * @deprecated v2.4.0 Use list() instead.
      * @see TimeEntryActivity::list()
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of time entry activities found or error message or false
+     * @return array<mixed>|string|false list of time entry activities found or error message or false
      */
     public function all(array $params = [])
     {
@@ -99,7 +105,7 @@ class TimeEntryActivity extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the statuses var
      *
-     * @return array list of time entry activities (id => name)
+     * @return array<string,int> list of time entry activities (name => id)
      */
     public function listing($forceUpdate = false)
     {
@@ -131,7 +137,10 @@ class TimeEntryActivity extends AbstractApi
         return $arr[(string) $name];
     }
 
-    private function doListing(bool $forceUpdate)
+    /**
+     * @return array<string,int>
+     */
+    private function doListing(bool $forceUpdate): array
     {
         if (empty($this->timeEntryActivities) || $forceUpdate) {
             $this->timeEntryActivities = $this->list();

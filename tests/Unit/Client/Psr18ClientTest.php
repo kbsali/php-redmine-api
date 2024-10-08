@@ -23,7 +23,7 @@ use stdClass;
 #[CoversClass(Psr18Client::class)]
 class Psr18ClientTest extends TestCase
 {
-    public function testShouldPassApiKeyToConstructor()
+    public function testShouldPassApiKeyToConstructor(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -38,7 +38,7 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $client);
     }
 
-    public function testServerRequestFactoryIsAcceptedInConstructorForBC()
+    public function testServerRequestFactoryIsAcceptedInConstructorForBC(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -62,7 +62,7 @@ class Psr18ClientTest extends TestCase
         $client->requestGet('/path.xml');
     }
 
-    public function testShouldPassUsernameAndPasswordToConstructor()
+    public function testShouldPassUsernameAndPasswordToConstructor(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -77,7 +77,7 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
     }
 
-    public function testGetLastResponseStatusCodeIsInitialZero()
+    public function testGetLastResponseStatusCodeIsInitialZero(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -90,7 +90,7 @@ class Psr18ClientTest extends TestCase
         $this->assertSame(0, $client->getLastResponseStatusCode());
     }
 
-    public function testGetLastResponseContentTypeIsInitialEmpty()
+    public function testGetLastResponseContentTypeIsInitialEmpty(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -103,7 +103,7 @@ class Psr18ClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseContentType());
     }
 
-    public function testGetLastResponseBodyIsInitialEmpty()
+    public function testGetLastResponseBodyIsInitialEmpty(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -116,7 +116,7 @@ class Psr18ClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseBody());
     }
 
-    public function testStartAndStopImpersonateUser()
+    public function testStartAndStopImpersonateUser(): void
     {
         $request = $this->createMock(RequestInterface::class);
         $request->expects($this->exactly(4))
@@ -146,7 +146,7 @@ class Psr18ClientTest extends TestCase
         $client->requestGet('/path');
     }
 
-    public function testRequestGetReturnsFalse()
+    public function testRequestGetReturnsFalse(): void
     {
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(404);
@@ -175,7 +175,7 @@ class Psr18ClientTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content)
+    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content): void
     {
         $stream = $this->createMock(StreamInterface::class);
         $stream->method('__toString')->willReturn($content);
@@ -239,7 +239,7 @@ class Psr18ClientTest extends TestCase
      * @dataProvider getApiClassesProvider
      */
     #[DataProvider('getApiClassesProvider')]
-    public function testGetApiShouldReturnApiInstance(string $apiName, string $class)
+    public function testGetApiShouldReturnApiInstance(string $apiName, string $class): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -277,7 +277,7 @@ class Psr18ClientTest extends TestCase
         ];
     }
 
-    public function testCreateWithoutFactoryThrowsException()
+    public function testCreateWithoutFactoryThrowsException(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Redmine\Client\Psr18Client::__construct(): Argument #2 ($requestFactory) must be of type Psr\Http\Message\RequestFactoryInterface');
@@ -292,7 +292,7 @@ class Psr18ClientTest extends TestCase
         );
     }
 
-    public function testGetApiShouldThrowException()
+    public function testGetApiShouldThrowException(): void
     {
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
@@ -303,7 +303,7 @@ class Psr18ClientTest extends TestCase
         );
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`, `search`');
+        $this->expectExceptionMessage('`do_not_exist` is not a valid api. Possible apis are `attachment`, `group`, `custom_fields`, `issue`, `issue_category`, `issue_priority`, `issue_relation`, `issue_status`, `membership`, `news`, `project`, `query`, `role`, `search`, `time_entry`, `time_entry_activity`, `tracker`, `user`, `version`, `wiki`');
 
         $client->getApi('do_not_exist');
     }

@@ -23,7 +23,7 @@ class AttachmentTest extends TestCase
      * @param bool $hasFailed
      */
     #[DataProvider('responseCodeProvider')]
-    public function testLastCallFailedTrue($responseCode, $hasFailed)
+    public function testLastCallFailedTrue($responseCode, $hasFailed): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

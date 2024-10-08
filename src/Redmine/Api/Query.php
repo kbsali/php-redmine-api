@@ -15,6 +15,9 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class Query extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $query = [];
 
     /**
@@ -22,11 +25,11 @@ class Query extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of queries found
+     * @return array<mixed> list of queries found
      */
     final public function list(array $params = []): array
     {
@@ -45,9 +48,9 @@ class Query extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of queries found or error message or false
+     * @return array<mixed>|string|false list of queries found or error message or false
      */
     public function all(array $params = [])
     {

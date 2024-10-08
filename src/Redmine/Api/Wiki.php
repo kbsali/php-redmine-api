@@ -21,6 +21,9 @@ use SimpleXMLElement;
  */
 class Wiki extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $wikiPages = [];
 
     /**
@@ -28,12 +31,12 @@ class Wiki extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
-     * @param int|string $projectIdentifier project id or slug
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param int|string   $projectIdentifier project id or slug
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of wiki pages found for the given project
+     * @return array<mixed> list of wiki pages found for the given project
      */
     final public function listByProject($projectIdentifier, array $params = []): array
     {
@@ -59,10 +62,10 @@ class Wiki extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
      *
-     * @param int|string $project project name
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param int|string   $project project name
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of wiki pages found or error message or false
+     * @return array<mixed>|string|false list of wiki pages found or error message or false
      */
     public function all($project, array $params = [])
     {
@@ -95,7 +98,7 @@ class Wiki extends AbstractApi
      * @param string     $page    the page name
      * @param int        $version version of the page
      *
-     * @return array|false|string information about the wiki page as array or false|string on error
+     * @return array<mixed>|false|string information about the wiki page as array or false|string on error
      */
     public function show($project, $page, $version = null)
     {
@@ -130,9 +133,9 @@ class Wiki extends AbstractApi
     /**
      * Create a new wiki page given an array of $params.
      *
-     * @param int|string $project the project name
-     * @param string     $page    the page name
-     * @param array      $params  the new wiki page data
+     * @param int|string   $project the project name
+     * @param string       $page    the page name
+     * @param array<mixed> $params  the new wiki page data
      *
      * @return SimpleXMLElement|string|false
      */
@@ -163,9 +166,9 @@ class Wiki extends AbstractApi
     /**
      * Updates wiki page $page.
      *
-     * @param int|string $project the project name
-     * @param string     $page    the page name
-     * @param array      $params  the new wiki page data
+     * @param int|string   $project the project name
+     * @param string       $page    the page name
+     * @param array<mixed> $params  the new wiki page data
      *
      * @return string|false
      */

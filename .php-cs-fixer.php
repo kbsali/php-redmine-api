@@ -11,6 +11,7 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
         '@PER-CS2.0' => true,
         '@PER-CS2.0:risky' => true,
+        '@PHPUnit100Migration:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,

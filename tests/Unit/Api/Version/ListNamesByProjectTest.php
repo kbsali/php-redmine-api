@@ -21,7 +21,7 @@ class ListNamesByProjectTest extends TestCase
      * @dataProvider getListNamesByProjectData
      */
     #[DataProvider('getListNamesByProjectData')]
-    public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, $expectedPath, $responseCode, $response, $expectedResponse)
+    public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, $expectedPath, $responseCode, $response, $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -79,7 +79,7 @@ class ListNamesByProjectTest extends TestCase
         ];
     }
 
-    public function testListNamesByProjectCallsHttpClientOnlyOnce()
+    public function testListNamesByProjectCallsHttpClientOnlyOnce(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -116,7 +116,7 @@ class ListNamesByProjectTest extends TestCase
      * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
-    public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier)
+    public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void
     {
         $api = new Version($this->createMock(HttpClient::class));
 

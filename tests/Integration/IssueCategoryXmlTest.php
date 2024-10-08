@@ -8,7 +8,7 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class IssueCategoryXmlTest extends TestCase
 {
-    public function testCreateBlank()
+    public function testCreateBlank(): void
     {
         /** @var \Redmine\Api\IssueCategory */
         $api = MockClient::create()->getApi('issue_category');

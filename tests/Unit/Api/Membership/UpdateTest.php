@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
      * @dataProvider getUpdateData
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testUpdateReturnsCorrectResponse($id, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -62,7 +62,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateReturnsEmptyString()
+    public function testUpdateReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -86,7 +86,7 @@ class UpdateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testUpdateThrowsExceptionWithEmptyParameters()
+    public function testUpdateThrowsExceptionWithEmptyParameters(): void
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);
@@ -105,7 +105,7 @@ class UpdateTest extends TestCase
      * @dataProvider incompleteUpdateParameterProvider
      */
     #[DataProvider('incompleteUpdateParameterProvider')]
-    public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing($parameters)
+    public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing($parameters): void
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);

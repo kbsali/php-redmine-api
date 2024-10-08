@@ -17,7 +17,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
-    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected)
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected): void
     {
         $serializer = XmlSerializer::createFromString($data);
 
@@ -77,7 +77,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
-    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data)
+    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data): void
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
@@ -115,7 +115,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
-    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected)
+    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected): void
     {
         $serializer = XmlSerializer::createFromArray($data);
 
@@ -300,7 +300,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
-    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data)
+    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data): void
     {
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
@@ -310,7 +310,7 @@ class XmlSerializerTest extends TestCase
 
     public static function getInvalidSerializedData(): array
     {
-        return[
+        return [
             'invalid element name as start tag' => [
                 'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
                 ['0' => ['foobar']],

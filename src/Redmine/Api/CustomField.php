@@ -15,8 +15,14 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class CustomField extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $customFields = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $customFieldNames = null;
 
     /**
@@ -24,11 +30,11 @@ class CustomField extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of custom fields found
+     * @return array<mixed> list of custom fields found
      */
     final public function list(array $params = []): array
     {
@@ -71,9 +77,9 @@ class CustomField extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_CustomFields#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of custom fields found or error message or false
+     * @return array<mixed>|string|false list of custom fields found or error message or false
      */
     public function all(array $params = [])
     {
@@ -102,10 +108,10 @@ class CustomField extends AbstractApi
      * @deprecated v2.7.0 Use listNames() instead.
      * @see CustomField::listNames()
      *
-     * @param bool  $forceUpdate to force the update of the custom fields var
-     * @param array $params      optional parameters to be passed to the api (offset, limit, ...)
+     * @param bool         $forceUpdate to force the update of the custom fields var
+     * @param array<mixed> $params      optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array list of custom fields (id => name)
+     * @return array<string,int> list of custom fields (name => id)
      */
     public function listing($forceUpdate = false, array $params = [])
     {
@@ -120,8 +126,8 @@ class CustomField extends AbstractApi
      * @deprecated v2.7.0 Use listNames() instead.
      * @see CustomField::listNames()
      *
-     * @param string|int $name   customer field name
-     * @param array      $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $name   customer field name
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @return int|false
      */
@@ -138,7 +144,12 @@ class CustomField extends AbstractApi
         return $arr[(string) $name];
     }
 
-    private function doListing(bool $forceUpdate, array $params)
+    /**
+     * @param array<mixed> $params
+     *
+     * @return array<mixed>
+     */
+    private function doListing(bool $forceUpdate, array $params): array
     {
         if (empty($this->customFields) || $forceUpdate) {
             $this->customFields = $this->list($params);

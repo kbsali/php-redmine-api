@@ -12,7 +12,7 @@ use Redmine\Http\Response;
 
 class UnexpectedResponseExceptionTest extends TestCase
 {
-    public function testCreateReturnsException()
+    public function testCreateReturnsException(): void
     {
         $response = $this->createMock(Response::class);
 
@@ -22,7 +22,7 @@ class UnexpectedResponseExceptionTest extends TestCase
         $this->assertInstanceOf(RedmineException::class, $exception);
     }
 
-    public function testCreateWithThrowable()
+    public function testCreateWithThrowable(): void
     {
         $response = $this->createMock(Response::class);
         $throwable = new Exception('message', 5);
@@ -33,7 +33,7 @@ class UnexpectedResponseExceptionTest extends TestCase
         $this->assertSame($throwable, $exception->getPrevious());
     }
 
-    public function testGetResponseReturnsResponse()
+    public function testGetResponseReturnsResponse(): void
     {
         $response = $this->createMock(Response::class);
 

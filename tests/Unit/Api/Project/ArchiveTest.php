@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Project::class)]
 class ArchiveTest extends TestCase
 {
-    public function testArchiveReturnsTrue()
+    public function testArchiveReturnsTrue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -33,7 +33,7 @@ class ArchiveTest extends TestCase
         $this->assertTrue($api->archive(5));
     }
 
-    public function testArchiveThrowsUnexpectedResponseException()
+    public function testArchiveThrowsUnexpectedResponseException(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -54,7 +54,7 @@ class ArchiveTest extends TestCase
         $api->archive(5);
     }
 
-    public function testArchiveWithoutIntOrStringThrowsInvalidArgumentException()
+    public function testArchiveWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
         $client = $this->createMock(HttpClient::class);
 

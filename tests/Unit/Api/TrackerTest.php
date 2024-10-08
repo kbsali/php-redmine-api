@@ -18,7 +18,7 @@ class TrackerTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllTriggersDeprecationWarning()
+    public function testAllTriggersDeprecationWarning(): void
     {
         $api = new Tracker(MockClient::create());
 
@@ -45,7 +45,7 @@ class TrackerTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse)
+    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -79,7 +79,7 @@ class TrackerTest extends TestCase
     /**
      * Test all().
      */
-    public function testAllReturnsClientGetResponseWithParametersAndProject()
+    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
     {
         // Test values
         $parameters = ['not-used'];
@@ -114,7 +114,7 @@ class TrackerTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingReturnsNameIdArray()
+    public function testListingReturnsNameIdArray(): void
     {
         // Test values
         $response = '{"trackers":[{"id":1,"name":"Tracker 1"},{"id":5,"name":"Tracker 5"}]}';
@@ -148,7 +148,7 @@ class TrackerTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetOnlyTheFirstTime()
+    public function testListingCallsGetOnlyTheFirstTime(): void
     {
         // Test values
         $response = '{"trackers":[{"id":1,"name":"Tracker 1"},{"id":5,"name":"Tracker 5"}]}';
@@ -183,7 +183,7 @@ class TrackerTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingCallsGetEveryTimeWithForceUpdate()
+    public function testListingCallsGetEveryTimeWithForceUpdate(): void
     {
         // Test values
         $response = '{"trackers":[{"id":1,"name":"Tracker 1"},{"id":5,"name":"Tracker 5"}]}';
@@ -218,7 +218,7 @@ class TrackerTest extends TestCase
     /**
      * Test listing().
      */
-    public function testListingTriggersDeprecationWarning()
+    public function testListingTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')
@@ -250,7 +250,7 @@ class TrackerTest extends TestCase
     /**
      * Test getIdByName().
      */
-    public function testGetIdByNameMakesGetRequest()
+    public function testGetIdByNameMakesGetRequest(): void
     {
         // Test values
         $response = '{"trackers":[{"id":5,"name":"Tracker 5"}]}';
@@ -278,7 +278,7 @@ class TrackerTest extends TestCase
         $this->assertSame(5, $api->getIdByName('Tracker 5'));
     }
 
-    public function testGgetIdByNameTriggersDeprecationWarning()
+    public function testGgetIdByNameTriggersDeprecationWarning(): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')

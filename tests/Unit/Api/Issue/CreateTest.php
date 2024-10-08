@@ -16,7 +16,7 @@ class CreateTest extends TestCase
      * @dataProvider getCreateData
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response)
+    public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -232,7 +232,7 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString()
+    public function testCreateReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -256,7 +256,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateWithHttpClientRetrievesIssueStatusId()
+    public function testCreateWithHttpClientRetrievesIssueStatusId(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -293,7 +293,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateWithHttpClientRetrievesProjectId()
+    public function testCreateWithHttpClientRetrievesProjectId(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -330,7 +330,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateWithHttpClientRetrievesIssueCategoryId()
+    public function testCreateWithHttpClientRetrievesIssueCategoryId(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -367,7 +367,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateWithHttpClientRetrievesTrackerId()
+    public function testCreateWithHttpClientRetrievesTrackerId(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -404,7 +404,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateWithHttpClientRetrievesUserId()
+    public function testCreateWithHttpClientRetrievesUserId(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -444,7 +444,7 @@ class CreateTest extends TestCase
     /**
      * Test cleanParams().
      */
-    public function testCreateWithClientCleansParameters()
+    public function testCreateWithClientCleansParameters(): void
     {
         $client = AssertingHttpClient::create(
             $this,

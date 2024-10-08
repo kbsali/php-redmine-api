@@ -7,7 +7,7 @@ use Redmine\Tests\Fixtures\MockClient;
 
 class UrlTest extends TestCase
 {
-    public function testAttachment()
+    public function testAttachment(): void
     {
         /** @var \Redmine\Api\Attachment */
         $api = MockClient::create()->getApi('attachment');
@@ -17,7 +17,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testCustomFields()
+    public function testCustomFields(): void
     {
         /** @var \Redmine\Api\CustomField */
         $api = MockClient::create()->getApi('custom_fields');
@@ -27,7 +27,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testGroup()
+    public function testGroup(): void
     {
         /** @var \Redmine\Api\Group */
         $api = MockClient::create()->getApi('group');
@@ -55,7 +55,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testIssue()
+    public function testIssue(): void
     {
         /** @var \Redmine\Api\Issue */
         $api = MockClient::create()->getApi('issue');
@@ -85,7 +85,7 @@ class UrlTest extends TestCase
         // $this->assertEquals($res, array('path' => '/issues/1.xml', 'method' => 'DELETE'));
     }
 
-    public function testIssueCategory()
+    public function testIssueCategory(): void
     {
         /** @var \Redmine\Api\IssueCategory */
         $api = MockClient::create()->getApi('issue_category');
@@ -113,7 +113,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testIssuePriority()
+    public function testIssuePriority(): void
     {
         /** @var \Redmine\Api\IssuePriority */
         $api = MockClient::create()->getApi('issue_priority');
@@ -123,7 +123,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testIssueRelation()
+    public function testIssueRelation(): void
     {
         /** @var \Redmine\Api\IssueRelation */
         $api = MockClient::create()->getApi('issue_relation');
@@ -142,7 +142,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testIssueStatus()
+    public function testIssueStatus(): void
     {
         /** @var \Redmine\Api\IssueStatus */
         $api = MockClient::create()->getApi('issue_status');
@@ -152,7 +152,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testMembership()
+    public function testMembership(): void
     {
         /** @var \Redmine\Api\Membership */
         $api = MockClient::create()->getApi('membership');
@@ -169,7 +169,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testNews()
+    public function testNews(): void
     {
         /** @var \Redmine\Api\News */
         $api = MockClient::create()->getApi('news');
@@ -184,7 +184,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testProject()
+    public function testProject(): void
     {
         /** @var \Redmine\Api\Project */
         $api = MockClient::create()->getApi('project');
@@ -206,7 +206,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         /** @var \Redmine\Api\Query */
         $api = MockClient::create()->getApi('query');
@@ -216,7 +216,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testRole()
+    public function testRole(): void
     {
         /** @var \Redmine\Api\Role */
         $api = MockClient::create()->getApi('role');
@@ -231,7 +231,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testTimeEntry()
+    public function testTimeEntry(): void
     {
         /** @var \Redmine\Api\TimeEntry */
         $api = MockClient::create()->getApi('time_entry');
@@ -267,7 +267,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testTimeEntryActivity()
+    public function testTimeEntryActivity(): void
     {
         /** @var \Redmine\Api\TimeEntryActivity */
         $api = MockClient::create()->getApi('time_entry_activity');
@@ -277,7 +277,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testTracker()
+    public function testTracker(): void
     {
         /** @var \Redmine\Api\Tracker */
         $api = MockClient::create()->getApi('tracker');
@@ -287,7 +287,7 @@ class UrlTest extends TestCase
         $this->assertEquals('GET', $res['method']);
     }
 
-    public function testUser()
+    public function testUser(): void
     {
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');
@@ -324,7 +324,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testVersion()
+    public function testVersion(): void
     {
         /** @var \Redmine\Api\Version */
         $api = MockClient::create()->getApi('version');
@@ -346,7 +346,7 @@ class UrlTest extends TestCase
         $this->assertEquals('DELETE', $res['method']);
     }
 
-    public function testWiki()
+    public function testWiki(): void
     {
         /** @var \Redmine\Api\Wiki */
         $api = MockClient::create()->getApi('wiki');

@@ -16,7 +16,7 @@ use SimpleXMLElement;
 #[CoversClass(AbstractApi::class)]
 class PutTest extends TestCase
 {
-    public function testPutWithHttpClient()
+    public function testPutWithHttpClient(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -47,7 +47,7 @@ class PutTest extends TestCase
      * @dataProvider getXmlDecodingFromPutMethodData
      */
     #[DataProvider('getXmlDecodingFromPutMethodData')]
-    public function testXmlDecodingFromPutMethod($response, $expected)
+    public function testXmlDecodingFromPutMethod($response, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
