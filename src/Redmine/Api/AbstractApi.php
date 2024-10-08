@@ -108,7 +108,7 @@ abstract class AbstractApi implements Api
      * @param string $path
      * @param bool   $decodeIfJson
      *
-     * @return string|array|SimpleXMLElement|false
+     * @return string|array<mixed>|SimpleXMLElement|false
      */
     protected function get($path, $decodeIfJson = true)
     {
@@ -245,7 +245,10 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * @return array
+     * @param array<mixed> $defaults
+     * @param array<mixed> $params
+     *
+     * @return array<mixed>
      */
     protected function sanitizeParams(array $defaults, array $params)
     {
@@ -262,10 +265,10 @@ abstract class AbstractApi implements Api
      * @deprecated v2.2.0 Use `retrieveData()` instead
      * @see AbstractApi::retrieveData()
      *
-     * @param string $endpoint API end point
-     * @param array  $params   optional parameters to be passed to the api (offset, limit, ...)
+     * @param string       $endpoint API end point
+     * @param array<mixed> $params   optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false elements found or error message or false
+     * @return array<mixed>|string|false elements found or error message or false
      */
     protected function retrieveAll($endpoint, array $params = [])
     {
@@ -288,12 +291,12 @@ abstract class AbstractApi implements Api
      * Retrieves as many elements as you want of a given endpoint (even if the
      * total number of elements is greater than 100).
      *
-     * @param string $endpoint API end point
-     * @param array  $params   optional query parameters to be passed to the api (offset, limit, ...)
+     * @param string       $endpoint API end point
+     * @param array<mixed> $params   optional query parameters to be passed to the api (offset, limit, ...)
      *
      * @throws SerializerException if response body could not be converted into array
      *
-     * @return array elements found
+     * @return array<mixed> elements found
      */
     protected function retrieveData(string $endpoint, array $params = []): array
     {
@@ -364,7 +367,7 @@ abstract class AbstractApi implements Api
      * @see \Redmine\Serializer\XmlSerializer::createFromArray()
      *
      * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param array            $fields array of fields to attach, each field needs name, id and value set
+     * @param array<mixed>     $fields array of fields to attach, each field needs name, id and value set
      *
      * @return SimpleXMLElement $xml
      *
@@ -411,6 +414,8 @@ abstract class AbstractApi implements Api
      * returns the last response body as array.
      *
      * @throws SerializerException if response body could not be converted into array
+     *
+     * @return array<mixed>
      */
     private function getResponseAsArray(Response $response): array
     {
@@ -435,7 +440,7 @@ abstract class AbstractApi implements Api
     private function handleClient(Client $client): HttpClient
     {
         return new class ($client) implements HttpClient {
-            private $client;
+            private Client $client;
 
             public function __construct(Client $client)
             {

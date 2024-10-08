@@ -21,8 +21,14 @@ use SimpleXMLElement;
  */
 class User extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $users = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $userLogins = null;
 
     /**
@@ -30,11 +36,11 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
-     * @param array $params to allow offset/limit (and more) to be passed
+     * @param array<mixed> $params to allow offset/limit (and more) to be passed
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of users found
+     * @return array<mixed> list of users found
      */
     final public function list(array $params = []): array
     {
@@ -90,9 +96,9 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
-     * @param array $params to allow offset/limit (and more) to be passed
+     * @param array<mixed> $params to allow offset/limit (and more) to be passed
      *
-     * @return array|string|false list of users found or error message or false
+     * @return array<mixed>|string|false list of users found or error message or false
      */
     public function all(array $params = [])
     {
@@ -121,10 +127,10 @@ class User extends AbstractApi
      * @deprecated v2.7.0 Use listLogins() instead.
      * @see User::listLogins()
      *
-     * @param bool  $forceUpdate to force the update of the users var
-     * @param array $params      to allow offset/limit (and more) to be passed
+     * @param bool         $forceUpdate to force the update of the users var
+     * @param array<mixed> $params      to allow offset/limit (and more) to be passed
      *
-     * @return array list of users (id => username)
+     * @return int[] list of users (username => id)
      */
     public function listing($forceUpdate = false, array $params = [])
     {
@@ -138,9 +144,9 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat
      *
-     * @param array $params extra associated data
+     * @param array<mixed> $params extra associated data
      *
-     * @return array current user data
+     * @return array<mixed> current user data
      */
     public function getCurrentUser(array $params = [])
     {
@@ -153,8 +159,8 @@ class User extends AbstractApi
      * @deprecated v2.7.0 Use listLogins() instead.
      * @see User::listLogins()
      *
-     * @param string $username
-     * @param array  $params   to allow offset/limit (and more) to be passed
+     * @param string       $username
+     * @param array<mixed> $params   to allow offset/limit (and more) to be passed
      *
      * @return int|bool
      */
@@ -183,10 +189,10 @@ class User extends AbstractApi
      *  - api_key: the API key of the user, visible for admins and for yourself (added in 2.3.0)
      *  - status: a numeric id representing the status of the user, visible for admins only (added in 2.4.0)
      *
-     * @param int|string $id     the user id or `current` for retrieving the user whose credentials are used
-     * @param array      $params extra associated data
+     * @param int|string   $id     the user id or `current` for retrieving the user whose credentials are used
+     * @param array<mixed> $params extra associated data
      *
-     * @return array|false|string information about the user as array or false|string on error
+     * @return array<mixed>|false|string information about the user as array or false|string on error
      */
     public function show($id, array $params = [])
     {
@@ -225,7 +231,7 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#POST
      *
-     * @param array $params the new user data
+     * @param array<mixed> $params the new user data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -271,7 +277,8 @@ class User extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
      *
-     * @param int $id the user id
+     * @param int          $id     the user id
+     * @param array<mixed> $params
      *
      * @return string|false
      */
@@ -315,7 +322,12 @@ class User extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function doListing(bool $forceUpdate, array $params)
+    /**
+     * @param array<mixed> $params
+     *
+     * @return int[]
+     */
+    private function doListing(bool $forceUpdate, array $params): array
     {
         if (empty($this->users) || $forceUpdate) {
             $this->users = $this->list($params);

@@ -20,6 +20,9 @@ use SimpleXMLElement;
  */
 class TimeEntry extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $timeEntries = [];
 
     /**
@@ -27,11 +30,11 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of time entries found
+     * @return array<mixed> list of time entries found
      */
     final public function list(array $params = []): array
     {
@@ -50,9 +53,9 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of time entries found or error message or false
+     * @return array<mixed>|string|false list of time entries found or error message or false
      */
     public function all(array $params = [])
     {
@@ -82,7 +85,7 @@ class TimeEntry extends AbstractApi
      *
      * @param int $id the time entry id
      *
-     * @return array|false|string information about the time entry as array or false|string on error
+     * @return array<mixed>|false|string information about the time entry as array or false|string on error
      */
     public function show($id)
     {
@@ -109,7 +112,7 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param array $params the new time entry data
+     * @param array<mixed> $params the new time entry data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -154,7 +157,8 @@ class TimeEntry extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
      *
-     * @param int $id
+     * @param int          $id
+     * @param array<mixed> $params
      *
      * @return string|false
      */

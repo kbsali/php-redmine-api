@@ -15,8 +15,14 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class Tracker extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $trackers = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $trackerNames = null;
 
     /**
@@ -24,11 +30,11 @@ class Tracker extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of trackers found
+     * @return array<mixed> list of trackers found
      */
     final public function list(array $params = []): array
     {
@@ -70,9 +76,9 @@ class Tracker extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Trackers#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of trackers found or error message or false
+     * @return array<mixed>|string|false list of trackers found or error message or false
      */
     public function all(array $params = [])
     {
@@ -103,7 +109,7 @@ class Tracker extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the trackers var
      *
-     * @return array list of trackers (id => name)
+     * @return array<mixed> list of trackers (id => name)
      */
     public function listing($forceUpdate = false)
     {
@@ -135,7 +141,10 @@ class Tracker extends AbstractApi
         return $arr[(string) $name];
     }
 
-    private function doListing(bool $forceUpdate)
+    /**
+     * @return array<mixed>
+     */
+    private function doListing(bool $forceUpdate): array
     {
         if (empty($this->trackers) || $forceUpdate) {
             $this->trackers = $this->list();

@@ -22,8 +22,14 @@ use SimpleXMLElement;
  */
 class Project extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $projects = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $projectNames = null;
 
     /**
@@ -31,11 +37,11 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of projects found
+     * @return array<mixed> list of projects found
      */
     final public function list(array $params = []): array
     {
@@ -91,9 +97,9 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of projects found or error message or false
+     * @return array<mixed>|string|false list of projects found or error message or false
      */
     public function all(array $params = [])
     {
@@ -122,11 +128,11 @@ class Project extends AbstractApi
      * @deprecated v2.7.0 Use listNames() instead.
      * @see Project::listNames()
      *
-     * @param bool  $forceUpdate to force the update of the projects var
-     * @param bool  $reverse     to return an array indexed by name rather than id
-     * @param array $params      to allow offset/limit (and more) to be passed
+     * @param bool         $forceUpdate to force the update of the projects var
+     * @param bool         $reverse     to return an array indexed by name rather than id
+     * @param array<mixed> $params      to allow offset/limit (and more) to be passed
      *
-     * @return array list of projects (id => project name)
+     * @return array<mixed> list of projects (id => project name | project name => id)
      */
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
@@ -141,8 +147,8 @@ class Project extends AbstractApi
      * @deprecated v2.7.0 Use listNames() instead.
      * @see Project::listNames()
      *
-     * @param string $name
-     * @param array  $params to allow offset/limit (and more) to be passed
+     * @param string       $name
+     * @param array<mixed> $params to allow offset/limit (and more) to be passed
      *
      * @return int|bool
      */
@@ -164,11 +170,11 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects#Showing-a-project
      *
-     * @param string|int $id     project id or identifier
-     * @param array      $params available parameters:
-     *                           include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
+     * @param string|int   $id     project id or identifier
+     * @param array<mixed> $params available parameters:
+     *                             include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
-     * @return array|false|string information about the project as array or false|string on error
+     * @return array<mixed>|false|string information about the project as array or false|string on error
      */
     public function show($id, array $params = [])
     {
@@ -201,7 +207,7 @@ class Project extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
-     * @param array $params the new project data
+     * @param array<mixed> $params the new project data
      *
      * @throws MissingParameterException
      *
@@ -244,6 +250,7 @@ class Project extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param string|int $id project id or identifier
+     * @param array<mixed> $params
      *
      * @return string|false
      */
@@ -414,7 +421,7 @@ class Project extends AbstractApi
      * @deprecated v2.3.0 Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
      * @see \Redmine\Serializer\XmlSerializer::createFromArray()
      *
-     * @param array $params
+     * @param array<mixed> $params
      *
      * @return \SimpleXMLElement
      */
@@ -446,7 +453,12 @@ class Project extends AbstractApi
         return $this->lastResponse->getContent();
     }
 
-    private function doListing(bool $forceUpdate, bool $reverse, array $params)
+    /**
+     * @param array<mixed> $params
+     *
+     * @return array<mixed>
+     */
+    private function doListing(bool $forceUpdate, bool $reverse, array $params): array
     {
         if (true === $forceUpdate || empty($this->projects)) {
             $this->projects = $this->list($params);

@@ -21,8 +21,14 @@ use SimpleXMLElement;
  */
 class Group extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $groups = [];
 
+    /**
+     * @var null|array<int,string>
+     */
     private $groupNames = null;
 
     /**
@@ -30,11 +36,11 @@ class Group extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of groups found
+     * @return array<mixed> list of groups found
      */
     final public function list(array $params = []): array
     {
@@ -73,9 +79,9 @@ class Group extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of groups found or error message or false
+     * @return array<mixed>|string|false list of groups found or error message or false
      */
     public function all(array $params = [])
     {
@@ -106,7 +112,7 @@ class Group extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the groups var
      *
-     * @return array list of groups (id => name)
+     * @return array<string,int> list of groups (name => id)
      */
     public function listing($forceUpdate = false)
     {
@@ -128,7 +134,7 @@ class Group extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#POST
      *
-     * @param array $params the new group data
+     * @param array<mixed> $params the new group data
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
@@ -170,7 +176,8 @@ class Group extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#PUT
      *
-     * @param int $id the group id
+     * @param int          $id     the group id
+     * @param array<mixed> $params
      *
      * @return string empty string
      */
@@ -198,10 +205,10 @@ class Group extends AbstractApi
      * available $params :
      * - include: a coma separated list of associations to include in the response: users,memberships
      *
-     * @param int   $id     the group id
-     * @param array $params params to pass to url
+     * @param int          $id     the group id
+     * @param array<mixed> $params params to pass to url
      *
-     * @return array|false|string information about the group as array or false|string on error
+     * @return array<mixed>|false|string information about the group as array or false|string on error
      */
     public function show($id, array $params = [])
     {

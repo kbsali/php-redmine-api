@@ -14,6 +14,9 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class News extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $news = [];
 
     /**
@@ -21,13 +24,13 @@ class News extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
      *
-     * @param string|int $projectIdentifier project id or literal identifier
-     * @param array      $params            optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $projectIdentifier project id or literal identifier
+     * @param array<mixed> $params            optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of news found
+     * @return array<mixed> list of news found
      */
     final public function listByProject($projectIdentifier, array $params = []): array
     {
@@ -50,11 +53,11 @@ class News extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of news found
+     * @return array<mixed> list of news found
      */
     final public function list(array $params = []): array
     {
@@ -74,10 +77,10 @@ class News extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
      *
-     * @param string|int $project project id or literal identifier [optional]
-     * @param array      $params  optional parameters to be passed to the api (offset, limit, ...)
+     * @param string|int   $project project id or literal identifier [optional]
+     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of news found or error message or false
+     * @return array<mixed>|string|false list of news found or error message or false
      */
     public function all($project = null, array $params = [])
     {

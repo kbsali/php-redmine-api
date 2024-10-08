@@ -17,27 +17,30 @@ trait ClientApiTrait
      */
     private array $apiInstances = [];
 
+    /**
+     * @var array<string,string>
+     */
     private array $apiClassnames = [
-        'attachment' => 'Attachment',
-        'group' => 'Group',
-        'custom_fields' => 'CustomField',
-        'issue' => 'Issue',
-        'issue_category' => 'IssueCategory',
-        'issue_priority' => 'IssuePriority',
-        'issue_relation' => 'IssueRelation',
-        'issue_status' => 'IssueStatus',
-        'membership' => 'Membership',
-        'news' => 'News',
-        'project' => 'Project',
-        'query' => 'Query',
-        'role' => 'Role',
-        'time_entry' => 'TimeEntry',
-        'time_entry_activity' => 'TimeEntryActivity',
-        'tracker' => 'Tracker',
-        'user' => 'User',
-        'version' => 'Version',
-        'wiki' => 'Wiki',
-        'search' => 'Search',
+        'attachment' => 'Redmine\Api\Attachment',
+        'group' => 'Redmine\Api\Group',
+        'custom_fields' => 'Redmine\Api\CustomField',
+        'issue' => 'Redmine\Api\Issue',
+        'issue_category' => 'Redmine\Api\IssueCategory',
+        'issue_priority' => 'Redmine\Api\IssuePriority',
+        'issue_relation' => 'Redmine\Api\IssueRelation',
+        'issue_status' => 'Redmine\Api\IssueStatus',
+        'membership' => 'Redmine\Api\Membership',
+        'news' => 'Redmine\Api\News',
+        'project' => 'Redmine\Api\Project',
+        'query' => 'Redmine\Api\Query',
+        'role' => 'Redmine\Api\Role',
+        'search' => 'Redmine\Api\Search',
+        'time_entry' => 'Redmine\Api\TimeEntry',
+        'time_entry_activity' => 'Redmine\Api\TimeEntryActivity',
+        'tracker' => 'Redmine\Api\Tracker',
+        'user' => 'Redmine\Api\User',
+        'version' => 'Redmine\Api\Version',
+        'wiki' => 'Redmine\Api\Wiki',
     ];
 
     /**
@@ -51,7 +54,7 @@ trait ClientApiTrait
         if (isset($this->apiInstances[$name])) {
             return $this->apiInstances[$name];
         }
-        $class = 'Redmine\Api\\' . $this->apiClassnames[$name];
+        $class = $this->apiClassnames[$name];
         $this->apiInstances[$name] = new $class($this);
 
         return $this->apiInstances[$name];

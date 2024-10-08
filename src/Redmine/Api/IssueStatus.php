@@ -15,8 +15,14 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class IssueStatus extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $issueStatuses = [];
 
+    /**
+     * @var array<int,string>
+     */
     private $issueStatusNames = null;
 
     /**
@@ -24,11 +30,11 @@ class IssueStatus extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of issue statuses found
+     * @return array<mixed> list of issue statuses found
      */
     final public function list(array $params = []): array
     {
@@ -71,9 +77,9 @@ class IssueStatus extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses#GET
      *
-     * @param array $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of issue statuses found or error message or false
+     * @return array<mixed>|string|false list of issue statuses found or error message or false
      */
     public function all(array $params = [])
     {
@@ -104,7 +110,7 @@ class IssueStatus extends AbstractApi
      *
      * @param bool $forceUpdate to force the update of the statuses var
      *
-     * @return array list of issue statuses (id => name)
+     * @return array<string,int> list of issue statuses (name => id)
      */
     public function listing($forceUpdate = false)
     {
@@ -136,7 +142,10 @@ class IssueStatus extends AbstractApi
         return $arr[(string) $name];
     }
 
-    private function doListing(bool $forceUpdate)
+    /**
+     * @return array<string,int>
+     */
+    private function doListing(bool $forceUpdate): array
     {
         if (empty($this->issueStatuses) || $forceUpdate) {
             $this->issueStatuses = $this->list();

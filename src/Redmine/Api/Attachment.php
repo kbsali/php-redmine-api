@@ -7,7 +7,6 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
-use SimpleXMLElement;
 
 /**
  * Attachment details.
@@ -25,7 +24,7 @@ class Attachment extends AbstractApi
      *
      * @param int $id the attachment number
      *
-     * @return array|false|string information about the attachment as array or false|string on error
+     * @return array<mixed>|false|string information about the attachment as array or false|string on error
      */
     public function show($id)
     {
@@ -52,10 +51,10 @@ class Attachment extends AbstractApi
      *
      * @see https://www.redmine.org/projects/redmine/wiki/Rest_Attachments#PATCH
      *
-     * @param int $id the attachment id
-     * @param array $params available $params:
-     *   - filename: filename of the attachment
-     *   - description: new description of the attachment
+     * @param int          $id     the attachment id
+     * @param array<mixed> $params available $params:
+     *                             - filename: filename of the attachment
+     *                             - description: new description of the attachment
      *
      * @throws SerializerException if $params contains invalid values
      * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
@@ -108,8 +107,8 @@ class Attachment extends AbstractApi
      * available $params :
      * - filename: filename of the attachment
      *
-     * @param string $attachment the attachment content
-     * @param array  $params     optional parameters to be passed to the api
+     * @param string       $attachment the attachment content
+     * @param array<mixed> $params     optional parameters to be passed to the api
      *
      * @return string information about the attachment
      */

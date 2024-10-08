@@ -11,6 +11,9 @@ use Redmine\Exception\UnexpectedResponseException;
  */
 class Search extends AbstractApi
 {
+    /**
+     * @var array<mixed>
+     */
     private $results = [];
 
     /**
@@ -18,12 +21,12 @@ class Search extends AbstractApi
      *
      * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
      *
-     * @param string $query  string to search
-     * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param string        $query  string to search
+     * @param array<mixed>  $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
      *
-     * @return array list of results (projects, issues)
+     * @return array<mixed> list of results (projects, issues)
      */
     final public function listByQuery(string $query, array $params = []): array
     {
@@ -44,10 +47,10 @@ class Search extends AbstractApi
      *
      * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
      *
-     * @param string $query  string to search
-     * @param array  $params optional parameters to be passed to the api (offset, limit, ...)
+     * @param string        $query  string to search
+     * @param array<mixed>  $params optional parameters to be passed to the api (offset, limit, ...)
      *
-     * @return array|string|false list of results (projects, issues) found or error message or false
+     * @return array<mixed>|string|false list of results (projects, issues) found or error message or false
      */
     public function search($query, array $params = [])
     {
