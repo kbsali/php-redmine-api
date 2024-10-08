@@ -48,16 +48,25 @@ interface Client
 
     /**
      * Returns status code of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseStatusCode(): int;
 
     /**
      * Returns content type of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseContentType(): string;
 
     /**
      * Returns the body of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseBody(): string;
 }

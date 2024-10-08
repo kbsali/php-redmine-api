@@ -69,6 +69,30 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame(0, $client->getLastResponseStatusCode());
     }
 
+    public function testGetLastResponseStatusCodeTriggersDeprecationWarning(): void
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::getLastResponseStatusCode()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $client->getLastResponseStatusCode();
+    }
+
     public function testGetLastResponseContentTypeIsInitialEmpty(): void
     {
         $client = new NativeCurlClient(
@@ -79,6 +103,30 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame('', $client->getLastResponseContentType());
     }
 
+    public function testGetLastResponseContentTypeTriggersDeprecationWarning(): void
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::getLastResponseContentType()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $client->getLastResponseContentType();
+    }
+
     public function testGetLastResponseBodyIsInitialEmpty(): void
     {
         $client = new NativeCurlClient(
@@ -87,6 +135,30 @@ class NativeCurlClientTest extends TestCase
         );
 
         $this->assertSame('', $client->getLastResponseBody());
+    }
+
+    public function testGetLastResponseBodyTriggersDeprecationWarning(): void
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::getLastResponseBody()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        $client->getLastResponseBody();
     }
 
     public function testStartAndStopImpersonateUser(): void

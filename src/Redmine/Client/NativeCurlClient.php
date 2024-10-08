@@ -143,25 +143,40 @@ final class NativeCurlClient implements Client, HttpClient
 
     /**
      * Returns status code of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseStatusCode(): int
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseStatusCode;
     }
 
     /**
      * Returns content type of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseContentType(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseContentType;
     }
 
     /**
      * Returns the body of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseBody(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseBody;
     }
 
