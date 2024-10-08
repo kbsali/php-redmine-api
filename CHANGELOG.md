@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.7.0...v2.x)
 
+### Deprecated
+
+- `Redmine\Client\Client::getLastResponseStatusCode()` is deprecated, use `\Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead.
+- `Redmine\Client\Client::getLastResponseContentType()` is deprecated, use `\Redmine\Api\AbstractApi::getLastResponse()->getContentType()` instead.
+- `Redmine\Client\Client::getLastResponseBody()` is deprecated, use `\Redmine\Api\AbstractApi::getLastResponse()->getContent()` instead.
+
 ## [v2.7.0](https://github.com/kbsali/php-redmine-api/compare/v2.6.0...v2.7.0) - 2024-07-10
 
 ### Added
