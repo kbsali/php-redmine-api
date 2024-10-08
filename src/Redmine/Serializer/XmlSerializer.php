@@ -25,6 +25,8 @@ final class XmlSerializer implements Stringable
     }
 
     /**
+     * @param array<string,mixed> $data
+     *
      * @throws SerializerException if $data could not be serialized to XML
      */
     public static function createFromArray(array $data): self
@@ -105,6 +107,11 @@ final class XmlSerializer implements Stringable
         $this->normalized = JsonSerializer::createFromString($serialized)->getNormalized();
     }
 
+    /**
+     * @param array<mixed> $normalized
+     *
+     * @throws SerializerException
+     */
     private function denormalize(array $normalized): void
     {
         $this->normalized = $normalized;
@@ -136,7 +143,10 @@ final class XmlSerializer implements Stringable
         $this->encoded = $this->deserialized->asXml();
     }
 
-    private function createXmlElement(string $rootElementName, $params): SimpleXMLElement
+    /**
+     * @param array<mixed> $params
+     */
+    private function createXmlElement(string $rootElementName, array $params): SimpleXMLElement
     {
         $value = '';
         if (! is_array($params)) {
@@ -154,6 +164,10 @@ final class XmlSerializer implements Stringable
         return $xml;
     }
 
+    /**
+     * @param string|int $k
+     * @param mixed $v
+     */
     private function addChildToXmlElement(SimpleXMLElement $xml, $k, $v): void
     {
         $specialParams = [
@@ -196,8 +210,8 @@ final class XmlSerializer implements Stringable
     /**
      * Attaches Custom Fields to XML element.
      *
-     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param array            $fields array of fields to attach, each field needs name, id and value set
+     * @param SimpleXMLElement     $xml    XML Element the custom fields are attached to
+     * @param array<array<string>> $fields array of fields to attach, each field needs name, id and value set
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
      */

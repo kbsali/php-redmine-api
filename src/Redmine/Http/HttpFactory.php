@@ -14,9 +14,9 @@ final class HttpFactory
     public static function makeResponse(int $statusCode, string $contentType, string $content): Response
     {
         return new class ($statusCode, $contentType, $content) implements Response {
-            private $statusCode;
-            private $contentType;
-            private $body;
+            private int $statusCode;
+            private string $contentType;
+            private string $body;
 
             public function __construct(int $statusCode, string $contentType, string $body)
             {
@@ -45,10 +45,10 @@ final class HttpFactory
     public static function makeRequest(string $method, string $path, string $contentType = '', string $content = ''): Request
     {
         return new class ($method, $path, $contentType, $content) implements Request {
-            private $method;
-            private $path;
-            private $contentType;
-            private $content;
+            private string $method;
+            private string $path;
+            private string $contentType;
+            private string $content;
 
             public function __construct(string $method, string $path, string $contentType, string $content)
             {

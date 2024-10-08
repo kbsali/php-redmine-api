@@ -9,6 +9,9 @@ use Stringable;
  */
 final class PathSerializer implements Stringable
 {
+    /**
+     * @param array<string> $queryParams
+     */
     public static function create(string $path, array $queryParams = []): self
     {
         $serializer = new self();
@@ -20,6 +23,9 @@ final class PathSerializer implements Stringable
 
     private string $path;
 
+    /**
+     * @var array<string>
+     */
     private array $queryParams;
 
     private function __construct()

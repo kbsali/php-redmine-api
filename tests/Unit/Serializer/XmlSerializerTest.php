@@ -122,6 +122,9 @@ class XmlSerializerTest extends TestCase
         $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public static function getNormalizedToEncodedData(): array
     {
         return [
@@ -298,6 +301,8 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @dataProvider getInvalidSerializedData
+     *
+     * @param array<int,mixed> $data
      */
     #[DataProvider('getInvalidSerializedData')]
     public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data): void
@@ -308,9 +313,12 @@ class XmlSerializerTest extends TestCase
         XmlSerializer::createFromArray($data);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public static function getInvalidSerializedData(): array
     {
-        return[
+        return [
             'invalid element name as start tag' => [
                 'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
                 ['0' => ['foobar']],

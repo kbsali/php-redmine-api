@@ -23,6 +23,8 @@ final class JsonSerializer implements Stringable
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @throws SerializerException if $data could not be serialized to JSON
      */
     public static function createFromArray(array $data): self
@@ -77,6 +79,9 @@ final class JsonSerializer implements Stringable
         }
     }
 
+    /**
+     * @param array<mixed> $normalized
+     */
     private function encode(array $normalized): void
     {
         $this->normalized = $normalized;

@@ -12,6 +12,9 @@ use Redmine\Exception\InvalidApiNameException;
  */
 trait ClientApiTrait
 {
+    /**
+     * @var array<Api>
+     */
     private array $apiInstances = [];
 
     private array $apiClassnames = [
