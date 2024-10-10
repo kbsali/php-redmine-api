@@ -28,28 +28,41 @@ interface Client
 
     /**
      * Create and send a GET request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestGet(string $path): bool;
 
     /**
      * Create and send a POST request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestPost(string $path, string $body): bool;
 
     /**
      * Create and send a PUT request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestPut(string $path, string $body): bool;
 
     /**
      * Create and send a DELETE request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestDelete(string $path): bool;
 
     /**
      * Returns status code of the last response.
      *
-     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
      * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseStatusCode(): int;
@@ -57,7 +70,8 @@ interface Client
     /**
      * Returns content type of the last response.
      *
-     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
      * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseContentType(): string;
@@ -65,7 +79,8 @@ interface Client
     /**
      * Returns the body of the last response.
      *
-     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
      * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseBody(): string;

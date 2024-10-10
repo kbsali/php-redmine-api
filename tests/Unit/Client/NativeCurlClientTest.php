@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
+use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
 use stdClass;
 
@@ -80,7 +81,7 @@ class NativeCurlClientTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseStatusCode()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    '`Redmine\Client\NativeCurlClient::getLastResponseStatusCode()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
                     $errstr,
                 );
 
@@ -114,7 +115,7 @@ class NativeCurlClientTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseContentType()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    '`Redmine\Client\NativeCurlClient::getLastResponseContentType()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
                     $errstr,
                 );
 
@@ -148,7 +149,7 @@ class NativeCurlClientTest extends TestCase
         set_error_handler(
             function ($errno, $errstr): bool {
                 $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseBody()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
+                    '`Redmine\Client\NativeCurlClient::getLastResponseBody()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
                     $errstr,
                 );
 
@@ -721,6 +722,182 @@ class NativeCurlClientTest extends TestCase
             ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
             ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
         ];
+    }
+
+    public function testRequestGetTriggersDeprecationWarning(): void
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
+
+        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
+        $curlError->expects($this->exactly(1))->willReturn('');
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::requestGet()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestGet('/path');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestPostTriggersDeprecationWarning(): void
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
+
+        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
+        $curlError->expects($this->exactly(1))->willReturn('');
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::requestPost()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestPost('/path', '');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestPutTriggersDeprecationWarning(): void
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
+
+        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
+        $curlError->expects($this->exactly(1))->willReturn('');
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::requestPut()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestPut('/path', '');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestDeleteTriggersDeprecationWarning(): void
+    {
+        $curl = $this->createMock(stdClass::class);
+
+        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+
+        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+
+        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+
+        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
+
+        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
+
+        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
+        $curlError->expects($this->exactly(1))->willReturn('');
+
+        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\NativeCurlClient::requestDelete()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestDelete('/path');
+        } catch (ClientException $th) {}
     }
 
     public function testHandlingOfResponseWithoutContent(): void

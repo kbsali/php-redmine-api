@@ -17,6 +17,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Client;
 use Redmine\Client\Psr18Client;
+use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
 use stdClass;
 
@@ -314,6 +315,142 @@ class Psr18ClientTest extends TestCase
             ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
             ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
         ];
+    }
+
+    public function testRequestGetTriggersDeprecationWarning(): void
+    {
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willThrowException(
+            $this->createMock(ClientException::class),
+        );
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $requestFactory,
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\Psr18Client::requestGet()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestGet('/path');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestPostTriggersDeprecationWarning(): void
+    {
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willThrowException(
+            $this->createMock(ClientException::class),
+        );
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $requestFactory,
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\Psr18Client::requestPost()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestPost('/path', '');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestPutTriggersDeprecationWarning(): void
+    {
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willThrowException(
+            $this->createMock(ClientException::class),
+        );
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $requestFactory,
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\Psr18Client::requestPut()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestPut('/path', '');
+        } catch (ClientException $th) {}
+    }
+
+    public function testRequestDeleteTriggersDeprecationWarning(): void
+    {
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willThrowException(
+            $this->createMock(ClientException::class),
+        );
+
+        $client = new Psr18Client(
+            $this->createMock(ClientInterface::class),
+            $requestFactory,
+            $this->createMock(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token',
+        );
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    '`Redmine\Client\Psr18Client::requestDelete()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            $client->requestDelete('/path');
+        } catch (ClientException $th) {}
     }
 
     /**
