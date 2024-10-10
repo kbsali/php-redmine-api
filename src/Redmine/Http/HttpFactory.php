@@ -6,8 +6,6 @@ namespace Redmine\Http;
 
 /**
  * Factory for HTTP objects.
- *
- * @internal
  */
 final class HttpFactory
 {

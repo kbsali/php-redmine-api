@@ -219,9 +219,15 @@ try {
 
 ### Mid-level API
 
-You can now use the `getApi()` method to create and get a specific Redmine API. This simplifies common use-cases and gives you some features like caching and assigning a user to an issue by username instead of the user ID.
+You can now use the `getApi()` method to create and get a specific Redmine API.
 
-To check for failed requests you can afterwards check the status code via `$client->getLastResponseStatusCode()`.
+```php
+$api = $client->getApi('issue');
+```
+
+This simplifies common use-cases and gives you some features like caching and assigning a user to an issue by username instead of the user ID.
+
+To check for failed requests you can afterwards check the status code via `$api->getLastResponse()->getStatusCode()`.
 
 #### Tracker API
 
@@ -646,68 +652,76 @@ The low-level API allows you to send highly customized requests to the Redmine s
 
 > :bulb: See the [Redmine REST-API docs](https://www.redmine.org/projects/redmine/wiki/Rest_api) for available endpoints and required parameters.
 
-The client has 4 methods for requests:
+The client has a method for requests:
 
-- `requestGet()`
-- `requestPost()`
-- `requestPut()`
-- `requestDelete()`
+- `request(\Redmine\Http\Request $request): \Redmine\Http\Response`
 
-Using this methods you can use every Redmine API endpoint. The following example shows you how to rename a project and add a custom field. To build the XML body you can use the `XmlSerializer`.
+There is also a `HttpFactory` to create `Request` objects:
+
+- `\Redmine\Http\HttpFactory::makeJsonRequest()` creates a `\Redmine\Http\Request` instance for JSON requests
+- `\Redmine\Http\HttpFactory::makeXmlRequest()` creates a `\Redmine\Http\Request` instance for XML requests
+
+Using this method and the `HttpFactory` you can use every Redmine API endpoint. The following example shows you how to rename a project and add a custom field. To build the XML body you can use the `XmlSerializer`.
 
 ```php
-$client->requestPut(
-    '/projects/1.xml',
-    (string) \Redmine\Serializer\XmlSerializer::createFromArray([
-        'project' => [
-            'name' => 'renamed project',
-            'custom_fields' => [
-                [
-                    'id' => 123,
-                    'name' => 'cf_name',
-                    'field_format' => 'string',
-                    'value' => [1, 2, 3],
+$response = $client->request(
+    \Redmine\Http\HttpFactory::makeXmlRequest(
+        'PUT',
+        '/projects/1.xml',
+        (string) \Redmine\Serializer\XmlSerializer::createFromArray([
+            'project' => [
+                'name' => 'renamed project',
+                'custom_fields' => [
+                    [
+                        'id' => 123,
+                        'name' => 'cf_name',
+                        'field_format' => 'string',
+                        'value' => [1, 2, 3],
+                    ],
                 ],
             ],
-        ]
-    ])
+        ]),
+    ),
 );
 ```
 
-> :bulb: Use `\Redmine\Serializer\JsonSerializer` if you want to use the JSON endpoint.
+> :bulb: Use `\Redmine\Serializer\JsonSerializer` and `HttpFactory::makeJsonRequest()` if you want to use the JSON endpoint.
 
-Or to fetch data with complex query parameters you can use `requestGet()` with the `PathSerializer`:
+Or to fetch data with complex query parameters you can use the `PathSerializer`:
 
 ```php
-$client->requestGet(
-    (string) \Redmine\Serializer\PathSerializer::create(
-        '/time_entries.json',
-        [
-            'f' => ['spent_on'],
-            'op' => ['spent_on' => '><'],
-            'v' => [
-                'spent_on' => [
-                    '2016-01-18',
-                    '2016-01-22',
+$response = $client->request(
+    \Redmine\Http\HttpFactory::makeJsonRequest(
+        'GET',
+        (string) \Redmine\Serializer\PathSerializer::create(
+            '/time_entries.json',
+            [
+                'f' => ['spent_on'],
+                'op' => ['spent_on' => '><'],
+                'v' => [
+                    'spent_on' => [
+                        '2016-01-18',
+                        '2016-01-22',
+                    ],
                 ],
             ],
-        ],
-    )
+        ),
+    ),
 );
 ```
 
-After the request you can use these 3 methods to work with the response:
+After the request you can use these 3 methods to work with the `\Redmine\Http\Response` instance:
 
-- `getLastResponseStatusCode()`
-- `getLastResponseContentType()`
-- `getLastResponseBody()`
+- `getStatusCode()`
+- `getContentType()`
+- `getContent()`
 
-To parse the response body from the last example to an array you can use `XmlSerializer`:
+To parse the response body to an array you can use `XmlSerializer`:
 
 ```php
-if ($client->getLastResponseStatusCode() === 200) {
+if ($response->getStatusCode() === 200) {
     $responseAsArray = \Redmine\Serializer\XmlSerializer::createFromString(
-        $client->getLastResponseBody()
+        $response->getContent(),
     )->getNormalized();
 }
 ```

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.7.0...v2.x)
 
+### Added
+
+- New class `Redmine\Http\HttpFactory` to create `Redmine\Http\Request` and `Redmine\Http\Response` instances.
+
 ### Deprecated
 
 - `Redmine\Client\Client::getLastResponseStatusCode()` is deprecated, use `\Redmine\Api\AbstractApi::getLastResponse()->getStatusCode()` instead.

@@ -22,7 +22,13 @@ like [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
     ```
 * [low-level API](docs/usage.md#low-level-api) e.g.
     ```php
-    $client->requestPost('/issues.json', '{"issue":{"project_id":1,"subject":"issue title"}}');
+    $response = $client->request(
+        HttpFactory::makeJsonRequest(
+            'POST',
+            '/issues.json',
+            '{"issue":{"project_id":1,"subject":"issue title"}}',
+        ),
+    );
     ```
 
 ## Supported Redmine versions
