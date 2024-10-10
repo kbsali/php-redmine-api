@@ -19,6 +19,8 @@ like [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
 * [mid-level API](docs/usage.md#mid-level-api) e.g.
     ```php
     $client->getApi('issue')->create(['project_id' => 1, 'subject' => 'issue title']);
+
+    $response = $client->getApi('issue')->getLastResponse();
     ```
 * [low-level API](docs/usage.md#low-level-api) e.g.
     ```php
