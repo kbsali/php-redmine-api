@@ -348,7 +348,8 @@ class Psr18ClientTest extends TestCase
 
         try {
             $client->requestGet('/path');
-        } catch (ClientException $th) {}
+        } catch (ClientException $th) {
+        }
     }
 
     public function testRequestPostTriggersDeprecationWarning(): void
@@ -382,7 +383,8 @@ class Psr18ClientTest extends TestCase
 
         try {
             $client->requestPost('/path', '');
-        } catch (ClientException $th) {}
+        } catch (ClientException $th) {
+        }
     }
 
     public function testRequestPutTriggersDeprecationWarning(): void
@@ -416,7 +418,8 @@ class Psr18ClientTest extends TestCase
 
         try {
             $client->requestPut('/path', '');
-        } catch (ClientException $th) {}
+        } catch (ClientException $th) {
+        }
     }
 
     public function testRequestDeleteTriggersDeprecationWarning(): void
@@ -450,7 +453,8 @@ class Psr18ClientTest extends TestCase
 
         try {
             $client->requestDelete('/path');
-        } catch (ClientException $th) {}
+        } catch (ClientException $th) {
+        }
     }
 
     /**
