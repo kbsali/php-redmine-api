@@ -111,57 +111,95 @@ final class NativeCurlClient implements Client, HttpClient
 
     /**
      * Create and send a GET request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestGet(string $path): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.', E_USER_DEPRECATED);
+
         return $this->runRequest('GET', $path);
     }
 
     /**
      * Create and send a POST request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestPost(string $path, string $body): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.', E_USER_DEPRECATED);
+
         return $this->runRequest('POST', $path, $body);
     }
 
     /**
      * Create and send a PUT request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestPut(string $path, string $body): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.', E_USER_DEPRECATED);
+
         return $this->runRequest('PUT', $path, $body);
     }
 
     /**
      * Create and send a DELETE request.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
      */
     public function requestDelete(string $path): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.', E_USER_DEPRECATED);
+
         return $this->runRequest('DELETE', $path);
     }
 
     /**
      * Returns status code of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseStatusCode(): int
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseStatusCode;
     }
 
     /**
      * Returns content type of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseContentType(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseContentType;
     }
 
     /**
      * Returns the body of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseBody(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         return $this->lastResponseBody;
     }
 

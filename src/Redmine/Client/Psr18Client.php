@@ -118,12 +118,17 @@ final class Psr18Client implements Client, HttpClient
     /**
      * Create and send a GET request.
      *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @throws ClientException If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestGet(string $path): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.', E_USER_DEPRECATED);
+
         $response = $this->runRequest('GET', $path);
 
         return $response->getStatusCode() < 400;
@@ -132,12 +137,17 @@ final class Psr18Client implements Client, HttpClient
     /**
      * Create and send a POST request.
      *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @throws ClientException If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestPost(string $path, string $body): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.', E_USER_DEPRECATED);
+
         $response = $this->runRequest('POST', $path, $body);
 
         return $response->getStatusCode() < 400;
@@ -146,12 +156,17 @@ final class Psr18Client implements Client, HttpClient
     /**
      * Create and send a PUT request.
      *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @throws ClientException If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestPut(string $path, string $body): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.', E_USER_DEPRECATED);
+
         $response = $this->runRequest('PUT', $path, $body);
 
         return $response->getStatusCode() < 400;
@@ -160,12 +175,17 @@ final class Psr18Client implements Client, HttpClient
     /**
      * Create and send a DELETE request.
      *
+     * @deprecated v2.8.0 Use `\Redmine\Http\HttpClient::request()` instead
+     * @see \Redmine\Http\HttpClient::request()
+     *
      * @throws ClientException If anything goes wrong on the request
      *
      * @return bool true if status code of the response is not 4xx oder 5xx
      */
     public function requestDelete(string $path): bool
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.', E_USER_DEPRECATED);
+
         $response = $this->runRequest('DELETE', $path);
 
         return $response->getStatusCode() < 400;
@@ -173,9 +193,14 @@ final class Psr18Client implements Client, HttpClient
 
     /**
      * Returns status code of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseStatusCode(): int
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         if (null === $this->lastResponse) {
             return 0;
         }
@@ -185,9 +210,14 @@ final class Psr18Client implements Client, HttpClient
 
     /**
      * Returns content type of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseContentType(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         if (null === $this->lastResponse) {
             return '';
         }
@@ -197,9 +227,14 @@ final class Psr18Client implements Client, HttpClient
 
     /**
      * Returns the body of the last response.
+     *
+     * @deprecated v2.8.0 Use `\Redmine\Api\AbstractApi::getLastResponse()` instead
+     * @see \Redmine\Api\AbstractApi::getLastResponse()
      */
     public function getLastResponseBody(): string
     {
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
+
         if (null === $this->lastResponse) {
             return '';
         }
