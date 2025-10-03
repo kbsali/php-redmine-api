@@ -22,13 +22,13 @@ you can use the `behat` command directly:
 
 ```bash
 # test only a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50104
+docker compose exec php composer behat -- --suite=redmine_6_0
 # test only specific endpoints
 docker compose exec php composer behat -- --tags=issue,group
 # test only specific endpoints on a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_50104 --tags=issue,group
+docker compose exec php composer behat -- --suite=redmine_6_0 --tags=issue,group
 # test only a specific redmine version and format the output as `progress` (default is `pretty`)
-docker compose exec php composer behat -- --suite=redmine_50104 --format=progress
+docker compose exec php composer behat -- --suite=redmine_6_0 --format=progress
 ```
 
 ## Redmine version specific features
@@ -64,10 +64,10 @@ A new Redmine version could introduce new REST-API endpoints.
 Tests for this endpoint should not be run on older Redmine versions.
 This can be handled on the `scenario` or `feature` layer.
 
-1. Tag features or scenarios e.g. with `@since50000`.
+1. Tag features or scenarios e.g. with `@since60000`.
 
 ```
-@since50000
+@since60000
 Feature: Interacting with the new REST API endpoint
     [...]
 ```
@@ -75,7 +75,7 @@ Feature: Interacting with the new REST API endpoint
 or
 
 ```
-    @since50000
+    @since60000
     Scenario: Using a new feature
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -88,10 +88,10 @@ or
 default:
     suites:
         [...]
-        redmine_40210:
+        redmine_5_1:
             [...]
             filters:
-                tags: "~@since50000"
+                tags: "~@since60000"
 
 ```
 
@@ -125,7 +125,7 @@ or
 default:
     suites:
         [...]
-        redmine_60000:
+        redmine_6_0:
             [...]
             filters:
                 tags: "~@until60000"

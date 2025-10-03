@@ -43,8 +43,8 @@ jobs:
   #   runs-on: ubuntu-latest
 
   #   services:
-  #     redmine-60005:
-  #       image: redmine:6.0.5
+  #     redmine-6-0:
+  #       image: redmine:6.0.7
   #       ports:
   #           - "5060:3000"
   #       env:
@@ -53,8 +53,8 @@ jobs:
   #           # REDMINE_SECRET_KEY_BASE: supersecretkey
   #           REDMINE_PLUGINS_MIGRATE: true
   #       volumes:
-  #           - /home/runner/work/_temp/redmine-60005_data/files:/usr/src/redmine/files
-  #           - /home/runner/work/_temp/redmine-60005_data/sqlite:/usr/src/redmine/sqlite
+  #           - /home/runner/work/_temp/redmine-60007_data/files:/usr/src/redmine/files
+  #           - /home/runner/work/_temp/redmine-60007_data/sqlite:/usr/src/redmine/sqlite
   #       options: --health-cmd="wget -O /dev/null http://localhost:3000" --health-start-period=30s --health-interval=30s --health-timeout=30s --health-retries=3
 
   #   strategy:
@@ -83,7 +83,7 @@ jobs:
   #       uses: "ramsey/composer-install@v2"
 
   #     - name: Run behat
-  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_60005
+  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_0
 
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})

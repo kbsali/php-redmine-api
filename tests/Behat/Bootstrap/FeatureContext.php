@@ -431,9 +431,9 @@ final class FeatureContext implements Context
                 $expected = false;
             }
 
-            // Handle placeholder %redmine_id%
+            // Handle placeholder %redmine_base_url%
             if (is_string($expected)) {
-                $expected = str_replace('%redmine_id%', strval($this->redmine->getVersionId()), $expected);
+                $expected = str_replace('%redmine_base_url%', $this->redmine->getRedmineUrl(), $expected);
             }
 
             TestCase::assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');

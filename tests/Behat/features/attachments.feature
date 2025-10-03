@@ -71,7 +71,7 @@ Feature: Interacting with the REST API for attachments
             | filesize          | 65                                                                   |
             | content_type      | text/plain                                                           |
             | description       | null                                                                 |
-            | content_url       | http://redmine-%redmine_id%:3000/attachments/download/1/testfile.txt |
+            | content_url       | %redmine_base_url%/attachments/download/1/testfile.txt               |
         And the returned data "attachment.author" property is an array
         And the returned data "attachment.author" property contains the following data
             | property          | value                                                                |

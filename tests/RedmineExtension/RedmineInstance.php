@@ -63,7 +63,9 @@ final class RedmineInstance
         $this->migratedFiles = 'files-migrated/';
         $this->backupFiles = 'files-bak/';
 
-        $this->redmineUrl = 'http://redmine-' . $versionId . ':3000';
+        $parts = explode('.', $version->asString());
+
+        $this->redmineUrl = 'http://redmine-' . intval($parts[0]) . '-' . intval($parts[1]) . ':3000';
         $this->apiKey = sha1($versionId . (string) time());
 
         $this->runHealthChecks($version);

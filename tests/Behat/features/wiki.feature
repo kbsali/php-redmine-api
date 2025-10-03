@@ -205,7 +205,7 @@ Feature: Interacting with the REST API for wikis
             | filesize          | 65                   |
             | content_type      | text/plain           |
             | description       |                      |
-            | content_url       | http://redmine-%redmine_id%:3000/attachments/download/1/filename.txt |
+            | content_url       | %redmine_base_url%/attachments/download/1/filename.txt |
         And the returned data "wiki_page.attachments.0.author" property is an array
         And the returned data "wiki_page.attachments.0.author" property has only the following properties
             """
