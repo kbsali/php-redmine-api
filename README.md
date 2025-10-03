@@ -41,7 +41,6 @@ that receive security updates.
 - Redmine 6.1.x
 - Redmine 6.0.x
 - Redmine 5.1.x
-- Redmine 5.0.x
 
 Nevertheless, you can also use this library for all older Redmine versions.
 In this case, however, be aware that some features might not be supported by your Redmine server.
