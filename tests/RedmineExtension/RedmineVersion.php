@@ -7,6 +7,22 @@ namespace Redmine\Tests\RedmineExtension;
 enum RedmineVersion: string
 {
     /**
+     * Redmine 6.0.7
+     *
+     * @link https://www.redmine.org/versions/213
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#607-2025-09-21
+     */
+    case V6_0_7 = '6.0.7';
+
+    /**
+     * Redmine 6.0.6
+     *
+     * @link https://www.redmine.org/versions/211
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#606-2025-07-07
+     */
+    case V6_0_6 = '6.0.6';
+
+    /**
      * Redmine 6.0.5
      *
      * @link https://www.redmine.org/versions/209
@@ -53,6 +69,22 @@ enum RedmineVersion: string
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#600-2024-11-10
      */
     case V6_0_0 = '6.0.0';
+
+    /**
+     * Redmine 5.1.10
+     *
+     * @link https://www.redmine.org/versions/214
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#5110-2025-09-21
+     */
+    case V5_1_10 = '5.1.10';
+
+    /**
+     * Redmine 5.1.9
+     *
+     * @link https://www.redmine.org/versions/210
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#519-2025-07-07
+     */
+    case V5_1_9 = '5.1.9';
 
     /**
      * Redmine 5.1.8
@@ -125,6 +157,24 @@ enum RedmineVersion: string
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#510-2023-10-31
      */
     case V5_1_0 = '5.1.0';
+
+    /**
+     * Redmine 5.0.14
+     *
+     * @link https://www.redmine.org/versions/215
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5014-2025-09-21
+     */
+
+    case V5_0_14 = '5.0.14';
+
+    /**
+     * Redmine 5.0.13
+     *
+     * @link https://www.redmine.org/versions/212
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_0#5013-2025-07-07
+     */
+
+    case V5_0_13 = '5.0.13';
 
     /**
      * Redmine 5.0.12
