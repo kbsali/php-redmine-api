@@ -53,6 +53,7 @@
     "scripts": {
         "bdt": [
             "Composer\\Config::disableProcessTimeout",
+            "@behat --format=progress --suite=redmine_6_1",
             "@behat --format=progress --suite=redmine_6_0",
             "@behat --format=progress --suite=redmine_5_1",
             "@behat --format=progress --suite=redmine_5_0"

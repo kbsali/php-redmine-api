@@ -7,6 +7,14 @@ namespace Redmine\Tests\RedmineExtension;
 enum RedmineVersion: string
 {
     /**
+     * Redmine 6.1.0
+     *
+     * @link https://www.redmine.org/versions/198
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#610-2025-09-21
+     */
+    case V6_1_0 = '6.1.0';
+
+    /**
      * Redmine 6.0.7
      *
      * @link https://www.redmine.org/versions/213
