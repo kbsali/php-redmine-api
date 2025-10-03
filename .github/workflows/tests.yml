@@ -83,7 +83,7 @@ jobs:
   #       uses: "ramsey/composer-install@v2"
 
   #     - name: Run behat
-  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_60007
+  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_0
 
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})
