@@ -11,7 +11,7 @@ services:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
-        image: redmine:6.0.5
+        image: redmine:6.0.7
         ports:
             - "3000:3000"
         environment:
@@ -26,8 +26,8 @@ services:
     # Make sure the following services are configured in:
     # - /tests/Behat/behat.yml
 
-    redmine-60005:
-        image: redmine:6.0.5
+    redmine-6-0:
+        image: redmine:6.0.7
         ports:
             - "5060:3000"
         environment:
@@ -36,11 +36,11 @@ services:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-60005_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-60005_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-60007_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60007_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-50108:
-        image: redmine:5.1.8
+    redmine-5-1:
+        image: redmine:5.1.10
         user: "1000:1000"
         ports:
             - "5051:3000"
@@ -48,11 +48,11 @@ services:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50108_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50108_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50110_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50110_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-50012:
-        image: redmine:5.0.12
+    redmine-5-0:
+        image: redmine:5.0.12 # There is no tag for 5.0.14 on Docker hub
         user: "1000:1000"
         ports:
             - "5050:3000"
@@ -60,5 +60,5 @@ services:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50012_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50012_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50014_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50014_data/sqlite:/usr/src/redmine/sqlite
