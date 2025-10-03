@@ -38,6 +38,7 @@ like [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
 We support (and run tests against) the [latest supported Redmine versions](https://www.redmine.org/projects/redmine/wiki/Download#Versions-status-and-releases-policy)
 that receive security updates.
 
+- Redmine 6.1.x
 - Redmine 6.0.x
 - Redmine 5.1.x
 - Redmine 5.0.x
