@@ -102,7 +102,7 @@ class User extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->users = $this->list($params);
@@ -134,7 +134,7 @@ class User extends AbstractApi
      */
     public function listing($forceUpdate = false, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate, $params);
     }
@@ -166,7 +166,7 @@ class User extends AbstractApi
      */
     public function getIdByUsername($username, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false, $params);
 
@@ -199,7 +199,7 @@ class User extends AbstractApi
         // set default ones
         $params['include'] = array_unique(
             array_merge(
-                isset($params['include']) ? $params['include'] : [],
+                $params['include'] ?? [],
                 [
                     'memberships',
                     'groups',

@@ -85,7 +85,7 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->groups = $this->list($params);
@@ -116,7 +116,7 @@ class Group extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         if (empty($this->groups) || $forceUpdate) {
             $this->groups = $this->list();

@@ -109,7 +109,7 @@ class Version extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->versions = $this->listByProject(strval($project), $params);
@@ -143,7 +143,7 @@ class Version extends AbstractApi
      */
     public function listing($project, $forceUpdate = false, $reverse = true, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($project, $forceUpdate, $reverse, $params);
     }
@@ -162,7 +162,7 @@ class Version extends AbstractApi
      */
     public function getIdByName($project, $name, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing($project, false, true, $params);
 

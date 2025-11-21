@@ -12,7 +12,7 @@ class UserXmlTest extends TestCase
     {
         /** @var \Redmine\Api\User */
         $api = MockClient::create()->getApi('user');
-        $this->assertInstanceOf('Redmine\Api\User', $api);
+        $this->assertInstanceOf(\Redmine\Api\User::class, $api);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `login`, `lastname`, `firstname`, `mail`');

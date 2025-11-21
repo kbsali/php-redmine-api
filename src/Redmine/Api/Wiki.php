@@ -69,7 +69,7 @@ class Wiki extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->wikiPages = $this->listByProject(strval($project), $params);

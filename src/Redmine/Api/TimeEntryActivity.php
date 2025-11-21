@@ -78,7 +78,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->timeEntryActivities = $this->list($params);
@@ -109,7 +109,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing((bool) $forceUpdate);
     }
@@ -126,7 +126,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function getIdByName($name)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false);
 

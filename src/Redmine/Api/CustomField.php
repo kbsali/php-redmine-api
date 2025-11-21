@@ -83,7 +83,7 @@ class CustomField extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->customFields = $this->list($params);
@@ -115,7 +115,7 @@ class CustomField extends AbstractApi
      */
     public function listing($forceUpdate = false, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate, $params);
     }
@@ -133,7 +133,7 @@ class CustomField extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false, $params);
 

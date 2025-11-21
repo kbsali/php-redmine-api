@@ -84,7 +84,7 @@ class News extends AbstractApi
      */
     public function all($project = null, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` or `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` or `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             if (null === $project) {

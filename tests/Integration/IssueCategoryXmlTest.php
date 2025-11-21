@@ -12,7 +12,7 @@ class IssueCategoryXmlTest extends TestCase
     {
         /** @var \Redmine\Api\IssueCategory */
         $api = MockClient::create()->getApi('issue_category');
-        $this->assertInstanceOf('Redmine\Api\IssueCategory', $api);
+        $this->assertInstanceOf(\Redmine\Api\IssueCategory::class, $api);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `name`');
