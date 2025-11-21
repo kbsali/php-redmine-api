@@ -7,6 +7,9 @@ services:
             - 8111:80
         depends_on:
             - redmine-dev
+            - redmine-6-1
+            - redmine-6-0
+            - redmine-5-1
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
