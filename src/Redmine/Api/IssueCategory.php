@@ -120,7 +120,7 @@ class IssueCategory extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -296,7 +296,7 @@ class IssueCategory extends AbstractApi
      */
     private function doListing($projectIdentifier, bool $forceUpdate): array
     {
-        if (true === $forceUpdate || empty($this->issueCategories)) {
+        if ($forceUpdate || $this->issueCategories === []) {
             $this->issueCategories = $this->listByProject($projectIdentifier);
         }
 

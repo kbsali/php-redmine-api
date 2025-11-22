@@ -112,7 +112,7 @@ class Project extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -460,7 +460,7 @@ class Project extends AbstractApi
      */
     private function doListing(bool $forceUpdate, bool $reverse, array $params): array
     {
-        if (true === $forceUpdate || empty($this->projects)) {
+        if ($forceUpdate || $this->projects === []) {
             $this->projects = $this->list($params);
         }
 

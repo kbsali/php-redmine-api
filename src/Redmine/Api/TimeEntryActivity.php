@@ -87,7 +87,7 @@ class TimeEntryActivity extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -142,7 +142,7 @@ class TimeEntryActivity extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->timeEntryActivities) || $forceUpdate) {
+        if ($this->timeEntryActivities === [] || $forceUpdate) {
             $this->timeEntryActivities = $this->list();
         }
 

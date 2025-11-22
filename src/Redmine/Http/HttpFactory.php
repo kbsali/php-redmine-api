@@ -80,11 +80,11 @@ final class HttpFactory
 
     public static function makeJsonRequest(string $method, string $path, string $content = ''): Request
     {
-        return static::makeRequest($method, $path, 'application/json', $content);
+        return self::makeRequest($method, $path, 'application/json', $content);
     }
 
     public static function makeXmlRequest(string $method, string $path, string $content = ''): Request
     {
-        return static::makeRequest($method, $path, 'application/xml', $content);
+        return self::makeRequest($method, $path, 'application/xml', $content);
     }
 }

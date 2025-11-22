@@ -25,7 +25,7 @@ final class UnexpectedResponseException extends RuntimeException implements Redm
     {
         $e = new self(
             'The Redmine server replied with an unexpected response.',
-            ($prev !== null) ? $prev->getCode() : 1,
+            ($prev instanceof \Throwable) ? $prev->getCode() : 1,
             $prev,
         );
 

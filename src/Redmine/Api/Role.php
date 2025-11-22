@@ -93,7 +93,7 @@ class Role extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -117,7 +117,7 @@ class Role extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->roles) || $forceUpdate) {
+        if ($this->roles === [] || $forceUpdate) {
             $this->roles = $this->list();
         }
         $ret = [];

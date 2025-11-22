@@ -24,45 +24,45 @@ final class BehatHookTracer implements InstanceRegistration
 
     public static function getRedmineInstance(RedmineVersion $redmineVersion, string $rootPath): RedmineInstance
     {
-        if (static::$tracer === null) {
+        if (!self::$tracer instanceof \Redmine\Tests\RedmineExtension\BehatHookTracer) {
             throw new RuntimeException('You can only get a Redmine instance while a Behat Suite is running.');
         }
 
-        if (! array_key_exists($redmineVersion->asId(), static::$instances)) {
-            RedmineInstance::create(static::$tracer, $redmineVersion, $rootPath);
+        if (! array_key_exists($redmineVersion->asId(), self::$instances)) {
+            RedmineInstance::create(self::$tracer, $redmineVersion, $rootPath);
         }
 
-        return static::$instances[$redmineVersion->asId()];
+        return self::$instances[$redmineVersion->asId()];
     }
 
     public function registerInstance(RedmineInstance $instance): void
     {
-        static::$instances[$instance->getVersionId()] = $instance;
+        self::$instances[$instance->getVersionId()] = $instance;
     }
 
     public function deregisterInstance(RedmineInstance $instance): void
     {
-        unset(static::$instances[$instance->getVersionId()]);
+        unset(self::$instances[$instance->getVersionId()]);
     }
 
     public function hook(HookScope $event): void
     {
         if ($event instanceof BeforeSuiteScope) {
-            static::$tracer = $this;
+            self::$tracer = $this;
         }
 
         if ($event instanceof AfterScenarioScope) {
-            foreach (static::$instances as $instance) {
+            foreach (self::$instances as $instance) {
                 $instance->reset($this);
             }
         }
 
         if ($event instanceof AfterSuiteScope) {
-            foreach (static::$instances as $instance) {
+            foreach (self::$instances as $instance) {
                 $instance->shutdown($this);
             }
 
-            static::$tracer = null;
+            self::$tracer = null;
         }
     }
 }

@@ -118,7 +118,7 @@ class Version extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -345,7 +345,7 @@ class Version extends AbstractApi
      */
     private function doListing($projectIdentifier, bool $forceUpdate, bool $reverse, array $params): array
     {
-        if (true === $forceUpdate || empty($this->versions)) {
+        if ($forceUpdate || $this->versions === []) {
             $this->versions = $this->listByProject($projectIdentifier, $params);
         }
 

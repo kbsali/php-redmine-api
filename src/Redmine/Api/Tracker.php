@@ -91,7 +91,7 @@ class Tracker extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -146,7 +146,7 @@ class Tracker extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->trackers) || $forceUpdate) {
+        if ($this->trackers === [] || $forceUpdate) {
             $this->trackers = $this->list();
         }
 

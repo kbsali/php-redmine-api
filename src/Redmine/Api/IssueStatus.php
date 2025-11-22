@@ -92,7 +92,7 @@ class IssueStatus extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -147,7 +147,7 @@ class IssueStatus extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->issueStatuses) || $forceUpdate) {
+        if ($this->issueStatuses === [] || $forceUpdate) {
             $this->issueStatuses = $this->list();
         }
 

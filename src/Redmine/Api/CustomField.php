@@ -92,7 +92,7 @@ class CustomField extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -151,7 +151,7 @@ class CustomField extends AbstractApi
      */
     private function doListing(bool $forceUpdate, array $params): array
     {
-        if (empty($this->customFields) || $forceUpdate) {
+        if ($this->customFields === [] || $forceUpdate) {
             $this->customFields = $this->list($params);
         }
 

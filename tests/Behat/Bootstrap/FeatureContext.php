@@ -47,8 +47,8 @@ final class FeatureContext implements Context
      */
     public static function prepare(BeforeSuiteScope $scope)
     {
-        static::$tracer = new BehatHookTracer();
-        static::$tracer->hook($scope);
+        self::$tracer = new BehatHookTracer();
+        self::$tracer->hook($scope);
     }
 
     /**
@@ -56,7 +56,7 @@ final class FeatureContext implements Context
      */
     public static function reset(AfterScenarioScope $scope)
     {
-        static::$tracer->hook($scope);
+        self::$tracer->hook($scope);
     }
 
     /**
@@ -64,8 +64,8 @@ final class FeatureContext implements Context
      */
     public static function clean(AfterSuiteScope $scope)
     {
-        static::$tracer->hook($scope);
-        static::$tracer = null;
+        self::$tracer->hook($scope);
+        self::$tracer = null;
     }
 
     private RedmineInstance $redmine;
@@ -89,7 +89,7 @@ final class FeatureContext implements Context
             throw new InvalidArgumentException('Redmine ' . $redmineVersion . ' is not supported.');
         }
 
-        $this->redmine = static::$tracer::getRedmineInstance($version, $rootPath);
+        $this->redmine = self::$tracer::getRedmineInstance($version, $rootPath);
     }
 
     /**

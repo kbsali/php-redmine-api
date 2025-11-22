@@ -87,17 +87,13 @@ class News extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` or `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            if (null === $project) {
-                $this->news = $this->list($params);
-            } else {
-                $this->news = $this->listByProject(strval($project), $params);
-            }
+            $this->news = null === $project ? $this->list($params) : $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 

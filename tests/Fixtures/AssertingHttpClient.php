@@ -62,7 +62,7 @@ final class AssertingHttpClient implements HttpClient
             $responseContentType = $contentType;
         }
 
-        array_push($this->fifoStack, [
+        $this->fifoStack[] = [
             'method' => $method,
             'path' => $path,
             'contentType' => $contentType,
@@ -70,7 +70,7 @@ final class AssertingHttpClient implements HttpClient
             'responseCode' => $responseCode,
             'responseContentType' => $responseContentType,
             'responseContent' => $responseContent,
-        ]);
+        ];
     }
 
     public function request(Request $request): Response

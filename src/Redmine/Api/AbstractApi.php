@@ -300,7 +300,7 @@ abstract class AbstractApi implements Api
      */
     protected function retrieveData(string $endpoint, array $params = []): array
     {
-        if (empty($params)) {
+        if ($params === []) {
             $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 strval($endpoint),
@@ -366,7 +366,7 @@ abstract class AbstractApi implements Api
             $offset += $realLimit;
 
             if (
-                empty($newDataSet)
+                $newDataSet === []
                 || !isset($newDataSet['limit'])
                 || (
                     isset($newDataSet['offset'])

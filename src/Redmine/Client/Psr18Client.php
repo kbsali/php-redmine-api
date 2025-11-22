@@ -201,7 +201,7 @@ final class Psr18Client implements Client, HttpClient
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
 
-        if (null === $this->lastResponse) {
+        if (!$this->lastResponse instanceof \Psr\Http\Message\ResponseInterface) {
             return 0;
         }
 
@@ -218,7 +218,7 @@ final class Psr18Client implements Client, HttpClient
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
 
-        if (null === $this->lastResponse) {
+        if (!$this->lastResponse instanceof \Psr\Http\Message\ResponseInterface) {
             return '';
         }
 
@@ -235,7 +235,7 @@ final class Psr18Client implements Client, HttpClient
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.', E_USER_DEPRECATED);
 
-        if (null === $this->lastResponse) {
+        if (!$this->lastResponse instanceof \Psr\Http\Message\ResponseInterface) {
             return '';
         }
 
