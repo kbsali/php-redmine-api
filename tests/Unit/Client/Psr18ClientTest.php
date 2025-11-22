@@ -504,7 +504,7 @@ class Psr18ClientTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Redmine\Client\Psr18Client::__construct(): Argument #2 ($requestFactory) must be of type Psr\Http\Message\RequestFactoryInterface');
 
-        $client = new Psr18Client(
+        new Psr18Client(
             $this->createMock(ClientInterface::class),
             /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
             new stdClass(),

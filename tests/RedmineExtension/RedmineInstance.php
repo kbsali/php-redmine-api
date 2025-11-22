@@ -66,7 +66,7 @@ final class RedmineInstance
         $parts = explode('.', $version->asString());
 
         $this->redmineUrl = 'http://redmine-' . intval($parts[0]) . '-' . intval($parts[1]) . ':3000';
-        $this->apiKey = sha1($versionId . (string) time());
+        $this->apiKey = sha1($versionId . time());
 
         $this->runHealthChecks($version);
 

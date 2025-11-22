@@ -204,7 +204,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -259,7 +259,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -315,7 +315,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -371,7 +371,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -428,7 +428,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -489,7 +489,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -546,7 +546,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(3))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -600,7 +600,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'https://test.local',
@@ -650,7 +650,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(0);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local:3456',
@@ -674,7 +674,7 @@ class NativeCurlClientTest extends TestCase
         $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn($content);
 
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
@@ -685,7 +685,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -726,23 +726,17 @@ class NativeCurlClientTest extends TestCase
 
     public function testRequestGetTriggersDeprecationWarning(): void
     {
-        $curl = $this->createMock(stdClass::class);
-
-        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-
-        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-
-        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
 
         $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
         $curlError->expects($this->exactly(1))->willReturn('');
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -771,23 +765,17 @@ class NativeCurlClientTest extends TestCase
 
     public function testRequestPostTriggersDeprecationWarning(): void
     {
-        $curl = $this->createMock(stdClass::class);
-
-        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-
-        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-
-        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
 
         $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
         $curlError->expects($this->exactly(1))->willReturn('');
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -816,23 +804,17 @@ class NativeCurlClientTest extends TestCase
 
     public function testRequestPutTriggersDeprecationWarning(): void
     {
-        $curl = $this->createMock(stdClass::class);
-
-        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-
-        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-
-        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
 
         $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
         $curlError->expects($this->exactly(1))->willReturn('');
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -861,23 +843,17 @@ class NativeCurlClientTest extends TestCase
 
     public function testRequestDeleteTriggersDeprecationWarning(): void
     {
-        $curl = $this->createMock(stdClass::class);
-
-        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-
-        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-
-        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
 
         $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
         $curlError->expects($this->exactly(1))->willReturn('');
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -918,7 +894,7 @@ class NativeCurlClientTest extends TestCase
         $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn('');
 
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
         $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
@@ -929,7 +905,7 @@ class NativeCurlClientTest extends TestCase
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -952,7 +928,7 @@ class NativeCurlClientTest extends TestCase
         $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn(false);
 
-        $curlSetoptArray = $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
 
         $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_URL_MALFORMAT);
@@ -960,7 +936,7 @@ class NativeCurlClientTest extends TestCase
         $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
         $curlError->expects($this->exactly(1))->willReturn('cURL error 3: <url> malformed');
 
-        $curlClose = $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
+        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',

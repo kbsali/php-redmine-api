@@ -30,7 +30,7 @@ class Project extends AbstractApi
     /**
      * @var null|array<int,string>
      */
-    private $projectNames = null;
+    private $projectNames;
 
     /**
      * List projects.

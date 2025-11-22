@@ -29,7 +29,7 @@ class Group extends AbstractApi
     /**
      * @var null|array<int,string>
      */
-    private $groupNames = null;
+    private $groupNames;
 
     /**
      * List groups.

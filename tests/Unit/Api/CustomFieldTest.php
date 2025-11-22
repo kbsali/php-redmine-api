@@ -151,12 +151,6 @@ class CustomFieldTest extends TestCase
         // Test values
         $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
         $allParameters = ['limit' => 250];
-        $returnDataSet = [
-            'limit' => '100',
-            'offset' => '10',
-            'total_count' => '5',
-            'items' => [],
-        ];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);

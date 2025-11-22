@@ -23,7 +23,7 @@ class IssueStatus extends AbstractApi
     /**
      * @var array<int,string>
      */
-    private $issueStatusNames = null;
+    private $issueStatusNames;
 
     /**
      * List issue statuses.

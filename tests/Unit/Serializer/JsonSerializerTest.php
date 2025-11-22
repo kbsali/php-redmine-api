@@ -93,7 +93,7 @@ class JsonSerializerTest extends TestCase
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
 
-        $serializer = JsonSerializer::createFromString($data);
+        JsonSerializer::createFromString($data);
     }
 
     public static function getNormalizedToEncodedData(): array
@@ -210,6 +210,6 @@ class JsonSerializerTest extends TestCase
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage($message);
 
-        $serializer = JsonSerializer::createFromArray($data);
+        JsonSerializer::createFromArray($data);
     }
 }

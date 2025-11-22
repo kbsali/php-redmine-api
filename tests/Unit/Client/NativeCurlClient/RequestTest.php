@@ -32,7 +32,7 @@ class RequestTest extends TestCase
         $curlExec = $this->getFunctionMock($namespace, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn($content);
 
-        $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
+        $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
         $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
@@ -43,7 +43,7 @@ class RequestTest extends TestCase
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
 
-        $curlClose = $this->getFunctionMock($namespace, 'curl_close');
+        $this->getFunctionMock($namespace, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',
@@ -105,7 +105,7 @@ class RequestTest extends TestCase
         $curlExec = $this->getFunctionMock($namespace, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn('{"upload":{}}');
 
-        $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
+        $this->getFunctionMock($namespace, 'curl_setopt_array');
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
         $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
@@ -116,7 +116,7 @@ class RequestTest extends TestCase
         $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
         $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
 
-        $curlClose = $this->getFunctionMock($namespace, 'curl_close');
+        $this->getFunctionMock($namespace, 'curl_close');
 
         $client = new NativeCurlClient(
             'http://test.local',

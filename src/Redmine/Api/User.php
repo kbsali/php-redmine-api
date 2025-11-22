@@ -29,7 +29,7 @@ class User extends AbstractApi
     /**
      * @var null|array<int,string>
      */
-    private $userLogins = null;
+    private $userLogins;
 
     /**
      * List users.

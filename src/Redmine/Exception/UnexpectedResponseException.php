@@ -19,7 +19,7 @@ final class UnexpectedResponseException extends RuntimeException implements Redm
     /**
      * @var Response|null
      */
-    private $response = null;
+    private $response;
 
     public static function create(Response $response, ?Throwable $prev = null): self
     {
