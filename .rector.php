@@ -13,9 +13,12 @@ return RectorConfig::configure()
     //->withPhpSets()
     ->withPhp74Sets()
     ->withPhpVersion(70400)
-    ->withTypeCoverageLevel(1)
+    ->withTypeCoverageLevel(13)
     ->withPreparedSets(
         true,
         true
     )
+    ->withSets([
+        \Art4\RectorBcLibrary\Set::SET,
+    ])
 ;

@@ -65,7 +65,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         });
 
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willReturnCallback(fn($method, $uri) => new Request($method, $uri));
+        $requestFactory->method('createRequest')->willReturnCallback(fn($method, $uri): \GuzzleHttp\Psr7\Request => new Request($method, $uri));
 
         $streamFactory = new class implements StreamFactoryInterface {
             public function createStream(string $content = ''): StreamInterface

@@ -30,6 +30,7 @@
         "psr/http-factory": "^1.0"
     },
     "require-dev": {
+        "art4/rector-bc-library": "dev-main",
         "behat/behat": "^3.14",
         "friendsofphp/php-cs-fixer": "^3.68",
         "guzzlehttp/psr7": "^2",
