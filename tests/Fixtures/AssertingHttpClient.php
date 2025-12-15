@@ -57,7 +57,7 @@ final class AssertingHttpClient implements HttpClient
         int $responseCode = 200,
         string $responseContentType = '',
         string $responseContent = ''
-    ) {
+    ): void {
         if ($responseContentType === '') {
             $responseContentType = $contentType;
         }

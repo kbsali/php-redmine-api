@@ -45,7 +45,7 @@ final class FeatureContext implements Context
     /**
      * @BeforeSuite
      */
-    public static function prepare(BeforeSuiteScope $scope)
+    public static function prepare(BeforeSuiteScope $scope): void
     {
         self::$tracer = new BehatHookTracer();
         self::$tracer->hook($scope);
@@ -54,7 +54,7 @@ final class FeatureContext implements Context
     /**
      * @AfterScenario
      */
-    public static function reset(AfterScenarioScope $scope)
+    public static function reset(AfterScenarioScope $scope): void
     {
         self::$tracer->hook($scope);
     }
@@ -62,7 +62,7 @@ final class FeatureContext implements Context
     /**
      * @AfterSuite
      */
-    public static function clean(AfterSuiteScope $scope)
+    public static function clean(AfterSuiteScope $scope): void
     {
         self::$tracer->hook($scope);
         self::$tracer = null;
@@ -95,7 +95,7 @@ final class FeatureContext implements Context
     /**
      * @Given I have a :clientName client
      */
-    public function iHaveAClient($clientName)
+    public function iHaveAClient($clientName): void
     {
         if ($clientName !== 'NativeCurlClient') {
             throw new InvalidArgumentException('Client ' . $clientName . ' is not supported.');
@@ -122,7 +122,7 @@ final class FeatureContext implements Context
     /**
      * @Then the response has the status code :statusCode
      */
-    public function theResponseHasTheStatusCode(int $statusCode)
+    public function theResponseHasTheStatusCode(int $statusCode): void
     {
         TestCase::assertSame(
             $statusCode,
@@ -134,7 +134,7 @@ final class FeatureContext implements Context
     /**
      * @Then the response has the content type :contentType
      */
-    public function theResponseHasTheContentType(string $contentType)
+    public function theResponseHasTheContentType(string $contentType): void
     {
         TestCase::assertStringStartsWith(
             $contentType,
@@ -146,7 +146,7 @@ final class FeatureContext implements Context
     /**
      * @Then the response has an empty content type
      */
-    public function theResponseHasAnEmptyContentType()
+    public function theResponseHasAnEmptyContentType(): void
     {
         TestCase::assertSame('', $this->lastResponse->getContentType());
     }
@@ -154,7 +154,7 @@ final class FeatureContext implements Context
     /**
      * @Then the response has the content :content
      */
-    public function theResponseHasTheContent(string $content)
+    public function theResponseHasTheContent(string $content): void
     {
         TestCase::assertSame($content, $this->lastResponse->getContent());
     }
@@ -162,7 +162,7 @@ final class FeatureContext implements Context
     /**
      * @Then the response has the content
      */
-    public function theResponseHasTheContentWithMultipleLines(PyStringNode $string)
+    public function theResponseHasTheContentWithMultipleLines(PyStringNode $string): void
     {
         TestCase::assertSame($string->getRaw(), $this->lastResponse->getContent());
     }
@@ -170,7 +170,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is true
      */
-    public function theReturnedDataIsTrue()
+    public function theReturnedDataIsTrue(): void
     {
         TestCase::assertTrue($this->lastReturn);
     }
@@ -178,7 +178,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is false
      */
-    public function theReturnedDataIsFalse()
+    public function theReturnedDataIsFalse(): void
     {
         TestCase::assertFalse($this->lastReturn);
     }
@@ -186,7 +186,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is exactly :content
      */
-    public function theReturnedDataIsExactly(string $content)
+    public function theReturnedDataIsExactly(string $content): void
     {
         TestCase::assertSame($content, $this->lastReturn);
     }
@@ -194,7 +194,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is exactly
      */
-    public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string)
+    public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string): void
     {
         TestCase::assertSame($string->getRaw(), $this->lastReturn);
     }
@@ -202,7 +202,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is an instance of :className
      */
-    public function theReturnedDataIsAnInstanceOf(string $className)
+    public function theReturnedDataIsAnInstanceOf(string $className): void
     {
         TestCase::assertInstanceOf($className, $this->lastReturn);
     }
@@ -210,7 +210,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data is an array
      */
-    public function theReturnedDataIsAnArray()
+    public function theReturnedDataIsAnArray(): void
     {
         TestCase::assertIsArray($this->lastReturn);
     }
@@ -218,7 +218,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data contains :count items
      */
-    public function theReturnedDataContainsItems(int $count)
+    public function theReturnedDataContainsItems(int $count): void
     {
         TestCase::assertCount($count, $this->lastReturn);
     }
@@ -226,7 +226,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data contains the following data
      */
-    public function theReturnedDataContainsTheFollowingData(TableNode $table)
+    public function theReturnedDataContainsTheFollowingData(TableNode $table): void
     {
         $returnData = $this->lastReturn;
 
@@ -240,7 +240,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data has only the following properties
      */
-    public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string)
+    public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string): void
     {
         $this->theReturnedDataPropertyHasOnlyTheFollowingProperties(null, $string);
     }
@@ -248,7 +248,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data has proterties with the following data
      */
-    public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table)
+    public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table): void
     {
         $this->theReturnedDataPropertyContainsTheFollowingData(null, $table);
     }
@@ -256,7 +256,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property is an array
      */
-    public function theReturnedDataPropertyIsAnArray($property)
+    public function theReturnedDataPropertyIsAnArray($property): void
     {
         $returnData = $this->getLastReturnAsArray();
 
@@ -268,7 +268,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains :count items
      */
-    public function theReturnedDataPropertyContainsItems($property, int $count)
+    public function theReturnedDataPropertyContainsItems($property, int $count): void
     {
         $returnData = $this->getLastReturnAsArray();
 
@@ -281,7 +281,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains the following data
      */
-    public function theReturnedDataPropertyContainsTheFollowingData($property, TableNode $table)
+    public function theReturnedDataPropertyContainsTheFollowingData($property, TableNode $table): void
     {
         $returnData = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
 
@@ -295,7 +295,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains the following data with Redmine version :versionComparision
      */
-    public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion($property, string $versionComparision, TableNode $table)
+    public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion($property, string $versionComparision, TableNode $table): void
     {
         $parts = explode(' ', $versionComparision);
 
@@ -313,7 +313,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property has only the following properties
      */
-    public function theReturnedDataPropertyHasOnlyTheFollowingProperties($property, PyStringNode $string)
+    public function theReturnedDataPropertyHasOnlyTheFollowingProperties($property, PyStringNode $string): void
     {
         $value = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
 
@@ -325,7 +325,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property has only the following properties with Redmine version :versionComparision
      */
-    public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion($property, string $versionComparision, PyStringNode $string)
+    public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion($property, string $versionComparision, PyStringNode $string): void
     {
         $parts = explode(' ', $versionComparision);
 
@@ -388,7 +388,7 @@ final class FeatureContext implements Context
         return $array;
     }
 
-    private function assertTableNodeIsSameAsArray(TableNode $table, array $data)
+    private function assertTableNodeIsSameAsArray(TableNode $table, array $data): void
     {
         foreach ($table as $row) {
             TestCase::assertArrayHasKey($row['property'], $data, 'Possible keys are: ' . implode(', ', array_keys($data)));

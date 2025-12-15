@@ -160,7 +160,7 @@ final class RedmineInstance
         $stmt->execute($params);
     }
 
-    private function runDatabaseMigration()
+    private function runDatabaseMigration(): void
     {
         $now = new DateTimeImmutable();
         $pdo = new PDO('sqlite:' . $this->dataPath . $this->workingDB);
@@ -196,7 +196,7 @@ final class RedmineInstance
     /**
      * Create backup of working database
      */
-    private function createDatabaseBackup()
+    private function createDatabaseBackup(): void
     {
         $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
@@ -211,7 +211,7 @@ final class RedmineInstance
     /**
      * Create backup of migrated database
      */
-    private function saveMigratedDatabase()
+    private function saveMigratedDatabase(): void
     {
         $workingDB = new SQLite3($this->dataPath . $this->workingDB);
 
@@ -253,7 +253,7 @@ final class RedmineInstance
         unlink($this->dataPath . $this->backupDB);
     }
 
-    private function createFilesBackup()
+    private function createFilesBackup(): void
     {
         // Add an empty file to avoid warnings about copying and removing content from an empty folder
         touch($this->dataPath . $this->workingFiles . 'empty');
@@ -264,7 +264,7 @@ final class RedmineInstance
         ));
     }
 
-    private function saveMigratedFiles()
+    private function saveMigratedFiles(): void
     {
         exec(sprintf(
             'cp -r %s %s',

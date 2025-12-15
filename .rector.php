@@ -13,7 +13,7 @@ return RectorConfig::configure()
     //->withPhpSets()
     ->withPhp74Sets()
     ->withPhpVersion(70400)
-    ->withTypeCoverageLevel(13)
+    ->withTypeCoverageLevel(21)
     ->withPreparedSets(
         true,
         true
