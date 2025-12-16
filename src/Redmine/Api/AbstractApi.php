@@ -28,10 +28,7 @@ abstract class AbstractApi implements Api
      */
     protected $client;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private \Redmine\Http\HttpClient $httpClient;
 
     /**
      * @var Response
