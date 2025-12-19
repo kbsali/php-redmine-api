@@ -20,7 +20,7 @@ class RequestTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content): void
+    public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
         $namespace = 'Redmine\Client';
 

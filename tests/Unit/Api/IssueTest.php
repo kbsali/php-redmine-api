@@ -40,7 +40,7 @@ class IssueTest extends TestCase
      * @dataProvider getPriorityConstantsData
      */
     #[DataProvider('getPriorityConstantsData')]
-    public function testPriorityConstants($expected, $value): void
+    public function testPriorityConstants(int $expected, int $value): void
     {
         $this->assertSame($expected, $value);
     }
@@ -75,7 +75,7 @@ class IssueTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
+    public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

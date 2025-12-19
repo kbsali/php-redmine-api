@@ -45,7 +45,7 @@ class IssueCategoryTest extends TestCase
      * @dataProvider getAllDAta
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponseWithProject($response, $responseType, $expectedResponse): void
+    public function testAllReturnsClientGetResponseWithProject(string $response, string $responseType, $expectedResponse): void
     {
         // Test values
         $projectId = 5;

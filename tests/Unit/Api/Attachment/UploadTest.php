@@ -15,7 +15,7 @@ class UploadTest extends TestCase
      * @dataProvider getUploadData
      */
     #[DataProvider('getUploadData')]
-    public function testUploadReturnsCorrectResponse($attachment, $params, $expectedAttachment, $expectedPath, $responseCode, $response, $expectedReturn): void
+    public function testUploadReturnsCorrectResponse(string $attachment, array $params, string $expectedAttachment, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,

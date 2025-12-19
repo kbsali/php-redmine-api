@@ -257,7 +257,7 @@ class Psr18ClientTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content): void
+    public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
     {
         $stream = $this->createMock(StreamInterface::class);
         $stream->method('__toString')->willReturn($content);

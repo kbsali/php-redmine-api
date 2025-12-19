@@ -26,12 +26,12 @@ class Psr18ClientRequestGenerationTest extends TestCase
     public function testPsr18ClientCreatesCorrectRequests(
         string $url,
         string $apikeyOrUsername,
-        $pwd,
-        $impersonateUser,
+        ?string $pwd,
+        ?string $impersonateUser,
         string $method,
         string $path,
         $data,
-        $expectedOutput
+        string $expectedOutput
     ): void {
         $response = $this->createMock(ResponseInterface::class);
 

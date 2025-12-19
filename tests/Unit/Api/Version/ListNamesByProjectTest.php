@@ -21,7 +21,7 @@ class ListNamesByProjectTest extends TestCase
      * @dataProvider getListNamesByProjectData
      */
     #[DataProvider('getListNamesByProjectData')]
-    public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, $expectedPath, $responseCode, $response, $expectedResponse): void
+    public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, string $expectedPath, int $responseCode, string $response, array $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,

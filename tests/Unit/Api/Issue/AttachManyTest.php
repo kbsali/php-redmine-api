@@ -15,7 +15,7 @@ class AttachManyTest extends TestCase
      * @dataProvider getAttachManyData
      */
     #[DataProvider('getAttachManyData')]
-    public function testAttachManyReturnsCorrectResponse($issueId, $parameters, $expectedPath, $expectedBody, $responseCode, $response): void
+    public function testAttachManyReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

@@ -17,7 +17,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
-    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected): void
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, array $expected): void
     {
         $serializer = XmlSerializer::createFromString($data);
 
@@ -115,7 +115,7 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
-    public function testCreateFromArrayEncodesToExpectedString(array $data, $expected): void
+    public function testCreateFromArrayEncodesToExpectedString(array $data, string $expected): void
     {
         $serializer = XmlSerializer::createFromArray($data);
 

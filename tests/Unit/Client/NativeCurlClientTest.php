@@ -664,7 +664,7 @@ class NativeCurlClientTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content): void
+    public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
     {
         $curl = $this->createMock(stdClass::class);
 

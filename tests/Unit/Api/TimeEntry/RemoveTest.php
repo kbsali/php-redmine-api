@@ -15,7 +15,7 @@ class RemoveTest extends TestCase
      * @dataProvider getRemoveData
      */
     #[DataProvider('getRemoveData')]
-    public function testRemoveReturnsCorrectResponse($id, $expectedPath, $responseCode, $response): void
+    public function testRemoveReturnsCorrectResponse(int $id, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

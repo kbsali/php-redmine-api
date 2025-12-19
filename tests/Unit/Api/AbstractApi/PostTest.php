@@ -47,7 +47,7 @@ class PostTest extends TestCase
      * @dataProvider getXmlDecodingFromPostMethodData
      */
     #[DataProvider('getXmlDecodingFromPostMethodData')]
-    public function testXmlDecodingFromPostMethod($response, $expected): void
+    public function testXmlDecodingFromPostMethod(string $response, string $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
