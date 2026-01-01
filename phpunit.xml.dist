@@ -14,7 +14,17 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
-  <coverage />
+  <coverage processUncoveredFiles="true"
+            pathCoverage="true"
+            cacheDirectory=".phpunit.cache/code-coverage">
+    <include>
+      <directory suffix=".php">src/</directory>
+    </include>
+  </coverage>
+  <php>
+    <ini name="error_reporting" value="E_ALL" />
+    <ini name="display_errors" value="1" />
+  </php>
   <source>
     <include>
       <directory suffix=".php">src/Redmine/</directory>
