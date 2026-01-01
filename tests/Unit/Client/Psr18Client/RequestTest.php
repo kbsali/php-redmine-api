@@ -38,7 +38,7 @@ class RequestTest extends TestCase
         ]);
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function () {
+            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);
@@ -105,7 +105,7 @@ class RequestTest extends TestCase
         );
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function () {
+            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);

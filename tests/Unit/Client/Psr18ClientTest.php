@@ -44,7 +44,7 @@ class Psr18ClientTest extends TestCase
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
             $this->createConfiguredMock(ServerRequestFactoryInterface::class, [
-                'createServerRequest' => (function () {
+                'createServerRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                     $request = $this->createMock(ServerRequestInterface::class);
                     $request->method('withHeader')->willReturn($request);
                     $request->method('withBody')->willReturn($request);

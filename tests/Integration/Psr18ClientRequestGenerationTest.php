@@ -37,7 +37,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
 
         /** @var ClientInterface&\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput) {
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): \PHPUnit\Framework\MockObject\MockObject {
             // Create a text representation of the HTTP request
             $content = $request->getBody()->__toString();
 
