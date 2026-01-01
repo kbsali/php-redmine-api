@@ -23,7 +23,7 @@ class Membership extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $memberships = [];
+    private $memberships = [];
 
     /**
      * List memberships for a given project.

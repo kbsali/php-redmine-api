@@ -25,12 +25,12 @@ class IssueCategory extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $issueCategories = [];
+    private $issueCategories = [];
 
     /**
      * @var array<mixed>
      */
-    private array $issueCategoriesNames = [];
+    private $issueCategoriesNames = [];
 
     /**
      * List issue categories for a given project.

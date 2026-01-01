@@ -21,7 +21,7 @@ class IssueRelation extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $relations = [];
+    private $relations = [];
 
     /**
      * List relations of the given $issueId.

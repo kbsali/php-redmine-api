@@ -24,12 +24,12 @@ class User extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $users = [];
+    private $users = [];
 
     /**
      * @var null|array<int,string>
      */
-    private ?array $userLogins = null;
+    private $userLogins;
 
     /**
      * List users.

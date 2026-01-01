@@ -18,12 +18,12 @@ class CustomField extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $customFields = [];
+    private $customFields = [];
 
     /**
      * @var null|array<int,string>
      */
-    private ?array $customFieldNames = null;
+    private $customFieldNames;
 
     /**
      * List custom fields.

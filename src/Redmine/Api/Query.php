@@ -18,7 +18,7 @@ class Query extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $query = [];
+    private $query = [];
 
     /**
      * Returns the list of all custom queries visible by the user (public and private queries) for all projects.

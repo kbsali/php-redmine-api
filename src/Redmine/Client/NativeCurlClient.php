@@ -209,7 +209,7 @@ final class NativeCurlClient implements Client, HttpClient
      * @param int   $option The CURLOPT_XXX option to set
      * @param mixed $value  The value to be set on option
      */
-    public function setCurlOption(int $option, array $value): void
+    public function setCurlOption(int $option, $value): void
     {
         // Headers must be handled serperatly
         if (CURLOPT_HTTPHEADER === $option) {

@@ -23,7 +23,7 @@ class TimeEntry extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private array $timeEntries = [];
+    private $timeEntries = [];
 
     /**
      * List time entries.
