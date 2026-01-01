@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class IssueStatus extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $issueStatuses = [];
+    private $issueStatuses = null;
 
     /**
-     * @var array<int,string>
+     * @var null|array<int,string>
      */
-    private $issueStatusNames;
+    private $issueStatusNames = null;
 
     /**
      * List issue statuses.
@@ -147,7 +147,7 @@ class IssueStatus extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if ($this->issueStatuses === [] || $forceUpdate) {
+        if ($forceUpdate || $this->issueStatuses === null) {
             $this->issueStatuses = $this->list();
         }
 

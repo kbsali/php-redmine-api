@@ -23,9 +23,9 @@ use SimpleXMLElement;
 class IssueCategory extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $issueCategories = [];
+    * @var null|array<mixed>
+    */
+    private $issueCategories = null;
 
     /**
      * @var array<mixed>
@@ -296,7 +296,7 @@ class IssueCategory extends AbstractApi
      */
     private function doListing($projectIdentifier, bool $forceUpdate): array
     {
-        if ($forceUpdate || $this->issueCategories === []) {
+        if ($forceUpdate || $this->issueCategories === null) {
             $this->issueCategories = $this->listByProject($projectIdentifier);
         }
 

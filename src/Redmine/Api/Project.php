@@ -23,14 +23,14 @@ use SimpleXMLElement;
 class Project extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $projects = [];
+    private $projects = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $projectNames;
+    private $projectNames = null;
 
     /**
      * List projects.
@@ -460,7 +460,7 @@ class Project extends AbstractApi
      */
     private function doListing(bool $forceUpdate, bool $reverse, array $params): array
     {
-        if ($forceUpdate || $this->projects === []) {
+        if ($forceUpdate || $this->projects === null) {
             $this->projects = $this->list($params);
         }
 

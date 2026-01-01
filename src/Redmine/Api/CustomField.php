@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class CustomField extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $customFields = [];
+    private $customFields = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $customFieldNames;
+    private $customFieldNames = null;
 
     /**
      * List custom fields.
@@ -151,7 +151,7 @@ class CustomField extends AbstractApi
      */
     private function doListing(bool $forceUpdate, array $params): array
     {
-        if ($this->customFields === [] || $forceUpdate) {
+        if ($forceUpdate || $this->customFields === null) {
             $this->customFields = $this->list($params);
         }
 

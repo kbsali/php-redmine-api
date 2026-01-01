@@ -21,11 +21,6 @@ use SimpleXMLElement;
 class Membership extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $memberships = [];
-
-    /**
      * List memberships for a given project.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
@@ -72,7 +67,7 @@ class Membership extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            $this->memberships = $this->listByProject(strval($project), $params);
+            $memberships = $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
@@ -85,7 +80,7 @@ class Membership extends AbstractApi
             return $e->getMessage();
         }
 
-        return $this->memberships;
+        return $memberships;
     }
 
     /**

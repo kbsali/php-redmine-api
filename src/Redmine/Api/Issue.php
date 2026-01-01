@@ -48,29 +48,29 @@ class Issue extends AbstractApi
     public const PRIO_IMMEDIATE = 5;
 
     /**
-     * @var IssueCategory
+     * @var null|IssueCategory
      */
-    private $issueCategoryApi;
+    private $issueCategoryApi = null;
 
     /**
-     * @var IssueStatus
+     * @var null|IssueStatus
      */
-    private $issueStatusApi;
+    private $issueStatusApi = null;
 
     /**
-     * @var Project
+     * @var null|Project
      */
-    private $projectApi;
+    private $projectApi = null;
 
     /**
-     * @var Tracker
+     * @var null|Tracker
      */
-    private $trackerApi;
+    private $trackerApi = null;
 
     /**
-     * @var User
+     * @var null|User
      */
-    private $userApi;
+    private $userApi = null;
 
     /**
      * List issues.

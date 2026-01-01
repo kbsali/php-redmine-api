@@ -16,9 +16,9 @@ use Redmine\Exception\UnexpectedResponseException;
 class TimeEntryActivity extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $timeEntryActivities = [];
+    private $timeEntryActivities = null;
 
     /**
      * @var null|array<string>
@@ -142,7 +142,7 @@ class TimeEntryActivity extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if ($this->timeEntryActivities === [] || $forceUpdate) {
+        if ($forceUpdate || $this->timeEntryActivities === null) {
             $this->timeEntryActivities = $this->list();
         }
 

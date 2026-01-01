@@ -12,11 +12,6 @@ use Redmine\Exception\UnexpectedResponseException;
 class Search extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $results = [];
-
-    /**
      * list search results by Query.
      *
      * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
@@ -57,7 +52,7 @@ class Search extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByQuery()` instead.', E_USER_DEPRECATED);
 
         try {
-            $this->results = $this->listByQuery($query, $params);
+            $results = $this->listByQuery($query, $params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
@@ -70,6 +65,6 @@ class Search extends AbstractApi
             return $e->getMessage();
         }
 
-        return $this->results;
+        return $results;
     }
 }

@@ -18,14 +18,14 @@ use Redmine\Serializer\JsonSerializer;
 class Role extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $roles = [];
+    private $roles = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $roleNames;
+    private $roleNames = null;
 
     /**
      * List roles.
@@ -117,7 +117,7 @@ class Role extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if ($this->roles === [] || $forceUpdate) {
+        if ($forceUpdate || $this->roles === null) {
             $this->roles = $this->list();
         }
         $ret = [];

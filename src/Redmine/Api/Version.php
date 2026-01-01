@@ -22,9 +22,9 @@ use SimpleXMLElement;
 class Version extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $versions = [];
+    private $versions = null;
 
     /**
      * @var array<array<int,string>>
@@ -345,14 +345,15 @@ class Version extends AbstractApi
      */
     private function doListing($projectIdentifier, bool $forceUpdate, bool $reverse, array $params): array
     {
-        if ($forceUpdate || $this->versions === []) {
+        if ($forceUpdate || $this->versions === null) {
             $this->versions = $this->listByProject($projectIdentifier, $params);
         }
 
         $ret = [];
-
-        foreach ($this->versions['versions'] as $e) {
-            $ret[(int) $e['id']] = $e['name'];
+        if (array_key_exists('versions', $this->versions)) {
+            foreach ($this->versions['versions'] as $e) {
+                $ret[(int) $e['id']] = $e['name'];
+            }
         }
 
         return $reverse ? array_flip($ret) : $ret;

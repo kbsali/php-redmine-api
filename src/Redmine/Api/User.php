@@ -22,14 +22,14 @@ use SimpleXMLElement;
 class User extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $users = [];
+    private $users = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $userLogins;
+    private $userLogins = null;
 
     /**
      * List users.
@@ -329,13 +329,13 @@ class User extends AbstractApi
      */
     private function doListing(bool $forceUpdate, array $params): array
     {
-        if ($this->users === [] || $forceUpdate) {
+        if ($forceUpdate || $this->users === null) {
             $this->users = $this->list($params);
         }
 
         $ret = [];
 
-        if (is_array($this->users) && isset($this->users['users'])) {
+        if (array_key_exists('users', $this->users)) {
             foreach ($this->users['users'] as $e) {
                 $ret[$e['login']] = (int) $e['id'];
             }

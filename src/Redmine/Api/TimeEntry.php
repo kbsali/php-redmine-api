@@ -21,11 +21,6 @@ use SimpleXMLElement;
 class TimeEntry extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $timeEntries = [];
-
-    /**
      * List time entries.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
@@ -62,7 +57,7 @@ class TimeEntry extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            $this->timeEntries = $this->list($params);
+            $timeEntries = $this->list($params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
@@ -75,7 +70,7 @@ class TimeEntry extends AbstractApi
             return $e->getMessage();
         }
 
-        return $this->timeEntries;
+        return $timeEntries;
     }
 
     /**

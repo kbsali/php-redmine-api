@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class Tracker extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $trackers = [];
+    private $trackers = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $trackerNames;
+    private $trackerNames = null;
 
     /**
      * List trackers.
@@ -146,7 +146,7 @@ class Tracker extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if ($this->trackers === [] || $forceUpdate) {
+        if ($forceUpdate || $this->trackers === null) {
             $this->trackers = $this->list();
         }
 

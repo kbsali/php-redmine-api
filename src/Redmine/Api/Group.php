@@ -22,14 +22,14 @@ use SimpleXMLElement;
 class Group extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $groups = [];
+    private $groups = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $groupNames;
+    private $groupNames = null;
 
     /**
      * List groups.
@@ -118,7 +118,7 @@ class Group extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if ($this->groups === [] || $forceUpdate) {
+        if ($forceUpdate || $this->groups === null) {
             $this->groups = $this->list();
         }
         $ret = [];
