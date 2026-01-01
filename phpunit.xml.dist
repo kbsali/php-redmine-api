@@ -14,9 +14,7 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
-  <coverage processUncoveredFiles="true"
-            pathCoverage="true"
-            cacheDirectory=".phpunit.cache/code-coverage">
+  <coverage>
     <include>
       <directory suffix=".php">src/</directory>
     </include>
