@@ -14,11 +14,7 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
-  <coverage>
-    <include>
-      <directory suffix=".php">src/</directory>
-    </include>
-  </coverage>
+  <coverage />
   <php>
     <ini name="error_reporting" value="E_ALL" />
     <ini name="display_errors" value="1" />

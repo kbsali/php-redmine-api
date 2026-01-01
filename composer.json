@@ -61,9 +61,9 @@
         ],
         "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
-        "coverage": "phpunit --coverage-html=\".phpunit.cache/code-coverage\"",
+        "coverage": "phpunit -c tests/phpunit-coverage.xml.dist --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
-        "phpunit": "phpunit",
+        "phpunit": "phpunit -c phpunit.xml.dist",
         "rector": "rector -c .rector.php",
         "test": [
             "@phpstan",
