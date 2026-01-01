@@ -18,12 +18,12 @@ class IssueStatus extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $issueStatuses = [];
+    private array $issueStatuses = [];
 
     /**
      * @var array<int,string>
      */
-    private $issueStatusNames;
+    private ?array $issueStatusNames = null;
 
     /**
      * List issue statuses.

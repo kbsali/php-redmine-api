@@ -18,7 +18,7 @@ class IssuePriority extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $issuePriorities = [];
+    private array $issuePriorities = [];
 
     /**
      * List issue priorities.

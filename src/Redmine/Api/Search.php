@@ -14,7 +14,7 @@ class Search extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $results = [];
+    private array $results = [];
 
     /**
      * list search results by Query.

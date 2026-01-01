@@ -20,12 +20,12 @@ class Role extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var null|array<int,string>
      */
-    private $roleNames;
+    private ?array $roleNames = null;
 
     /**
      * List roles.

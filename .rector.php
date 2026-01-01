@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use Rector\Config\RectorConfig;
-
-return RectorConfig::configure()
+return \Rector\Config\RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
@@ -12,8 +10,8 @@ return RectorConfig::configure()
     // uncomment to reach your current PHP version
     //->withPhpSets()
     ->withPhp74Sets()
-    ->withPhpVersion(70400)
-    ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(45))
+    ->withPhpVersion(\Rector\ValueObject\PhpVersion::PHP_74)
+    ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(50))
     ->withPreparedSets(
         true,
         true

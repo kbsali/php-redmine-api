@@ -24,12 +24,12 @@ class Version extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $versions = [];
+    private array $versions = [];
 
     /**
      * @var array<array<int,string>>
      */
-    private $versionNames = [];
+    private array $versionNames = [];
 
     /**
      * List versions of a project.

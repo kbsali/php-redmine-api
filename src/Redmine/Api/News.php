@@ -17,7 +17,7 @@ class News extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $news = [];
+    private array $news = [];
 
     /**
      * List news for a given project.

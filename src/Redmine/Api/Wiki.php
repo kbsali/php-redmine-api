@@ -24,7 +24,7 @@ class Wiki extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $wikiPages = [];
+    private array $wikiPages = [];
 
     /**
      * List wiki pages of a given project.

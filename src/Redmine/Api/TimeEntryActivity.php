@@ -18,12 +18,12 @@ class TimeEntryActivity extends AbstractApi
     /**
      * @var array<mixed>
      */
-    private $timeEntryActivities = [];
+    private array $timeEntryActivities = [];
 
     /**
      * @var null|array<string>
      */
-    private $timeEntryActivityNames;
+    private ?array $timeEntryActivityNames = null;
 
     /**
      * List time entry activities.
