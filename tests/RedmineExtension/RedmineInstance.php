@@ -226,6 +226,7 @@ final class RedmineInstance
     private function restoreFromMigratedDatabase(): void
     {
         $workingDB = new SQLite3($this->dataPath . $this->workingDB);
+        $workingDB->busyTimeout(1000);
 
         $migratedDB = new SQLite3($this->dataPath . $this->migratedDB);
 

@@ -74,7 +74,10 @@ final class FeatureContext implements Context
 
     private Response $lastResponse;
 
-    private mixed $lastReturn;
+    /**
+     * @var mixed
+     */
+    private $lastReturn;
 
     /**
      * @var array<mixed>
@@ -112,7 +115,7 @@ final class FeatureContext implements Context
         return $this->client;
     }
 
-    private function registerClientResponse(mixed $lastReturn, Response $lastResponse): void
+    private function registerClientResponse($lastReturn, Response $lastResponse): void
     {
         unset($this->lastReturnAsArray);
         $this->lastReturn = $lastReturn;
@@ -371,7 +374,7 @@ final class FeatureContext implements Context
     /**
      * Get item from an array by key supporting "dot" notation.
      */
-    private function getItemFromArray(array $array, $key): mixed
+    private function getItemFromArray(array $array, $key)
     {
         if ($key === null) {
             return $array;

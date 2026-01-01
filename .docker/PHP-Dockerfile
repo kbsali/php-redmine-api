@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:7.4-fpm
 
 RUN apt-get update
 RUN apt-get --yes --no-install-recommends install \
@@ -32,7 +32,7 @@ RUN docker-php-ext-install -j$(nproc) \
 COPY build/php/opcache.ini /usr/local/etc/php/conf.d/
 COPY build/php/custom.ini /usr/local/etc/php/conf.d/
 
-RUN pecl install xdebug-3.4.0 && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.1.6 && docker-php-ext-enable xdebug
 
 RUN php --version
 
