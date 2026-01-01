@@ -88,7 +88,7 @@ final class FeatureContext implements Context
     {
         $version = RedmineVersion::tryFrom($redmineVersion);
 
-        if ($version === null) {
+        if (!$version instanceof RedmineVersion) {
             throw new InvalidArgumentException('Redmine ' . $redmineVersion . ' is not supported.');
         }
 
@@ -304,7 +304,7 @@ final class FeatureContext implements Context
 
         $redmineVersion = RedmineVersion::tryFrom($parts[1]);
 
-        if ($redmineVersion === null) {
+        if (!$redmineVersion instanceof RedmineVersion) {
             throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
         }
 
@@ -334,7 +334,7 @@ final class FeatureContext implements Context
 
         $redmineVersion = RedmineVersion::tryFrom($parts[1]);
 
-        if ($redmineVersion === null) {
+        if (!$redmineVersion instanceof RedmineVersion) {
             throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
         }
 
