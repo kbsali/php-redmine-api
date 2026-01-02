@@ -217,7 +217,7 @@ final class NativeCurlClient implements Client, HttpClient
                 throw new \InvalidArgumentException(sprintf(
                     'If argument #1 ($option) passed to %s() is set to `CURLOPT_HTTPHEADER` (10023), then Argument #2 ($value) must be of the type array, but `%s` given',
                     __METHOD__,
-                    gettype($value)
+                    gettype($value),
                 ));
             }
 

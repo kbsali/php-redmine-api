@@ -259,7 +259,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property is an array
      */
-    public function theReturnedDataPropertyIsAnArray($property): void
+    public function theReturnedDataPropertyIsAnArray(?string $property): void
     {
         $returnData = $this->getLastReturnAsArray();
 
@@ -271,7 +271,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains :count items
      */
-    public function theReturnedDataPropertyContainsItems($property, int $count): void
+    public function theReturnedDataPropertyContainsItems(?string $property, int $count): void
     {
         $returnData = $this->getLastReturnAsArray();
 
@@ -284,7 +284,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains the following data
      */
-    public function theReturnedDataPropertyContainsTheFollowingData($property, TableNode $table): void
+    public function theReturnedDataPropertyContainsTheFollowingData(?string $property, TableNode $table): void
     {
         $returnData = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
 
@@ -298,7 +298,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property contains the following data with Redmine version :versionComparision
      */
-    public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion($property, string $versionComparision, TableNode $table): void
+    public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion(?string $property, string $versionComparision, TableNode $table): void
     {
         $parts = explode(' ', $versionComparision);
 
@@ -316,7 +316,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property has only the following properties
      */
-    public function theReturnedDataPropertyHasOnlyTheFollowingProperties($property, PyStringNode $string): void
+    public function theReturnedDataPropertyHasOnlyTheFollowingProperties(?string $property, PyStringNode $string): void
     {
         $value = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
 
@@ -328,7 +328,7 @@ final class FeatureContext implements Context
     /**
      * @Then the returned data :property property has only the following properties with Redmine version :versionComparision
      */
-    public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion($property, string $versionComparision, PyStringNode $string): void
+    public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion(?string $property, string $versionComparision, PyStringNode $string): void
     {
         $parts = explode(' ', $versionComparision);
 
@@ -374,7 +374,7 @@ final class FeatureContext implements Context
     /**
      * Get item from an array by key supporting "dot" notation.
      */
-    private function getItemFromArray(array $array, $key)
+    private function getItemFromArray(array $array, ?string $key)
     {
         if ($key === null) {
             return $array;
