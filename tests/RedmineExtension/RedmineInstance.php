@@ -105,7 +105,9 @@ final class RedmineInstance
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $data = curl_exec($ch);
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
 
         if ($data === false || $statusCode !== 200) {
             throw new InvalidArgumentException(sprintf(
