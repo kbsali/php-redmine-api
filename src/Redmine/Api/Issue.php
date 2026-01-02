@@ -48,29 +48,29 @@ class Issue extends AbstractApi
     public const PRIO_IMMEDIATE = 5;
 
     /**
-     * @var IssueCategory
+     * @var null|IssueCategory
      */
-    private $issueCategoryApi;
+    private $issueCategoryApi = null;
 
     /**
-     * @var IssueStatus
+     * @var null|IssueStatus
      */
-    private $issueStatusApi;
+    private $issueStatusApi = null;
 
     /**
-     * @var Project
+     * @var null|Project
      */
-    private $projectApi;
+    private $projectApi = null;
 
     /**
-     * @var Tracker
+     * @var null|Tracker
      */
-    private $trackerApi;
+    private $trackerApi = null;
 
     /**
-     * @var User
+     * @var null|User
      */
-    private $userApi;
+    private $userApi = null;
 
     /**
      * List issues.
@@ -126,7 +126,7 @@ class Issue extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             return $this->list($params);
@@ -135,7 +135,7 @@ class Issue extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 

@@ -28,10 +28,7 @@ abstract class AbstractApi implements Api
      */
     protected $client;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private \Redmine\Http\HttpClient $httpClient;
 
     /**
      * @var Response
@@ -73,7 +70,7 @@ abstract class AbstractApi implements Api
 
     final public function getLastResponse(): Response
     {
-        return $this->lastResponse !== null ? $this->lastResponse : HttpFactory::makeResponse(0, '', '');
+        return ($this->lastResponse instanceof Response) ? $this->lastResponse : HttpFactory::makeResponse(0, '', '');
     }
 
     /**
@@ -300,7 +297,7 @@ abstract class AbstractApi implements Api
      */
     protected function retrieveData(string $endpoint, array $params = []): array
     {
-        if (empty($params)) {
+        if ($params === []) {
             $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
                 'GET',
                 strval($endpoint),
@@ -366,7 +363,7 @@ abstract class AbstractApi implements Api
             $offset += $realLimit;
 
             if (
-                empty($newDataSet)
+                $newDataSet === []
                 || !isset($newDataSet['limit'])
                 || (
                     isset($newDataSet['offset'])

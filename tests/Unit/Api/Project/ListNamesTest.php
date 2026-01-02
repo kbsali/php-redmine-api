@@ -17,7 +17,7 @@ class ListNamesTest extends TestCase
      * @dataProvider getListNamesData
      */
     #[DataProvider('getListNamesData')]
-    public function testListNamesReturnsCorrectResponse($expectedPath, $responseCode, $response, $expectedResponse): void
+    public function testListNamesReturnsCorrectResponse(string $expectedPath, int $responseCode, string $response, array $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,

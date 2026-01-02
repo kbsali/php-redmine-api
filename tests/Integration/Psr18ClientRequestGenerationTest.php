@@ -26,18 +26,18 @@ class Psr18ClientRequestGenerationTest extends TestCase
     public function testPsr18ClientCreatesCorrectRequests(
         string $url,
         string $apikeyOrUsername,
-        $pwd,
-        $impersonateUser,
+        ?string $pwd,
+        ?string $impersonateUser,
         string $method,
         string $path,
         $data,
-        $expectedOutput
+        string $expectedOutput
     ): void {
         $response = $this->createMock(ResponseInterface::class);
 
         /** @var ClientInterface&\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput) {
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): \PHPUnit\Framework\MockObject\MockObject {
             // Create a text representation of the HTTP request
             $content = $request->getBody()->__toString();
 
@@ -65,9 +65,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         });
 
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willReturnCallback(function ($method, $uri) {
-            return new Request($method, $uri);
-        });
+        $requestFactory->method('createRequest')->willReturnCallback(fn($method, $uri): \GuzzleHttp\Psr7\Request => new Request($method, $uri));
 
         $streamFactory = new class implements StreamFactoryInterface {
             public function createStream(string $content = ''): StreamInterface

@@ -22,14 +22,14 @@ use SimpleXMLElement;
 class Group extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $groups = [];
+    private ?array $groups = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $groupNames = null;
+    private ?array $groupNames = null;
 
     /**
      * List groups.
@@ -85,7 +85,7 @@ class Group extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->groups = $this->list($params);
@@ -94,7 +94,7 @@ class Group extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -116,9 +116,9 @@ class Group extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->groups) || $forceUpdate) {
+        if ($forceUpdate || $this->groups === null) {
             $this->groups = $this->list();
         }
         $ret = [];

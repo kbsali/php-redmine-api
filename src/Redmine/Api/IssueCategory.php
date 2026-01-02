@@ -23,14 +23,14 @@ use SimpleXMLElement;
 class IssueCategory extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $issueCategories = [];
+    * @var null|array<mixed>
+    */
+    private ?array $issueCategories = null;
 
     /**
      * @var array<mixed>
      */
-    private $issueCategoriesNames = [];
+    private array $issueCategoriesNames = [];
 
     /**
      * List issue categories for a given project.
@@ -111,7 +111,7 @@ class IssueCategory extends AbstractApi
      */
     public function all($project, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
             return $this->listByProject(strval($project), $params);
@@ -120,7 +120,7 @@ class IssueCategory extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -141,7 +141,7 @@ class IssueCategory extends AbstractApi
      */
     public function listing($project, $forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($project, $forceUpdate);
     }
@@ -159,7 +159,7 @@ class IssueCategory extends AbstractApi
      */
     public function getIdByName($project, $name)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing($project, false);
 
@@ -296,7 +296,7 @@ class IssueCategory extends AbstractApi
      */
     private function doListing($projectIdentifier, bool $forceUpdate): array
     {
-        if (true === $forceUpdate || empty($this->issueCategories)) {
+        if ($forceUpdate || $this->issueCategories === null) {
             $this->issueCategories = $this->listByProject($projectIdentifier);
         }
 

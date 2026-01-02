@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class Tracker extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $trackers = [];
+    private ?array $trackers = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $trackerNames = null;
+    private ?array $trackerNames = null;
 
     /**
      * List trackers.
@@ -82,7 +82,7 @@ class Tracker extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->trackers = $this->list($params);
@@ -91,7 +91,7 @@ class Tracker extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -113,7 +113,7 @@ class Tracker extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate);
     }
@@ -130,7 +130,7 @@ class Tracker extends AbstractApi
      */
     public function getIdByName($name)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false);
 
@@ -146,7 +146,7 @@ class Tracker extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->trackers) || $forceUpdate) {
+        if ($forceUpdate || $this->trackers === null) {
             $this->trackers = $this->list();
         }
 

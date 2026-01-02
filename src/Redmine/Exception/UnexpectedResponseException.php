@@ -16,16 +16,13 @@ use Throwable;
  */
 final class UnexpectedResponseException extends RuntimeException implements RedmineException
 {
-    /**
-     * @var Response|null
-     */
-    private $response = null;
+    private ?\Redmine\Http\Response $response = null;
 
     public static function create(Response $response, ?Throwable $prev = null): self
     {
         $e = new self(
             'The Redmine server replied with an unexpected response.',
-            ($prev !== null) ? $prev->getCode() : 1,
+            ($prev instanceof \Throwable) ? $prev->getCode() : 1,
             $prev,
         );
 

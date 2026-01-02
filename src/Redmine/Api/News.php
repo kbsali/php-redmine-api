@@ -15,11 +15,6 @@ use Redmine\Exception\UnexpectedResponseException;
 class News extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $news = [];
-
-    /**
      * List news for a given project.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
@@ -84,26 +79,22 @@ class News extends AbstractApi
      */
     public function all($project = null, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` or `' . __CLASS__ . '::listByProject()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` or `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
 
         try {
-            if (null === $project) {
-                $this->news = $this->list($params);
-            } else {
-                $this->news = $this->listByProject(strval($project), $params);
-            }
+            $news = null === $project ? $this->list($params) : $this->listByProject(strval($project), $params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
             return $e->getMessage();
         }
 
-        return $this->news;
+        return $news;
     }
 }

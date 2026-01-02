@@ -25,7 +25,7 @@ class RequestTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestReturnsCorrectResponse($method, $data, $statusCode, $contentType, $content): void
+    public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
         $httpClient = $this->createConfiguredMock(ClientInterface::class, [
             'sendRequest' => $this->createConfiguredMock(ResponseInterface::class, [
@@ -38,7 +38,7 @@ class RequestTest extends TestCase
         ]);
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function () {
+            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);
@@ -105,7 +105,7 @@ class RequestTest extends TestCase
         );
 
         $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function () {
+            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                 $request = $this->createMock(RequestInterface::class);
                 $request->method('withHeader')->willReturn($request);
                 $request->method('withBody')->willReturn($request);

@@ -23,14 +23,14 @@ use SimpleXMLElement;
 class Project extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $projects = [];
+    private ?array $projects = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $projectNames = null;
+    private ?array $projectNames = null;
 
     /**
      * List projects.
@@ -103,7 +103,7 @@ class Project extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->projects = $this->list($params);
@@ -112,7 +112,7 @@ class Project extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -136,7 +136,7 @@ class Project extends AbstractApi
      */
     public function listing($forceUpdate = false, $reverse = true, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate, $reverse, $params);
     }
@@ -154,7 +154,7 @@ class Project extends AbstractApi
      */
     public function getIdByName($name, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false, true, $params);
 
@@ -460,7 +460,7 @@ class Project extends AbstractApi
      */
     private function doListing(bool $forceUpdate, bool $reverse, array $params): array
     {
-        if (true === $forceUpdate || empty($this->projects)) {
+        if ($forceUpdate || $this->projects === null) {
             $this->projects = $this->list($params);
         }
 

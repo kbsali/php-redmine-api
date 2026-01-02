@@ -15,7 +15,7 @@ class ShowTest extends TestCase
      * @dataProvider getShowData
      */
     #[DataProvider('getShowData')]
-    public function testShowReturnsCorrectResponse($issueId, array $params, $expectedPath, $response, $expectedReturn): void
+    public function testShowReturnsCorrectResponse($issueId, array $params, string $expectedPath, string $response, $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,

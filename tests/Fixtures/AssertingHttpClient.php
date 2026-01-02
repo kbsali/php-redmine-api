@@ -41,7 +41,7 @@ final class AssertingHttpClient implements HttpClient
     /**
      * @var array<mixed>
      */
-    private $fifoStack = [];
+    private array $fifoStack = [];
 
     private function __construct(TestCase $testCase, HttpClient $client)
     {
@@ -57,12 +57,12 @@ final class AssertingHttpClient implements HttpClient
         int $responseCode = 200,
         string $responseContentType = '',
         string $responseContent = ''
-    ) {
+    ): void {
         if ($responseContentType === '') {
             $responseContentType = $contentType;
         }
 
-        array_push($this->fifoStack, [
+        $this->fifoStack[] = [
             'method' => $method,
             'path' => $path,
             'contentType' => $contentType,
@@ -70,7 +70,7 @@ final class AssertingHttpClient implements HttpClient
             'responseCode' => $responseCode,
             'responseContentType' => $responseContentType,
             'responseContent' => $responseContent,
-        ]);
+        ];
     }
 
     public function request(Request $request): Response

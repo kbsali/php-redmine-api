@@ -37,7 +37,7 @@ final class PathSerializer implements Stringable
     {
         $queryString = '';
 
-        if (!empty($this->queryParams)) {
+        if ($this->queryParams !== []) {
             $queryString = '?' . \http_build_query($this->queryParams);
 
             // @see #154: replace every encoded array (`foo[0]=`, `foo[1]=`, etc with `foo[]=`)

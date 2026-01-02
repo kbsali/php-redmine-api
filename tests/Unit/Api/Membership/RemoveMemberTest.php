@@ -15,7 +15,7 @@ class RemoveMemberTest extends TestCase
      * @dataProvider getRemoveMemberData
      */
     #[DataProvider('getRemoveMemberData')]
-    public function testRemoveMemberReturnsCorrectResponse($projectIdentifier, $userId, array $params, $expectedPath, $responseCode, $response): void
+    public function testRemoveMemberReturnsCorrectResponse(int $projectIdentifier, int $userId, array $params, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

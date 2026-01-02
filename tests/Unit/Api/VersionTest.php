@@ -46,7 +46,7 @@ class VersionTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
+    public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -342,11 +342,9 @@ class VersionTest extends TestCase
      * Test validateSharing().
      *
      * @dataProvider      invalidSharingProvider
-     *
-     * @param string $sharingValue
      */
     #[DataProvider('invalidSharingProvider')]
-    public function testCreateThrowsExceptionWithInvalidSharing($sharingValue): void
+    public function testCreateThrowsExceptionWithInvalidSharing(string $sharingValue): void
     {
         // Test values
         $parameters = [

@@ -213,7 +213,14 @@ final class NativeCurlClient implements Client, HttpClient
     {
         // Headers must be handled serperatly
         if (CURLOPT_HTTPHEADER === $option) {
-            // $value must be an array. setHttpHeaders() will enforce this.
+            if (! is_array($value)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'If argument #1 ($option) passed to %s() is set to `CURLOPT_HTTPHEADER` (10023), then Argument #2 ($value) must be of the type array, but `%s` given',
+                    __METHOD__,
+                    gettype($value),
+                ));
+            }
+
             $this->setHttpHeaders($value);
 
             return;
@@ -324,7 +331,7 @@ final class NativeCurlClient implements Client, HttpClient
      *
      * BC for PHP 7.4: Do not add the return type because CurlHandle was introduced in PHP 8.0
      *
-     * @return \CurlHandle a cURL handle on success, <b>FALSE</b> on errors
+     * @return mixed a cURL handle on success, <b>FALSE</b> on errors
      */
     private function createCurl(string $method, string $path, string $body = '', string $contentType = '')
     {
@@ -410,13 +417,11 @@ final class NativeCurlClient implements Client, HttpClient
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Authentication
         if (null === $this->password && !array_key_exists(strtolower('X-Redmine-API-Key'), $this->httpHeadersNames)) {
             $httpHeaders[] = 'X-Redmine-API-Key: ' . $this->apikeyOrUsername;
-        } else {
-            if (!array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
-                // Setting Header "Authorization: Basic base64" is the same as
-                // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
-                // @see https://stackoverflow.com/a/26285941
-                $httpHeaders[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
-            }
+        } elseif (!array_key_exists(strtolower('Authorization'), $this->httpHeadersNames)) {
+            // Setting Header "Authorization: Basic base64" is the same as
+            // $this->setCurlOption(CURLOPT_USERPWD, "$username:$password")
+            // @see https://stackoverflow.com/a/26285941
+            $httpHeaders[] = 'Authorization: Basic ' . base64_encode($this->apikeyOrUsername . ':' . $this->password);
         }
 
         // prepare custom headers

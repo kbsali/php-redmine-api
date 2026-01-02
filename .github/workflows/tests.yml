@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: ["ubuntu-latest"]
-        php: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+        php: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"]
 
     steps:
       - name: Checkout
@@ -93,7 +93,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: ["ubuntu-latest"]
-        php: ["8.3"]
+        php: ["7.4"]
         tool: ["phpstan", "code-coverage", "code-style"]
 
     steps:
@@ -121,7 +121,7 @@ jobs:
 
       - name: Run tests with coverage-clover
         if: ${{ matrix.tool == 'code-coverage' }}
-        run: composer run phpunit -- --coverage-clover .phpunit.cache/clover.xml
+        run: composer run phpunit -- -c tests/phpunit-coverage.xml.dist --coverage-clover .phpunit.cache/clover.xml
 
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.tool == 'code-coverage' }}

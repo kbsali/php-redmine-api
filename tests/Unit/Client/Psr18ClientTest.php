@@ -44,7 +44,7 @@ class Psr18ClientTest extends TestCase
         $client = new Psr18Client(
             $this->createMock(ClientInterface::class),
             $this->createConfiguredMock(ServerRequestFactoryInterface::class, [
-                'createServerRequest' => (function () {
+                'createServerRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
                     $request = $this->createMock(ServerRequestInterface::class);
                     $request->method('withHeader')->willReturn($request);
                     $request->method('withBody')->willReturn($request);
@@ -257,7 +257,7 @@ class Psr18ClientTest extends TestCase
      * @dataProvider getRequestReponseData
      */
     #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent($method, $data, $boolReturn, $statusCode, $contentType, $content): void
+    public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
     {
         $stream = $this->createMock(StreamInterface::class);
         $stream->method('__toString')->willReturn($content);
@@ -477,25 +477,25 @@ class Psr18ClientTest extends TestCase
     public static function getApiClassesProvider(): array
     {
         return [
-            ['attachment', 'Redmine\Api\Attachment'],
-            ['group', 'Redmine\Api\Group'],
-            ['custom_fields', 'Redmine\Api\CustomField'],
-            ['issue', 'Redmine\Api\Issue'],
-            ['issue_category', 'Redmine\Api\IssueCategory'],
-            ['issue_priority', 'Redmine\Api\IssuePriority'],
-            ['issue_relation', 'Redmine\Api\IssueRelation'],
-            ['issue_status', 'Redmine\Api\IssueStatus'],
-            ['membership', 'Redmine\Api\Membership'],
-            ['news', 'Redmine\Api\News'],
-            ['project', 'Redmine\Api\Project'],
-            ['query', 'Redmine\Api\Query'],
-            ['role', 'Redmine\Api\Role'],
-            ['time_entry', 'Redmine\Api\TimeEntry'],
-            ['time_entry_activity', 'Redmine\Api\TimeEntryActivity'],
-            ['tracker', 'Redmine\Api\Tracker'],
-            ['user', 'Redmine\Api\User'],
-            ['version', 'Redmine\Api\Version'],
-            ['wiki', 'Redmine\Api\Wiki'],
+            ['attachment', \Redmine\Api\Attachment::class],
+            ['group', \Redmine\Api\Group::class],
+            ['custom_fields', \Redmine\Api\CustomField::class],
+            ['issue', \Redmine\Api\Issue::class],
+            ['issue_category', \Redmine\Api\IssueCategory::class],
+            ['issue_priority', \Redmine\Api\IssuePriority::class],
+            ['issue_relation', \Redmine\Api\IssueRelation::class],
+            ['issue_status', \Redmine\Api\IssueStatus::class],
+            ['membership', \Redmine\Api\Membership::class],
+            ['news', \Redmine\Api\News::class],
+            ['project', \Redmine\Api\Project::class],
+            ['query', \Redmine\Api\Query::class],
+            ['role', \Redmine\Api\Role::class],
+            ['time_entry', \Redmine\Api\TimeEntry::class],
+            ['time_entry_activity', \Redmine\Api\TimeEntryActivity::class],
+            ['tracker', \Redmine\Api\Tracker::class],
+            ['user', \Redmine\Api\User::class],
+            ['version', \Redmine\Api\Version::class],
+            ['wiki', \Redmine\Api\Wiki::class],
         ];
     }
 
@@ -504,7 +504,7 @@ class Psr18ClientTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Redmine\Client\Psr18Client::__construct(): Argument #2 ($requestFactory) must be of type Psr\Http\Message\RequestFactoryInterface');
 
-        $client = new Psr18Client(
+        new Psr18Client(
             $this->createMock(ClientInterface::class),
             /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
             new stdClass(),

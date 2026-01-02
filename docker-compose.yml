@@ -7,11 +7,15 @@ services:
             - 8111:80
         depends_on:
             - redmine-dev
+            - redmine-6-1
+            - redmine-6-0
+            - redmine-5-1
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
         image: redmine:6.1.0
+        user: "33:33"
         ports:
             - "3000:3000"
         environment:
@@ -28,6 +32,7 @@ services:
 
     redmine-6-1:
         image: redmine:6.1.0
+        user: "33:33"
         ports:
             - "5061:3000"
         environment:
@@ -41,6 +46,7 @@ services:
 
     redmine-6-0:
         image: redmine:6.0.7
+        user: "33:33"
         ports:
             - "5060:3000"
         environment:
@@ -54,7 +60,7 @@ services:
 
     redmine-5-1:
         image: redmine:5.1.10
-        user: "1000:1000"
+        user: "33:33"
         ports:
             - "5051:3000"
         environment:

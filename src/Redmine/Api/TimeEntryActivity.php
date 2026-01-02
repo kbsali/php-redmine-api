@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class TimeEntryActivity extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $timeEntryActivities = [];
+    private ?array $timeEntryActivities = null;
 
     /**
      * @var null|array<string>
      */
-    private $timeEntryActivityNames = null;
+    private ?array $timeEntryActivityNames = null;
 
     /**
      * List time entry activities.
@@ -78,7 +78,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->timeEntryActivities = $this->list($params);
@@ -87,7 +87,7 @@ class TimeEntryActivity extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -109,7 +109,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing((bool) $forceUpdate);
     }
@@ -126,7 +126,7 @@ class TimeEntryActivity extends AbstractApi
      */
     public function getIdByName($name)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false);
 
@@ -142,7 +142,7 @@ class TimeEntryActivity extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->timeEntryActivities) || $forceUpdate) {
+        if ($forceUpdate || $this->timeEntryActivities === null) {
             $this->timeEntryActivities = $this->list();
         }
 

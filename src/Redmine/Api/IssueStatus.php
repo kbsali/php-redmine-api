@@ -16,14 +16,14 @@ use Redmine\Exception\UnexpectedResponseException;
 class IssueStatus extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $issueStatuses = [];
+    private ?array $issueStatuses = null;
 
     /**
-     * @var array<int,string>
+     * @var null|array<int,string>
      */
-    private $issueStatusNames = null;
+    private ?array $issueStatusNames = null;
 
     /**
      * List issue statuses.
@@ -83,7 +83,7 @@ class IssueStatus extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->issueStatuses = $this->list($params);
@@ -92,7 +92,7 @@ class IssueStatus extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -114,7 +114,7 @@ class IssueStatus extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate);
     }
@@ -131,7 +131,7 @@ class IssueStatus extends AbstractApi
      */
     public function getIdByName($name)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false);
 
@@ -147,7 +147,7 @@ class IssueStatus extends AbstractApi
      */
     private function doListing(bool $forceUpdate): array
     {
-        if (empty($this->issueStatuses) || $forceUpdate) {
+        if ($forceUpdate || $this->issueStatuses === null) {
             $this->issueStatuses = $this->list();
         }
 

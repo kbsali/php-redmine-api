@@ -15,6 +15,10 @@
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
   <coverage />
+  <php>
+    <ini name="error_reporting" value="E_ALL" />
+    <ini name="display_errors" value="1" />
+  </php>
   <source>
     <include>
       <directory suffix=".php">src/Redmine/</directory>

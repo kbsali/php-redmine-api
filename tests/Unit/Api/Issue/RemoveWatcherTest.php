@@ -15,7 +15,7 @@ class RemoveWatcherTest extends TestCase
      * @dataProvider getRemoveWatcherData
      */
     #[DataProvider('getRemoveWatcherData')]
-    public function testRemoveWatcherReturnsCorrectResponse($issueId, $watcherUserId, $expectedPath, $responseCode, $response): void
+    public function testRemoveWatcherReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

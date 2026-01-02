@@ -257,7 +257,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
-    public function testLastCallFailedWithClientReturnsCorrectBoolean($statusCode, $expectedBoolean): void
+    public function testLastCallFailedWithClientReturnsCorrectBoolean(int $statusCode, bool $expectedBoolean): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
@@ -271,7 +271,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getLastCallFailedData
      */
     #[DataProvider('getLastCallFailedData')]
-    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean($statusCode, $expectedBoolean): void
+    public function testLastCallFailedWithHttpClientReturnsCorrectBoolean(int $statusCode, bool $expectedBoolean): void
     {
         $response = $this->createMock(Response::class);
         $response->method('getStatusCode')->willReturn($statusCode);
@@ -365,7 +365,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider retrieveDataData
      */
     #[DataProvider('retrieveDataData')]
-    public function testRetrieveData($path, $contentType, $response, $expected): void
+    public function testRetrieveData(string $path, string $contentType, string $response, array $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -444,7 +444,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getRetrieveDataToExceptionData
      */
     #[DataProvider('getRetrieveDataToExceptionData')]
-    public function testRetrieveDataThrowsException($response, $contentType, $expectedException, $expectedMessage): void
+    public function testRetrieveDataThrowsException(string $response, string $contentType, string $expectedException, string $expectedMessage): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);
@@ -473,7 +473,7 @@ class AbstractApiTest extends TestCase
      * @dataProvider getRetrieveAllData
      */
     #[DataProvider('getRetrieveAllData')]
-    public function testDeprecatedRetrieveAll($content, $contentType, $expected): void
+    public function testDeprecatedRetrieveAll(string $content, string $contentType, $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('requestGet')->willReturn(true);

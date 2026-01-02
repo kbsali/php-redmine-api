@@ -18,7 +18,7 @@ class CreateTest extends TestCase
      * @dataProvider getCreateData
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($parameters, $expectedPath, $expectedBody, $responseCode, $response): void
+    public function testCreateReturnsCorrectResponse(array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -149,7 +149,7 @@ class CreateTest extends TestCase
      * @dataProvider incompleteCreateParameterProvider
      */
     #[DataProvider('incompleteCreateParameterProvider')]
-    public function testCreateThrowsExceptionIfValueIsMissingInParameters($parameters): void
+    public function testCreateThrowsExceptionIfValueIsMissingInParameters(array $parameters): void
     {
         // Create the used mock objects
         $client = $this->createMock(HttpClient::class);

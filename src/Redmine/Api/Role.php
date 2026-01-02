@@ -18,14 +18,14 @@ use Redmine\Serializer\JsonSerializer;
 class Role extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $roles = [];
+    private ?array $roles = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $roleNames = null;
+    private ?array $roleNames = null;
 
     /**
      * List roles.
@@ -84,7 +84,7 @@ class Role extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->roles = $this->list($params);
@@ -93,7 +93,7 @@ class Role extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -115,9 +115,9 @@ class Role extends AbstractApi
      */
     public function listing($forceUpdate = false)
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listNames()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        if (empty($this->roles) || $forceUpdate) {
+        if ($forceUpdate || $this->roles === null) {
             $this->roles = $this->list();
         }
         $ret = [];

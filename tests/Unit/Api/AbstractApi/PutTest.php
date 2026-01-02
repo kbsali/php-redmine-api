@@ -47,7 +47,7 @@ class PutTest extends TestCase
      * @dataProvider getXmlDecodingFromPutMethodData
      */
     #[DataProvider('getXmlDecodingFromPutMethodData')]
-    public function testXmlDecodingFromPutMethod($response, $expected): void
+    public function testXmlDecodingFromPutMethod(string $response, string $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);

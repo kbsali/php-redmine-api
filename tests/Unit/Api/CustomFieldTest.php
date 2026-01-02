@@ -45,7 +45,7 @@ class CustomFieldTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse($response, $responseType, $expectedResponse): void
+    public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);
@@ -151,12 +151,6 @@ class CustomFieldTest extends TestCase
         // Test values
         $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
         $allParameters = ['limit' => 250];
-        $returnDataSet = [
-            'limit' => '100',
-            'offset' => '10',
-            'total_count' => '5',
-            'items' => [],
-        ];
 
         // Create the used mock objects
         $client = $this->createMock(Client::class);

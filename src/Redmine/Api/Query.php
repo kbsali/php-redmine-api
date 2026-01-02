@@ -16,11 +16,6 @@ use Redmine\Exception\UnexpectedResponseException;
 class Query extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $query = [];
-
-    /**
      * Returns the list of all custom queries visible by the user (public and private queries) for all projects.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
@@ -54,22 +49,22 @@ class Query extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            $this->query = $this->list($params);
+            $query = $this->list($params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
             return $e->getMessage();
         }
 
-        return $this->query;
+        return $query;
     }
 }

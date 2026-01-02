@@ -15,7 +15,7 @@ class DownloadTest extends TestCase
      * @dataProvider getDownloadData
      */
     #[DataProvider('getDownloadData')]
-    public function testDownloadReturnsCorrectResponse($id, $expectedPath, $responseCode, $response, $expectedReturn): void
+    public function testDownloadReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response, $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,

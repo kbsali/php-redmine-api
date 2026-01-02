@@ -22,14 +22,14 @@ use SimpleXMLElement;
 class User extends AbstractApi
 {
     /**
-     * @var array<mixed>
+     * @var null|array<mixed>
      */
-    private $users = [];
+    private ?array $users = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $userLogins = null;
+    private ?array $userLogins = null;
 
     /**
      * List users.
@@ -102,7 +102,7 @@ class User extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
             $this->users = $this->list($params);
@@ -111,7 +111,7 @@ class User extends AbstractApi
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
@@ -134,7 +134,7 @@ class User extends AbstractApi
      */
     public function listing($forceUpdate = false, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
 
         return $this->doListing($forceUpdate, $params);
     }
@@ -166,7 +166,7 @@ class User extends AbstractApi
      */
     public function getIdByUsername($username, array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . __CLASS__ . '::listLogins()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
 
         $arr = $this->doListing(false, $params);
 
@@ -199,7 +199,7 @@ class User extends AbstractApi
         // set default ones
         $params['include'] = array_unique(
             array_merge(
-                isset($params['include']) ? $params['include'] : [],
+                $params['include'] ?? [],
                 [
                     'memberships',
                     'groups',
@@ -329,13 +329,13 @@ class User extends AbstractApi
      */
     private function doListing(bool $forceUpdate, array $params): array
     {
-        if (empty($this->users) || $forceUpdate) {
+        if ($forceUpdate || $this->users === null) {
             $this->users = $this->list($params);
         }
 
         $ret = [];
 
-        if (is_array($this->users) && isset($this->users['users'])) {
+        if (array_key_exists('users', $this->users)) {
             foreach ($this->users['users'] as $e) {
                 $ret[$e['login']] = (int) $e['id'];
             }

@@ -45,7 +45,7 @@ class DeleteTest extends TestCase
      * @dataProvider getXmlDecodingFromDeleteMethodData
      */
     #[DataProvider('getXmlDecodingFromDeleteMethodData')]
-    public function testXmlDecodingFromDeleteMethod($response, $expected): void
+    public function testXmlDecodingFromDeleteMethod(string $response, string $expected): void
     {
         $client = $this->createMock(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);

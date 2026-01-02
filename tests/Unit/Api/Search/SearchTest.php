@@ -37,7 +37,7 @@ class SearchTest extends TestCase
      * @dataProvider getAllData
      */
     #[DataProvider('getAllData')]
-    public function testSearchReturnsClientGetResponse($response, $responseType, $expectedResponse): void
+    public function testSearchReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
         // Create the used mock objects
         $client = $this->createMock(Client::class);

@@ -26,7 +26,7 @@ final class MockClient implements Client
      *
      * @var mixed
      */
-    public $runRequestReturnValue = null;
+    public $runRequestReturnValue;
 
     /**
      * Return value the mocked runRequest method should return.
@@ -95,7 +95,7 @@ final class MockClient implements Client
      */
     public function getLastResponseStatusCode(): int
     {
-        return (int) $this->responseCodeMock;
+        return $this->responseCodeMock;
     }
 
     /**
@@ -103,7 +103,7 @@ final class MockClient implements Client
      */
     public function getLastResponseContentType(): string
     {
-        return (string) $this->responseContentTypeMock;
+        return $this->responseContentTypeMock;
     }
 
     /**
@@ -111,7 +111,7 @@ final class MockClient implements Client
      */
     public function getLastResponseBody(): string
     {
-        return (string) $this->responseBodyMock;
+        return $this->responseBodyMock;
     }
 
     private function runRequest(string $path, string $method = 'GET', string $data = ''): bool

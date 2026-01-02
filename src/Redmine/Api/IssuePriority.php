@@ -16,11 +16,6 @@ use Redmine\Exception\UnexpectedResponseException;
 class IssuePriority extends AbstractApi
 {
     /**
-     * @var array<mixed>
-     */
-    private $issuePriorities = [];
-
-    /**
      * List issue priorities.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
@@ -54,22 +49,22 @@ class IssuePriority extends AbstractApi
      */
     public function all(array $params = [])
     {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . __CLASS__ . '::list()` instead.', E_USER_DEPRECATED);
+        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
 
         try {
-            $this->issuePriorities = $this->list($params);
+            $issuePriorities = $this->list($params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;
             }
 
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() !== null) {
+            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
                 $e = $e->getPrevious();
             }
 
             return $e->getMessage();
         }
 
-        return $this->issuePriorities;
+        return $issuePriorities;
     }
 }
