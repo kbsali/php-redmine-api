@@ -25,12 +25,12 @@ class Project extends AbstractApi
     /**
      * @var null|array<mixed>
      */
-    private $projects = null;
+    private ?array $projects = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $projectNames = null;
+    private ?array $projectNames = null;
 
     /**
      * List projects.

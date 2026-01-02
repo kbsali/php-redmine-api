@@ -18,12 +18,12 @@ class Tracker extends AbstractApi
     /**
      * @var null|array<mixed>
      */
-    private $trackers = null;
+    private ?array $trackers = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $trackerNames = null;
+    private ?array $trackerNames = null;
 
     /**
      * List trackers.

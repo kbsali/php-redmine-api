@@ -15,7 +15,7 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::CODE_QUALITY,
         \Rector\Set\ValueObject\SetList::DEAD_CODE,
     ])
-    ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(48))
+    ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(49))
     ->withSkip([
         \Rector\DeadCode\Rector\PropertyProperty\RemoveNullPropertyInitializationRector::class,
     ])

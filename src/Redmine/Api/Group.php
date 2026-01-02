@@ -24,12 +24,12 @@ class Group extends AbstractApi
     /**
      * @var null|array<mixed>
      */
-    private $groups = null;
+    private ?array $groups = null;
 
     /**
      * @var null|array<int,string>
      */
-    private $groupNames = null;
+    private ?array $groupNames = null;
 
     /**
      * List groups.
