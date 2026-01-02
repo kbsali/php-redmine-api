@@ -2,7 +2,7 @@ services:
     php:
         build: # Info to build the Docker image
             context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
-            dockerfile: PHP-Dockerfile # Specify the name of the Dockerfile
+            dockerfile: PHP85-Dockerfile # Specify the name of the Dockerfile
         ports:
             - 8111:80
         depends_on:
