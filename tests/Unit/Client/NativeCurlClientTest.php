@@ -560,6 +560,19 @@ class NativeCurlClientTest extends TestCase
         $client->requestGet('/path');
     }
 
+    public function testSetCurlOptionHttpheaderWithoutArrayThrowsException(): void
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        $this->expectException(\Throwable::class);
+        $this->expectExceptionMessage('If argument #1 ($option) passed to Redmine\Client\NativeCurlClient::setCurlOption() is set to `CURLOPT_HTTPHEADER` (10023), then Argument #2 ($value) must be of the type array, but `string` given');
+
+        $client->setCurlOption(CURLOPT_HTTPHEADER, 'this MUST be an array.');
+    }
+
     public function testCustomPortWillSetFromSchema(): void
     {
         $expectedOptions = [
