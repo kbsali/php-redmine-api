@@ -51,7 +51,7 @@ class GetTest extends TestCase
     #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod(string $response, ?bool $decode, $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/json');
 
@@ -88,7 +88,7 @@ class GetTest extends TestCase
     #[DataProvider('getXmlDecodingFromGetMethodData')]
     public function testXmlDecodingFromGetMethod(string $response, ?bool $decode, string $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 

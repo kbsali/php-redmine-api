@@ -24,7 +24,7 @@ class RequestTest extends TestCase
     {
         $namespace = 'Redmine\Client';
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock($namespace, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -51,7 +51,7 @@ class RequestTest extends TestCase
         );
 
         /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
-        $request = $this->createConfiguredMock(Request::class, [
+        $request = $this->createConfiguredStub(Request::class, [
             'getMethod' => $method,
             'getPath' => '/path',
             'getContentType' => $contentType,
@@ -97,7 +97,7 @@ class RequestTest extends TestCase
     {
         $namespace = 'Redmine\Client';
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock($namespace, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -138,7 +138,7 @@ class RequestTest extends TestCase
         );
 
         /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
-        $request = $this->createConfiguredMock(Request::class, [
+        $request = $this->createConfiguredStub(Request::class, [
             'getMethod' => 'POST',
             'getPath' => '/uploads.json',
             'getContentType' => 'application/octet-stream',

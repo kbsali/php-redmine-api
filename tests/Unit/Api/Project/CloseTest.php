@@ -54,7 +54,7 @@ class CloseTest extends TestCase
 
     public function testCloseWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new Project($client);
 

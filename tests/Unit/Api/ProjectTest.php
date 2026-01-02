@@ -222,7 +222,7 @@ class ProjectTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -282,7 +282,7 @@ class ProjectTest extends TestCase
 
     public function testGetIdByNameTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -311,7 +311,7 @@ class ProjectTest extends TestCase
 
     public function testDeprecatedPrepareParamsXml(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
 
         $api = new Project($client);
 
