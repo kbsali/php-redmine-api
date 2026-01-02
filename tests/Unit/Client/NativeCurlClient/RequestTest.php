@@ -50,13 +50,11 @@ class RequestTest extends TestCase
             'access_token',
         );
 
-        /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
-        $request = $this->createConfiguredStub(Request::class, [
-            'getMethod' => $method,
-            'getPath' => '/path',
-            'getContentType' => $contentType,
-            'getContent' => $data,
-        ]);
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn($method);
+        $request->method('getPath')->willReturn('/path');
+        $request->method('getContentType')->willReturn($contentType);
+        $request->method('getContent')->willReturn($data);
 
         $response = $client->request($request);
 
@@ -137,13 +135,11 @@ class RequestTest extends TestCase
             E_USER_DEPRECATED,
         );
 
-        /** @var Request&\PHPUnit\Framework\MockObject\MockObject */
-        $request = $this->createConfiguredStub(Request::class, [
-            'getMethod' => 'POST',
-            'getPath' => '/uploads.json',
-            'getContentType' => 'application/octet-stream',
-            'getContent' => realpath(__DIR__ . '/../../../Fixtures/testfile_01.txt'),
-        ]);
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn('POST');
+        $request->method('getPath')->willReturn('/uploads.json');
+        $request->method('getContentType')->willReturn('application/octet-stream');
+        $request->method('getContent')->willReturn(realpath(__DIR__ . '/../../../Fixtures/testfile_01.txt'));
 
         $response = $client->request($request);
 

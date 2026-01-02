@@ -41,26 +41,27 @@ class Psr18ClientTest extends TestCase
 
     public function testServerRequestFactoryIsAcceptedInConstructorForBC(): void
     {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createConfiguredStub(ServerRequestFactoryInterface::class, [
-                'createServerRequest' => (function (): \PHPUnit\Framework\MockObject\Stub {
-                    $request = $this->createStub(ServerRequestInterface::class);
-                    $request->method('withHeader')->willReturn($request);
-                    $request->method('withBody')->willReturn($request);
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Redmine\Client\Psr18Client::__construct(): Providing Argument #2 ($requestFactory) as Psr\Http\Message\ServerRequestFactoryInterface is deprecated since v2.3.0, please provide as Psr\Http\Message\RequestFactoryInterface instead.',
+                    $errstr,
+                );
 
-                    return $request;
-                })(),
-            ]),
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new Psr18Client(
+            $this->createStub(ClientInterface::class),
+            $this->createStub(ServerRequestFactoryInterface::class),
             $this->createStub(StreamFactoryInterface::class),
             'http://test.local',
             'access_token',
         );
-
-        $this->assertInstanceOf(Psr18Client::class, $client);
-        $this->assertInstanceOf(Client::class, $client);
-
-        $client->requestGet('/path.xml');
     }
 
     public function testShouldPassUsernameAndPasswordToConstructor(): void

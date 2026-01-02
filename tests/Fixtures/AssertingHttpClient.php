@@ -101,8 +101,14 @@ final class AssertingHttpClient implements HttpClient
             $this->testCase->assertSame($data['content'], $request->getContent());
         }
 
+        $createStubMethod = new \ReflectionMethod($this->testCase, 'createStub');
+
+        if (PHP_VERSION_ID < 80100) {
+            $createStubMethod->setAccessible(true);
+        }
+
         /** @var \PHPUnit\Framework\MockObject\Stub&Response $response */
-        $response = (new TestStubBuilder(Response::class))->getStub();
+        $response = $createStubMethod->invoke($this->testCase, Response::class);
 
         $response->method('getStatusCode')->willReturn($data['responseCode']);
         $response->method('getContentType')->willReturn($data['responseContentType']);
