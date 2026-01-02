@@ -316,7 +316,9 @@ class ProjectTest extends TestCase
         $api = new Project($client);
 
         $method = new ReflectionMethod($api, 'prepareParamsXml');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertInstanceOf(SimpleXMLElement::class, $method->invoke($api, ['id' => 1]));
     }

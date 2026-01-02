@@ -34,7 +34,9 @@ class GetTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $this->assertSame(
@@ -56,7 +58,9 @@ class GetTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         if (is_bool($decode)) {
@@ -91,7 +95,9 @@ class GetTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path', $decode);

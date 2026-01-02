@@ -25,7 +25,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($client, $method->invoke($api));
     }
@@ -37,7 +39,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
     }
@@ -183,7 +187,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'isNotNull');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, $value));
     }
@@ -375,7 +381,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, $path));
     }
@@ -410,7 +418,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $method->invoke($api, '/data.json', ['limit' => 101]);
     }
@@ -435,7 +445,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $method->invoke($api, '/data.json', ['limit' => 301]);
     }
@@ -454,7 +466,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->expectException($expectedException);
         $this->expectExceptionMessage($expectedMessage);
@@ -483,7 +497,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, ''));
     }
@@ -504,7 +520,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'attachCustomFieldXML');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><issue/>');
 
