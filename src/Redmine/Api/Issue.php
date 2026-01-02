@@ -7,6 +7,7 @@ use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
@@ -46,6 +47,11 @@ class Issue extends AbstractApi
      * @deprecated v2.6.0 Will be removed in v3.0.0
      */
     public const PRIO_IMMEDIATE = 5;
+
+    final public static function fromHttpClient(HttpClient $httpClient): self
+    {
+        return new self($httpClient);
+    }
 
     /**
      * @var null|IssueCategory
