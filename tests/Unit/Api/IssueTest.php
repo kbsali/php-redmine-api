@@ -6,12 +6,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
-use Redmine\Api\IssueCategory;
-use Redmine\Api\IssueStatus;
-use Redmine\Api\Project;
-use Redmine\Api\Tracker;
-use Redmine\Api\User;
-use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
