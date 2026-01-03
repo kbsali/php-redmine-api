@@ -93,7 +93,8 @@ class Issue extends AbstractApi
         }
 
         if (static::class !== self::class) {
-            @trigger_error('Class `' . __CLASS__ . '` will declared as final in v3.0.0, stop extending it in `' . static::class . '`.', E_USER_DEPRECATED);
+            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
+            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
         } else {
             @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
         }

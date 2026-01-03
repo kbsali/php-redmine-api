@@ -26,8 +26,8 @@ class IssueTest extends TestCase
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
             function ($errno, $errstr): bool {
-                $this->assertStringStartsWith(
-                    'Class `Redmine\Api\Issue` will declared as final in v3.0.0, stop extending it in `class@anonymous',
+                $this->assertSame(
+                    'Class `Redmine\Api\Issue` will declared as final in v3.0.0, stop extending it.',
                     $errstr,
                 );
 
