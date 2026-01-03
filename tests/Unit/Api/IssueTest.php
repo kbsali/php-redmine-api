@@ -31,7 +31,7 @@ class IssueTest extends TestCase
             E_USER_DEPRECATED,
         );
 
-        new class($this->createStub(HttpClient::class)) extends Issue {};
+        new class ($this->createStub(HttpClient::class)) extends Issue {};
     }
 
     public function testConstructorTriggersDeprecationWarning(): void
