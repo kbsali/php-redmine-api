@@ -32,7 +32,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($parameters);
@@ -248,7 +248,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create([]);
@@ -281,7 +281,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create(['status' => 'Status Name']);
@@ -318,7 +318,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create(['project' => 'Project Name']);
@@ -355,7 +355,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create(['project_id' => 3, 'category' => 'Category Name']);
@@ -392,7 +392,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create(['tracker' => 'Tracker Name']);
@@ -429,7 +429,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create(['assigned_to' => 'user_6', 'author' => 'user_5']);
@@ -524,7 +524,7 @@ class CreateTest extends TestCase
         ];
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $xmlElement = $api->create($parameters);

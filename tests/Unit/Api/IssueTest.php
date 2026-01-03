@@ -14,7 +14,6 @@ use Redmine\Api\User;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\MockClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -87,7 +86,7 @@ class IssueTest extends TestCase
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new Issue(MockClient::create());
+        $api = Issue::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -114,21 +113,21 @@ class IssueTest extends TestCase
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/issues.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/issues.json',
+                'application/json',
+                '',
+                200,
+                $responseType,
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all());
@@ -153,26 +152,21 @@ class IssueTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/issues.json'),
-                    $this->stringContains('not-used'),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/issues.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all($parameters));
@@ -194,8 +188,7 @@ class IssueTest extends TestCase
             'author' => 'user_4',
         ];
 
-        // Create the used mock objects
-        $httpClient = AssertingHttpClient::create(
+        $client = AssertingHttpClient::create(
             $this,
             [
                 'GET',
@@ -242,42 +235,23 @@ class IssueTest extends TestCase
                 'application/json',
                 '{"users":[{"id":3,"login":"user_3"},{"id":4,"login":"user_4"}]}',
             ],
-        );
-
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(5))
-            ->method('getApi')
-            ->willReturnMap(
-                [
-                    ['project', new Project($httpClient)],
-                    ['issue_category', new IssueCategory($httpClient)],
-                    ['issue_status', new IssueStatus($httpClient)],
-                    ['tracker', new Tracker($httpClient)],
-                    ['user', new User($httpClient)],
-                ],
-            )
-        ;
-
-        $client->expects($this->once())
-            ->method('requestPost')
-            ->with(
+            [
+                'POST',
                 '/issues.xml',
+                'application/xml',
                 <<< XML
                 <?xml version="1.0"?>
                 <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
 
                 XML,
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/xml');
+                200,
+                'application/xml',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertXmlStringEqualsXmlString($response, $api->create($parameters)->asXML());
