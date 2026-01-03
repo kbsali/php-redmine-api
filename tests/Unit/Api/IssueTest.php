@@ -13,7 +13,6 @@ use Redmine\Api\Tracker;
 use Redmine\Api\User;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
-use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\MockClient;
 
@@ -23,6 +22,44 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(Issue::class)]
 class IssueTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertStringStartsWith(
+                    'Class `Redmine\Api\Issue` will declared as final in v3.0.0, stop extending it in `class@anonymous',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class($this->createStub(HttpClient::class)) extends Issue {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\Issue::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\Issue::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new Issue($this->createStub(HttpClient::class));
+    }
+
     public static function getPriorityConstantsData(): array
     {
         return [
