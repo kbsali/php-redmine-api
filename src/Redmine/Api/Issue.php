@@ -522,7 +522,7 @@ class Issue extends AbstractApi
                 /** @var IssueCategory */
                 $issueCategoryApi = $this->client->getApi('issue_category');
             } else {
-                $issueCategoryApi = new IssueCategory($this->getHttpClient());
+                $issueCategoryApi = IssueCategory::fromHttpClient($this->getHttpClient());
             }
 
             $this->issueCategoryApi = $issueCategoryApi;

@@ -34,7 +34,7 @@ class CustomField extends AbstractApi
 
     /**
      * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see Issue::fromHttpClient()
+     * @see CustomField::fromHttpClient()
      *
      * @param Client|HttpClient $client
      */

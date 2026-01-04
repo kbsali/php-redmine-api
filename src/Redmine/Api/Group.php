@@ -40,7 +40,7 @@ class Group extends AbstractApi
 
     /**
      * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see Issue::fromHttpClient()
+     * @see Group::fromHttpClient()
      *
      * @param Client|HttpClient $client
      */
