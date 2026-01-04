@@ -32,7 +32,7 @@ class AddUserTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->addUser($groupId, $userId);
@@ -74,7 +74,7 @@ class AddUserTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->addUser(1, 2);
