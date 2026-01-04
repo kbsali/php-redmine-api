@@ -5,8 +5,8 @@ namespace Redmine\Tests\Unit\Api\CustomField;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
-use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(CustomField::class)]
 class ListTest extends TestCase
@@ -17,21 +17,21 @@ class ListTest extends TestCase
         $response = '["API Response"]';
         $expectedResponse = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/custom_fields.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->list());
@@ -44,21 +44,21 @@ class ListTest extends TestCase
         $response = '["API Response"]';
         $expectedResponse = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/custom_fields.json?limit=25&offset=0&0=not-used')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->list($allParameters));
@@ -74,23 +74,39 @@ class ListTest extends TestCase
             'items' => [],
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(3))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(3))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(3))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/custom_fields.json?limit=50&offset=200',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->list($allParameters));
@@ -108,23 +124,21 @@ class ListTest extends TestCase
             'items' => [],
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($returnDataSet, $api->list($allParameters));
@@ -132,21 +146,21 @@ class ListTest extends TestCase
 
     public function testListThrowsException(): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/custom_fields.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn('');
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
