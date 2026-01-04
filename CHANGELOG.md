@@ -9,12 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New method `Redmine\Api\Attachment::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\Issue::fromHttpClient()` for creating the class.
 - Add support for PHP 8.5
 - Add support for Redmine 6.1.
 
 ### Changed
 
 - Behaviour-driven tests are run against Redmine 6.1.0, 6.0.7, 5.1.10.
+
+### Deprecated
+
+- `Redmine\Api\Attachment::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Attachment::fromHttpClient()` instead.
+- Extending `Redmine\Api\Attachment` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\Issue::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Issue::fromHttpClient()` instead.
+- Extending `Redmine\Api\Issue` is deprecated and will be set to final in future, create a wrapper class instead.
 
 ### Removed
 

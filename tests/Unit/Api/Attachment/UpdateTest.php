@@ -32,7 +32,7 @@ class UpdateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Attachment($client);
+        $api = Attachment::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->update($id, $params));
@@ -69,7 +69,7 @@ class UpdateTest extends TestCase
             ],
         );
 
-        $api = new Attachment($client);
+        $api = Attachment::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
