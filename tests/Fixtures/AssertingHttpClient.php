@@ -6,6 +6,7 @@ namespace Redmine\Tests\Fixtures;
 
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
+use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Request;
@@ -100,8 +101,14 @@ final class AssertingHttpClient implements HttpClient
             $this->testCase->assertSame($data['content'], $request->getContent());
         }
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject&Response */
-        $response = (new MockBuilder($this->testCase, Response::class))->getMock();
+        $createStubMethod = new \ReflectionMethod($this->testCase, 'createStub');
+
+        if (PHP_VERSION_ID < 80100) {
+            $createStubMethod->setAccessible(true);
+        }
+
+        /** @var \PHPUnit\Framework\MockObject\Stub&Response $response */
+        $response = $createStubMethod->invoke($this->testCase, Response::class);
 
         $response->method('getStatusCode')->willReturn($data['responseCode']);
         $response->method('getContentType')->willReturn($data['responseContentType']);

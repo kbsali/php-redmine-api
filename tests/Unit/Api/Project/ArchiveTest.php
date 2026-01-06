@@ -56,7 +56,7 @@ class ArchiveTest extends TestCase
 
     public function testArchiveWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new Project($client);
 

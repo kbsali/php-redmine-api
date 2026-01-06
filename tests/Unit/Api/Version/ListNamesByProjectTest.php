@@ -118,7 +118,7 @@ class ListNamesByProjectTest extends TestCase
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
     public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void
     {
-        $api = new Version($this->createMock(HttpClient::class));
+        $api = new Version($this->createStub(HttpClient::class));
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Redmine\Api\Version::listNamesByProject(): Argument #1 ($projectIdentifier) must be of type int or string');

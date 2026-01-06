@@ -1,0 +1,39 @@
+FROM php:8.5-fpm
+
+RUN apt-get update
+RUN apt-get --yes --no-install-recommends install \
+    apt-utils \
+    curl \
+    git \
+    vim
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions \
+    bcmath \
+    exif \
+    gd \
+    intl \
+    mysqli \
+    opcache \
+    pdo \
+    pdo_mysql \
+    sockets \
+    xdebug-^3.5 \
+    zip \
+    @composer
+
+COPY build/php/opcache.ini /usr/local/etc/php/conf.d/
+COPY build/php/custom.ini /usr/local/etc/php/conf.d/
+
+
+RUN php --version
+
+RUN composer --version
+
+RUN usermod -u 1000 www-data
+RUN usermod -a -G www-data root
+RUN mkdir -p /var/www/.composer
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/project/

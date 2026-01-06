@@ -309,7 +309,11 @@ final class NativeCurlClient implements Client, HttpClient
 
         if (CURLE_OK !== $curlErrorNumber) {
             $e = new ClientException(curl_error($curl), $curlErrorNumber);
-            curl_close($curl);
+
+            if (PHP_VERSION_ID < 80000) {
+                curl_close($curl);
+            }
+
             throw $e;
         }
 
@@ -321,7 +325,9 @@ final class NativeCurlClient implements Client, HttpClient
             $this->lastResponseContentType = $possibleContentType;
         }
 
-        curl_close($curl);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($curl);
+        }
 
         return $this->lastResponseStatusCode < 400;
     }

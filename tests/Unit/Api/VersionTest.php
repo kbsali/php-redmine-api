@@ -251,7 +251,7 @@ class VersionTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -311,7 +311,7 @@ class VersionTest extends TestCase
 
     public function testGetIdByNameTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -353,7 +353,7 @@ class VersionTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
 
         // Create the object under test
         $api = new Version($client);

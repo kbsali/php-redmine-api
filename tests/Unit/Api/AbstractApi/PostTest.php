@@ -34,7 +34,9 @@ class PostTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'post');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml', '');
@@ -49,14 +51,16 @@ class PostTest extends TestCase
     #[DataProvider('getXmlDecodingFromPostMethodData')]
     public function testXmlDecodingFromPostMethod(string $response, string $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'post');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml', '');

@@ -33,7 +33,9 @@ class DeleteTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'delete');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml');
@@ -47,14 +49,16 @@ class DeleteTest extends TestCase
     #[DataProvider('getXmlDecodingFromDeleteMethodData')]
     public function testXmlDecodingFromDeleteMethod(string $response, string $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'delete');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml');

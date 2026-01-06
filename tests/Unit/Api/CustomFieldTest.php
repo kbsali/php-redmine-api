@@ -286,7 +286,7 @@ class CustomFieldTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -346,7 +346,7 @@ class CustomFieldTest extends TestCase
 
     public function testGetIdByNameTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')

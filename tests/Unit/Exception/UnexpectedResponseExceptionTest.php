@@ -14,7 +14,7 @@ class UnexpectedResponseExceptionTest extends TestCase
 {
     public function testCreateReturnsException(): void
     {
-        $response = $this->createMock(Response::class);
+        $response = $this->createStub(Response::class);
 
         $exception = UnexpectedResponseException::create($response);
 
@@ -24,7 +24,7 @@ class UnexpectedResponseExceptionTest extends TestCase
 
     public function testCreateWithThrowable(): void
     {
-        $response = $this->createMock(Response::class);
+        $response = $this->createStub(Response::class);
         $throwable = new Exception('message', 5);
 
         $exception = UnexpectedResponseException::create($response, $throwable);
@@ -35,7 +35,7 @@ class UnexpectedResponseExceptionTest extends TestCase
 
     public function testGetResponseReturnsResponse(): void
     {
-        $response = $this->createMock(Response::class);
+        $response = $this->createStub(Response::class);
 
         $exception = UnexpectedResponseException::create($response);
 

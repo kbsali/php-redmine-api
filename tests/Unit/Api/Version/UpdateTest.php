@@ -183,7 +183,7 @@ class UpdateTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -205,7 +205,7 @@ class UpdateTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Version($client);
