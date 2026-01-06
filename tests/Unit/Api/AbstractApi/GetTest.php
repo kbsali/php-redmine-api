@@ -34,7 +34,9 @@ class GetTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $this->assertSame(
@@ -49,14 +51,16 @@ class GetTest extends TestCase
     #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod(string $response, ?bool $decode, $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/json');
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         if (is_bool($decode)) {
@@ -84,14 +88,16 @@ class GetTest extends TestCase
     #[DataProvider('getXmlDecodingFromGetMethodData')]
     public function testXmlDecodingFromGetMethod(string $response, ?bool $decode, string $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn('application/xml');
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'get');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path', $decode);

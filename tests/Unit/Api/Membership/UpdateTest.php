@@ -89,7 +89,7 @@ class UpdateTest extends TestCase
     public function testUpdateThrowsExceptionWithEmptyParameters(): void
     {
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Membership($client);
@@ -108,7 +108,7 @@ class UpdateTest extends TestCase
     public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing(array $parameters): void
     {
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Membership($client);

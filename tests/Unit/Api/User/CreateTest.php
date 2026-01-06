@@ -120,7 +120,7 @@ class CreateTest extends TestCase
         $response = 'API Response';
 
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new User($client);
@@ -139,7 +139,7 @@ class CreateTest extends TestCase
     public function testCreateThrowsExceptionIfValueIsMissingInParameters(array $parameters): void
     {
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new User($client);

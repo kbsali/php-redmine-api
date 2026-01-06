@@ -178,7 +178,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -233,7 +233,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -289,7 +289,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -345,7 +345,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -402,7 +402,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -463,7 +463,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -520,7 +520,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(3))->willReturn($curl);
@@ -588,7 +588,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -638,7 +638,7 @@ class NativeCurlClientTest extends TestCase
             CURLOPT_RETURNTRANSFER => 1,
         ];
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -679,7 +679,7 @@ class NativeCurlClientTest extends TestCase
     #[DataProvider('getRequestReponseData')]
     public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
     {
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -899,7 +899,7 @@ class NativeCurlClientTest extends TestCase
         $statusCode = 204;
         $contentType = null;
 
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -933,7 +933,7 @@ class NativeCurlClientTest extends TestCase
 
     public function testCurlErrorThrowsException(): void
     {
-        $curl = $this->createMock(stdClass::class);
+        $curl = $this->createStub(stdClass::class);
 
         $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);

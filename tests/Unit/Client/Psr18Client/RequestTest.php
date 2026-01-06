@@ -27,40 +27,37 @@ class RequestTest extends TestCase
     #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
-        $httpClient = $this->createConfiguredMock(ClientInterface::class, [
-            'sendRequest' => $this->createConfiguredMock(ResponseInterface::class, [
-                'getStatusCode' => $statusCode,
-                'getHeaderLine' => $contentType,
-                'getBody' => $this->createConfiguredMock(StreamInterface::class, [
-                    '__toString' => $content,
-                ]),
-            ]),
-        ]);
+        $stream = $this->createStub(StreamInterface::class);
+        $stream->method('__toString')->willReturn($content);
 
-        $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
-                $request = $this->createMock(RequestInterface::class);
-                $request->method('withHeader')->willReturn($request);
-                $request->method('withBody')->willReturn($request);
+        $response = $this->createStub(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn($statusCode);
+        $response->method('getHeaderLine')->willReturn($contentType);
+        $response->method('getBody')->willReturn($stream);
 
-                return $request;
-            })(),
-        ]);
+        $httpClient = $this->createStub(ClientInterface::class);
+        $httpClient->method('sendRequest')->willReturn($response);
+
+        $request = $this->createStub(RequestInterface::class);
+        $request->method('withHeader')->willReturn($request);
+        $request->method('withBody')->willReturn($request);
+
+        $requestFactory = $this->createStub(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
             $httpClient,
             $requestFactory,
-            $this->createMock(StreamFactoryInterface::class),
+            $this->createStub(StreamFactoryInterface::class),
             'http://test.local',
             'access_token',
         );
 
-        $request = $this->createConfiguredMock(Request::class, [
-            'getMethod' => $method,
-            'getPath' => '/path',
-            'getContentType' => $contentType,
-            'getContent' => $data,
-        ]);
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn($method);
+        $request->method('getPath')->willReturn('/path');
+        $request->method('getContentType')->willReturn($contentType);
+        $request->method('getContent')->willReturn($data);
 
         $response = $client->request($request);
 
@@ -104,30 +101,26 @@ class RequestTest extends TestCase
             new class ('error message') extends Exception implements ClientExceptionInterface {},
         );
 
-        $requestFactory = $this->createConfiguredMock(RequestFactoryInterface::class, [
-            'createRequest' => (function (): \PHPUnit\Framework\MockObject\MockObject {
-                $request = $this->createMock(RequestInterface::class);
-                $request->method('withHeader')->willReturn($request);
-                $request->method('withBody')->willReturn($request);
+        $request = $this->createStub(RequestInterface::class);
+        $request->method('withHeader')->willReturn($request);
+        $request->method('withBody')->willReturn($request);
 
-                return $request;
-            })(),
-        ]);
+        $requestFactory = $this->createStub(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
             $httpClient,
             $requestFactory,
-            $this->createMock(StreamFactoryInterface::class),
+            $this->createStub(StreamFactoryInterface::class),
             'http://test.local',
             'access_token',
         );
 
-        $request = $this->createConfiguredMock(Request::class, [
-            'getMethod' => 'GET',
-            'getPath' => '/path',
-            'getContentType' => 'application/json',
-            'getContent' => '',
-        ]);
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn('GET');
+        $request->method('getPath')->willReturn('/path');
+        $request->method('getContentType')->willReturn('application/json');
+        $request->method('getContent')->willReturn('');
 
         $this->expectException(ClientException::class);
         $this->expectExceptionMessage('error message');

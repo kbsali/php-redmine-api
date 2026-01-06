@@ -54,7 +54,7 @@ class UnarchiveTest extends TestCase
 
     public function testUnarchiveWithoutIntOrStringThrowsInvalidArgumentException(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new Project($client);
 

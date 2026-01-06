@@ -85,7 +85,7 @@ class UserTest extends TestCase
 
     public function testGetIdByUsernameTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')
@@ -321,7 +321,7 @@ class UserTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')
             ->willReturn(true);
         $client->method('getLastResponseBody')

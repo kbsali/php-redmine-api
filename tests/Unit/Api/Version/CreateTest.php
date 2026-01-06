@@ -157,7 +157,7 @@ class CreateTest extends TestCase
     public function testCreateWithEmptyParametersThrowsMissingParameterException(): void
     {
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -177,7 +177,7 @@ class CreateTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Version($client);
@@ -199,7 +199,7 @@ class CreateTest extends TestCase
         ];
 
         // Create the used mock objects
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
         $api = new Version($client);

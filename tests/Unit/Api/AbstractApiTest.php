@@ -20,24 +20,28 @@ class AbstractApiTest extends TestCase
 {
     public function testCreateWithHttpClientWorks(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($client, $method->invoke($api));
     }
 
     public function testCreateWitClientWorks(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
     }
@@ -53,7 +57,7 @@ class AbstractApiTest extends TestCase
 
     public function testGetTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
             public function runGet($path)
@@ -81,7 +85,7 @@ class AbstractApiTest extends TestCase
 
     public function testGetLastResponseWithHttpClientWorks(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {};
 
@@ -90,7 +94,7 @@ class AbstractApiTest extends TestCase
 
     public function testPostTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
             public function runPost($path, $data)
@@ -118,7 +122,7 @@ class AbstractApiTest extends TestCase
 
     public function testPutTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
             public function runPut($path, $data)
@@ -146,7 +150,7 @@ class AbstractApiTest extends TestCase
 
     public function testDeleteTriggersDeprecationWarning(): void
     {
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
             public function runDelete($path)
@@ -178,12 +182,14 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
     public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'isNotNull');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, $value));
     }
@@ -259,7 +265,7 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getLastCallFailedData')]
     public function testLastCallFailedWithClientReturnsCorrectBoolean(int $statusCode, bool $expectedBoolean): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('getLastResponseStatusCode')->willReturn($statusCode);
 
         $api = new class ($client) extends AbstractApi {};
@@ -273,10 +279,10 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getLastCallFailedData')]
     public function testLastCallFailedWithHttpClientReturnsCorrectBoolean(int $statusCode, bool $expectedBoolean): void
     {
-        $response = $this->createMock(Response::class);
+        $response = $this->createStub(Response::class);
         $response->method('getStatusCode')->willReturn($statusCode);
 
-        $client = $this->createMock(HttpClient::class);
+        $client = $this->createStub(HttpClient::class);
         $client->method('request')->willReturn($response);
 
         $api = new class ($client) extends AbstractApi {
@@ -367,7 +373,7 @@ class AbstractApiTest extends TestCase
     #[DataProvider('retrieveDataData')]
     public function testRetrieveData(string $path, string $contentType, string $response, array $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')->willReturn(true);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn($contentType);
@@ -375,7 +381,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, $path));
     }
@@ -410,7 +418,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $method->invoke($api, '/data.json', ['limit' => 101]);
     }
@@ -435,7 +445,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $method->invoke($api, '/data.json', ['limit' => 301]);
     }
@@ -446,7 +458,7 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getRetrieveDataToExceptionData')]
     public function testRetrieveDataThrowsException(string $response, string $contentType, string $expectedException, string $expectedMessage): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')->willReturn(true);
         $client->method('getLastResponseBody')->willReturn($response);
         $client->method('getLastResponseContentType')->willReturn($contentType);
@@ -454,7 +466,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->expectException($expectedException);
         $this->expectExceptionMessage($expectedMessage);
@@ -475,7 +489,7 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getRetrieveAllData')]
     public function testDeprecatedRetrieveAll(string $content, string $contentType, $expected): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('requestGet')->willReturn(true);
         $client->method('getLastResponseBody')->willReturn($content);
         $client->method('getLastResponseContentType')->willReturn($contentType);
@@ -483,7 +497,9 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $this->assertSame($expected, $method->invoke($api, ''));
     }
@@ -499,12 +515,14 @@ class AbstractApiTest extends TestCase
 
     public function testDeprecatedAttachCustomFieldXML(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'attachCustomFieldXML');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><issue/>');
 
