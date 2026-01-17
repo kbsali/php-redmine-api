@@ -35,6 +35,7 @@
         "friendsofphp/php-cs-fixer": "^3.68",
         "guzzlehttp/psr7": "^2",
         "php-mock/php-mock-phpunit": "^2.13",
+        "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^9.5 || ^10.5 || ^11.2 || ^12.0.9",
         "rector/rector": "^2.3"
@@ -62,6 +63,8 @@
         "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit -c tests/phpunit-coverage.xml.dist --coverage-html=\".phpunit.cache/code-coverage\"",
+        "phpmd": "phpmd src/ text .phpmd-ruleset.xml --color --cache",
+        "phpmd:report": "phpmd src/ html --reportfile=\".phpunit.cache/phpmd-report.html\" .phpmd-ruleset.xml --color --cache",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
         "phpunit": "phpunit -c phpunit.xml.dist",
         "rector": "rector -c .rector.php",

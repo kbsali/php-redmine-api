@@ -1,5 +1,6 @@
 /.docker/redmine-*_data
 /.php-cs-fixer.cache
+/.phpmd.result-cache.php
 /.phpunit.cache
 /composer.lock
 /phpunit.xml
