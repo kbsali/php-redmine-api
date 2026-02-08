@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Group::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\Issue::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\IssueCategory::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\IssuePriority::fromHttpClient()` for creating the class.
 - Add support for PHP 8.5
 - Add support for Redmine 6.1.
 
@@ -33,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extending `Redmine\Api\Issue` is deprecated and will be set to final in future, create a wrapper class instead.
 - `Redmine\Api\IssueCategory::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\IssueCategory::fromHttpClient()` instead.
 - Extending `Redmine\Api\IssueCategory` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\IssuePriority::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\IssuePriority::fromHttpClient()` instead.
+- Extending `Redmine\Api\IssuePriority` is deprecated and will be set to final in future, create a wrapper class instead.
 
 ### Removed
 
