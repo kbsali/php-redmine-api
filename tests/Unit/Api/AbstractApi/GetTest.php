@@ -49,7 +49,7 @@ class GetTest extends TestCase
      * @dataProvider getJsonDecodingFromGetMethodData
      */
     #[DataProvider('getJsonDecodingFromGetMethodData')]
-    public function testJsonDecodingFromGetMethod(string $response, ?bool $decode, $expected): void
+    public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, $expected): void
     {
         $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);
@@ -63,8 +63,8 @@ class GetTest extends TestCase
         }
 
         // Perform the tests
-        if (is_bool($decode)) {
-            $this->assertSame($expected, $method->invoke($api, 'path', $decode));
+        if (is_bool($shouldDecode)) {
+            $this->assertSame($expected, $method->invoke($api, 'path', $shouldDecode));
         } else {
             $this->assertSame($expected, $method->invoke($api, 'path'));
         }
@@ -73,12 +73,36 @@ class GetTest extends TestCase
     public static function getJsonDecodingFromGetMethodData(): array
     {
         return [
-            'test decode by default' => ['{"foo_bar": 12345}', null, ['foo_bar' => 12345]],
-            'test decode by default, JSON decode: false' => ['{"foo_bar": 12345}', false, '{"foo_bar": 12345}'],
-            'test decode by default, JSON decode: true' => ['{"foo_bar": 12345}', true, ['foo_bar' => 12345]],
-            'Empty body, JSON decode: false' => ['', false, false],
-            'Empty body, JSON decode: true' => ['', true, false],
-            'test invalid JSON' => ['{"foo_bar":', true, 'Error decoding body as JSON: Syntax error'],
+            'test decode by default' => [
+                '{"foo_bar": 12345}',
+                null,
+                ['foo_bar' => 12345],
+            ],
+            'test decode by default, JSON decode: false' => [
+                '{"foo_bar": 12345}',
+                false,
+                '{"foo_bar": 12345}',
+            ],
+            'test decode by default, JSON decode: true' => [
+                '{"foo_bar": 12345}',
+                true,
+                ['foo_bar' => 12345],
+            ],
+            'Empty body, JSON decode: false' => [
+                '',
+                false,
+                false,
+            ],
+            'Empty body, JSON decode: true' => [
+                '',
+                true,
+                false,
+            ],
+            'test invalid JSON' => [
+                '{"foo_bar":',
+                true,
+                (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:12',
+            ],
         ];
     }
 
