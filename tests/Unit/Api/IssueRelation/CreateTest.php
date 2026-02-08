@@ -34,7 +34,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new IssueRelation($client);
+        $api = IssueRelation::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($issueId, $parameters);
@@ -74,7 +74,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new IssueRelation($client);
+        $api = IssueRelation::fromHttpClient($client);
 
         $this->expectException(SerializerException::class);
         $this->expectExceptionMessage('Catched error "Syntax error" while decoding JSON: ');
@@ -89,7 +89,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new IssueRelation($client);
+        $api = IssueRelation::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `issue_to_id`');
@@ -108,7 +108,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new IssueRelation($client);
+        $api = IssueRelation::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `issue_to_id`');
