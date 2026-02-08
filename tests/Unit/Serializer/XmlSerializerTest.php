@@ -77,36 +77,54 @@ class XmlSerializerTest extends TestCase
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
-    public function testCreateFromStringWithInvalidStringThrowsException(string $message, string $data): void
+    public function testCreateFromStringWithInvalidStringThrowsException(string $data, int $expectedCode, array $expectedMessages): void
     {
-        $this->expectException(SerializerException::class);
-        $this->expectExceptionMessage($message);
-
-        XmlSerializer::createFromString($data);
+        try {
+            XmlSerializer::createFromString($data);
+        } catch (SerializerException $th) {
+            $this->assertSame($expectedCode, $th->getCode());
+            $this->assertContains($th->getMessage(), $expectedMessages);
+        }
     }
 
     public static function getInvalidEncodedData(): array
     {
         return [
             'empty string' => [
-                'Catched errors: "" while decoding XML: ',
                 '',
+                \LIBXML_ERR_NONE,
+                [
+                    'Catched errors: "" while decoding XML: ',
+                ],
             ],
             'wrong start tag' => [
-                'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
                 '<?xml version="1.0" encoding="UTF-8"?>',
+                \LIBXML_ERR_FATAL,
+                [
+                    'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
+                ],
             ],
             'invalid element name as start tag' => [
-                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
                 '<?xml version="1.0" encoding="UTF-8"?><>',
+                \LIBXML_ERR_FATAL,
+                [
+                    'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                ],
             ],
             'Premature end of data' => [
-                'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
                 '<?xml version="1.0" encoding="UTF-8"?><a>',
+                \LIBXML_ERR_FATAL,
+                [
+                    'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                    'Catched errors: "EndTag: \'</\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                ],
             ],
             'invalid element name as start tag 2' => [
-                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
                 '<?xml version="1.0" encoding="UTF-8"?></>',
+                \LIBXML_ERR_FATAL,
+                [
+                    'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                ],
             ],
         ];
     }

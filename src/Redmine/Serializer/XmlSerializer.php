@@ -77,16 +77,18 @@ final class XmlSerializer implements Stringable
             $this->deserialized = new SimpleXMLElement($encoded);
         } catch (Throwable $e) {
             $errors = [];
+            $code = $e->getCode();
 
             foreach (libxml_get_errors() as $error) {
                 $errors[] = $error->message;
+                $code = max($code, $error->level);
             }
 
             libxml_clear_errors();
 
             throw new SerializerException(
                 'Catched errors: "' . implode('", "', $errors) . '" while decoding XML: ' . $encoded,
-                $e->getCode(),
+                $code,
                 $e,
             );
         } finally {

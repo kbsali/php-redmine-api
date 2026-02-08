@@ -40,10 +40,32 @@ class ShowTest extends TestCase
     public static function getShowData(): array
     {
         return [
-            'array response with integer id' => [5, '/attachments/5.json', '["API Response"]', ['API Response']],
-            'array response with string id' => ['5', '/attachments/5.json', '["API Response"]', ['API Response']],
-            'string response' => [5, '/attachments/5.json', 'string', 'Error decoding body as JSON: Syntax error'],
-            'false response' => [5, '/attachments/5.json', '', false],
+            'array response with integer id' => [
+                5,
+                '/attachments/5.json',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'array response with string id' =>
+            [
+                '5',
+                '/attachments/5.json',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'string response' => [
+                5,
+                '/attachments/5.json',
+                'string',
+                /** @phpstan-ignore smaller.alwaysTrue(Remove this line after release of PHP 8.6) */
+                (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:1',
+            ],
+            'false response' => [
+                5,
+                '/attachments/5.json',
+                '',
+                false,
+            ],
         ];
     }
 }
