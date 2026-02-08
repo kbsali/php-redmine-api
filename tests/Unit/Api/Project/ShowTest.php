@@ -88,7 +88,8 @@ class ShowTest extends TestCase
                 [],
                 '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
                 'string',
-                'Error decoding body as JSON: Syntax error',
+                /** @phpstan-ignore smaller.alwaysTrue(Remove this line after release of PHP 8.6) */
+                (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:1',
             ],
             'false response' => [
                 5,
