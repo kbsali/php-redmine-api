@@ -56,9 +56,7 @@ class ShowTest extends TestCase
             ],
             'array response with parameters' => [
                 5,
-                ['parameter1',
-                'parameter2',
-                'memberships'],
+                ['parameter1', 'parameter2', 'memberships'],
                 '/users/5.json?0=parameter1&1=parameter2&2=memberships&include=memberships%2Cgroups',
                 '["API Response"]',
                 ['API Response'],
