@@ -101,6 +101,7 @@ class GetTest extends TestCase
             'test invalid JSON' => [
                 '{"foo_bar":',
                 true,
+                /** @phpstan-ignore smaller.alwaysTrue Remove this line after release of PHP 8.6 */
                 (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:12',
             ],
         ];
