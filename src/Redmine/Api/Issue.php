@@ -541,7 +541,7 @@ class Issue extends AbstractApi
                 /** @var IssueStatus */
                 $issueStatusApi = $this->client->getApi('issue_status');
             } else {
-                $issueStatusApi = new IssueStatus($this->getHttpClient());
+                $issueStatusApi = IssueStatus::fromHttpClient($this->getHttpClient());
             }
 
             $this->issueStatusApi = $issueStatusApi;
