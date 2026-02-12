@@ -29,7 +29,7 @@ class Membership extends AbstractApi
 
     /**
      * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see Group::fromHttpClient()
+     * @see Membership::fromHttpClient()
      *
      * @param Client|HttpClient $client
      */
