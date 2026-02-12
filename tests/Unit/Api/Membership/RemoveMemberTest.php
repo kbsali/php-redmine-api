@@ -40,7 +40,7 @@ class RemoveMemberTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($response, $api->removeMember($projectIdentifier, $userId, $params));
@@ -84,7 +84,7 @@ class RemoveMemberTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $this->assertFalse($api->removeMember(1, 2));
@@ -106,7 +106,7 @@ class RemoveMemberTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $this->assertFalse($api->removeMember(1, 2));

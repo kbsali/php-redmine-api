@@ -34,7 +34,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($identifier, $parameters);
@@ -81,7 +81,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
@@ -91,11 +91,10 @@ class CreateTest extends TestCase
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
-        // Create the used mock objects
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');
@@ -110,11 +109,10 @@ class CreateTest extends TestCase
     #[DataProvider('incompleteCreateParameterProvider')]
     public function testCreateThrowsExceptionIfMandatoyParametersAreMissing(array $parameters): void
     {
-        // Create the used mock objects
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `user_id`, `role_ids`');

@@ -33,7 +33,7 @@ class UpdateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->update($id, $parameters));
@@ -78,7 +78,7 @@ class UpdateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
@@ -92,7 +92,7 @@ class UpdateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `role_ids`');
@@ -111,7 +111,7 @@ class UpdateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Membership($client);
+        $api = Membership::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `role_ids`');
