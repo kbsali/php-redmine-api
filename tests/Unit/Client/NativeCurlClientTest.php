@@ -1014,7 +1014,7 @@ class NativeCurlClientTest extends TestCase
 
         $this->assertSame(
             $client->getApi($apiName),
-            $client->getApi($apiName)
+            $client->getApi($apiName),
         );
     }
 

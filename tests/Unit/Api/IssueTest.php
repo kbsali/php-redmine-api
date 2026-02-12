@@ -6,6 +6,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Api\IssueCategory;
+use Redmine\Api\IssueStatus;
+use Redmine\Api\Project;
+use Redmine\Api\Tracker;
+use Redmine\Api\User;
+use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -229,23 +235,42 @@ class IssueTest extends TestCase
                 'application/json',
                 '{"users":[{"id":3,"login":"user_3"},{"id":4,"login":"user_4"}]}',
             ],
-            [
-                'POST',
+        );
+
+        $legacyClient = $this->createMock(Client::class);
+        $legacyClient->expects($this->exactly(5))
+            ->method('getApi')
+            ->willReturnMap(
+                [
+                    ['project', new Project($client)],
+                    ['issue_category', IssueCategory::fromHttpClient($client)],
+                    ['issue_status', IssueStatus::fromHttpClient($client)],
+                    ['tracker', new Tracker($client)],
+                    ['user', new User($client)],
+                ],
+            )
+        ;
+
+        $legacyClient->expects($this->once())
+            ->method('requestPost')
+            ->with(
                 '/issues.xml',
-                'application/xml',
                 <<< XML
                 <?xml version="1.0"?>
                 <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
 
                 XML,
-                200,
-                'application/xml',
-                $response,
-            ],
-        );
+                )
+            ->willReturn(true);
+        $legacyClient->expects($this->exactly(1))
+            ->method('getLastResponseBody')
+            ->willReturn($response);
+        $legacyClient->expects($this->exactly(1))
+            ->method('getLastResponseContentType')
+            ->willReturn('application/xml');
 
         // Create the object under test
-        $api = Issue::fromHttpClient($client);
+        $api = new Issue($legacyClient);
 
         // Perform the tests
         $this->assertXmlStringEqualsXmlString($response, $api->create($parameters)->asXML());
