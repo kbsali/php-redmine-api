@@ -260,7 +260,7 @@ class IssueTest extends TestCase
                 <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
 
                 XML,
-                )
+            )
             ->willReturn(true);
         $legacyClient->expects($this->exactly(1))
             ->method('getLastResponseBody')
