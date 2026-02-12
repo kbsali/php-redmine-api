@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\MockClient;
 
 /**
@@ -15,6 +16,44 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(Membership::class)]
 class MembershipTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Class `Redmine\Api\Membership` will declared as final in v3.0.0, stop extending it.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($this->createStub(HttpClient::class)) extends Membership {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\Membership::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\Membership::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new Membership($this->createStub(HttpClient::class));
+    }
+
     /**
      * Test all().
      */
