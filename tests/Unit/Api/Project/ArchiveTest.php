@@ -28,7 +28,7 @@ class ArchiveTest extends TestCase
             ],
         );
 
-        $api = new Project($client);
+        $api = Project::fromHttpClient($client);
 
         $this->assertTrue($api->archive(5));
     }
@@ -46,7 +46,7 @@ class ArchiveTest extends TestCase
             ],
         );
 
-        $api = new Project($client);
+        $api = Project::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
@@ -58,7 +58,7 @@ class ArchiveTest extends TestCase
     {
         $client = $this->createStub(HttpClient::class);
 
-        $api = new Project($client);
+        $api = Project::fromHttpClient($client);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Redmine\Api\Project::archive(): Argument #1 ($projectIdentifier) must be of type int or string');

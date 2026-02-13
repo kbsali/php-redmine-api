@@ -242,7 +242,7 @@ class IssueTest extends TestCase
             ->method('getApi')
             ->willReturnMap(
                 [
-                    ['project', new Project($client)],
+                    ['project', Project::fromHttpClient($client)],
                     ['issue_category', IssueCategory::fromHttpClient($client)],
                     ['issue_status', IssueStatus::fromHttpClient($client)],
                     ['tracker', new Tracker($client)],

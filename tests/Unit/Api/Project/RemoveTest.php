@@ -31,7 +31,7 @@ class RemoveTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Project($client);
+        $api = Project::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($response, $api->remove($id));

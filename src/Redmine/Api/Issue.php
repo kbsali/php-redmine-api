@@ -560,7 +560,7 @@ class Issue extends AbstractApi
                 /** @var Project */
                 $projectApi = $this->client->getApi('project');
             } else {
-                $projectApi = new Project($this->getHttpClient());
+                $projectApi = Project::fromHttpClient($this->getHttpClient());
             }
 
             $this->projectApi = $projectApi;
