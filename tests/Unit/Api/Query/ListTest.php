@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Query;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Query::class)]
 class ListTest extends TestCase
@@ -17,21 +18,21 @@ class ListTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/queries.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/queries.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Query($client);
+        $api = Query::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list());
@@ -44,21 +45,21 @@ class ListTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->any())
-            ->method('requestGet')
-            ->with('/queries.json?limit=25&offset=0&0=not-used')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/queries.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Query($client);
+        $api = Query::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list($parameters));
@@ -66,21 +67,23 @@ class ListTest extends TestCase
 
     public function testListThrowsException(): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/queries.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn('');
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '';
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/queries.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Query($client);
+        $api = Query::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');

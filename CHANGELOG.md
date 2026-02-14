@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Membership::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\News::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\Project::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\Query::fromHttpClient()` for creating the class.
 - Add support for PHP 8.5
 - Add support for Redmine 6.1.
 
@@ -51,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extending `Redmine\Api\News` is deprecated and will be set to final in future, create a wrapper class instead.
 - `Redmine\Api\Project::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Project::fromHttpClient()` instead.
 - Extending `Redmine\Api\Project` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\Query::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Query::fromHttpClient()` instead.
+- Extending `Redmine\Api\Query` is deprecated and will be set to final in future, create a wrapper class instead.
 
 ### Removed
 
