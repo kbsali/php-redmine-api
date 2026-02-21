@@ -23,6 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New method `Redmine\Api\Query::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\Role::fromHttpClient()` for creating the class.
 - New method `Redmine\Api\Search::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\TimeEntry::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\TimeEntryActivity::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\Tracker::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\User::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\Version::fromHttpClient()` for creating the class.
+- New method `Redmine\Api\Wiki::fromHttpClient()` for creating the class.
 - Add support for PHP 8.5
 - Add support for Redmine 6.1.
 
@@ -60,6 +66,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extending `Redmine\Api\Role` is deprecated and will be set to final in future, create a wrapper class instead.
 - `Redmine\Api\Search::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Search::fromHttpClient()` instead.
 - Extending `Redmine\Api\Search` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\TimeEntry::__construct()` is deprecated and will be set to private in future, use `\Redmine\TimeEntry::fromHttpClient()` instead.
+- Extending `Redmine\TimeEntry` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\TimeEntryActivity::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\TimeEntryActivity::fromHttpClient()` instead.
+- Extending `Redmine\Api\TimeEntryActivity` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\Tracker::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Tracker::fromHttpClient()` instead.
+- Extending `Redmine\Api\Tracker` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\User::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\User::fromHttpClient()` instead.
+- Extending `Redmine\Api\User` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\Version::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Version::fromHttpClient()` instead.
+- Extending `Redmine\Api\Version` is deprecated and will be set to final in future, create a wrapper class instead.
+- `Redmine\Api\Wiki::__construct()` is deprecated and will be set to private in future, use `\Redmine\Api\Wiki::fromHttpClient()` instead.
+- Extending `Redmine\Api\Wiki` is deprecated and will be set to final in future, create a wrapper class instead.
 
 ### Removed
 
