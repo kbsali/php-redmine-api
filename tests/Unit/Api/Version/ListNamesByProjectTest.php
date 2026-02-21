@@ -37,7 +37,7 @@ class ListNamesByProjectTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->listNamesByProject($projectIdentifier));
@@ -104,7 +104,7 @@ class ListNamesByProjectTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame([1 => 'Version 1'], $api->listNamesByProject(5));
@@ -118,7 +118,7 @@ class ListNamesByProjectTest extends TestCase
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
     public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void
     {
-        $api = new Version($this->createStub(HttpClient::class));
+        $api = Version::fromHttpClient($this->createStub(HttpClient::class));
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Redmine\Api\Version::listNamesByProject(): Argument #1 ($projectIdentifier) must be of type int or string');

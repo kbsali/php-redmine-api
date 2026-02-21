@@ -245,8 +245,8 @@ class IssueTest extends TestCase
                     ['project', Project::fromHttpClient($client)],
                     ['issue_category', IssueCategory::fromHttpClient($client)],
                     ['issue_status', IssueStatus::fromHttpClient($client)],
-                    ['tracker', new Tracker($client)],
-                    ['user', new User($client)],
+                    ['tracker', Tracker::fromHttpClient($client)],
+                    ['user', User::fromHttpClient($client)],
                 ],
             )
         ;

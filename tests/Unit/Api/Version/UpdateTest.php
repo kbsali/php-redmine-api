@@ -33,7 +33,7 @@ class UpdateTest extends TestCase
         );
 
         // Update the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($response, $api->update($id, $parameters));
@@ -186,7 +186,7 @@ class UpdateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Possible values for status are: open, locked, closed');
@@ -208,7 +208,7 @@ class UpdateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('Possible values for sharing are: none, descendants, hierarchy, tree, system');

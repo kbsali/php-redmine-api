@@ -33,7 +33,7 @@ class UpdateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->update($id, $parameters));

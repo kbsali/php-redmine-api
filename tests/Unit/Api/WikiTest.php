@@ -6,9 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
-use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\MockClient;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -59,7 +58,7 @@ class WikiTest extends TestCase
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new Wiki(MockClient::create());
+        $api = Wiki::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -86,21 +85,21 @@ class WikiTest extends TestCase
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/projects/5/wiki/index.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/wiki/index.json',
+                'application/json',
+                '',
+                200,
+                $responseType,
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Wiki($client);
+        $api = Wiki::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all(5));
@@ -128,27 +127,21 @@ class WikiTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->any())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/projects/5/wiki/index.json'),
-                    $this->stringContains('offset=10'),
-                    $this->stringContains('limit=2'),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->once())
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/wiki/index.json?limit=2&offset=10',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Wiki($client);
+        $api = Wiki::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all(5, $parameters));

@@ -579,7 +579,7 @@ class Issue extends AbstractApi
                 /** @var Tracker */
                 $trackerApi = $this->client->getApi('tracker');
             } else {
-                $trackerApi = new Tracker($this->getHttpClient());
+                $trackerApi = Tracker::fromHttpClient($this->getHttpClient());
             }
 
             $this->trackerApi = $trackerApi;
@@ -598,7 +598,7 @@ class Issue extends AbstractApi
                 /** @var User */
                 $userApi = $this->client->getApi('user');
             } else {
-                $userApi = new User($this->getHttpClient());
+                $userApi = User::fromHttpClient($this->getHttpClient());
             }
 
             $this->userApi = $userApi;

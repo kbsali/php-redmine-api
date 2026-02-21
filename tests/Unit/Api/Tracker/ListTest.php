@@ -5,33 +5,32 @@ namespace Redmine\Tests\Unit\Api\Tracker;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Tracker;
-use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Tracker::class)]
 class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse(): void
     {
-        // Test values
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/trackers.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Tracker($client);
+        $api = Tracker::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list());
@@ -44,21 +43,21 @@ class ListTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/trackers.json?limit=25&offset=0&0=not-used')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/trackers.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Tracker($client);
+        $api = Tracker::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->list($parameters));
@@ -66,21 +65,23 @@ class ListTest extends TestCase
 
     public function testListThrowsException(): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/trackers.json')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn('');
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '';
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Tracker($client);
+        $api = Tracker::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');
