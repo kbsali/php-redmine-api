@@ -33,7 +33,7 @@ class ListNamesTest extends TestCase
         );
 
         // Create the object under test
-        $api = new TimeEntryActivity($client);
+        $api = TimeEntryActivity::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->listNames());
@@ -98,7 +98,7 @@ class ListNamesTest extends TestCase
         );
 
         // Create the object under test
-        $api = new TimeEntryActivity($client);
+        $api = TimeEntryActivity::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame([1 => 'TimeEntryActivity 1'], $api->listNames());

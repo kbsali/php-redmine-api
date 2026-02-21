@@ -34,7 +34,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new TimeEntry($client);
+        $api = TimeEntry::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($parameters);
@@ -119,7 +119,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new TimeEntry($client);
+        $api = TimeEntry::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
@@ -136,7 +136,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new TimeEntry($client);
+        $api = TimeEntry::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
@@ -155,7 +155,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new TimeEntry($client);
+        $api = TimeEntry::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `issue_id` or `project_id`, `hours`');
