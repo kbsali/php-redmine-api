@@ -27,7 +27,7 @@ class RemoveTest extends TestCase
             ],
         );
 
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         $this->assertSame('', $api->remove(5));
     }

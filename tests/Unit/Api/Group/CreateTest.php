@@ -36,7 +36,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($parameters);
@@ -123,7 +123,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create(['name' => 'Group Name']);
@@ -140,7 +140,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `name`');

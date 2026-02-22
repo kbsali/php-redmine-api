@@ -32,7 +32,7 @@ class AddWatcherTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->addWatcher($issueId, $watcherUserId);
@@ -74,7 +74,7 @@ class AddWatcherTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->addWatcher(1, 2);

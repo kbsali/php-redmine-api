@@ -6,8 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
-use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
+use Redmine\Http\HttpClient;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -15,12 +15,50 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(IssueCategory::class)]
 class IssueCategoryTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Class `Redmine\Api\IssueCategory` will declared as final in v3.0.0, stop extending it.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($this->createStub(HttpClient::class)) extends IssueCategory {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\IssueCategory::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\IssueCategory::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new IssueCategory($this->createStub(HttpClient::class));
+    }
+
     /**
      * Test all().
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new IssueCategory(MockClient::create());
+        $api = IssueCategory::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -50,21 +88,21 @@ class IssueCategoryTest extends TestCase
         // Test values
         $projectId = 5;
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/projects/5/issue_categories.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                $responseType,
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all($projectId));
@@ -90,26 +128,21 @@ class IssueCategoryTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/projects/5/issue_categories.json'),
-                    $this->stringContains('not-used'),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all($projectId, $parameters));
@@ -127,23 +160,21 @@ class IssueCategoryTest extends TestCase
             'IssueCategory 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/projects/5/issue_categories'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(5));
@@ -161,23 +192,21 @@ class IssueCategoryTest extends TestCase
             'IssueCategory 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/projects/5/issue_categories'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(5));
@@ -196,23 +225,30 @@ class IssueCategoryTest extends TestCase
             'IssueCategory 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(2))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/projects/5/issue_categories'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(5, true));
@@ -224,15 +260,22 @@ class IssueCategoryTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
 
-        $api = new IssueCategory($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -259,23 +302,21 @@ class IssueCategoryTest extends TestCase
         // Test values
         $response = '{"issue_categories":[{"id":5,"name":"IssueCategory 5"}]}';
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/projects/5/issue_categories.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertFalse($api->getIdByName(5, 'IssueCategory 1'));
@@ -284,15 +325,22 @@ class IssueCategoryTest extends TestCase
 
     public function testGetIdByNameTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
 
-        $api = new IssueCategory($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(

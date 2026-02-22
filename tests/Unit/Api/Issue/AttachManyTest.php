@@ -31,7 +31,7 @@ class AttachManyTest extends TestCase
         );
 
         // AttachMany the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->attachMany($issueId, $parameters));

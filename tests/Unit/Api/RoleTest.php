@@ -6,8 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
-use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
+use Redmine\Http\HttpClient;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -15,12 +15,50 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(Role::class)]
 class RoleTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Class `Redmine\Api\Role` will declared as final in v3.0.0, stop extending it.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($this->createStub(HttpClient::class)) extends Role {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\Role::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\Role::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new Role($this->createStub(HttpClient::class));
+    }
+
     /**
      * Test all().
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new Role(MockClient::create());
+        $api = Role::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -47,21 +85,21 @@ class RoleTest extends TestCase
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/roles.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Role($client);
+        $api = Role::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all());
@@ -86,26 +124,21 @@ class RoleTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/roles.json'),
-                    $this->stringContains('not-used'),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Role($client);
+        $api = Role::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all($parameters));
@@ -123,23 +156,21 @@ class RoleTest extends TestCase
             'Role 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/roles.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Role($client);
+        $api = Role::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -157,23 +188,21 @@ class RoleTest extends TestCase
             'Role 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/roles.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Role($client);
+        $api = Role::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -192,23 +221,30 @@ class RoleTest extends TestCase
             'Role 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(2))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/roles.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Role($client);
+        $api = Role::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(true));
@@ -220,15 +256,22 @@ class RoleTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"roles":[{"id":1,"name":"Role 1"},{"id":5,"name":"Role 5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"roles":[{"id":1,"name":"Role 1"},{"id":5,"name":"Role 5"}]}';
 
-        $api = new Role($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = Role::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(

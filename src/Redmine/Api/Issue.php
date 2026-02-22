@@ -2,11 +2,13 @@
 
 namespace Redmine\Api;
 
+use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
@@ -47,6 +49,11 @@ class Issue extends AbstractApi
      */
     public const PRIO_IMMEDIATE = 5;
 
+    final public static function fromHttpClient(HttpClient $httpClient): self
+    {
+        return new self($httpClient, true);
+    }
+
     /**
      * @var null|IssueCategory
      */
@@ -71,6 +78,32 @@ class Issue extends AbstractApi
      * @var null|User
      */
     private $userApi = null;
+
+    /**
+     * @deprecated v2.9.0 Use fromHttpClient() instead.
+     * @see Issue::fromHttpClient()
+     *
+     * @param Client|HttpClient $client
+     */
+    public function __construct($client/*, bool $privatelyCalled = false*/)
+    {
+        $privatelyCalled = (func_num_args() > 1) ? func_get_arg(1) : false;
+
+        if ($privatelyCalled === true) {
+            parent::__construct($client);
+
+            return;
+        }
+
+        if (static::class !== self::class) {
+            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
+            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
+        } else {
+            @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
+        }
+
+        parent::__construct($client);
+    }
 
     /**
      * List issues.
@@ -489,7 +522,7 @@ class Issue extends AbstractApi
                 /** @var IssueCategory */
                 $issueCategoryApi = $this->client->getApi('issue_category');
             } else {
-                $issueCategoryApi = new IssueCategory($this->getHttpClient());
+                $issueCategoryApi = IssueCategory::fromHttpClient($this->getHttpClient());
             }
 
             $this->issueCategoryApi = $issueCategoryApi;
@@ -508,7 +541,7 @@ class Issue extends AbstractApi
                 /** @var IssueStatus */
                 $issueStatusApi = $this->client->getApi('issue_status');
             } else {
-                $issueStatusApi = new IssueStatus($this->getHttpClient());
+                $issueStatusApi = IssueStatus::fromHttpClient($this->getHttpClient());
             }
 
             $this->issueStatusApi = $issueStatusApi;
@@ -527,7 +560,7 @@ class Issue extends AbstractApi
                 /** @var Project */
                 $projectApi = $this->client->getApi('project');
             } else {
-                $projectApi = new Project($this->getHttpClient());
+                $projectApi = Project::fromHttpClient($this->getHttpClient());
             }
 
             $this->projectApi = $projectApi;
@@ -546,7 +579,7 @@ class Issue extends AbstractApi
                 /** @var Tracker */
                 $trackerApi = $this->client->getApi('tracker');
             } else {
-                $trackerApi = new Tracker($this->getHttpClient());
+                $trackerApi = Tracker::fromHttpClient($this->getHttpClient());
             }
 
             $this->trackerApi = $trackerApi;
@@ -565,7 +598,7 @@ class Issue extends AbstractApi
                 /** @var User */
                 $userApi = $this->client->getApi('user');
             } else {
-                $userApi = new User($this->getHttpClient());
+                $userApi = User::fromHttpClient($this->getHttpClient());
             }
 
             $this->userApi = $userApi;

@@ -6,8 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\CustomField;
-use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
+use Redmine\Http\HttpClient;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -15,12 +15,50 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(CustomField::class)]
 class CustomFieldTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Class `Redmine\Api\CustomField` will declared as final in v3.0.0, stop extending it.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($this->createStub(HttpClient::class)) extends CustomField {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\CustomField::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\CustomField::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new CustomField($this->createStub(HttpClient::class));
+    }
+
     /**
      * Test all().
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new CustomField(MockClient::create());
+        $api = CustomField::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -47,21 +85,21 @@ class CustomFieldTest extends TestCase
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/custom_fields.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                $responseType,
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all());
@@ -86,23 +124,21 @@ class CustomFieldTest extends TestCase
         $response = '["API Response"]';
         $expectedResponse = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringContains('not-used'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=25&offset=0&0=not-used',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all($allParameters));
@@ -121,23 +157,39 @@ class CustomFieldTest extends TestCase
             'items' => [],
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(3))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(3))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(3))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/custom_fields.json?limit=50&offset=200',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all($allParameters));
@@ -152,23 +204,21 @@ class CustomFieldTest extends TestCase
         $response = '{"limit":"100","offset":"10","total_count":"5","items":[]}';
         $allParameters = ['limit' => 250];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $retrievedDataSet = $api->all($allParameters);
@@ -189,23 +239,21 @@ class CustomFieldTest extends TestCase
             'CustomField 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -223,23 +271,21 @@ class CustomFieldTest extends TestCase
             'CustomField 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -258,23 +304,30 @@ class CustomFieldTest extends TestCase
             'CustomField 5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(2))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(true));
@@ -286,15 +339,22 @@ class CustomFieldTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
 
-        $api = new CustomField($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = CustomField::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -321,23 +381,21 @@ class CustomFieldTest extends TestCase
         // Test values
         $response = '{"custom_fields":[{"id":5,"name":"CustomField 5"}]}';
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/custom_fields.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new CustomField($client);
+        $api = CustomField::fromHttpClient($client);
 
         // Perform the tests
         $this->assertFalse($api->getIdByName('CustomField 1'));
@@ -346,15 +404,22 @@ class CustomFieldTest extends TestCase
 
     public function testGetIdByNameTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"custom_fields":[{"id":1,"name":"CustomField 1"},{"id":5,"name":"CustomField 5"}]}';
 
-        $api = new CustomField($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/custom_fields.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = CustomField::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(

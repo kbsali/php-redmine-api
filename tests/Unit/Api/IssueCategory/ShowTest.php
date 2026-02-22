@@ -31,7 +31,7 @@ class ShowTest extends TestCase
         );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->show($id));

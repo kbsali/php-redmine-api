@@ -34,7 +34,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Wiki($client);
+        $api = Wiki::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($id, $page, $parameters);

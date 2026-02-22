@@ -31,7 +31,7 @@ class AttachTest extends TestCase
         );
 
         // Attach the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->attach($issueId, $parameters));

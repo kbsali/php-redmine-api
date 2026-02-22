@@ -27,7 +27,7 @@ class RemoveUserTest extends TestCase
             ],
         );
 
-        $api = new Group($client);
+        $api = Group::fromHttpClient($client);
 
         $this->assertSame('', $api->removeUser(5, 10));
     }

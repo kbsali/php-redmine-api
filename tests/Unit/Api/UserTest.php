@@ -6,8 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
-use Redmine\Client\Client;
-use Redmine\Tests\Fixtures\MockClient;
+use Redmine\Http\HttpClient;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -15,6 +15,44 @@ use Redmine\Tests\Fixtures\MockClient;
 #[CoversClass(User::class)]
 class UserTest extends TestCase
 {
+    public function testExtendingTheClassTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Class `Redmine\Api\User` will declared as final in v3.0.0, stop extending it.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($this->createStub(HttpClient::class)) extends User {};
+    }
+
+    public function testConstructorTriggersDeprecationWarning(): void
+    {
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Method `Redmine\Api\User::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\User::fromHttpClient()` instead.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new User($this->createStub(HttpClient::class));
+    }
+
     /**
      * Test getCurrentUser().
      */
@@ -24,26 +62,21 @@ class UserTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/users/current.json'),
-                    $this->stringContains(urlencode('memberships,groups')),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users/current.json?include=memberships%2Cgroups',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->getCurrentUser());
@@ -57,26 +90,21 @@ class UserTest extends TestCase
         // Test values
         $response = '{"users":[{"id":5,"login":"user_5"}]}';
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/users.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertFalse($api->getIdByUsername('user_1'));
@@ -85,15 +113,22 @@ class UserTest extends TestCase
 
     public function testGetIdByUsernameTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
 
-        $api = new User($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -117,7 +152,7 @@ class UserTest extends TestCase
      */
     public function testAllTriggersDeprecationWarning(): void
     {
-        $api = new User(MockClient::create());
+        $api = User::fromHttpClient($this->createStub(HttpClient::class));
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(
@@ -144,21 +179,21 @@ class UserTest extends TestCase
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/users.json')
-            ->willReturn(true);
-        $client->expects($this->atLeast(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn($responseType);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                $responseType,
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->all());
@@ -186,27 +221,21 @@ class UserTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->logicalAnd(
-                    $this->stringStartsWith('/users.json?'),
-                    $this->stringContains('offset=10'),
-                    $this->stringContains('limit=2'),
-                ),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json?limit=2&offset=10',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->all($parameters));
@@ -224,23 +253,21 @@ class UserTest extends TestCase
             'user_5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/users.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -258,23 +285,21 @@ class UserTest extends TestCase
             'user_5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/users.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing());
@@ -293,23 +318,30 @@ class UserTest extends TestCase
             'user_5' => 5,
         ];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(2))
-            ->method('requestGet')
-            ->with(
-                $this->stringStartsWith('/users.json'),
-            )
-            ->willReturn(true);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(2))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(true));
@@ -321,15 +353,22 @@ class UserTest extends TestCase
      */
     public function testListingTriggersDeprecationWarning(): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')
-            ->willReturn(true);
-        $client->method('getLastResponseBody')
-            ->willReturn('{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}');
-        $client->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '{"users":[{"id":1,"login":"user_1"},{"id":5,"login":"user_5"}]}';
 
-        $api = new User($client);
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
 
         // PHPUnit 10 compatible way to test trigger_error().
         set_error_handler(

@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
 use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Search::class)]
 class ListByQueryTest extends TestCase
@@ -17,21 +18,21 @@ class ListByQueryTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())
-            ->method('requestGet')
-            ->with('/search.json?limit=25&offset=0&q=query')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/search.json?limit=25&offset=0&q=query',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Search($client);
+        $api = Search::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listByQuery('query'));
@@ -44,21 +45,21 @@ class ListByQueryTest extends TestCase
         $response = '["API Response"]';
         $expectedReturn = ['API Response'];
 
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->any())
-            ->method('requestGet')
-            ->with('/search.json?limit=25&offset=0&0=not-used&q=query')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/search.json?limit=25&offset=0&0=not-used&q=query',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Search($client);
+        $api = Search::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listByQuery('query', $parameters));
@@ -66,21 +67,23 @@ class ListByQueryTest extends TestCase
 
     public function testListByQueryThrowsException(): void
     {
-        // Create the used mock objects
-        $client = $this->createMock(Client::class);
-        $client->expects($this->exactly(1))
-            ->method('requestGet')
-            ->with('/search.json?limit=25&offset=0&q=query')
-            ->willReturn(true);
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn('');
-        $client->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/json');
+        $response = '';
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/search.json?limit=25&offset=0&q=query',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                $response,
+            ],
+        );
 
         // Create the object under test
-        $api = new Search($client);
+        $api = Search::fromHttpClient($client);
 
         $this->expectException(UnexpectedResponseException::class);
         $this->expectExceptionMessage('The Redmine server replied with an unexpected response.');

@@ -33,7 +33,7 @@ class ListLoginsTest extends TestCase
         );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedResponse, $api->listLogins());
@@ -126,7 +126,7 @@ class ListLoginsTest extends TestCase
         );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($assertData, $api->listLogins());
@@ -157,7 +157,7 @@ class ListLoginsTest extends TestCase
         );
 
         // Create the object under test
-        $api = new User($client);
+        $api = User::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame([1 => 'username'], $api->listLogins());

@@ -31,7 +31,7 @@ class ShowTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Version($client);
+        $api = Version::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->show($version));

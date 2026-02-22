@@ -33,7 +33,7 @@ class AddNoteToIssueTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Issue($client);
+        $api = Issue::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->addNoteToIssue($id, $note, $isPrivate));

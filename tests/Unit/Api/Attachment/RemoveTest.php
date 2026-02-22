@@ -27,7 +27,7 @@ class RemoveTest extends TestCase
             ],
         );
 
-        $api = new Attachment($client);
+        $api = Attachment::fromHttpClient($client);
 
         $this->assertSame('', $api->remove(5));
     }

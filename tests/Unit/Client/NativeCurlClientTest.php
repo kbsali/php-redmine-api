@@ -966,7 +966,7 @@ class NativeCurlClientTest extends TestCase
      * @dataProvider getApiClassesProvider
      */
     #[DataProvider('getApiClassesProvider')]
-    public function testGetApiShouldReturnApiInstance(string $apiName, string $class): void
+    public function testGetApiReturnsApiInstance(string $apiName, string $class): void
     {
         $client = new NativeCurlClient(
             'http://test.local',
@@ -1001,7 +1001,24 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    public function testGetApiShouldThrowException(): void
+    /**
+     * @dataProvider getApiClassesProvider
+     */
+    #[DataProvider('getApiClassesProvider')]
+    public function testGetApiOnMultipleCallsReturnSameApiInstance(string $apiName, string $class): void
+    {
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'access_token',
+        );
+
+        $this->assertSame(
+            $client->getApi($apiName),
+            $client->getApi($apiName),
+        );
+    }
+
+    public function testGetApiWithInvalidApiThrowsException(): void
     {
         $client = new NativeCurlClient(
             'http://test.local',

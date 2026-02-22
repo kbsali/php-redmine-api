@@ -34,7 +34,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create($identifier, $parameters);
@@ -89,7 +89,7 @@ class CreateTest extends TestCase
         );
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
         $return = $api->create(5, ['name' => 'Test Category']);
@@ -103,7 +103,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `name');
@@ -122,7 +122,7 @@ class CreateTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         // Create the object under test
-        $api = new IssueCategory($client);
+        $api = IssueCategory::fromHttpClient($client);
 
         $this->expectException(MissingParameterException::class);
         $this->expectExceptionMessage('Theses parameters are mandatory: `name');

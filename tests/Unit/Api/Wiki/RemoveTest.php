@@ -33,7 +33,7 @@ class RemoveTest extends TestCase
         );
 
         // Create the object under test
-        $api = new Wiki($client);
+        $api = Wiki::fromHttpClient($client);
 
         // Perform the tests
         $this->assertSame('', $api->remove($id, $page));
