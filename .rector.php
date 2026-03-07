@@ -21,7 +21,4 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::STRICT_BOOLEANS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
-    ->withSkip([
-        \Rector\DeadCode\Rector\PropertyProperty\RemoveNullPropertyInitializationRector::class,
-    ])
 ;
