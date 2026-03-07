@@ -64,7 +64,7 @@ final class XmlSerializer implements Stringable
 
     public function __toString(): string
     {
-        return $this->getEncoded();
+        return $this->encoded;
     }
 
     private function deserialize(string $encoded): void
