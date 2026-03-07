@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Behaviour-driven tests are run against Redmine 6.1.0, 6.0.7, 5.1.10.
+- Behaviour-driven tests are run against Redmine 6.1.1, 6.0.8, 5.1.11.
 
 ### Deprecated
 
