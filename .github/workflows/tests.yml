@@ -35,7 +35,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: Run tests
-        run: vendor/bin/phpunit --no-coverage
+        run: composer run phpunit -- --no-coverage
 
   # This does not work
   # behat:
