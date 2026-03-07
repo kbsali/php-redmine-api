@@ -1,6 +1,6 @@
 {
     "name": "kbsali/redmine-api",
-    "version": "v2.8.0",
+    "version": "v2.9.0",
     "type": "library",
     "description": "Redmine API client",
     "homepage": "https://github.com/kbsali/php-redmine-api",
