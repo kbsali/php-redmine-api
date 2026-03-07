@@ -1,4 +1,17 @@
 services:
+    init-volumes:
+        image: busybox
+        user: "0"
+        command: >
+            sh -c "mkdir -p .docker/redmine-dev_data/files .docker/redmine-dev_data/sqlite
+            .docker/redmine-60100_data/files .docker/redmine-60100_data/sqlite
+            .docker/redmine-60007_data/files .docker/redmine-60007_data/sqlite
+            .docker/redmine-50110_data/files .docker/redmine-50110_data/sqlite &&
+            chmod -R 777 .docker/redmine-*_data/"
+        volumes:
+            - ./:/work
+        working_dir: /work
+
     php:
         build: # Info to build the Docker image
             context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
@@ -6,6 +19,7 @@ services:
         ports:
             - 8111:80
         depends_on:
+            - init-volumes
             - redmine-dev
             - redmine-6-1
             - redmine-6-0

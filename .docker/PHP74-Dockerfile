@@ -42,9 +42,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN composer --version
 
-RUN usermod -u 1000 www-data
+RUN usermod -u 33 www-data
 RUN usermod -a -G www-data root
 RUN mkdir -p /var/www/.composer
 RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/project/
+
+USER www-data
