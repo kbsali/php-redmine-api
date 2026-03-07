@@ -17,6 +17,8 @@ return \Rector\Config\RectorConfig::configure()
         \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION,
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
         \Rector\Set\ValueObject\SetList::EARLY_RETURN,
+        \Rector\Set\ValueObject\SetList::INSTANCEOF,
+        \Rector\Set\ValueObject\SetList::STRICT_BOOLEANS,
     ])
     ->withSkip([
         \Rector\DeadCode\Rector\PropertyProperty\RemoveNullPropertyInitializationRector::class,
