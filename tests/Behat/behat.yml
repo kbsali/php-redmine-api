@@ -3,6 +3,10 @@ default:
         default:
             paths:
                 - '%paths.base%/features'
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '6.1.0'
+                    rootPath: '%paths.base%/../../.docker'
         redmine_6_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:

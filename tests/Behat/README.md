@@ -14,7 +14,7 @@ Now you can run all behaviour-driven tests grouped by Redmine version using the 
 
 ```bash
 # all tests
-docker compose exec php composer bdt
+docker compose exec behat composer run bdt
 ```
 
 If you need more control about the behat tests or want to change the output format,
@@ -22,13 +22,13 @@ you can use the `behat` command directly:
 
 ```bash
 # test only a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_6_0
+docker compose exec behat composer run behat -- --suite=redmine_6_1
 # test only specific endpoints
-docker compose exec php composer behat -- --tags=issue,group
+docker compose exec behat composer run behat -- --tags=issue,group
 # test only specific endpoints on a specific redmine version
-docker compose exec php composer behat -- --suite=redmine_6_0 --tags=issue,group
+docker compose exec behat composer run behat -- --suite=redmine_6_1 --tags=issue,group
 # test only a specific redmine version and format the output as `progress` (default is `pretty`)
-docker compose exec php composer behat -- --suite=redmine_6_0 --format=progress
+docker compose exec behat composer run behat -- --suite=redmine_6_1 --format=progress
 ```
 
 ## Redmine version specific features
