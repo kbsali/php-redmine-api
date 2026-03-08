@@ -4,9 +4,9 @@ services:
         user: "0"
         command: >
             sh -c "mkdir -p .docker/redmine-dev_data/files .docker/redmine-dev_data/sqlite
-            .docker/redmine-60100_data/files .docker/redmine-60100_data/sqlite
-            .docker/redmine-60007_data/files .docker/redmine-60007_data/sqlite
-            .docker/redmine-50110_data/files .docker/redmine-50110_data/sqlite &&
+            .docker/redmine-60101_data/files .docker/redmine-60101_data/sqlite
+            .docker/redmine-60008_data/files .docker/redmine-60008_data/sqlite
+            .docker/redmine-50111_data/files .docker/redmine-50111_data/sqlite &&
             chmod -R 777 .docker/redmine-*_data/"
         volumes:
             - ./:/work
