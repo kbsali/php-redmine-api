@@ -36,7 +36,7 @@
         "guzzlehttp/psr7": "^2.8",
         "php-mock/php-mock-phpunit": "^2.15",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5 || ^12.5",
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11.5 || ^12.5 || ^13.0",
         "rector/rector": "^2.3"
     },
     "autoload": {
