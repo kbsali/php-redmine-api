@@ -25,7 +25,7 @@ services:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
-        image: redmine:6.1.0
+        image: redmine:6.1.1
         user: "33:33"
         ports:
             - "3000:3000"
@@ -54,7 +54,7 @@ services:
     # - /tests/Behat/behat.yml
 
     redmine-6-1:
-        image: redmine:6.1.0
+        image: redmine:6.1.1
         user: "33:33"
         ports:
             - "5061:3000"
@@ -64,11 +64,11 @@ services:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-60100_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-60100_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-60101_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60101_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-6-0:
-        image: redmine:6.0.7
+        image: redmine:6.0.8
         user: "33:33"
         ports:
             - "5060:3000"
@@ -78,11 +78,11 @@ services:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-60007_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-60007_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-60008_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60008_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-5-1:
-        image: redmine:5.1.10
+        image: redmine:5.1.11
         user: "33:33"
         ports:
             - "5051:3000"
@@ -90,5 +90,5 @@ services:
             REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-50110_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50110_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-50111_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50111_data/sqlite:/usr/src/redmine/sqlite
