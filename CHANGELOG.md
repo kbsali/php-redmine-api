@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet.
 
-## [v2.9.0](https://github.com/kbsali/php-redmine-api/compare/v2.8.0...v2.9.0) - 2026-03-07
+## [v2.9.0](https://github.com/kbsali/php-redmine-api/compare/v2.8.0...v2.9.0) - 2026-03-08
 
 ### Added
 
