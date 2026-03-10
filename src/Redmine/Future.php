@@ -9,8 +9,15 @@ namespace Redmine;
  */
 final class Future
 {
+    private static bool $isForwardCompatibilityEnabled = false;
+
+    public static function enableForwardCompatibility(): void
+    {
+        self::$isForwardCompatibilityEnabled = true;
+    }
+
     public static function isForwardCompatibilityEnabled(): bool
     {
-        return false;
+        return self::$isForwardCompatibilityEnabled;
     }
 }
