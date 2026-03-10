@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
@@ -239,7 +241,7 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString(): void
+    public function testCreateWithIncorrectStatusCodeReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -263,6 +265,35 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue/>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = Issue::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create([]);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
+    }
+
     public function testCreateWithHttpClientRetrievesIssueStatusId(): void
     {
         $client = AssertingHttpClient::create(
@@ -281,7 +312,7 @@ class CreateTest extends TestCase
                 '/issues.xml',
                 'application/xml',
                 '<?xml version="1.0"?><issue><status_id>123</status_id></issue>',
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],
@@ -318,7 +349,7 @@ class CreateTest extends TestCase
                 '/issues.xml',
                 'application/xml',
                 '<?xml version="1.0"?><issue><project_id>3</project_id></issue>',
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],
@@ -355,7 +386,7 @@ class CreateTest extends TestCase
                 '/issues.xml',
                 'application/xml',
                 '<?xml version="1.0"?><issue><project_id>3</project_id><category_id>45</category_id></issue>',
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],
@@ -392,7 +423,7 @@ class CreateTest extends TestCase
                 '/issues.xml',
                 'application/xml',
                 '<?xml version="1.0"?><issue><tracker_id>9</tracker_id></issue>',
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],
@@ -429,7 +460,7 @@ class CreateTest extends TestCase
                 '/issues.xml',
                 'application/xml',
                 '<?xml version="1.0"?><issue><assigned_to_id>6</assigned_to_id><author_id>5</author_id></issue>',
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],
@@ -515,7 +546,7 @@ class CreateTest extends TestCase
                     <author_id>5</author_id>
                 </issue>
                 XML,
-                200,
+                201,
                 'application/xml',
                 '<?xml version="1.0"?><issue></issue>',
             ],

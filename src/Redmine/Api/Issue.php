@@ -10,6 +10,7 @@ use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -256,8 +257,12 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ($body === '') {
-            return $body;
+        if ($this->lastResponse->getStatusCode() !== 201) {
+            if (!Future::isForwardCompatibilityEnabled() && $body === '') {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
         }
 
         return new SimpleXMLElement($body);
