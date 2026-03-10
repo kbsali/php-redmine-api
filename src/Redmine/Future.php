@@ -16,6 +16,11 @@ final class Future
         self::$isForwardCompatibilityEnabled = true;
     }
 
+    public static function disableForwardCompatibility(): void
+    {
+        self::$isForwardCompatibilityEnabled = false;
+    }
+
     public static function isForwardCompatibilityEnabled(): bool
     {
         return self::$isForwardCompatibilityEnabled;
