@@ -57,27 +57,27 @@ class Issue extends AbstractApi
     /**
      * @var null|IssueCategory
      */
-    private $issueCategoryApi = null;
+    private $issueCategoryApi;
 
     /**
      * @var null|IssueStatus
      */
-    private $issueStatusApi = null;
+    private $issueStatusApi;
 
     /**
      * @var null|Project
      */
-    private $projectApi = null;
+    private $projectApi;
 
     /**
      * @var null|Tracker
      */
-    private $trackerApi = null;
+    private $trackerApi;
 
     /**
      * @var null|User
      */
-    private $userApi = null;
+    private $userApi;
 
     /**
      * @deprecated v2.9.0 Use fromHttpClient() instead.

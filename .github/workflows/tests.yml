@@ -35,7 +35,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: Run tests
-        run: vendor/bin/phpunit --no-coverage
+        run: composer run phpunit -- --no-coverage
 
   # This does not work
   # behat:
@@ -121,7 +121,7 @@ jobs:
 
       - name: Run tests with coverage-clover
         if: ${{ matrix.tool == 'code-coverage' }}
-        run: composer run phpunit -- -c tests/phpunit-coverage.xml.dist --coverage-clover .phpunit.cache/clover.xml
+        run: vendor/bin/phpunit -c tests/phpunit-coverage.dist.xml --coverage-clover .phpunit.cache/clover.xml
 
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.tool == 'code-coverage' }}

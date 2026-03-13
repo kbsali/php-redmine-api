@@ -60,7 +60,7 @@ final class JsonSerializer implements Stringable
 
     public function __toString(): string
     {
-        return $this->getEncoded();
+        return $this->encoded;
     }
 
     private function decode(string $encoded): void

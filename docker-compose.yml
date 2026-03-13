@@ -1,4 +1,17 @@
 services:
+    init-volumes:
+        image: busybox
+        user: "0"
+        command: >
+            sh -c "mkdir -p .docker/redmine-dev_data/files .docker/redmine-dev_data/sqlite
+            .docker/redmine-60101_data/files .docker/redmine-60101_data/sqlite
+            .docker/redmine-60008_data/files .docker/redmine-60008_data/sqlite
+            .docker/redmine-50111_data/files .docker/redmine-50111_data/sqlite &&
+            chmod -R 777 .docker/redmine-*_data/"
+        volumes:
+            - ./:/work
+        working_dir: /work
+
     php:
         build: # Info to build the Docker image
             context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
@@ -6,10 +19,8 @@ services:
         ports:
             - 8111:80
         depends_on:
+            - init-volumes
             - redmine-dev
-            - redmine-6-1
-            - redmine-6-0
-            - redmine-5-1
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
@@ -26,6 +37,18 @@ services:
         volumes:
             - ./.docker/redmine-dev_data/files:/usr/src/redmine/files
             - ./.docker/redmine-dev_data/sqlite:/usr/src/redmine/sqlite
+
+    behat:
+        build: # PHP container for Behat tests (needs Redmine services)
+            context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
+            dockerfile: Behat-Dockerfile # Specify the name of the Dockerfile
+        depends_on:
+            - init-volumes
+            - redmine-6-1
+            - redmine-6-0
+            - redmine-5-1
+        volumes:
+            - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     # Make sure the following services are configured in:
     # - /tests/Behat/behat.yml

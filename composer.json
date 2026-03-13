@@ -1,6 +1,6 @@
 {
     "name": "kbsali/redmine-api",
-    "version": "v2.9.0",
+    "version": "v2.10.0-dev",
     "type": "library",
     "description": "Redmine API client",
     "homepage": "https://github.com/kbsali/php-redmine-api",
@@ -31,12 +31,12 @@
     },
     "require-dev": {
         "art4/rector-bc-library": "^1.0",
-        "behat/behat": "^3.14",
-        "friendsofphp/php-cs-fixer": "^3.68",
-        "guzzlehttp/psr7": "^2",
-        "php-mock/php-mock-phpunit": "^2.13",
+        "behat/behat": "^3.15",
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "guzzlehttp/psr7": "^2.8",
+        "php-mock/php-mock-phpunit": "^2.15",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.5 || ^10.5 || ^11.2 || ^12.0.9",
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11.5 || ^12.5 || ^13.0",
         "rector/rector": "^2.3"
     },
     "autoload": {
@@ -61,9 +61,9 @@
         ],
         "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",
-        "coverage": "phpunit -c tests/phpunit-coverage.xml.dist --coverage-html=\".phpunit.cache/code-coverage\"",
+        "coverage": "phpunit -c tests/phpunit-coverage.dist.xml --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
-        "phpunit": "phpunit -c phpunit.xml.dist",
+        "phpunit": "phpunit -c phpunit.dist.xml",
         "rectify": [
             "@rector",
             "@codestyle"
@@ -72,6 +72,7 @@
         "test": [
             "@phpstan",
             "@phpunit",
+            "@rector --dry-run",
             "@codestyle --dry-run --diff"
         ]
     }

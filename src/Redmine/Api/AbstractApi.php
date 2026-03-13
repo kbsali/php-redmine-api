@@ -494,12 +494,16 @@ abstract class AbstractApi implements Api
 
         if (false !== strpos($path, '/uploads.json') || false !== strpos($path, '/uploads.xml')) {
             return 'application/octet-stream';
-        } elseif ('json' === substr($tmp['path'], -4)) {
-            return 'application/json';
-        } elseif ('xml' === substr($tmp['path'], -3)) {
-            return 'application/xml';
-        } else {
-            return '';
         }
+
+        if ('json' === substr($tmp['path'], -4)) {
+            return 'application/json';
+        }
+
+        if ('xml' === substr($tmp['path'], -3)) {
+            return 'application/xml';
+        }
+
+        return '';
     }
 }
