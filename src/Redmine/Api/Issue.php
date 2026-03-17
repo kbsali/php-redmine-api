@@ -294,6 +294,11 @@ class Issue extends AbstractApi
             $sanitizedParams['assigned_to_id'] = '';
         }
 
+        // Allow fixed_version_id to be `` (empty string) to unassign a version from an issue
+        if (array_key_exists('fixed_version_id', $params) && '' === $params['fixed_version_id']) {
+            $sanitizedParams['fixed_version_id'] = '';
+        }
+
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
             '/issues/' . urlencode(strval($id)) . '.xml',
