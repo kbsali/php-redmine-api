@@ -110,6 +110,38 @@ class UpdateTest extends TestCase
                 204,
                 '',
             ],
+            'test assign fixed_version_id to issue' => [
+                1,
+                [
+                    'fixed_version_id' => 5,
+                ],
+                '/issues/1.xml',
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                    <id>1</id>
+                    <fixed_version_id>5</fixed_version_id>
+                </issue>
+                XML,
+                204,
+                '',
+            ],
+            'test unassign user from issue' => [
+                1,
+                [
+                    'fixed_version_id' => '',
+                ],
+                '/issues/1.xml',
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                    <id>1</id>
+                    <fixed_version_id></fixed_version_id>
+                </issue>
+                XML,
+                204,
+                '',
+            ],
         ];
     }
 
