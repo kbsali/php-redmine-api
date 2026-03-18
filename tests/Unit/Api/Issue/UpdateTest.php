@@ -126,7 +126,7 @@ class UpdateTest extends TestCase
                 204,
                 '',
             ],
-            'test unassign user from issue' => [
+            'test unassign fixed_version_id from issue' => [
                 1,
                 [
                     'fixed_version_id' => '',
