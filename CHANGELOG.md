@@ -14,6 +14,7 @@ Nothing yet.
 ### Fixed
 
 - Fixed wrongly triggered deprecation messages in `Redmine\Client\NativeCurlClient` and `Redmine\Client\Psr18Client`.
+- Allow unset version from an issue.
 
 ## [v2.9.0](https://github.com/kbsali/php-redmine-api/compare/v2.8.0...v2.9.0) - 2026-03-08
 
