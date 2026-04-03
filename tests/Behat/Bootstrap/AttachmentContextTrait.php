@@ -81,6 +81,7 @@ trait AttachmentContextTrait
 
     /**
      * @When I remove the attachment with the id :attachmentId
+     * @param mixed $attachmentId
      */
     public function iRemoveTheAttachmentWithTheId($attachmentId)
     {

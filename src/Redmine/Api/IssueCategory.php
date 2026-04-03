@@ -30,8 +30,8 @@ class IssueCategory extends AbstractApi
     }
 
     /**
-    * @var null|array<mixed>
-    */
+     * @var null|array<mixed>
+     */
     private ?array $issueCategories = null;
 
     /**

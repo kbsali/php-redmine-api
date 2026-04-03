@@ -31,6 +31,7 @@ trait IssueRelationContextTrait
 
     /**
      * @When I delete the issue relation with the id :relationId
+     * @param mixed $relationId
      */
     public function iDeleteTheIssueRelationWithTheId($relationId)
     {

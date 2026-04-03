@@ -19,6 +19,7 @@ class ListNamesByProjectTest extends TestCase
 {
     /**
      * @dataProvider getListNamesByProjectData
+     * @param mixed $projectIdentifier
      */
     #[DataProvider('getListNamesByProjectData')]
     public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, string $expectedPath, int $responseCode, string $response, array $expectedResponse): void
@@ -114,6 +115,7 @@ class ListNamesByProjectTest extends TestCase
 
     /**
      * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
+     * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
     public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void

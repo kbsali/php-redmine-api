@@ -60,6 +60,7 @@ trait VersionContextTrait
 
     /**
      * @When I list all versions for project identifier :identifier
+     * @param mixed $identifier
      */
     public function iListAllVersionsForProjectIdentifier($identifier)
     {
@@ -74,6 +75,7 @@ trait VersionContextTrait
 
     /**
      * @When I list all version names for project identifier :identifier
+     * @param mixed $identifier
      */
     public function iListAllVersionNamesForProjectIdentifier($identifier)
     {
@@ -88,6 +90,7 @@ trait VersionContextTrait
 
     /**
      * @When I update the version with id :id and the following data
+     * @param mixed $id
      */
     public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table)
     {
@@ -108,6 +111,7 @@ trait VersionContextTrait
 
     /**
      * @When I remove the version with id :versionId
+     * @param mixed $versionId
      */
     public function iRemoveTheVersionWithId($versionId)
     {

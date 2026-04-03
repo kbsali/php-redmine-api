@@ -82,6 +82,7 @@ class VersionTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllData
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void

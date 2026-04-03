@@ -10,6 +10,7 @@ trait RoleContextTrait
 {
     /**
      * @Given I have a role with the name :name
+     * @param mixed $name
      */
     public function iHaveARoleWithTheName($name)
     {

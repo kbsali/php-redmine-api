@@ -12,7 +12,7 @@ parameters:
             # Ignore missing or imprecise parameter types for methods in tests
             message: '(^Method .+ has parameter .+ with no.* type specified.*\.$)'
             path: tests
-            count: 163
+            count: 62
         -
             # Ignore imprecise return types for methods in tests
             message: '(^Method .+ return type has no.* type specified.+\.$)'

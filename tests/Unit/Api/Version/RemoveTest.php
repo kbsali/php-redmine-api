@@ -13,6 +13,7 @@ class RemoveTest extends TestCase
 {
     /**
      * @dataProvider getRemoveData
+     * @param mixed $id
      */
     #[DataProvider('getRemoveData')]
     public function testRemoveReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response): void

@@ -10,6 +10,7 @@ trait CustomFieldContextTrait
 {
     /**
      * @Given I create a custom field for issues with the name :customFieldName
+     * @param mixed $customFieldName
      */
     public function iCreateACustomFieldForIssuesWithTheName($customFieldName)
     {
@@ -30,6 +31,8 @@ trait CustomFieldContextTrait
 
     /**
      * @Given I enable the tracker with ID :trackerId for custom field with ID :customFieldId
+     * @param mixed $trackerId
+     * @param mixed $customFieldId
      */
     public function iEnableTheTrackerWithIdForCustomFieldWithId($trackerId, $customFieldId)
     {

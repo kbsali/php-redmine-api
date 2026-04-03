@@ -36,6 +36,7 @@ class SearchTest extends TestCase
 
     /**
      * @dataProvider getAllData
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testSearchReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void

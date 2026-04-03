@@ -107,6 +107,8 @@ trait GroupContextTrait
 
     /**
      * @When I add the user with id :userId to the group with id :groupId
+     * @param mixed $userId
+     * @param mixed $groupId
      */
     public function iAddTheUserWithIdToTheGroupWithId($userId, $groupId)
     {
@@ -121,6 +123,8 @@ trait GroupContextTrait
 
     /**
      * @When I remove the user with id :userId from the group with id :groupId
+     * @param mixed $userId
+     * @param mixed $groupId
      */
     public function iRemoveTheUserWithIdFromTheGroupWithId($userId, $groupId)
     {
@@ -135,6 +139,7 @@ trait GroupContextTrait
 
     /**
      * @When I remove the group with id :groupId
+     * @param mixed $groupId
      */
     public function iRemoveTheGroupWithId($groupId)
     {

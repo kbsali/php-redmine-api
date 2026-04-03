@@ -47,6 +47,7 @@ class GetTest extends TestCase
 
     /**
      * @dataProvider getJsonDecodingFromGetMethodData
+     * @param mixed $expected
      */
     #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, $expected): void

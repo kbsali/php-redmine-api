@@ -13,6 +13,8 @@ class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
+     * @param mixed $userId
+     * @param mixed $expectedReturn
      */
     #[DataProvider('getShowData')]
     public function testShowReturnsCorrectResponse($userId, array $params, string $expectedPath, string $response, $expectedReturn): void

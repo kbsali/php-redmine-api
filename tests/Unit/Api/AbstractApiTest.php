@@ -178,6 +178,7 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
+     * @param mixed $value
      */
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
     public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value): void
@@ -485,6 +486,7 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider getRetrieveAllData
+     * @param mixed $expected
      */
     #[DataProvider('getRetrieveAllData')]
     public function testDeprecatedRetrieveAll(string $content, string $contentType, $expected): void

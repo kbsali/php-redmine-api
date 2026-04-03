@@ -97,6 +97,7 @@ final class FeatureContext implements Context
 
     /**
      * @Given I have a :clientName client
+     * @param mixed $clientName
      */
     public function iHaveAClient($clientName): void
     {
