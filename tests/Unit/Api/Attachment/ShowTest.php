@@ -46,8 +46,7 @@ class ShowTest extends TestCase
                 '["API Response"]',
                 ['API Response'],
             ],
-            'array response with string id' =>
-            [
+            'array response with string id' => [
                 '5',
                 '/attachments/5.json',
                 '["API Response"]',

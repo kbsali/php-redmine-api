@@ -235,10 +235,10 @@ abstract class AbstractApi implements Api
     protected function isNotNull($var)
     {
         return
-            false !== $var &&
-            null !== $var &&
-            '' !== $var &&
-            !((is_array($var) || is_object($var)) && empty($var));
+            false !== $var
+            && null !== $var
+            && '' !== $var
+            && !((is_array($var) || is_object($var)) && empty($var));
     }
 
     /**
