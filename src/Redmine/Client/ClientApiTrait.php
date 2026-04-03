@@ -18,7 +18,7 @@ trait ClientApiTrait
     private array $apiInstances = [];
 
     /**
-     * @var array<string,string>
+     * @var array<string,class-string>
      */
     private array $apiClassnames = [
         'attachment' => \Redmine\Api\Attachment::class,
@@ -55,7 +55,7 @@ trait ClientApiTrait
             return $this->apiInstances[$name];
         }
         $class = $this->apiClassnames[$name];
-        $this->apiInstances[$name] = new $class($this);
+        $this->apiInstances[$name] = $class::fromHttpClient($this);
 
         return $this->apiInstances[$name];
     }
