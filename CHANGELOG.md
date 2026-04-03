@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.9.0...v2.x)
 
-Nothing yet.
+### Fixed
+
+- Fixed wrongly triggered deprecation messages in `Redmine\Client\NativeCurlClient` and `Redmine\Client\Psr18Client`.
 
 ## [v2.9.0](https://github.com/kbsali/php-redmine-api/compare/v2.8.0...v2.9.0) - 2026-03-08
 
