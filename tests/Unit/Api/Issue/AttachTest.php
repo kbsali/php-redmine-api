@@ -13,6 +13,8 @@ class AttachTest extends TestCase
 {
     /**
      * @dataProvider getAttachData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getAttachData')]
     public function testAttachReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void

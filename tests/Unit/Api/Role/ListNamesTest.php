@@ -15,6 +15,8 @@ class ListNamesTest extends TestCase
 {
     /**
      * @dataProvider getListNamesData
+     *
+     * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesData')]
     public function testListNamesReturnsCorrectResponse(string $expectedPath, int $responseCode, string $response, array $expectedResponse): void

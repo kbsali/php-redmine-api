@@ -60,7 +60,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runGet($path)
+            public function runGet(string $path)
             {
                 return $this->get($path);
             }
@@ -97,7 +97,10 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runPost($path, $data)
+            /**
+             * @param mixed $data
+             */
+            public function runPost(string $path, $data)
             {
                 return $this->post($path, $data);
             }
@@ -125,7 +128,10 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runPut($path, $data)
+            /**
+             * @param mixed $data
+             */
+            public function runPut(string $path, $data)
             {
                 return $this->put($path, $data);
             }
@@ -153,7 +159,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runDelete($path)
+            public function runDelete(string $path)
             {
                 return $this->delete($path);
             }
@@ -371,6 +377,8 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider retrieveDataData
+     *
+     * @param array<mixed> $expected
      */
     #[DataProvider('retrieveDataData')]
     public function testRetrieveData(string $path, string $contentType, string $response, array $expected): void

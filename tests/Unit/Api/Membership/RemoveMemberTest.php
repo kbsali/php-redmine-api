@@ -13,15 +13,17 @@ class RemoveMemberTest extends TestCase
 {
     /**
      * @dataProvider getRemoveMemberData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getRemoveMemberData')]
-    public function testRemoveMemberReturnsCorrectResponse(int $projectIdentifier, int $userId, array $params, string $expectedPath, int $responseCode, string $response): void
+    public function testRemoveMemberReturnsCorrectResponse(int $projectIdentifier, int $userId, array $parameters, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
             [
                 'GET',
-                '/projects/' . $projectIdentifier . '/memberships.json' . (($params !== []) ? '?' . http_build_query($params) : ''),
+                '/projects/' . $projectIdentifier . '/memberships.json' . (($parameters !== []) ? '?' . http_build_query($parameters) : ''),
                 'application/json',
                 '',
                 200,
@@ -43,7 +45,7 @@ class RemoveMemberTest extends TestCase
         $api = Membership::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->removeMember($projectIdentifier, $userId, $params));
+        $this->assertSame($response, $api->removeMember($projectIdentifier, $userId, $parameters));
     }
 
     public static function getRemoveMemberData(): array

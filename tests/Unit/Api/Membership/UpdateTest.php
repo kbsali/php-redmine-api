@@ -15,6 +15,8 @@ class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
@@ -103,6 +105,8 @@ class UpdateTest extends TestCase
 
     /**
      * @dataProvider incompleteUpdateParameterProvider
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteUpdateParameterProvider')]
     public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing(array $parameters): void

@@ -13,6 +13,8 @@ class AttachManyTest extends TestCase
 {
     /**
      * @dataProvider getAttachManyData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getAttachManyData')]
     public function testAttachManyReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void

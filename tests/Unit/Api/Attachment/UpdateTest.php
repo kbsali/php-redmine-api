@@ -14,9 +14,11 @@ class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
-    public function testUpdateReturnsCorrectResponse(int $id, array $params, string $expectedPath, string $expectedContent, bool $expectedReturn): void
+    public function testUpdateReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedContent, bool $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -35,7 +37,7 @@ class UpdateTest extends TestCase
         $api = Attachment::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->update($id, $params));
+        $this->assertSame($expectedReturn, $api->update($id, $parameters));
     }
 
     public static function getUpdateData(): array

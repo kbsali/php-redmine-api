@@ -17,6 +17,8 @@ class CreateTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse(int $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void

@@ -117,6 +117,9 @@ final class FeatureContext implements Context
         return $this->client;
     }
 
+    /**
+     * @param mixed $lastReturn
+     */
     private function registerClientResponse($lastReturn, Response $lastResponse): void
     {
         unset($this->lastReturnAsArray);
@@ -375,6 +378,8 @@ final class FeatureContext implements Context
 
     /**
      * Get item from an array by key supporting "dot" notation.
+     *
+     * @param array<mixed> $array
      */
     private function getItemFromArray(array $array, ?string $key)
     {
@@ -393,6 +398,9 @@ final class FeatureContext implements Context
         return $array;
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     private function assertTableNodeIsSameAsArray(TableNode $table, array $data): void
     {
         foreach ($table as $row) {

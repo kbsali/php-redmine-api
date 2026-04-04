@@ -16,6 +16,9 @@ class CreateTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
+     * @param array<mixed> $expectedReturn
      */
     #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response, array $expectedReturn): void
@@ -100,6 +103,8 @@ class CreateTest extends TestCase
 
     /**
      * @dataProvider incompleteCreateParameterProvider
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteCreateParameterProvider')]
     public function testCreateThrowsExceptionIfMandatoyParametersAreMissing(array $parameters): void

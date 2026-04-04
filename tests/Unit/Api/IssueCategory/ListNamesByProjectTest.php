@@ -20,7 +20,8 @@ class ListNamesByProjectTest extends TestCase
     /**
      * @dataProvider getListNamesByProjectData
      *
-     * @param mixed $projectIdentifier
+     * @param string|int $projectIdentifier
+     * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesByProjectData')]
     public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, string $expectedPath, int $responseCode, string $response, array $expectedResponse): void

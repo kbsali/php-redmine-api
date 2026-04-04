@@ -15,6 +15,8 @@ class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse(int $id, string $page, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void

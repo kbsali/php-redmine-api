@@ -152,6 +152,9 @@ final class RedmineInstance
 
     /**
      * Allows tests to prepare the database
+     *
+     * @param array<mixed> $options
+     * @param null|array<mixed> $params
      */
     public function excecuteDatabaseQuery(string $query, array $options = [], ?array $params = null): void
     {
