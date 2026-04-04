@@ -13,7 +13,7 @@ trait CustomFieldContextTrait
      *
      * @param mixed $customFieldName
      */
-    public function iCreateACustomFieldForIssuesWithTheName($customFieldName)
+    public function iCreateACustomFieldForIssuesWithTheName($customFieldName): void
     {
         // support for creating custom fields via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -36,7 +36,7 @@ trait CustomFieldContextTrait
      * @param mixed $trackerId
      * @param mixed $customFieldId
      */
-    public function iEnableTheTrackerWithIdForCustomFieldWithId($trackerId, $customFieldId)
+    public function iEnableTheTrackerWithIdForCustomFieldWithId($trackerId, $customFieldId): void
     {
         // support for enabling custom fields for trackers via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -52,7 +52,7 @@ trait CustomFieldContextTrait
     /**
      * @When I list all custom fields
      */
-    public function iListAllCustomFields()
+    public function iListAllCustomFields(): void
     {
         /** @var CustomField */
         $api = $this->getNativeCurlClient()->getApi('custom_fields');
@@ -66,7 +66,7 @@ trait CustomFieldContextTrait
     /**
      * @When I list all custom field names
      */
-    public function iListAllCustomFieldNames()
+    public function iListAllCustomFieldNames(): void
     {
         /** @var CustomField */
         $api = $this->getNativeCurlClient()->getApi('custom_fields');

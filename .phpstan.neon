@@ -6,10 +6,3 @@ parameters:
         - tests/
 
     treatPhpDocTypesAsCertain: false
-
-    ignoreErrors:
-        -
-            # Ignore missing return types for methods in tests
-            message: '(^Method .+ has no return type specified\.$)'
-            path: tests
-            count: 90

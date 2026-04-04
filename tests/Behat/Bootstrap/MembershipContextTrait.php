@@ -14,7 +14,7 @@ trait MembershipContextTrait
      *
      * @param mixed $identifier
      */
-    public function iCreateAMembershipToProjectWithIdentifierAndTheFollowingData($identifier, TableNode $table)
+    public function iCreateAMembershipToProjectWithIdentifierAndTheFollowingData($identifier, TableNode $table): void
     {
         $data = [];
 
@@ -40,7 +40,7 @@ trait MembershipContextTrait
      *
      * @param mixed $id
      */
-    public function iUpdateTheMembershipWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheMembershipWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -66,7 +66,7 @@ trait MembershipContextTrait
      *
      * @param mixed $id
      */
-    public function iRemoveTheMembershipWithId($id)
+    public function iRemoveTheMembershipWithId($id): void
     {
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
@@ -83,7 +83,7 @@ trait MembershipContextTrait
      * @param mixed $userId
      * @param mixed $identifier
      */
-    public function iRemoveTheUserWithIdFromTheProjectWithIdentifier($userId, $identifier)
+    public function iRemoveTheUserWithIdFromTheProjectWithIdentifier($userId, $identifier): void
     {
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');

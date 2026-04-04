@@ -13,7 +13,7 @@ trait IssueContextTrait
     /**
      * @When I create an issue with the following data
      */
-    public function iCreateAnIssueWithTheFollowingData(TableNode $table)
+    public function iCreateAnIssueWithTheFollowingData(TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
 
@@ -31,7 +31,7 @@ trait IssueContextTrait
      *
      * @param mixed $issueId
      */
-    public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table)
+    public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
 
@@ -49,7 +49,7 @@ trait IssueContextTrait
      *
      * @param mixed $issueId
      */
-    public function iShowTheIssueWithId($issueId)
+    public function iShowTheIssueWithId($issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -66,7 +66,7 @@ trait IssueContextTrait
      * @param mixed $userId
      * @param mixed $issueId
      */
-    public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId)
+    public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -83,7 +83,7 @@ trait IssueContextTrait
      * @param mixed $userId
      * @param mixed $issueId
      */
-    public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId)
+    public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -99,7 +99,7 @@ trait IssueContextTrait
      *
      * @param mixed $issueId
      */
-    public function iRemoveTheIssueWithId($issueId)
+    public function iRemoveTheIssueWithId($issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');

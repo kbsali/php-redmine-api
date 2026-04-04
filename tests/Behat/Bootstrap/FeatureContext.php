@@ -383,6 +383,8 @@ final class FeatureContext implements Context
      * Get item from an array by key supporting "dot" notation.
      *
      * @param array<mixed> $array
+     *
+     * @return mixed
      */
     private function getItemFromArray(array $array, ?string $key)
     {

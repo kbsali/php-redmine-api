@@ -11,7 +11,7 @@ trait TimeEntryActivityContextTrait
     /**
      * @Given I have a time entry activiy with name :activityName
      */
-    public function iHaveATimeEntryActiviyWithName(string $activityName)
+    public function iHaveATimeEntryActiviyWithName(string $activityName): void
     {
         // support for creating time entry activity via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -30,7 +30,7 @@ trait TimeEntryActivityContextTrait
     /**
      * @When I list all time entry activities
      */
-    public function iListAllTimeEntryActivities()
+    public function iListAllTimeEntryActivities(): void
     {
         /** @var TimeEntryActivity */
         $api = $this->getNativeCurlClient()->getApi('time_entry_activity');
@@ -44,7 +44,7 @@ trait TimeEntryActivityContextTrait
     /**
      * @When I list all time entry activity names
      */
-    public function iListAllTimeEntryActivityNames()
+    public function iListAllTimeEntryActivityNames(): void
     {
         /** @var TimeEntryActivity */
         $api = $this->getNativeCurlClient()->getApi('time_entry_activity');

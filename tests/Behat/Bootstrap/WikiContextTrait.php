@@ -13,7 +13,7 @@ trait WikiContextTrait
     /**
      * @When I create a wiki page with name :pageName and project identifier :identifier
      */
-    public function iCreateAWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier)
+    public function iCreateAWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier): void
     {
         $this->iCreateAWikiPageWithNameAndProjectIdentifierWithTheFollowingData(
             $pageName,
@@ -25,7 +25,7 @@ trait WikiContextTrait
     /**
      * @When I create a wiki page with name :pageName and project identifier :identifier with the following data
      */
-    public function iCreateAWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table)
+    public function iCreateAWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table): void
     {
         $data = $this->prepareWikiData($table);
 
@@ -41,7 +41,7 @@ trait WikiContextTrait
     /**
      * @When I show the wiki page with name :pageName and project identifier :identifier
      */
-    public function iShowTheWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier)
+    public function iShowTheWikiPageWithNameAndProjectIdentifier(string $pageName, string $identifier): void
     {
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
@@ -55,7 +55,7 @@ trait WikiContextTrait
     /**
      * @When I update the wiki page with name :pageName and project identifier :identifier with the following data
      */
-    public function iUpdateTheWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table)
+    public function iUpdateTheWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table): void
     {
         $data = $this->prepareWikiData($table);
 
@@ -74,7 +74,7 @@ trait WikiContextTrait
      * @param mixed $pageName
      * @param mixed $identifier
      */
-    public function iRemoveTheWikiPageWithNameAndProjectIdentifier($pageName, $identifier)
+    public function iRemoveTheWikiPageWithNameAndProjectIdentifier($pageName, $identifier): void
     {
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');

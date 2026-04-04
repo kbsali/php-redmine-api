@@ -11,7 +11,7 @@ trait TrackerContextTrait
     /**
      * @Given I have a tracker with the name :trackerName and default status id :statusId
      */
-    public function iHaveATrackerWithTheNameAndDefaultStatusId(string $trackerName, int $statusId)
+    public function iHaveATrackerWithTheNameAndDefaultStatusId(string $trackerName, int $statusId): void
     {
         // support for creating tracker via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -30,7 +30,7 @@ trait TrackerContextTrait
     /**
      * @When I list all trackers
      */
-    public function iListAllTrackers()
+    public function iListAllTrackers(): void
     {
         /** @var Tracker */
         $api = $this->getNativeCurlClient()->getApi('tracker');
@@ -44,7 +44,7 @@ trait TrackerContextTrait
     /**
      * @When I list all tracker names
      */
-    public function iListAllTrackerNames()
+    public function iListAllTrackerNames(): void
     {
         /** @var Tracker */
         $api = $this->getNativeCurlClient()->getApi('tracker');

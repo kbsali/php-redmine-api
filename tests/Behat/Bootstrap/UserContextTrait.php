@@ -12,7 +12,7 @@ trait UserContextTrait
     /**
      * @Given I create :count users
      */
-    public function iCreateUsers(int $count)
+    public function iCreateUsers(int $count): void
     {
         while ($count > 0) {
             $table = new TableNode([
@@ -32,7 +32,7 @@ trait UserContextTrait
     /**
      * @When I create a user with the following data
      */
-    public function iCreateAUserWithTheFollowingData(TableNode $table)
+    public function iCreateAUserWithTheFollowingData(TableNode $table): void
     {
         $data = [];
 
@@ -52,7 +52,7 @@ trait UserContextTrait
     /**
      * @When I show the user with id :userId
      */
-    public function iShowTheUserWithId(int $userId)
+    public function iShowTheUserWithId(int $userId): void
     {
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
@@ -66,7 +66,7 @@ trait UserContextTrait
     /**
      * @When I list all users
      */
-    public function iListAllUsers()
+    public function iListAllUsers(): void
     {
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
@@ -80,7 +80,7 @@ trait UserContextTrait
     /**
      * @When I list all user logins
      */
-    public function iListAllUserLogins()
+    public function iListAllUserLogins(): void
     {
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
@@ -96,7 +96,7 @@ trait UserContextTrait
      *
      * @param mixed $id
      */
-    public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -118,7 +118,7 @@ trait UserContextTrait
      *
      * @param mixed $userId
      */
-    public function iRemoveTheUserWithId($userId)
+    public function iRemoveTheUserWithId($userId): void
     {
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');

@@ -12,7 +12,7 @@ trait TimeEntryContextTrait
     /**
      * @When I create a time entry with the following data
      */
-    public function iCreateATimeEntryWithTheFollowingData(TableNode $table)
+    public function iCreateATimeEntryWithTheFollowingData(TableNode $table): void
     {
         $data = [];
 
@@ -34,7 +34,7 @@ trait TimeEntryContextTrait
      *
      * @param mixed $id
      */
-    public function iUpdateTheTimeEntryWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheTimeEntryWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -54,7 +54,7 @@ trait TimeEntryContextTrait
     /**
      * @When I show the time entry with the id :activityId
      */
-    public function iShowTheTimeEntryWithTheId(int $activityId)
+    public function iShowTheTimeEntryWithTheId(int $activityId): void
     {
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');
@@ -70,7 +70,7 @@ trait TimeEntryContextTrait
      *
      * @param mixed $activityId
      */
-    public function iRemoveTheTimeEntryWithId($activityId)
+    public function iRemoveTheTimeEntryWithId($activityId): void
     {
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');

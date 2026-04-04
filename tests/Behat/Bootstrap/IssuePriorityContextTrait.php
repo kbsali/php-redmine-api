@@ -9,7 +9,7 @@ trait IssuePriorityContextTrait
     /**
      * @Given I have an issue priority with the name :priority
      */
-    public function iHaveAnIssuePriorityWithTheName(string $priority)
+    public function iHaveAnIssuePriorityWithTheName(string $priority): void
     {
         // support for creating time entry activity via REST API is missing
         $this->redmine->excecuteDatabaseQuery(

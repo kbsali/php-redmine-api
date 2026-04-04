@@ -14,7 +14,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $identifier
      */
-    public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier)
+    public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier): void
     {
         while ($count > 0) {
             $this->iCreateAnIssueCategoryForProjectIdentifierAndWithTheName(
@@ -32,7 +32,7 @@ trait IssueCategoryContextTrait
      * @param mixed $identifier
      * @param mixed $name
      */
-    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name)
+    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name): void
     {
         $table = new TableNode([
             ['property', 'value'],
@@ -47,7 +47,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $identifier
      */
-    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table)
+    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table): void
     {
         $data = [];
 
@@ -69,7 +69,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $identifier
      */
-    public function iListAllIssueCategoriesForProjectIdentifier($identifier)
+    public function iListAllIssueCategoriesForProjectIdentifier($identifier): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
@@ -85,7 +85,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $identifier
      */
-    public function iListAllIssueCategoryNamesForProjectIdentifier($identifier)
+    public function iListAllIssueCategoryNamesForProjectIdentifier($identifier): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
@@ -101,7 +101,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $id
      */
-    public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -123,7 +123,7 @@ trait IssueCategoryContextTrait
      *
      * @param mixed $id
      */
-    public function iRemoveTheIssueCategoryWithId($id)
+    public function iRemoveTheIssueCategoryWithId($id): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');

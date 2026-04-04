@@ -13,7 +13,7 @@ trait VersionContextTrait
     /**
      * @When I create a version with name :versionName and project identifier :identifier
      */
-    public function iCreateAVersionWithNameAndProjectIdentifier(string $versionName, string $identifier)
+    public function iCreateAVersionWithNameAndProjectIdentifier(string $versionName, string $identifier): void
     {
         $this->iCreateAVersionWithProjectIdentifierAndWithTheFollowingData(
             $identifier,
@@ -27,7 +27,7 @@ trait VersionContextTrait
     /**
      * @When I create a version with project identifier :identifier with the following data
      */
-    public function iCreateAVersionWithProjectIdentifierAndWithTheFollowingData(string $identifier, TableNode $table)
+    public function iCreateAVersionWithProjectIdentifierAndWithTheFollowingData(string $identifier, TableNode $table): void
     {
         $data = [];
 
@@ -47,7 +47,7 @@ trait VersionContextTrait
     /**
      * @When I show the version with id :versionId
      */
-    public function iShowTheVersionWithId(int $versionId)
+    public function iShowTheVersionWithId(int $versionId): void
     {
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
@@ -63,7 +63,7 @@ trait VersionContextTrait
      *
      * @param mixed $identifier
      */
-    public function iListAllVersionsForProjectIdentifier($identifier)
+    public function iListAllVersionsForProjectIdentifier($identifier): void
     {
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
@@ -79,7 +79,7 @@ trait VersionContextTrait
      *
      * @param mixed $identifier
      */
-    public function iListAllVersionNamesForProjectIdentifier($identifier)
+    public function iListAllVersionNamesForProjectIdentifier($identifier): void
     {
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
@@ -95,7 +95,7 @@ trait VersionContextTrait
      *
      * @param mixed $id
      */
-    public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -117,7 +117,7 @@ trait VersionContextTrait
      *
      * @param mixed $versionId
      */
-    public function iRemoveTheVersionWithId($versionId)
+    public function iRemoveTheVersionWithId($versionId): void
     {
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');

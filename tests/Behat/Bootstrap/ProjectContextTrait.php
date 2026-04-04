@@ -12,7 +12,7 @@ trait ProjectContextTrait
     /**
      * @When I create a project with name :name and identifier :identifier
      */
-    public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier)
+    public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier): void
     {
         $table = new TableNode([
             ['property', 'value'],
@@ -26,7 +26,7 @@ trait ProjectContextTrait
     /**
      * @When I create a project with the following data
      */
-    public function iCreateAProjectWithTheFollowingData(TableNode $table)
+    public function iCreateAProjectWithTheFollowingData(TableNode $table): void
     {
         $data = [];
 
@@ -46,7 +46,7 @@ trait ProjectContextTrait
     /**
      * @Given I create :count projects
      */
-    public function iCreateProjects(int $count)
+    public function iCreateProjects(int $count): void
     {
         while ($count > 0) {
             $this->iCreateAProjectWithNameAndIdentifier('Test Project ' . $count, 'test-project-' . $count);
@@ -58,7 +58,7 @@ trait ProjectContextTrait
     /**
      * @When I list all projects
      */
-    public function iListAllProjects()
+    public function iListAllProjects(): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -72,7 +72,7 @@ trait ProjectContextTrait
     /**
      * @When I list all project names
      */
-    public function iListAllProjectNames()
+    public function iListAllProjectNames(): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -86,7 +86,7 @@ trait ProjectContextTrait
     /**
      * @When I show the project with identifier :identifier
      */
-    public function iShowTheProjectWithIdentifier(string $identifier)
+    public function iShowTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -100,7 +100,7 @@ trait ProjectContextTrait
     /**
      * @When I update the project with identifier :identifier with the following data
      */
-    public function iUpdateTheProjectWithIdentifierWithTheFollowingData(string $identifier, TableNode $table)
+    public function iUpdateTheProjectWithIdentifierWithTheFollowingData(string $identifier, TableNode $table): void
     {
         $data = [];
 
@@ -120,7 +120,7 @@ trait ProjectContextTrait
     /**
      * @When I close the project with identifier :identifier
      */
-    public function iCloseTheProjectWithIdentifier(string $identifier)
+    public function iCloseTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -134,7 +134,7 @@ trait ProjectContextTrait
     /**
      * @When I reopen the project with identifier :identifier
      */
-    public function iReopenTheProjectWithIdentifier(string $identifier)
+    public function iReopenTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -148,7 +148,7 @@ trait ProjectContextTrait
     /**
      * @When I archive the project with identifier :identifier
      */
-    public function iArchiveTheProjectWithIdentifier(string $identifier)
+    public function iArchiveTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -162,7 +162,7 @@ trait ProjectContextTrait
     /**
      * @When I unarchive the project with identifier :identifier
      */
-    public function iUnarchiveTheProjectWithIdentifier(string $identifier)
+    public function iUnarchiveTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
@@ -178,7 +178,7 @@ trait ProjectContextTrait
      *
      * @param mixed $identifier
      */
-    public function iRemoveTheProjectWithIdentifier($identifier)
+    public function iRemoveTheProjectWithIdentifier($identifier): void
     {
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
