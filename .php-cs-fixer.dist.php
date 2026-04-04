@@ -25,6 +25,12 @@ return (new \PhpCsFixer\Config())->setRules([
         'phpdoc_order' => true,
         'phpdoc_param_order' => true,
         'phpdoc_separation' => ['skip_unlisted_annotations' => false],
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'phpdoc_trim' => true,
+        'phpdoc_types' => true,
+        'phpdoc_types_no_duplicates' => true,
+        'phpdoc_var_annotation_correct_order' => true,
+        'phpdoc_var_without_name' => true,
         'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arguments', 'arrays']], // Remove this rule after dropping support for PHP 7.4
     ])
     ->setFinder($finder)

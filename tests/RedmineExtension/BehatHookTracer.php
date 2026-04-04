@@ -12,13 +12,10 @@ use RuntimeException;
 
 final class BehatHookTracer implements InstanceRegistration
 {
-    /**
-     * @var RedmineInstance[] $instances
-     */
     private static ?BehatHookTracer $tracer = null;
 
     /**
-     * @var RedmineInstance[] $instances
+     * @var RedmineInstance[]
      */
     private static array $instances = [];
 
