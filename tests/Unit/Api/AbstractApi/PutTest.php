@@ -69,6 +69,9 @@ class PutTest extends TestCase
         $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getXmlDecodingFromPutMethodData(): array
     {
         return [

@@ -40,6 +40,9 @@ class DownloadTest extends TestCase
         $this->assertSame($expectedReturn, $api->download($id));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getDownloadData(): array
     {
         return [

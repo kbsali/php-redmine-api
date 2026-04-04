@@ -47,6 +47,9 @@ class CreateTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getCreateData(): array
     {
         return [

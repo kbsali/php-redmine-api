@@ -48,6 +48,9 @@ class RemoveMemberTest extends TestCase
         $this->assertSame($response, $api->removeMember($projectIdentifier, $userId, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRemoveMemberData(): array
     {
         return [

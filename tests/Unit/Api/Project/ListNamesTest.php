@@ -41,6 +41,9 @@ class ListNamesTest extends TestCase
         $this->assertSame($expectedResponse, $api->listNames());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getListNamesData(): array
     {
         return [

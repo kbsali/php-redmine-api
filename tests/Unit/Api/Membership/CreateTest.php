@@ -45,6 +45,9 @@ class CreateTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getCreateData(): array
     {
         return [
@@ -128,7 +131,7 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function incompleteCreateParameterProvider(): array
     {

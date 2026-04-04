@@ -46,6 +46,9 @@ class ListNamesByProjectTest extends TestCase
         $this->assertSame($expectedResponse, $api->listNamesByProject($projectIdentifier));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getListNamesByProjectData(): array
     {
         return [

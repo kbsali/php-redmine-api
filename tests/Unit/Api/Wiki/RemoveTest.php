@@ -39,6 +39,9 @@ class RemoveTest extends TestCase
         $this->assertSame('', $api->remove($id, $page));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRemoveData(): array
     {
         return [

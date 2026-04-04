@@ -711,6 +711,9 @@ class NativeCurlClientTest extends TestCase
         $this->assertSame($content, $client->getLastResponseBody());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRequestReponseData(): array
     {
         return [
@@ -976,6 +979,9 @@ class NativeCurlClientTest extends TestCase
         $this->assertInstanceOf($class, $client->getApi($apiName));
     }
 
+    /**
+     * @return array<array{string, class-string}>
+     */
     public static function getApiClassesProvider(): array
     {
         return [

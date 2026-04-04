@@ -9,11 +9,6 @@ parameters:
 
     ignoreErrors:
         -
-            # Ignore imprecise return types for methods in tests
-            message: '(^Method .+ return type has no.* type specified.+\.$)'
-            path: tests
-            count: 109
-        -
             # Ignore missing return types for methods in tests
             message: '(^Method .+ has no return type specified\.$)'
             path: tests

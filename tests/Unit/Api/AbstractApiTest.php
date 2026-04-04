@@ -202,6 +202,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, $value));
     }
 
+    /**
+     * @return array<array{bool, mixed}>
+     */
     public static function getIsNotNullReturnsCorrectBooleanData(): array
     {
         return [
@@ -304,6 +307,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
 
+    /**
+     * @return array<array{int, bool}>
+     */
     public static function getLastCallFailedData(): array
     {
         return [
@@ -398,6 +404,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, $path));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function retrieveDataData(): array
     {
         return [
@@ -486,6 +495,9 @@ class AbstractApiTest extends TestCase
         $method->invoke($api, '/issues.json');
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRetrieveDataToExceptionData(): array
     {
         return [
@@ -516,6 +528,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, ''));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRetrieveAllData(): array
     {
         return [

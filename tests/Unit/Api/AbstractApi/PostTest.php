@@ -69,6 +69,9 @@ class PostTest extends TestCase
         $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getXmlDecodingFromPostMethodData(): array
     {
         return [

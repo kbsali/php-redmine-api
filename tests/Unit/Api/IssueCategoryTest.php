@@ -110,6 +110,9 @@ class IssueCategoryTest extends TestCase
         $this->assertSame($expectedResponse, $api->all($projectId));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

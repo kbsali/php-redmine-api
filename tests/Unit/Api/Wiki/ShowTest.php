@@ -40,6 +40,9 @@ class ShowTest extends TestCase
         $this->assertSame($expectedReturn, $api->show($identifier, $page, $version));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getShowData(): array
     {
         return [

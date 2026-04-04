@@ -85,6 +85,9 @@ trait WikiContextTrait
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function prepareWikiData(TableNode $table): array
     {
         $data = [];

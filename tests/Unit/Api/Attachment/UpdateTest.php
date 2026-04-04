@@ -40,6 +40,9 @@ class UpdateTest extends TestCase
         $this->assertSame($expectedReturn, $api->update($id, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getUpdateData(): array
     {
         return [

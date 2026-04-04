@@ -107,6 +107,9 @@ class MembershipTest extends TestCase
         $this->assertSame($expectedResponse, $api->all(5));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

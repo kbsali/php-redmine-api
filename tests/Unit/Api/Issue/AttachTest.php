@@ -39,6 +39,9 @@ class AttachTest extends TestCase
         $this->assertSame('', $api->attach($issueId, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAttachData(): array
     {
         return [

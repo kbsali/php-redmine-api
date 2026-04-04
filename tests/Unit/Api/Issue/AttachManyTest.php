@@ -39,6 +39,9 @@ class AttachManyTest extends TestCase
         $this->assertSame('', $api->attachMany($issueId, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAttachManyData(): array
     {
         return [

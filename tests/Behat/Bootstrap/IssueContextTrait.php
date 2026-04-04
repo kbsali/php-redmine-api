@@ -110,6 +110,9 @@ trait IssueContextTrait
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function prepareIssueData(TableNode $table): array
     {
         $data = [];

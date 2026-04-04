@@ -109,6 +109,9 @@ class ProjectTest extends TestCase
         $this->assertSame($expectedResponse, $api->all());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

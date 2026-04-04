@@ -62,6 +62,9 @@ class SearchTest extends TestCase
         $this->assertSame($expectedResponse, $api->search('query'));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

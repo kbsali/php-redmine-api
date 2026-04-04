@@ -46,6 +46,9 @@ class CreateTest extends TestCase
         $this->assertSame($expectedReturn, $return);
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getCreateData(): array
     {
         return [
@@ -125,7 +128,7 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function incompleteCreateParameterProvider(): array
     {

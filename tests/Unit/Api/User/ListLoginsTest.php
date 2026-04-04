@@ -41,6 +41,9 @@ class ListLoginsTest extends TestCase
         $this->assertSame($expectedResponse, $api->listLogins());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getListLoginsData(): array
     {
         return [

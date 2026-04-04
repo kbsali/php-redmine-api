@@ -37,6 +37,9 @@ class RemoveWatcherTest extends TestCase
         $this->assertSame($response, $api->removeWatcher($issueId, $watcherUserId));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRemoveWatcherData(): array
     {
         return [

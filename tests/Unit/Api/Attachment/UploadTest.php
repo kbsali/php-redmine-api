@@ -39,6 +39,9 @@ class UploadTest extends TestCase
         $this->assertSame($expectedReturn, $api->upload($attachment, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getUploadData(): array
     {
         return [

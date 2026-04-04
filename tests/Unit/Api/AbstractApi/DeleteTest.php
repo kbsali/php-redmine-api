@@ -66,6 +66,9 @@ class DeleteTest extends TestCase
         $this->assertSame($expected, $return);
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getXmlDecodingFromDeleteMethodData(): array
     {
         return [

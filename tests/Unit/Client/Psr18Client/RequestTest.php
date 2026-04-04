@@ -67,6 +67,9 @@ class RequestTest extends TestCase
         $this->assertSame($content, $response->getContent());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRequestReponseData(): array
     {
         return [

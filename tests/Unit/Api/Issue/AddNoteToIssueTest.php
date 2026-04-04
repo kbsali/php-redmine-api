@@ -39,6 +39,9 @@ class AddNoteToIssueTest extends TestCase
         $this->assertSame('', $api->addNoteToIssue($id, $note, $isPrivate));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAddNoteToIssueData(): array
     {
         return [

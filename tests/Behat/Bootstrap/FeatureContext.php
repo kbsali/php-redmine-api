@@ -348,6 +348,9 @@ final class FeatureContext implements Context
         }
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function getLastReturnAsArray(): array
     {
         if (isset($this->lastReturnAsArray)) {

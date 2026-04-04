@@ -41,6 +41,9 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update($id, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getUpdateData(): array
     {
         return [
@@ -127,7 +130,7 @@ class UpdateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function incompleteUpdateParameterProvider(): array
     {

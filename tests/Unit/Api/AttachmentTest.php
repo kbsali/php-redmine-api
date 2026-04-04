@@ -94,7 +94,7 @@ class AttachmentTest extends TestCase
     /**
      * Data provider for response code and expected state.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function responseCodeProvider(): array
     {
