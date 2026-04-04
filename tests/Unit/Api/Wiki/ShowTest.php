@@ -13,6 +13,7 @@ class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
+     *
      * @param mixed $identifier
      * @param mixed $expectedReturn
      */

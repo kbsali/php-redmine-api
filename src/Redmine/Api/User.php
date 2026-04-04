@@ -126,7 +126,6 @@ class User extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see User::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
      *
      * @param array<mixed> $params to allow offset/limit (and more) to be passed

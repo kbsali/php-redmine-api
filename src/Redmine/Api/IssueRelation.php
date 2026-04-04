@@ -77,7 +77,6 @@ class IssueRelation extends AbstractApi
      *
      * @deprecated v2.4.0 Use listByIssueId() instead.
      * @see IssueRelation::listByIssueId()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueRelations#GET
      *
      * @param int          $issueId the issue id

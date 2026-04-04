@@ -13,6 +13,7 @@ class DownloadTest extends TestCase
 {
     /**
      * @dataProvider getDownloadData
+     *
      * @param mixed $id
      * @param mixed $expectedReturn
      */

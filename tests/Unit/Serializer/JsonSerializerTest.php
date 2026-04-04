@@ -64,6 +64,7 @@ class JsonSerializerTest extends TestCase
 
     /**
      * @param mixed $expected
+     *
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
@@ -193,6 +194,7 @@ class JsonSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
+     *
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
@@ -218,6 +220,7 @@ class JsonSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
+     *
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]

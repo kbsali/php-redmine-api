@@ -109,7 +109,6 @@ class Group extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see Group::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
      *
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)

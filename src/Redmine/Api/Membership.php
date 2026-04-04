@@ -87,7 +87,6 @@ class Membership extends AbstractApi
      *
      * @deprecated v2.4.0 Use listByProject() instead.
      * @see Membership::listByProject()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Memberships#GET
      *
      * @param string|int   $project project id or literal identifier

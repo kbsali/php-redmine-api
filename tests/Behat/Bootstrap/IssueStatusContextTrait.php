@@ -10,6 +10,7 @@ trait IssueStatusContextTrait
 {
     /**
      * @Given I have an issue status with the name :issueStatusName
+     *
      * @param mixed $issueStatusName
      */
     public function iHaveAnIssueStatusWithTheName($issueStatusName)

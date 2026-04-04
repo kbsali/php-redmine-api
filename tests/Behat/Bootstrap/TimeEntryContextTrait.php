@@ -31,6 +31,7 @@ trait TimeEntryContextTrait
 
     /**
      * @When I update the time entry with id :id and the following data
+     *
      * @param mixed $id
      */
     public function iUpdateTheTimeEntryWithIdAndTheFollowingData($id, TableNode $table)
@@ -66,6 +67,7 @@ trait TimeEntryContextTrait
 
     /**
      * @When I remove the time entry with id :activityId
+     *
      * @param mixed $activityId
      */
     public function iRemoveTheTimeEntryWithId($activityId)

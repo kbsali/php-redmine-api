@@ -81,6 +81,7 @@ class CustomFieldTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllData
+     *
      * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]

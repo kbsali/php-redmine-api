@@ -19,6 +19,7 @@ class ListNamesByProjectTest extends TestCase
 {
     /**
      * @dataProvider getListNamesByProjectData
+     *
      * @param mixed $projectIdentifier
      */
     #[DataProvider('getListNamesByProjectData')]
@@ -115,6 +116,7 @@ class ListNamesByProjectTest extends TestCase
 
     /**
      * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
+     *
      * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]

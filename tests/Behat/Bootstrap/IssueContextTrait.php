@@ -28,6 +28,7 @@ trait IssueContextTrait
 
     /**
      * @When I update the issue with id :issueId and the following data
+     *
      * @param mixed $issueId
      */
     public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table)
@@ -45,6 +46,7 @@ trait IssueContextTrait
 
     /**
      * @When I show the issue with id :issueId
+     *
      * @param mixed $issueId
      */
     public function iShowTheIssueWithId($issueId)
@@ -60,6 +62,7 @@ trait IssueContextTrait
 
     /**
      * @When I add the user id :userId as a watcher to the issue with id :issueId
+     *
      * @param mixed $userId
      * @param mixed $issueId
      */
@@ -76,6 +79,7 @@ trait IssueContextTrait
 
     /**
      * @When I remove the user id :userId as a watcher from the issue with id :issueId
+     *
      * @param mixed $userId
      * @param mixed $issueId
      */
@@ -92,6 +96,7 @@ trait IssueContextTrait
 
     /**
      * @When I remove the issue with id :issueId
+     *
      * @param mixed $issueId
      */
     public function iRemoveTheIssueWithId($issueId)

@@ -73,7 +73,6 @@ class IssuePriority extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see IssuePriority::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Enumerations#enumerationsissue_prioritiesformat
      *
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)

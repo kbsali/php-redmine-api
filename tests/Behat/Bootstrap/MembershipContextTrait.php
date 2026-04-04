@@ -11,6 +11,7 @@ trait MembershipContextTrait
 {
     /**
      * @When I create a membership to project with identifier :identifier and the following data
+     *
      * @param mixed $identifier
      */
     public function iCreateAMembershipToProjectWithIdentifierAndTheFollowingData($identifier, TableNode $table)
@@ -36,6 +37,7 @@ trait MembershipContextTrait
 
     /**
      * @When I update the membership with id :id and the following data
+     *
      * @param mixed $id
      */
     public function iUpdateTheMembershipWithIdAndTheFollowingData($id, TableNode $table)
@@ -61,6 +63,7 @@ trait MembershipContextTrait
 
     /**
      * @When I remove the membership with id :id
+     *
      * @param mixed $id
      */
     public function iRemoveTheMembershipWithId($id)
@@ -76,6 +79,7 @@ trait MembershipContextTrait
 
     /**
      * @When I remove the user with id :userId from the project with identifier :identifier
+     *
      * @param mixed $userId
      * @param mixed $identifier
      */

@@ -11,6 +11,7 @@ trait IssueCategoryContextTrait
 {
     /**
      * @Given I create :count issue categories for project identifier :identifier
+     *
      * @param mixed $identifier
      */
     public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier)
@@ -27,6 +28,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I create an issue category for project identifier :identifier and with the name :name
+     *
      * @param mixed $identifier
      * @param mixed $name
      */
@@ -42,6 +44,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I create an issue category for project identifier :identifier and with the following data
+     *
      * @param mixed $identifier
      */
     public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table)
@@ -63,6 +66,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I list all issue categories for project identifier :identifier
+     *
      * @param mixed $identifier
      */
     public function iListAllIssueCategoriesForProjectIdentifier($identifier)
@@ -78,6 +82,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I list all issue category names for project identifier :identifier
+     *
      * @param mixed $identifier
      */
     public function iListAllIssueCategoryNamesForProjectIdentifier($identifier)
@@ -93,6 +98,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I update the issue category with id :id and the following data
+     *
      * @param mixed $id
      */
     public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table)
@@ -114,6 +120,7 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I remove the issue category with id :id
+     *
      * @param mixed $id
      */
     public function iRemoveTheIssueCategoryWithId($id)

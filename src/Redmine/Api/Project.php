@@ -127,7 +127,6 @@ class Project extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see Project::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects
      *
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)

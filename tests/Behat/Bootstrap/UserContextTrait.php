@@ -93,6 +93,7 @@ trait UserContextTrait
 
     /**
      * @When I update the user with id :id and the following data
+     *
      * @param mixed $id
      */
     public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table)
@@ -114,6 +115,7 @@ trait UserContextTrait
 
     /**
      * @When I remove the user with id :userId
+     *
      * @param mixed $userId
      */
     public function iRemoveTheUserWithId($userId)

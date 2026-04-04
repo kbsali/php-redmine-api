@@ -140,7 +140,6 @@ class Issue extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see Issue::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
      * available $params :
      * - offset: skip this number of issues in response (optional)

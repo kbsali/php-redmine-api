@@ -21,6 +21,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
      * @dataProvider createdGetRequestsData
+     *
      * @param mixed $data
      */
     #[DataProvider('createdGetRequestsData')]

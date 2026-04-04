@@ -81,6 +81,7 @@ class IssueCategoryTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllDAta
+     *
      * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]

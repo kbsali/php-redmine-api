@@ -55,6 +55,7 @@ class PathSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $params
+     *
      * @dataProvider getPathData
      */
     #[DataProvider('getPathData')]

@@ -70,6 +70,7 @@ trait WikiContextTrait
 
     /**
      * @When I remove the wiki page with name :pageName and project identifier :identifier
+     *
      * @param mixed $pageName
      * @param mixed $identifier
      */

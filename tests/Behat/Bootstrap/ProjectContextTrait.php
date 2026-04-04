@@ -175,6 +175,7 @@ trait ProjectContextTrait
 
     /**
      * @When I remove the project with identifier :identifier
+     *
      * @param mixed $identifier
      */
     public function iRemoveTheProjectWithIdentifier($identifier)

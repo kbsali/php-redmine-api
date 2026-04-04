@@ -15,6 +15,7 @@ class XmlSerializerTest extends TestCase
 {
     /**
      * @param array<mixed> $expected
+     *
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
@@ -79,6 +80,7 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $expectedMessages
+     *
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
@@ -139,6 +141,7 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
+     *
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
@@ -328,6 +331,7 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
+     *
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]

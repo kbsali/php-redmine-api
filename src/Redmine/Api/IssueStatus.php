@@ -107,7 +107,6 @@ class IssueStatus extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see IssueStatus::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueStatuses#GET
      *
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
