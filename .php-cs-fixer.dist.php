@@ -9,13 +9,17 @@ $finder = \PhpCsFixer\Finder::create()
     ])
 ;
 
-return (new \PhpCsFixer\Config())->setRules([
+return (new \PhpCsFixer\Config())
+    ->setRules([
         '@PER-CS3x0' => true,
         '@PER-CS3x0:risky' => true,
         '@PHPUnit100Migration:risky' => true,
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'no_empty_phpdoc' => true,
+        'no_useless_return' => true,
+        'return_assignment' => true,
+        'simplified_null_return' => true,
         'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_indent' => true,
