@@ -5,7 +5,6 @@ namespace Redmine\Tests\Unit\Api\Search;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
-use Redmine\Client\Client;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 

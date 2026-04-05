@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\Group;
 

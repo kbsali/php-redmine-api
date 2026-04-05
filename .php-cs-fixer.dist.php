@@ -17,6 +17,7 @@ return (new \PhpCsFixer\Config())
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'no_empty_phpdoc' => true,
+        'no_unused_imports' => true,
         'no_useless_return' => true,
         'return_assignment' => true,
         'simplified_null_return' => true,
