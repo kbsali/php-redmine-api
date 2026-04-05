@@ -30,8 +30,8 @@ class IssueCategory extends AbstractApi
     }
 
     /**
-    * @var null|array<mixed>
-    */
+     * @var null|array<mixed>
+     */
     private ?array $issueCategories = null;
 
     /**
@@ -134,7 +134,6 @@ class IssueCategory extends AbstractApi
      *
      * @deprecated v2.4.0 Use listByProject() instead.
      * @see IssueCategory::listByProject()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_IssueCategories#GET
      *
      * @param string|int   $project project id or literal identifier

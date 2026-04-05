@@ -10,8 +10,10 @@ trait RoleContextTrait
 {
     /**
      * @Given I have a role with the name :name
+     *
+     * @param mixed $name
      */
-    public function iHaveARoleWithTheName($name)
+    public function iHaveARoleWithTheName($name): void
     {
         // support for creating issue status via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -34,7 +36,7 @@ trait RoleContextTrait
     /**
      * @When I list all roles
      */
-    public function iListAllRoles()
+    public function iListAllRoles(): void
     {
         /** @var Role */
         $api = $this->getNativeCurlClient()->getApi('role');
@@ -48,7 +50,7 @@ trait RoleContextTrait
     /**
      * @When I list all role names
      */
-    public function iListAllRoleNames()
+    public function iListAllRoleNames(): void
     {
         /** @var Role */
         $api = $this->getNativeCurlClient()->getApi('role');

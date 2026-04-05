@@ -41,6 +41,9 @@ class AddUserTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAddUserData(): array
     {
         return [

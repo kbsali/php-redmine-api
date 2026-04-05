@@ -12,7 +12,7 @@ trait IssueRelationContextTrait
     /**
      * @When I create an issue relation for issue id :issueId with the following data
      */
-    public function iCreateAnIssueRelationForIssueIdWithTheFollowingData(int $issueId, TableNode $table)
+    public function iCreateAnIssueRelationForIssueIdWithTheFollowingData(int $issueId, TableNode $table): void
     {
         $data = [];
 
@@ -31,8 +31,10 @@ trait IssueRelationContextTrait
 
     /**
      * @When I delete the issue relation with the id :relationId
+     *
+     * @param mixed $relationId
      */
-    public function iDeleteTheIssueRelationWithTheId($relationId)
+    public function iDeleteTheIssueRelationWithTheId($relationId): void
     {
         /** @var IssueRelation */
         $api = $this->getNativeCurlClient()->getApi('issue_relation');

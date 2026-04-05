@@ -13,6 +13,9 @@ class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
+     *
+     * @param mixed $id
+     * @param mixed $expectedReturn
      */
     #[DataProvider('getShowData')]
     public function testShowReturnsCorrectResponse($id, string $expectedPath, string $response, $expectedReturn): void
@@ -37,6 +40,9 @@ class ShowTest extends TestCase
         $this->assertSame($expectedReturn, $api->show($id));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getShowData(): array
     {
         return [
@@ -46,8 +52,7 @@ class ShowTest extends TestCase
                 '["API Response"]',
                 ['API Response'],
             ],
-            'array response with string id' =>
-            [
+            'array response with string id' => [
                 '5',
                 '/attachments/5.json',
                 '["API Response"]',

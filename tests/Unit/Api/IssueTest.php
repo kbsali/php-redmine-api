@@ -59,6 +59,9 @@ class IssueTest extends TestCase
         new Issue($this->createStub(HttpClient::class));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getPriorityConstantsData(): array
     {
         return [
@@ -109,6 +112,8 @@ class IssueTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllData
+     *
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
@@ -133,6 +138,9 @@ class IssueTest extends TestCase
         $this->assertSame($expectedResponse, $api->all());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

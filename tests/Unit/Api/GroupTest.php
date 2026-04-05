@@ -83,6 +83,8 @@ class GroupTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllData
+     *
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
@@ -107,6 +109,9 @@ class GroupTest extends TestCase
         $this->assertSame($expectedResponse, $api->all());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

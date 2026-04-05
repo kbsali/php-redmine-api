@@ -16,6 +16,8 @@ class CreateTest extends TestCase
 {
     /**
      * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
     public function testCreateReturnsCorrectResponse(int $id, string $page, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
@@ -43,6 +45,9 @@ class CreateTest extends TestCase
         $this->assertXmlStringEqualsXmlString($response, $return->asXml());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getCreateData(): array
     {
         return [

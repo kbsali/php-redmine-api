@@ -8,6 +8,9 @@ use stdClass;
 
 final class TestDataProvider
 {
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getInvalidProjectIdentifiers(): array
     {
         return [

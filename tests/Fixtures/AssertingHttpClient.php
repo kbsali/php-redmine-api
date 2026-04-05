@@ -6,7 +6,6 @@ namespace Redmine\Tests\Fixtures;
 
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
-use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Request;
@@ -19,6 +18,10 @@ use Redmine\Http\Response;
  */
 final class AssertingHttpClient implements HttpClient
 {
+    /**
+     * @param array<mixed> $dataSet
+     * @param array<array<mixed>> $dataSets
+     */
     public static function create(TestCase $testCase, array $dataSet, ...$dataSets): self
     {
         $dataSets = array_merge([$dataSet], $dataSets);

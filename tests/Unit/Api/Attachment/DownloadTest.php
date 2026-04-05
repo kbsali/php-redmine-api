@@ -13,6 +13,9 @@ class DownloadTest extends TestCase
 {
     /**
      * @dataProvider getDownloadData
+     *
+     * @param mixed $id
+     * @param mixed $expectedReturn
      */
     #[DataProvider('getDownloadData')]
     public function testDownloadReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response, $expectedReturn): void
@@ -37,6 +40,9 @@ class DownloadTest extends TestCase
         $this->assertSame($expectedReturn, $api->download($id));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getDownloadData(): array
     {
         return [

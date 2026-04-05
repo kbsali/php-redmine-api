@@ -81,6 +81,8 @@ class WikiTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllData
+     *
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
@@ -105,6 +107,9 @@ class WikiTest extends TestCase
         $this->assertSame($expectedResponse, $api->all(5));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

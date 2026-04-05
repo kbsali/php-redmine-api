@@ -47,6 +47,8 @@ class GetTest extends TestCase
 
     /**
      * @dataProvider getJsonDecodingFromGetMethodData
+     *
+     * @param mixed $expected
      */
     #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, $expected): void
@@ -70,6 +72,9 @@ class GetTest extends TestCase
         }
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getJsonDecodingFromGetMethodData(): array
     {
         return [
@@ -131,6 +136,9 @@ class GetTest extends TestCase
         $this->assertXmlStringEqualsXmlString($expected, $return->asXML());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getXmlDecodingFromGetMethodData(): array
     {
         return [

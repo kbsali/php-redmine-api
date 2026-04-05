@@ -13,9 +13,11 @@ class RemoveTest extends TestCase
 {
     /**
      * @dataProvider getRemoveData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getRemoveData')]
-    public function testRemoveReturnsCorrectResponse(int $issueId, array $params, string $expectedPath, int $responseCode, string $response): void
+    public function testRemoveReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -34,9 +36,12 @@ class RemoveTest extends TestCase
         $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($response, $api->remove($issueId, $params));
+        $this->assertSame($response, $api->remove($issueId, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRemoveData(): array
     {
         return [

@@ -19,6 +19,9 @@ class ListNamesByProjectTest extends TestCase
 {
     /**
      * @dataProvider getListNamesByProjectData
+     *
+     * @param string|int $projectIdentifier
+     * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesByProjectData')]
     public function testListNamesByProjectReturnsCorrectResponse($projectIdentifier, string $expectedPath, int $responseCode, string $response, array $expectedResponse): void
@@ -43,6 +46,9 @@ class ListNamesByProjectTest extends TestCase
         $this->assertSame($expectedResponse, $api->listNamesByProject($projectIdentifier));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getListNamesByProjectData(): array
     {
         return [
@@ -114,6 +120,8 @@ class ListNamesByProjectTest extends TestCase
 
     /**
      * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
+     *
+     * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]
     public function testListNamesByProjectWithWrongProjectIdentifierThrowsException($projectIdentifier): void

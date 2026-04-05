@@ -6,7 +6,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
-use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -94,7 +93,7 @@ class AttachmentTest extends TestCase
     /**
      * Data provider for response code and expected state.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function responseCodeProvider(): array
     {

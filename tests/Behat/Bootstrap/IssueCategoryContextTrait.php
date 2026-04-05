@@ -11,8 +11,10 @@ trait IssueCategoryContextTrait
 {
     /**
      * @Given I create :count issue categories for project identifier :identifier
+     *
+     * @param mixed $identifier
      */
-    public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier)
+    public function iCreateIssueCategoriesForProjectIdentifier(int $count, $identifier): void
     {
         while ($count > 0) {
             $this->iCreateAnIssueCategoryForProjectIdentifierAndWithTheName(
@@ -26,8 +28,11 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I create an issue category for project identifier :identifier and with the name :name
+     *
+     * @param mixed $identifier
+     * @param mixed $name
      */
-    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name)
+    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheName($identifier, $name): void
     {
         $table = new TableNode([
             ['property', 'value'],
@@ -39,8 +44,10 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I create an issue category for project identifier :identifier and with the following data
+     *
+     * @param mixed $identifier
      */
-    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table)
+    public function iCreateAnIssueCategoryForProjectIdentifierAndWithTheFollowingData($identifier, TableNode $table): void
     {
         $data = [];
 
@@ -59,8 +66,10 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I list all issue categories for project identifier :identifier
+     *
+     * @param mixed $identifier
      */
-    public function iListAllIssueCategoriesForProjectIdentifier($identifier)
+    public function iListAllIssueCategoriesForProjectIdentifier($identifier): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
@@ -73,8 +82,10 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I list all issue category names for project identifier :identifier
+     *
+     * @param mixed $identifier
      */
-    public function iListAllIssueCategoryNamesForProjectIdentifier($identifier)
+    public function iListAllIssueCategoryNamesForProjectIdentifier($identifier): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
@@ -87,8 +98,10 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I update the issue category with id :id and the following data
+     *
+     * @param mixed $id
      */
-    public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table)
+    public function iUpdateTheIssueCategoryWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
 
@@ -107,8 +120,10 @@ trait IssueCategoryContextTrait
 
     /**
      * @When I remove the issue category with id :id
+     *
+     * @param mixed $id
      */
-    public function iRemoveTheIssueCategoryWithId($id)
+    public function iRemoveTheIssueCategoryWithId($id): void
     {
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');

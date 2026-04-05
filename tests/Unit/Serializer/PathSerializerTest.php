@@ -12,6 +12,9 @@ use Redmine\Serializer\PathSerializer;
 #[CoversClass(PathSerializer::class)]
 class PathSerializerTest extends TestCase
 {
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getPathData(): array
     {
         return [
@@ -51,6 +54,8 @@ class PathSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $params
+     *
      * @dataProvider getPathData
      */
     #[DataProvider('getPathData')]

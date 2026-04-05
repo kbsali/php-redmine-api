@@ -10,8 +10,10 @@ trait IssueStatusContextTrait
 {
     /**
      * @Given I have an issue status with the name :issueStatusName
+     *
+     * @param mixed $issueStatusName
      */
-    public function iHaveAnIssueStatusWithTheName($issueStatusName)
+    public function iHaveAnIssueStatusWithTheName($issueStatusName): void
     {
         // support for creating issue status via REST API is missing
         $this->redmine->excecuteDatabaseQuery(
@@ -28,7 +30,7 @@ trait IssueStatusContextTrait
     /**
      * @When I list all issue statuses
      */
-    public function iListAllIssueStatuses()
+    public function iListAllIssueStatuses(): void
     {
         /** @var IssueStatus */
         $api = $this->getNativeCurlClient()->getApi('issue_status');
@@ -42,7 +44,7 @@ trait IssueStatusContextTrait
     /**
      * @When I list all issue status names
      */
-    public function iListAllIssueStatusNames()
+    public function iListAllIssueStatusNames(): void
     {
         /** @var IssueStatus */
         $api = $this->getNativeCurlClient()->getApi('issue_status');

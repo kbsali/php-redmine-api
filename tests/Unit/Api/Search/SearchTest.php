@@ -6,7 +6,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Search;
-use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -36,6 +35,8 @@ class SearchTest extends TestCase
 
     /**
      * @dataProvider getAllData
+     *
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testSearchReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
@@ -60,6 +61,9 @@ class SearchTest extends TestCase
         $this->assertSame($expectedResponse, $api->search('query'));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

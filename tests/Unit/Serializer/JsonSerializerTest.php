@@ -13,6 +13,9 @@ use Redmine\Serializer\JsonSerializer;
 #[CoversClass(JsonSerializer::class)]
 class JsonSerializerTest extends TestCase
 {
+    /**
+     * @return array<mixed>
+     */
     public static function getEncodedToNormalizedData(): array
     {
         return [
@@ -60,6 +63,8 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
+     * @param mixed $expected
+     *
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
@@ -70,6 +75,9 @@ class JsonSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
+    /**
+     * @return array<array<string>>
+     */
     public static function getInvalidEncodedData(): array
     {
         return [
@@ -97,6 +105,9 @@ class JsonSerializerTest extends TestCase
         JsonSerializer::createFromString($data);
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getNormalizedToEncodedData(): array
     {
         return [
@@ -182,6 +193,8 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
@@ -192,6 +205,9 @@ class JsonSerializerTest extends TestCase
         $this->assertJsonStringEqualsJsonString($expected, $serializer->__toString());
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getInvalidSerializedData(): array
     {
         return [
@@ -203,6 +219,8 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]

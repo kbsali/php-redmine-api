@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\Issue;
 
@@ -13,7 +12,7 @@ trait IssueContextTrait
     /**
      * @When I create an issue with the following data
      */
-    public function iCreateAnIssueWithTheFollowingData(TableNode $table)
+    public function iCreateAnIssueWithTheFollowingData(TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
 
@@ -28,8 +27,10 @@ trait IssueContextTrait
 
     /**
      * @When I update the issue with id :issueId and the following data
+     *
+     * @param mixed $issueId
      */
-    public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table)
+    public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
 
@@ -44,8 +45,10 @@ trait IssueContextTrait
 
     /**
      * @When I show the issue with id :issueId
+     *
+     * @param mixed $issueId
      */
-    public function iShowTheIssueWithId($issueId)
+    public function iShowTheIssueWithId($issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -58,8 +61,11 @@ trait IssueContextTrait
 
     /**
      * @When I add the user id :userId as a watcher to the issue with id :issueId
+     *
+     * @param mixed $userId
+     * @param mixed $issueId
      */
-    public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId)
+    public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -72,8 +78,11 @@ trait IssueContextTrait
 
     /**
      * @When I remove the user id :userId as a watcher from the issue with id :issueId
+     *
+     * @param mixed $userId
+     * @param mixed $issueId
      */
-    public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId)
+    public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -86,8 +95,10 @@ trait IssueContextTrait
 
     /**
      * @When I remove the issue with id :issueId
+     *
+     * @param mixed $issueId
      */
-    public function iRemoveTheIssueWithId($issueId)
+    public function iRemoveTheIssueWithId($issueId): void
     {
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
@@ -98,6 +109,9 @@ trait IssueContextTrait
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function prepareIssueData(TableNode $table): array
     {
         $data = [];

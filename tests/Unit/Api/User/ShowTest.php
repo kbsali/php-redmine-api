@@ -13,9 +13,13 @@ class ShowTest extends TestCase
 {
     /**
      * @dataProvider getShowData
+     *
+     * @param int|string $userId
+     * @param array<mixed> $parameters
+     * @param mixed $expectedReturn
      */
     #[DataProvider('getShowData')]
-    public function testShowReturnsCorrectResponse($userId, array $params, string $expectedPath, string $response, $expectedReturn): void
+    public function testShowReturnsCorrectResponse($userId, array $parameters, string $expectedPath, string $response, $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -34,9 +38,12 @@ class ShowTest extends TestCase
         $api = User::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->show($userId, $params));
+        $this->assertSame($expectedReturn, $api->show($userId, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getShowData(): array
     {
         return [

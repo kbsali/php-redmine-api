@@ -14,6 +14,8 @@ use Redmine\Serializer\XmlSerializer;
 class XmlSerializerTest extends TestCase
 {
     /**
+     * @param array<mixed> $expected
+     *
      * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
@@ -24,6 +26,9 @@ class XmlSerializerTest extends TestCase
         $this->assertSame($expected, $serializer->getNormalized());
     }
 
+    /**
+     * @return array<string,array<mixed>>
+     */
     public static function getEncodedToNormalizedData(): array
     {
         return [
@@ -74,6 +79,8 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $expectedMessages
+     *
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
@@ -87,6 +94,9 @@ class XmlSerializerTest extends TestCase
         }
     }
 
+    /**
+     * @return array<string,array<mixed>>
+     */
     public static function getInvalidEncodedData(): array
     {
         return [
@@ -130,6 +140,8 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
@@ -140,6 +152,9 @@ class XmlSerializerTest extends TestCase
         $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
     }
 
+    /**
+     * @return array<string,array<mixed>>
+     */
     public static function getNormalizedToEncodedData(): array
     {
         return [
@@ -315,6 +330,8 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $data
+     *
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
@@ -326,6 +343,9 @@ class XmlSerializerTest extends TestCase
         XmlSerializer::createFromArray($data);
     }
 
+    /**
+     * @return array<string,array<mixed>>
+     */
     public static function getInvalidSerializedData(): array
     {
         return [

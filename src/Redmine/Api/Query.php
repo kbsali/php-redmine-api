@@ -73,7 +73,6 @@ class Query extends AbstractApi
      *
      * @deprecated v2.4.0 Use list() instead.
      * @see Query::list()
-     *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Queries#GET
      *
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)

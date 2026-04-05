@@ -81,6 +81,8 @@ class IssueCategoryTest extends TestCase
      * Test all().
      *
      * @dataProvider getAllDAta
+     *
+     * @param mixed $expectedResponse
      */
     #[DataProvider('getAllData')]
     public function testAllReturnsClientGetResponseWithProject(string $response, string $responseType, $expectedResponse): void
@@ -108,6 +110,9 @@ class IssueCategoryTest extends TestCase
         $this->assertSame($expectedResponse, $api->all($projectId));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getAllData(): array
     {
         return [

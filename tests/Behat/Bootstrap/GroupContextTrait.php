@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Tests\Behat\Bootstrap;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Redmine\Api\Group;
 
@@ -13,7 +12,7 @@ trait GroupContextTrait
     /**
      * @When I create a group with name :groupName
      */
-    public function iCreateAGroupWithName(string $groupName)
+    public function iCreateAGroupWithName(string $groupName): void
     {
         $table = new TableNode([
             ['property', 'value'],
@@ -26,7 +25,7 @@ trait GroupContextTrait
     /**
      * @When I create a group with the following data
      */
-    public function iCreateAGroupWithTheFollowingData(TableNode $table)
+    public function iCreateAGroupWithTheFollowingData(TableNode $table): void
     {
         $data = [];
 
@@ -46,7 +45,7 @@ trait GroupContextTrait
     /**
      * @When I list all groups
      */
-    public function iListAllGroups()
+    public function iListAllGroups(): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -60,7 +59,7 @@ trait GroupContextTrait
     /**
      * @When I list the names of all groups
      */
-    public function iListTheNamesOfAllGroups()
+    public function iListTheNamesOfAllGroups(): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -74,7 +73,7 @@ trait GroupContextTrait
     /**
      * @When I show the group with id :groupId
      */
-    public function iShowTheGroupWithId(int $groupId)
+    public function iShowTheGroupWithId(int $groupId): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -88,7 +87,7 @@ trait GroupContextTrait
     /**
      * @When I update the group with id :groupId with the following data
      */
-    public function iUpdateTheGroupWithIdWithTheFollowingData(int $groupId, TableNode $table)
+    public function iUpdateTheGroupWithIdWithTheFollowingData(int $groupId, TableNode $table): void
     {
         $data = [];
 
@@ -107,8 +106,11 @@ trait GroupContextTrait
 
     /**
      * @When I add the user with id :userId to the group with id :groupId
+     *
+     * @param mixed $userId
+     * @param mixed $groupId
      */
-    public function iAddTheUserWithIdToTheGroupWithId($userId, $groupId)
+    public function iAddTheUserWithIdToTheGroupWithId($userId, $groupId): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -121,8 +123,11 @@ trait GroupContextTrait
 
     /**
      * @When I remove the user with id :userId from the group with id :groupId
+     *
+     * @param mixed $userId
+     * @param mixed $groupId
      */
-    public function iRemoveTheUserWithIdFromTheGroupWithId($userId, $groupId)
+    public function iRemoveTheUserWithIdFromTheGroupWithId($userId, $groupId): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
@@ -135,8 +140,10 @@ trait GroupContextTrait
 
     /**
      * @When I remove the group with id :groupId
+     *
+     * @param mixed $groupId
      */
-    public function iRemoveTheGroupWithId($groupId)
+    public function iRemoveTheGroupWithId($groupId): void
     {
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');

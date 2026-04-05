@@ -12,7 +12,7 @@ trait AttachmentContextTrait
     /**
      * @When I upload the content of the file :filepath with the following data
      */
-    public function iUploadTheContentOfTheFileWithTheFollowingData(string $filepath, TableNode $table)
+    public function iUploadTheContentOfTheFileWithTheFollowingData(string $filepath, TableNode $table): void
     {
         $data = [];
 
@@ -34,7 +34,7 @@ trait AttachmentContextTrait
     /**
      * @When I update the attachment with the id :attachmentId with the following data
      */
-    public function iUpdateTheAttachmentWithTheIdWithTheFollowingData(int $attachmentId, TableNode $table)
+    public function iUpdateTheAttachmentWithTheIdWithTheFollowingData(int $attachmentId, TableNode $table): void
     {
         $data = [];
 
@@ -54,7 +54,7 @@ trait AttachmentContextTrait
     /**
      * @When I show the attachment with the id :attachmentId
      */
-    public function iShowTheAttachmentWithTheId(int $attachmentId)
+    public function iShowTheAttachmentWithTheId(int $attachmentId): void
     {
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
@@ -68,7 +68,7 @@ trait AttachmentContextTrait
     /**
      * @When I download the attachment with the id :attachmentId
      */
-    public function iDownloadTheAttachmentWithTheId(int $attachmentId)
+    public function iDownloadTheAttachmentWithTheId(int $attachmentId): void
     {
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
@@ -81,8 +81,10 @@ trait AttachmentContextTrait
 
     /**
      * @When I remove the attachment with the id :attachmentId
+     *
+     * @param mixed $attachmentId
      */
-    public function iRemoveTheAttachmentWithTheId($attachmentId)
+    public function iRemoveTheAttachmentWithTheId($attachmentId): void
     {
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');

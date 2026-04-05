@@ -15,6 +15,8 @@ class UpdateTest extends TestCase
 {
     /**
      * @dataProvider getUpdateData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
     public function testUpdateReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
@@ -39,6 +41,9 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update($id, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getUpdateData(): array
     {
         return [
@@ -103,6 +108,8 @@ class UpdateTest extends TestCase
 
     /**
      * @dataProvider incompleteUpdateParameterProvider
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteUpdateParameterProvider')]
     public function testUpdateThrowsExceptionIfMandatoyParametersAreMissing(array $parameters): void
@@ -123,7 +130,7 @@ class UpdateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array[]
+     * @return array<array<mixed>>
      */
     public static function incompleteUpdateParameterProvider(): array
     {

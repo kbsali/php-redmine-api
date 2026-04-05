@@ -60,7 +60,10 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runGet($path)
+            /**
+             * @return mixed
+             */
+            public function runGet(string $path)
             {
                 return $this->get($path);
             }
@@ -97,7 +100,12 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runPost($path, $data)
+            /**
+             * @param mixed $data
+             *
+             * @return mixed
+             */
+            public function runPost(string $path, $data)
             {
                 return $this->post($path, $data);
             }
@@ -125,7 +133,12 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runPut($path, $data)
+            /**
+             * @param mixed $data
+             *
+             * @return mixed
+             */
+            public function runPut(string $path, $data)
             {
                 return $this->put($path, $data);
             }
@@ -153,7 +166,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(HttpClient::class);
 
         $api = new class ($client) extends AbstractApi {
-            public function runDelete($path)
+            public function runDelete(string $path): string
             {
                 return $this->delete($path);
             }
@@ -178,6 +191,8 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
+     *
+     * @param mixed $value
      */
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
     public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value): void
@@ -194,6 +209,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, $value));
     }
 
+    /**
+     * @return array<array{bool, mixed}>
+     */
     public static function getIsNotNullReturnsCorrectBooleanData(): array
     {
         return [
@@ -296,6 +314,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expectedBoolean, $api->lastCallFailed());
     }
 
+    /**
+     * @return array<array{int, bool}>
+     */
     public static function getLastCallFailedData(): array
     {
         return [
@@ -369,6 +390,8 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider retrieveDataData
+     *
+     * @param array<mixed> $expected
      */
     #[DataProvider('retrieveDataData')]
     public function testRetrieveData(string $path, string $contentType, string $response, array $expected): void
@@ -388,6 +411,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, $path));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function retrieveDataData(): array
     {
         return [
@@ -476,6 +502,9 @@ class AbstractApiTest extends TestCase
         $method->invoke($api, '/issues.json');
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRetrieveDataToExceptionData(): array
     {
         return [
@@ -485,6 +514,8 @@ class AbstractApiTest extends TestCase
 
     /**
      * @dataProvider getRetrieveAllData
+     *
+     * @param mixed $expected
      */
     #[DataProvider('getRetrieveAllData')]
     public function testDeprecatedRetrieveAll(string $content, string $contentType, $expected): void
@@ -504,6 +535,9 @@ class AbstractApiTest extends TestCase
         $this->assertSame($expected, $method->invoke($api, ''));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getRetrieveAllData(): array
     {
         return [

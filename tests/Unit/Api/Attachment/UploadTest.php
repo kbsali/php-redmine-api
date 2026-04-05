@@ -13,9 +13,11 @@ class UploadTest extends TestCase
 {
     /**
      * @dataProvider getUploadData
+     *
+     * @param array<mixed> $parameters
      */
     #[DataProvider('getUploadData')]
-    public function testUploadReturnsCorrectResponse(string $attachment, array $params, string $expectedAttachment, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
+    public function testUploadReturnsCorrectResponse(string $attachment, array $parameters, string $expectedAttachment, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -34,9 +36,12 @@ class UploadTest extends TestCase
         $api = Attachment::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->upload($attachment, $params));
+        $this->assertSame($expectedReturn, $api->upload($attachment, $parameters));
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function getUploadData(): array
     {
         return [
