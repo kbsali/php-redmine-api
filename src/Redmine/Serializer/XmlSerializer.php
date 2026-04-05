@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Serializer;
 
+use Exception;
 use JsonException;
 use Redmine\Exception\SerializerException;
 use SimpleXMLElement;
 use Stringable;
-use Throwable;
 
 /**
  * XmlSerializer.
@@ -75,7 +77,7 @@ final class XmlSerializer implements Stringable
 
         try {
             $this->deserialized = new SimpleXMLElement($encoded);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $errors = [];
             $code = $e->getCode();
 
@@ -123,8 +125,8 @@ final class XmlSerializer implements Stringable
         $prevSetting = libxml_use_internal_errors(true);
 
         try {
-            $this->deserialized = $this->createXmlElement($rootElementName, $this->normalized[$rootElementName]);
-        } catch (Throwable $e) {
+            $this->deserialized = $this->createXmlElement((string) $rootElementName, $this->normalized[$rootElementName]);
+        } catch (Exception $e) {
             $errors = [];
 
             foreach (libxml_get_errors() as $error) {
@@ -196,7 +198,7 @@ final class XmlSerializer implements Stringable
             $array = $xml->addChild($k, '');
             $array->addAttribute('type', 'array');
             foreach ($v as $id) {
-                $array->addChild($specialParams[$k], $id);
+                $array->addChild($specialParams[$k], (string) $id);
             }
         } elseif (is_array($v)) {
             $array = $xml->addChild($k, '');
@@ -231,7 +233,7 @@ final class XmlSerializer implements Stringable
                 $_field->addAttribute('field_format', $field['field_format']);
             }
             if (isset($field['id'])) {
-                $_field->addAttribute('id', $field['id']);
+                $_field->addAttribute('id', strval($field['id']));
             }
             if (array_key_exists('value', $field) && is_array($field['value'])) {
                 $_field->addAttribute('multiple', 'true');
@@ -243,7 +245,7 @@ final class XmlSerializer implements Stringable
                 } else {
                     $_values->addAttribute('type', 'array');
                     foreach ($field['value'] as $val) {
-                        $_values->addChild('value', $val);
+                        $_values->addChild('value', (string) $val);
                     }
                 }
             } else {

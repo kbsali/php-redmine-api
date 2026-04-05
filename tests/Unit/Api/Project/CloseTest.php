@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Tests\Unit\Api\Project;
 
 use InvalidArgumentException;

@@ -14,6 +14,7 @@ return (new \PhpCsFixer\Config())
         '@PER-CS3x0' => true,
         '@PER-CS3x0:risky' => true,
         '@PHPUnit100Migration:risky' => true,
+        'declare_strict_types' => true,
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'no_empty_phpdoc' => true,
