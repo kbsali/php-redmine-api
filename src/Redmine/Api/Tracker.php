@@ -149,7 +149,7 @@ class Tracker extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        return $this->doListing($forceUpdate);
+        return $this->doListing((bool) $forceUpdate);
     }
 
     /**

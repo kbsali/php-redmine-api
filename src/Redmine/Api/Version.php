@@ -179,7 +179,7 @@ class Version extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
 
-        return $this->doListing($project, $forceUpdate, $reverse, $params);
+        return $this->doListing($project, (bool) $forceUpdate, $reverse, $params);
     }
 
     /**

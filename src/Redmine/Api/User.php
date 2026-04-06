@@ -170,7 +170,7 @@ class User extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
 
-        return $this->doListing($forceUpdate, $params);
+        return $this->doListing((bool) $forceUpdate, $params);
     }
 
     /**

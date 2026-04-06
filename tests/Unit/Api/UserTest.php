@@ -352,7 +352,8 @@ class UserTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(true));
-        $this->assertSame($expectedReturn, $api->listing(true));
+        // @phpstan-ignore argument.type(Test casting int to bool)
+        $this->assertSame($expectedReturn, $api->listing(1));
     }
 
     /**

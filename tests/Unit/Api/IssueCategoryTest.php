@@ -259,7 +259,8 @@ class IssueCategoryTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(5, true));
-        $this->assertSame($expectedReturn, $api->listing(5, true));
+        // @phpstan-ignore argument.type(Test casting int to bool)
+        $this->assertSame($expectedReturn, $api->listing(5, 1));
     }
 
     /**
