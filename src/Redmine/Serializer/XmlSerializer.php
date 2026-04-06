@@ -77,7 +77,7 @@ final class XmlSerializer implements Stringable
 
         try {
             $this->deserialized = new SimpleXMLElement($encoded);
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             $errors = [];
             $code = $e->getCode();
 
@@ -126,7 +126,7 @@ final class XmlSerializer implements Stringable
 
         try {
             $this->deserialized = $this->createXmlElement((string) $rootElementName, $this->normalized[$rootElementName]);
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             $errors = [];
 
             foreach (libxml_get_errors() as $error) {
