@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
@@ -84,7 +86,7 @@ class Search extends AbstractApi
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByQuery()` instead.', E_USER_DEPRECATED);
 
         try {
-            $results = $this->listByQuery($query, $params);
+            $results = $this->listByQuery((string) $query, $params);
         } catch (Exception $e) {
             if ($this->getLastResponse()->getContent() === '') {
                 return false;

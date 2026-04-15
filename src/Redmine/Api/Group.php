@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
@@ -275,7 +277,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/groups/' . $id . '.xml',
+            '/groups/' . strval($id) . '.xml',
         ));
 
         return $this->lastResponse->getContent();
@@ -295,7 +297,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
-            '/groups/' . $id . '/users.xml',
+            '/groups/' . strval($id) . '/users.xml',
             XmlSerializer::createFromArray(['user_id' => $userId])->getEncoded(),
         ));
 
@@ -322,7 +324,7 @@ class Group extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/groups/' . $id . '/users/' . $userId . '.xml',
+            '/groups/' . strval($id) . '/users/' . strval($userId) . '.xml',
         ));
 
         return $this->lastResponse->getContent();

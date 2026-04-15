@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Tests\Unit\Api\Search;
 
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -84,7 +86,7 @@ class SearchTest extends TestCase
             $this,
             [
                 'GET',
-                '/search.json?limit=25&offset=0&0=not-used&q=query',
+                '/search.json?limit=25&offset=0&0=not-used&q=12345',
                 'application/json',
                 '',
                 200,
@@ -96,7 +98,7 @@ class SearchTest extends TestCase
         // Create the object under test
         $api = Search::fromHttpClient($client);
 
-        // Perform the tests
-        $this->assertSame($expectedReturn, $api->search('query', $parameters));
+        // @phpstan-ignore argument.type(Test casting int to string)
+        $this->assertSame($expectedReturn, $api->search(12345, $parameters));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -253,7 +255,8 @@ class TrackerTest extends TestCase
 
         // Perform the tests
         $this->assertSame($expectedReturn, $api->listing(true));
-        $this->assertSame($expectedReturn, $api->listing(true));
+        // @phpstan-ignore argument.type(Test casting int to bool)
+        $this->assertSame($expectedReturn, $api->listing(1));
     }
 
     /**

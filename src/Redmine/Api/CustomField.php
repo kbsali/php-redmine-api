@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
@@ -149,7 +151,7 @@ class CustomField extends AbstractApi
     {
         @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
 
-        return $this->doListing($forceUpdate, $params);
+        return $this->doListing((bool) $forceUpdate, $params);
     }
 
     /**
