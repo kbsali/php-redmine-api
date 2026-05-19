@@ -93,8 +93,14 @@ jobs:
       - name: Fix permissions
         run: sudo chmod -R 777 .docker/redmine-*_data/
 
-      - name: Run behat
-        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_1
+      - name: Run behat [Redmine 6.1]
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_6_1
+
+      - name: Run behat [Redmine 6.0]
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_6_0
+
+      - name: Run behat [Redmine 5.1]
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_5_1
 
       - name: Cleanup
         if: always()
