@@ -29,14 +29,17 @@ github-actions:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.1.1'
-                    rootPath: '/home/runner/work/_temp'
+                    rootPath: '%paths.base%/../../.docker'
+                    redmineUrl: 'http://localhost:5061'
         redmine_6_0:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.0.8'
-                    rootPath: '/home/runner/work/_temp'
+                    rootPath: '%paths.base%/../../.docker'
+                    redmineUrl: 'http://localhost:5060'
         redmine_5_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.1.11'
-                    rootPath: '/home/runner/work/_temp'
+                    rootPath: '%paths.base%/../../.docker'
+                    redmineUrl: 'http://localhost:5051'

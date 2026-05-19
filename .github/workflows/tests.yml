@@ -37,53 +37,65 @@ jobs:
       - name: Run tests
         run: composer run phpunit -- --no-coverage
 
-  # This does not work
-  # behat:
-  #   name: Tests (Behat with PHP ${{ matrix.php }})
-  #   runs-on: ubuntu-latest
+  behat:
+    name: Tests (Behat with PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
 
-  #   services:
-  #     redmine-6-0:
-  #       image: redmine:6.0.7
-  #       ports:
-  #           - "5060:3000"
-  #       env:
-  #           # Workaround: Remove secret for Rails 7.2 so it will be generated automatically
-  #           # @see https://github.com/docker-library/redmine/issues/349#issuecomment-2516634932
-  #           # REDMINE_SECRET_KEY_BASE: supersecretkey
-  #           REDMINE_PLUGINS_MIGRATE: true
-  #       volumes:
-  #           - /home/runner/work/_temp/redmine-60007_data/files:/usr/src/redmine/files
-  #           - /home/runner/work/_temp/redmine-60007_data/sqlite:/usr/src/redmine/sqlite
-  #       options: --health-cmd="wget -O /dev/null http://localhost:3000" --health-start-period=30s --health-interval=30s --health-timeout=30s --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php: ["8.3"]
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       operating-system: ["ubuntu-latest"]
-  #       php: ["8.3"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 2
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpunit
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, curl
+          coverage: xdebug
 
-  #     - name: Setup PHP, with composer and extensions
-  #       uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
-  #       with:
-  #         php-version: ${{ matrix.php }}
-  #         tools: phpunit
-  #         extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite
-  #         coverage: xdebug
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
 
-  #     # Install composer dependencies and handle caching in one go.
-  #     # @link https://github.com/marketplace/actions/install-composer-dependencies
-  #     - name: "Install Composer dependencies"
-  #       uses: "ramsey/composer-install@v2"
+      - name: Create data directories
+        run: |
+          mkdir -p .docker/redmine-60101_data/{files,sqlite}
+          mkdir -p .docker/redmine-60008_data/{files,sqlite}
+          mkdir -p .docker/redmine-50111_data/{files,sqlite}
+          chmod -R 777 .docker/redmine-*_data/
 
-  #     - name: Run behat
-  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_0
+      - name: Start Redmine containers
+        run: docker compose up -d redmine-6-1 redmine-6-0 redmine-5-1
+
+      - name: Wait for Redmine instances to be healthy
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:5061 > /dev/null 2>&1 && \
+               curl -sf http://localhost:5060 > /dev/null 2>&1 && \
+               curl -sf http://localhost:5051 > /dev/null 2>&1; then
+              echo "All Redmine instances are ready"
+              exit 0
+            fi
+            echo "Waiting for Redmine instances... ($i/60)"
+            sleep 5
+          done
+          echo "Redmine instances did not become ready in time"
+          docker compose logs redmine-6-1 redmine-6-0 redmine-5-1
+          exit 1
+
+      - name: Run behat
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_1
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down -v
 
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})

@@ -14,9 +14,9 @@ final class RedmineInstance
     /**
      * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
      */
-    public static function create(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath): void
+    public static function create(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, ?string $redmineUrl = null): void
     {
-        $tracer->registerInstance(new self($tracer, $version, $rootPath));
+        $tracer->registerInstance(new self($tracer, $version, $rootPath, $redmineUrl));
     }
 
     private InstanceRegistration $tracer;
@@ -41,7 +41,7 @@ final class RedmineInstance
 
     private string $apiKey;
 
-    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath)
+    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, ?string $redmineUrl = null)
     {
         $this->tracer = $tracer;
         $this->version = $version;
@@ -65,7 +65,7 @@ final class RedmineInstance
 
         $parts = explode('.', $version->asString());
 
-        $this->redmineUrl = 'http://redmine-' . intval($parts[0]) . '-' . intval($parts[1]) . ':3000';
+        $this->redmineUrl = $redmineUrl ?? ('http://redmine-' . intval($parts[0]) . '-' . intval($parts[1]) . ':3000');
         $this->apiKey = sha1($versionId . time());
 
         $this->runHealthChecks($version);
