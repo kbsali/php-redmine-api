@@ -90,6 +90,9 @@ jobs:
           docker compose logs redmine-6-1 redmine-6-0 redmine-5-1
           exit 1
 
+      - name: Fix permissions
+        run: sudo chmod -R 777 .docker/redmine-*_data/
+
       - name: Run behat
         run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_1
 
