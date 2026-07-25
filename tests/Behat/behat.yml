@@ -6,22 +6,26 @@ default:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.1.1'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-dev_data'
+                    redmineUrl: 'http://redmine-dev:3000'
         redmine_6_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.1.1'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-60101_data'
+                    redmineUrl: 'http://redmine-6-1:3000'
         redmine_6_0:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.0.8'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-60008_data'
+                    redmineUrl: 'http://redmine-6-0:3000'
         redmine_5_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.1.11'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-50111_data'
+                    redmineUrl: 'http://redmine-5-1:3000'
 
 github-actions:
     suites:
@@ -29,17 +33,17 @@ github-actions:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.1.1'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-60101_data'
                     redmineUrl: 'http://localhost:5061'
         redmine_6_0:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '6.0.8'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-60008_data'
                     redmineUrl: 'http://localhost:5060'
         redmine_5_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
                     redmineVersion: '5.1.11'
-                    rootPath: '%paths.base%/../../.docker'
+                    rootPath: '%paths.base%/../../.docker/redmine-50111_data'
                     redmineUrl: 'http://localhost:5051'

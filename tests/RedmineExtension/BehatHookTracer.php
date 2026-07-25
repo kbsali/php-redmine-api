@@ -19,7 +19,7 @@ final class BehatHookTracer implements InstanceRegistration
      */
     private static array $instances = [];
 
-    public static function getRedmineInstance(RedmineVersion $redmineVersion, string $rootPath, ?string $redmineUrl = null): RedmineInstance
+    public static function getRedmineInstance(RedmineVersion $redmineVersion, string $rootPath, string $redmineUrl): RedmineInstance
     {
         if (!self::$tracer instanceof \Redmine\Tests\RedmineExtension\BehatHookTracer) {
             throw new RuntimeException('You can only get a Redmine instance while a Behat Suite is running.');

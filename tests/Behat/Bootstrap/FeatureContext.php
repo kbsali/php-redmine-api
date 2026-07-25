@@ -84,7 +84,7 @@ final class FeatureContext implements Context
      */
     private array $lastReturnAsArray;
 
-    public function __construct(string $redmineVersion, string $rootPath, ?string $redmineUrl = null)
+    public function __construct(string $redmineVersion, string $rootPath, string $redmineUrl)
     {
         $version = RedmineVersion::tryFrom($redmineVersion);
 
