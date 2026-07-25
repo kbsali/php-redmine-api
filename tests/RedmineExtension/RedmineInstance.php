@@ -45,6 +45,14 @@ final class RedmineInstance
 
     private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, string $redmineUrl)
     {
+        if (trim($rootPath) === '') {
+            throw new InvalidArgumentException('Redmine data path cannot be empty.');
+        }
+
+        if (trim($redmineUrl) === '') {
+            throw new InvalidArgumentException('Redmine url cannot be empty.');
+        }
+
         $this->tracer = $tracer;
         $this->version = $version;
 
