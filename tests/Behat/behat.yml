@@ -26,6 +26,12 @@ default:
                     redmineVersion: '6.0.10'
                     rootPath: '%paths.base%/../../.docker/redmine-60010_data'
                     redmineUrl: 'http://redmine-6-0:3000'
+        redmine_5_1:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.1.12'
+                    rootPath: '%paths.base%/../../.docker/redmine-50112_data'
+                    redmineUrl: 'http://redmine-5-1:3000'
 
 github-actions:
     suites:
@@ -47,3 +53,9 @@ github-actions:
                     redmineVersion: '6.0.10'
                     rootPath: '%paths.base%/../../.docker/redmine-60010_data'
                     redmineUrl: 'http://localhost:5060'
+        redmine_5_1:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '5.1.12'
+                    rootPath: '%paths.base%/../../.docker/redmine-50112_data'
+                    redmineUrl: 'http://localhost:5051'

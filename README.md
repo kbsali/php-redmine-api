@@ -38,9 +38,12 @@ like [Guzzle](https://github.com/guzzle/guzzle) for handling http connections
 We support (and run tests against) the [latest supported Redmine versions](https://www.redmine.org/projects/redmine/wiki/Download#Versions-status-and-releases-policy)
 that receive security updates.
 
-- Redmine 7.0.x
-- Redmine 6.1.x
-- Redmine 6.0.x
+| php-redmine-api | 7.0 | 6.1 | 6.0 | 5.1 | 5.0 | 4.2 |
+|-----------------|:---:|:---:|:---:|:---:|:---:|:---:|
+| **v2.10** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ |
+| v2.9 | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ |
+| v2.8 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ |
+| v2.7 | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ |
 
 Nevertheless, you can also use this library for all older Redmine versions.
 In this case, however, be aware that some features might not be supported by your Redmine server.
