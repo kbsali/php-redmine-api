@@ -21,10 +21,4 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::STRICT_BOOLEANS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
-    ->withSkip([
-        \Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class,
-        \Rector\CodeQuality\Rector\BooleanNot\SimplifyDeMorganBinaryRector::class,
-        \Rector\CodeQuality\Rector\BooleanNot\NegatedAndsToPositiveOrsRector::class,
-    ])
 ;
