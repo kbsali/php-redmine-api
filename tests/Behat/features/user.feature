@@ -72,7 +72,19 @@ Feature: Interacting with the REST API for users
             groups
             memberships
             """
-        And the returned data "user" property contains the following data
+        And the returned data "user" property contains the following data with Redmine version ">= 7.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | login             | admin                |
+            | admin             | true                 |
+            | firstname         | Redmine              |
+            | lastname          | Admin                |
+            | mail              | admin@dummy.invalid  |
+            | twofa_scheme      | null                 |
+            | status            | 1                    |
+            | groups            | []                   |
+            | memberships       | []                   |
+        But the returned data "user" property contains the following data with Redmine version "< 7.0.0"
             | property          | value                |
             | id                | 1                    |
             | login             | admin                |
@@ -149,7 +161,17 @@ Feature: Interacting with the REST API for users
             passwd_changed_on
             twofa_scheme
             """
-        And the returned data "users.0" property contains the following data with Redmine version ">= 6.0.0"
+        And the returned data "users.0" property contains the following data with Redmine version ">= 7.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | login             | admin                |
+            | admin             | true                 |
+            | firstname         | Redmine              |
+            | lastname          | Admin                |
+            | mail              | admin@dummy.invalid  |
+            | twofa_scheme      | null                 |
+            | status            | 1                    |
+        But the returned data "users.0" property contains the following data with Redmine version ">= 6.0.0 < 7.0.0"
             | property          | value                |
             | id                | 1                    |
             | login             | admin                |
@@ -208,7 +230,7 @@ Feature: Interacting with the REST API for users
             | mail              | mail@example.net     |
             | twofa_scheme      | null                 |
             | status            | 1                    |
-        And the returned data "users.1" property contains the following data with Redmine version "< 6.0.0"
+        But the returned data "users.1" property contains the following data with Redmine version "< 6.0.0"
             | property          | value                |
             | id                | 5                    |
             | login             | username             |
