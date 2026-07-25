@@ -124,12 +124,28 @@ final class RedmineVersion
     public const V6_0_0 = '6.0.0';
 
     /**
+     * Redmine 5.1.13
+     *
+     * @link https://www.redmine.org/versions/225
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#5113-2026-06-15
+     */
+    public const V5_1_13 = '5.1.13';
+
+    /**
      * Redmine 5.1.12
      *
      * @link https://www.redmine.org/versions/222
-     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#5112-2026-04-11
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#5112-2026-03-16
      */
     public const V5_1_12 = '5.1.12';
+
+    /**
+     * Redmine 5.1.11
+     *
+     * @link https://www.redmine.org/versions/219
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_5_1#5111-2026-01-05
+     */
+    public const V5_1_11 = '5.1.11';
 
     /**
      * Redmine 5.1.10
