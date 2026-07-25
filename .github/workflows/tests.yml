@@ -99,7 +99,7 @@ jobs:
           exit 1
 
       - name: Fix permissions
-        run: sudo chmod -R 777 .docker/${{ matrix.data-dir }}/sqlite/
+        run: sudo chmod -R 777 .docker/${{ matrix.data-dir }}/
 
       - name: Run behat
         run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=${{ matrix.suite }}
