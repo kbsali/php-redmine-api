@@ -6,7 +6,8 @@ services:
             sh -c "mkdir -p .docker/redmine-dev_data/files .docker/redmine-dev_data/sqlite
             .docker/redmine-70000_data/files .docker/redmine-70000_data/sqlite
             .docker/redmine-60103_data/files .docker/redmine-60103_data/sqlite
-            .docker/redmine-60010_data/files .docker/redmine-60010_data/sqlite &&
+            .docker/redmine-60010_data/files .docker/redmine-60010_data/sqlite
+            .docker/redmine-50112_data/files .docker/redmine-50112_data/sqlite &&
             chmod -R 777 .docker/redmine-*_data/"
         volumes:
             - ./:/work
@@ -47,6 +48,7 @@ services:
             - redmine-7-0
             - redmine-6-1
             - redmine-6-0
+            - redmine-5-1
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
@@ -91,4 +93,15 @@ services:
         volumes:
             - ./.docker/redmine-60010_data/files:/usr/src/redmine/files
             - ./.docker/redmine-60010_data/sqlite:/usr/src/redmine/sqlite
+
+    redmine-5-1:
+        image: redmine:5.1.12
+        user: "33:33"
+        ports:
+            - "5051:3000"
+        environment:
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-50112_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-50112_data/sqlite:/usr/src/redmine/sqlite
 
