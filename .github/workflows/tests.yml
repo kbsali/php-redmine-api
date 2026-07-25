@@ -38,14 +38,26 @@ jobs:
         run: composer run phpunit -- --no-coverage
 
   behat:
-    name: Tests (Behat with PHP ${{ matrix.php }})
+    name: Behat ${{ matrix.suite }} (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        operating-system: ["ubuntu-latest"]
         php: ["8.3"]
+        include:
+          - suite: redmine_6_1
+            service: redmine-6-1
+            port: 5061
+            data-dir: redmine-60101_data
+          - suite: redmine_6_0
+            service: redmine-6-0
+            port: 5060
+            data-dir: redmine-60008_data
+          - suite: redmine_5_1
+            service: redmine-5-1
+            port: 5051
+            data-dir: redmine-50111_data
 
     steps:
       - name: Checkout
@@ -64,43 +76,33 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
 
-      - name: Create data directories
+      - name: Create data directory
         run: |
-          mkdir -p .docker/redmine-60101_data/{files,sqlite}
-          mkdir -p .docker/redmine-60008_data/{files,sqlite}
-          mkdir -p .docker/redmine-50111_data/{files,sqlite}
-          chmod -R 777 .docker/redmine-*_data/
+          mkdir -p .docker/${{ matrix.data-dir }}/{files,sqlite}
+          chmod -R 777 .docker/${{ matrix.data-dir }}/
 
-      - name: Start Redmine containers
-        run: docker compose up -d redmine-6-1 redmine-6-0 redmine-5-1
+      - name: Start Redmine container
+        run: docker compose up -d ${{ matrix.service }}
 
-      - name: Wait for Redmine instances to be healthy
+      - name: Wait for Redmine to be healthy
         run: |
           for i in $(seq 1 60); do
-            if curl -sf http://localhost:5061 > /dev/null 2>&1 && \
-               curl -sf http://localhost:5060 > /dev/null 2>&1 && \
-               curl -sf http://localhost:5051 > /dev/null 2>&1; then
-              echo "All Redmine instances are ready"
+            if curl -sf http://localhost:${{ matrix.port }} > /dev/null 2>&1; then
+              echo "Redmine ${{ matrix.service }} is ready"
               exit 0
             fi
-            echo "Waiting for Redmine instances... ($i/60)"
+            echo "Waiting... ($i/60)"
             sleep 5
           done
-          echo "Redmine instances did not become ready in time"
-          docker compose logs redmine-6-1 redmine-6-0 redmine-5-1
+          echo "Redmine ${{ matrix.service }} did not become ready"
+          docker compose logs ${{ matrix.service }}
           exit 1
 
       - name: Fix permissions
-        run: sudo chmod -R 777 .docker/redmine-*_data/
+        run: sudo chmod -R 777 .docker/${{ matrix.data-dir }}/sqlite/
 
-      - name: Run behat [Redmine 6.1]
-        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_6_1
-
-      - name: Run behat [Redmine 6.0]
-        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_6_0
-
-      - name: Run behat [Redmine 5.1]
-        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=redmine_5_1
+      - name: Run behat
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=${{ matrix.suite }}
 
       - name: Cleanup
         if: always()
