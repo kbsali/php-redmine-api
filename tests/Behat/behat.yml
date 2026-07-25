@@ -5,45 +5,45 @@ default:
                 - '%paths.base%/features'
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '6.1.1'
+                    redmineVersion: '7.0.0'
                     rootPath: '%paths.base%/../../.docker/redmine-dev_data'
                     redmineUrl: 'http://redmine-dev:3000'
+        redmine_7_0:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '7.0.0'
+                    rootPath: '%paths.base%/../../.docker/redmine-70000_data'
+                    redmineUrl: 'http://redmine-7-0:3000'
         redmine_6_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '6.1.1'
-                    rootPath: '%paths.base%/../../.docker/redmine-60101_data'
+                    redmineVersion: '6.1.3'
+                    rootPath: '%paths.base%/../../.docker/redmine-60103_data'
                     redmineUrl: 'http://redmine-6-1:3000'
         redmine_6_0:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '6.0.8'
-                    rootPath: '%paths.base%/../../.docker/redmine-60008_data'
+                    redmineVersion: '6.0.10'
+                    rootPath: '%paths.base%/../../.docker/redmine-60010_data'
                     redmineUrl: 'http://redmine-6-0:3000'
-        redmine_5_1:
-            contexts:
-                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '5.1.11'
-                    rootPath: '%paths.base%/../../.docker/redmine-50111_data'
-                    redmineUrl: 'http://redmine-5-1:3000'
 
 github-actions:
     suites:
+        redmine_7_0:
+            contexts:
+                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
+                    redmineVersion: '7.0.0'
+                    rootPath: '%paths.base%/../../.docker/redmine-70000_data'
+                    redmineUrl: 'http://localhost:5070'
         redmine_6_1:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '6.1.1'
-                    rootPath: '%paths.base%/../../.docker/redmine-60101_data'
+                    redmineVersion: '6.1.3'
+                    rootPath: '%paths.base%/../../.docker/redmine-60103_data'
                     redmineUrl: 'http://localhost:5061'
         redmine_6_0:
             contexts:
                 - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '6.0.8'
-                    rootPath: '%paths.base%/../../.docker/redmine-60008_data'
+                    redmineVersion: '6.0.10'
+                    rootPath: '%paths.base%/../../.docker/redmine-60010_data'
                     redmineUrl: 'http://localhost:5060'
-        redmine_5_1:
-            contexts:
-                - Redmine\Tests\Behat\Bootstrap\FeatureContext:
-                    redmineVersion: '5.1.11'
-                    rootPath: '%paths.base%/../../.docker/redmine-50111_data'
-                    redmineUrl: 'http://localhost:5051'

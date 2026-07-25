@@ -55,9 +55,9 @@
     "scripts": {
         "bdt": [
             "Composer\\Config::disableProcessTimeout",
+            "@behat --format=progress --suite=redmine_7_0",
             "@behat --format=progress --suite=redmine_6_1",
-            "@behat --format=progress --suite=redmine_6_0",
-            "@behat --format=progress --suite=redmine_5_1"
+            "@behat --format=progress --suite=redmine_6_0"
         ],
         "behat": "behat --config tests/Behat/behat.yml",
         "codestyle": "php-cs-fixer fix",

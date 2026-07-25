@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.9.1...v2.x)
 
-Nothing yet.
+### Added
+
+- Add support for Redmine 7.0.
+
+### Changed
+
+- Behaviour-driven tests are run against Redmine 7.0.0, 6.1.3, 6.0.10.
+
+### Removed
+
+- Drop support for Redmine 5.1.x.
 
 ## [v2.9.1](https://github.com/kbsali/php-redmine-api/compare/v2.9.0...v2.9.1) - 2026-04-03
 

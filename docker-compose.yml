@@ -4,9 +4,9 @@ services:
         user: "0"
         command: >
             sh -c "mkdir -p .docker/redmine-dev_data/files .docker/redmine-dev_data/sqlite
-            .docker/redmine-60101_data/files .docker/redmine-60101_data/sqlite
-            .docker/redmine-60008_data/files .docker/redmine-60008_data/sqlite
-            .docker/redmine-50111_data/files .docker/redmine-50111_data/sqlite &&
+            .docker/redmine-70000_data/files .docker/redmine-70000_data/sqlite
+            .docker/redmine-60103_data/files .docker/redmine-60103_data/sqlite
+            .docker/redmine-60010_data/files .docker/redmine-60010_data/sqlite &&
             chmod -R 777 .docker/redmine-*_data/"
         volumes:
             - ./:/work
@@ -25,7 +25,7 @@ services:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     redmine-dev:
-        image: redmine:6.1.1
+        image: redmine:7.0.0
         user: "33:33"
         ports:
             - "3000:3000"
@@ -44,17 +44,28 @@ services:
             dockerfile: Behat-Dockerfile # Specify the name of the Dockerfile
         depends_on:
             - init-volumes
+            - redmine-7-0
             - redmine-6-1
             - redmine-6-0
-            - redmine-5-1
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
 
     # Make sure the following services are configured in:
     # - /tests/Behat/behat.yml
 
+    redmine-7-0:
+        image: redmine:7.0.0
+        user: "33:33"
+        ports:
+            - "5070:3000"
+        environment:
+            REDMINE_PLUGINS_MIGRATE: true
+        volumes:
+            - ./.docker/redmine-70000_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-70000_data/sqlite:/usr/src/redmine/sqlite
+
     redmine-6-1:
-        image: redmine:6.1.1
+        image: redmine:6.1.3
         user: "33:33"
         ports:
             - "5061:3000"
@@ -64,11 +75,11 @@ services:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-60101_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-60101_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-60103_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60103_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-6-0:
-        image: redmine:6.0.8
+        image: redmine:6.0.10
         user: "33:33"
         ports:
             - "5060:3000"
@@ -78,17 +89,6 @@ services:
             # REDMINE_SECRET_KEY_BASE: supersecretkey
             REDMINE_PLUGINS_MIGRATE: true
         volumes:
-            - ./.docker/redmine-60008_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-60008_data/sqlite:/usr/src/redmine/sqlite
+            - ./.docker/redmine-60010_data/files:/usr/src/redmine/files
+            - ./.docker/redmine-60010_data/sqlite:/usr/src/redmine/sqlite
 
-    redmine-5-1:
-        image: redmine:5.1.11
-        user: "33:33"
-        ports:
-            - "5051:3000"
-        environment:
-            REDMINE_SECRET_KEY_BASE: supersecretkey
-            REDMINE_PLUGINS_MIGRATE: true
-        volumes:
-            - ./.docker/redmine-50111_data/files:/usr/src/redmine/files
-            - ./.docker/redmine-50111_data/sqlite:/usr/src/redmine/sqlite

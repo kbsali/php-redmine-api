@@ -88,7 +88,7 @@ or
 default:
     suites:
         [...]
-        redmine_5_1:
+        redmine_6_0:
             [...]
             filters:
                 tags: "~@since60000"

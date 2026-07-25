@@ -47,20 +47,20 @@ jobs:
       fail-fast: false
       matrix:
         php: ["8.3"]
-        suite: [redmine_6_1, redmine_6_0, redmine_5_1]
+        suite: [redmine_7_0, redmine_6_1, redmine_6_0]
         include:
+          - suite: redmine_7_0
+            service: redmine-7-0
+            port: 5070
+            data-dir: redmine-70000_data
           - suite: redmine_6_1
             service: redmine-6-1
             port: 5061
-            data-dir: redmine-60101_data
+            data-dir: redmine-60103_data
           - suite: redmine_6_0
             service: redmine-6-0
             port: 5060
-            data-dir: redmine-60008_data
-          - suite: redmine_5_1
-            service: redmine-5-1
-            port: 5051
-            data-dir: redmine-50111_data
+            data-dir: redmine-60010_data
 
     steps:
       - name: Checkout
