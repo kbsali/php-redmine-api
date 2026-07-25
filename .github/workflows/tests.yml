@@ -40,6 +40,8 @@ jobs:
   behat:
     name: Behat ${{ matrix.suite }} (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     strategy:
       fail-fast: false
