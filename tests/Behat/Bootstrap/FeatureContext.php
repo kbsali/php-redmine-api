@@ -254,6 +254,14 @@ final class FeatureContext implements Context
     }
 
     /**
+     * @Then the returned data has only the following properties with Redmine version :versionComparision
+     */
+    public function theReturnedDataHasOnlyTheFollowingPropertiesWithRedmineVersion(string $versionComparision, PyStringNode $string): void
+    {
+        $this->theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion(null, $versionComparision, $string);
+    }
+
+    /**
      * @Then the returned data has proterties with the following data
      */
     public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table): void
@@ -305,15 +313,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion(?string $property, string $versionComparision, TableNode $table): void
     {
-        $parts = explode(' ', $versionComparision);
-
-        $redmineVersion = RedmineVersion::tryFrom($parts[1]);
-
-        if (!$redmineVersion instanceof RedmineVersion) {
-            throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
-        }
-
-        if (version_compare($this->redmine->getVersionString(), $parts[1], $parts[0])) {
+        if ($this->isVersionMatch($versionComparision)) {
             $this->theReturnedDataPropertyContainsTheFollowingData($property, $table);
         }
     }
@@ -335,15 +335,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion(?string $property, string $versionComparision, PyStringNode $string): void
     {
-        $parts = explode(' ', $versionComparision);
-
-        $redmineVersion = RedmineVersion::tryFrom($parts[1]);
-
-        if (!$redmineVersion instanceof RedmineVersion) {
-            throw new InvalidArgumentException('Comparison with Redmine ' . $versionComparision . ' is not supported.');
-        }
-
-        if (version_compare($this->redmine->getVersionString(), $parts[1], $parts[0])) {
+        if ($this->isVersionMatch($versionComparision)) {
             $this->theReturnedDataPropertyHasOnlyTheFollowingProperties($property, $string);
         }
     }
@@ -456,5 +448,33 @@ final class FeatureContext implements Context
 
             TestCase::assertSame($expected, $value, 'Error with property "' . $row['property'] . '"');
         }
+    }
+
+    private function isVersionMatch(string $versionComparision): bool
+    {
+        $parts = explode(' ', $versionComparision);
+
+        if (count($parts) === 2) {
+            if (!RedmineVersion::tryFrom($parts[1]) instanceof RedmineVersion) {
+                throw new InvalidArgumentException('Comparison with Redmine "' . $versionComparision . '" is not supported.');
+            }
+
+            return version_compare($this->redmine->getVersionString(), $parts[1], $parts[0]);
+        }
+
+        if (count($parts) === 4) {
+            if (!RedmineVersion::tryFrom($parts[1]) instanceof RedmineVersion) {
+                throw new InvalidArgumentException('Comparison with Redmine "' . $versionComparision . '" is not supported.');
+            }
+
+            if (!RedmineVersion::tryFrom($parts[3]) instanceof RedmineVersion) {
+                throw new InvalidArgumentException('Comparison with Redmine "' . $versionComparision . '" is not supported.');
+            }
+
+            return version_compare($this->redmine->getVersionString(), $parts[1], $parts[0])
+                && version_compare($this->redmine->getVersionString(), $parts[3], $parts[2]);
+        }
+
+        throw new InvalidArgumentException('Comparison with Redmine "' . $versionComparision . '" is not supported.');
     }
 }

@@ -13,7 +13,18 @@ Feature: Interacting with the REST API for wikis
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
+        And the returned data has only the following properties with Redmine version ">= 7.0.0"
+            """
+            title
+            text
+            version
+            author
+            comments
+            project
+            created_on
+            updated_on
+            """
+        But the returned data has only the following properties with Redmine version "< 7.0.0"
             """
             title
             text
@@ -56,7 +67,18 @@ Feature: Interacting with the REST API for wikis
         Then the response has the status code "201"
         And the response has the content type "application/xml"
         And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
+        And the returned data has only the following properties with Redmine version ">= 7.0.0"
+            """
+            title
+            text
+            version
+            author
+            comments
+            project
+            created_on
+            updated_on
+            """
+        But the returned data has only the following properties with Redmine version "< 7.0.0"
             """
             title
             text
@@ -99,7 +121,19 @@ Feature: Interacting with the REST API for wikis
             wiki_page
             """
         And the returned data "wiki_page" property is an array
-        And the returned data "wiki_page" property has only the following properties
+        And the returned data "wiki_page" property has only the following properties with Redmine version ">= 7.0.0"
+            """
+            title
+            text
+            version
+            author
+            comments
+            project
+            created_on
+            updated_on
+            attachments
+            """
+        But the returned data "wiki_page" property has only the following properties with Redmine version "< 7.0.0"
             """
             title
             text
@@ -157,7 +191,19 @@ Feature: Interacting with the REST API for wikis
             wiki_page
             """
         And the returned data "wiki_page" property is an array
-        And the returned data "wiki_page" property has only the following properties
+        And the returned data "wiki_page" property has only the following properties with Redmine version ">= 7.0.0"
+            """
+            title
+            text
+            version
+            author
+            comments
+            project
+            created_on
+            updated_on
+            attachments
+            """
+        But the returned data "wiki_page" property has only the following properties with Redmine version "< 7.0.0"
             """
             title
             text
