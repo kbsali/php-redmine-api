@@ -40,10 +40,10 @@ that receive security updates.
 
 | php-redmine-api | 7.0 | 6.1 | 6.0 | 5.1 | 5.0 | 4.2 |
 |-----------------|:---:|:---:|:---:|:---:|:---:|:---:|
-| **v2.10** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| v2.9 | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ |
-| v2.8 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ |
-| v2.7 | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ |
+| **v2.10** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| v2.9 | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| v2.8 | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
+| v2.7 | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
 
 Nevertheless, you can also use this library for all older Redmine versions.
 In this case, however, be aware that some features might not be supported by your Redmine server.
