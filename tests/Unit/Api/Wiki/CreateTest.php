@@ -111,13 +111,13 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><wiki_page/>',
                 500,
                 '',
-                '',
+                'error',
             ],
         );
 
         $api = Wiki::fromHttpClient($client);
 
-        $this->assertSame('', $api->create(5, 'test', []));
+        $this->assertSame('error', $api->create(5, 'test', []));
     }
 
     public function testCreateWithIncorrectStatusCodeThrowsException(): void

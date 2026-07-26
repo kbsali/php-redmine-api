@@ -67,13 +67,13 @@ class RemoveTest extends TestCase
                 '',
                 500,
                 '',
-                '',
+                'error',
             ],
         );
 
         $api = IssueRelation::fromHttpClient($client);
 
-        $this->assertSame('', $api->remove(25));
+        $this->assertSame('error', $api->remove(25));
     }
 
     public function testRemoveWithIncorrectStatusCodeThrowsException(): void
