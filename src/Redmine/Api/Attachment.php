@@ -7,6 +7,7 @@ namespace Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -156,7 +157,17 @@ class Attachment extends AbstractApi
             $attachment,
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+
+        if ($this->lastResponse->getStatusCode() !== 201) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**

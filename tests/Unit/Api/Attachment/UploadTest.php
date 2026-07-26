@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Attachment::class)]
@@ -88,5 +90,53 @@ class UploadTest extends TestCase
                 '{"upload":{}}',
             ],
         ];
+    }
+
+    public function testUploadWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/uploads.json',
+                'application/octet-stream',
+                'attachment-content',
+                500,
+                'application/json',
+                '{"error":"internal error"}',
+            ],
+        );
+
+        $api = Attachment::fromHttpClient($client);
+
+        $this->assertSame('{"error":"internal error"}', $api->upload('attachment-content'));
+    }
+
+    public function testUploadWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/uploads.json',
+                'application/octet-stream',
+                'attachment-content',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Attachment::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->upload('attachment-content');
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }
