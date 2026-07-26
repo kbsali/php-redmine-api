@@ -89,6 +89,28 @@ class AddWatcherTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testAddWatcherWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $return = $api->addWatcher(1, 2);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
     public function testAddWatcherWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
