@@ -123,6 +123,28 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
+                500,
+                '',
+                'error',
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
+
+        $return = $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
+
+        $this->assertSame('error', $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Test values

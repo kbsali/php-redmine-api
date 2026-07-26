@@ -93,6 +93,28 @@ class CreateTest extends TestCase
         $api->create(5, ['issue_to_id' => 10]);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/5/relations.json',
+                'application/json',
+                '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
+                500,
+                'application/json',
+                '{"relation":{"id":1,"issue_to_id":10}}',
+            ],
+        );
+
+        $api = IssueRelation::fromHttpClient($client);
+
+        $return = $api->create(5, ['issue_to_id' => 10]);
+
+        $this->assertSame(['relation' => ['id' => 1, 'issue_to_id' => 10]], $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Create the used mock objects

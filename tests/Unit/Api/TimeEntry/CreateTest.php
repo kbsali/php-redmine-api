@@ -136,6 +136,28 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/time_entries.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+                500,
+                '',
+                'error',
+            ],
+        );
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
+
+        $this->assertSame('error', $return);
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Test values

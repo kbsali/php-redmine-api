@@ -18,9 +18,13 @@ final class FutureTest extends TestCase
 
     public function testEnableForwardCompatabilityLetsIsForwardCompatabilityEnabledReturnTrue(): void
     {
-        Future::enableForwardCompatibility();
+        try {
+            Future::enableForwardCompatibility();
 
-        self::assertTrue(Future::isForwardCompatibilityEnabled());
+            self::assertTrue(Future::isForwardCompatibilityEnabled());
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 
     public function testDisableForwardCompatabilityLetsIsForwardCompatabilityEnabledReturnFalse(): void
