@@ -321,7 +321,18 @@ class Version extends AbstractApi
             XmlSerializer::createFromArray(['version' => $params])->getEncoded(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
