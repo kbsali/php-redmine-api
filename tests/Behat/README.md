@@ -33,7 +33,7 @@ docker compose exec behat composer run behat -- --suite=redmine_6_1 --format=pro
 
 ## Redmine version specific features
 
-Some Redmine features are specific for a Redmine version. Theses situations are handled in different ways.
+Some Redmine features are specific for a Redmine version. These situations are handled in different ways.
 
 ### Modified Rest-API Responses
 
@@ -42,6 +42,14 @@ This can be handled on the `step` layer (note the missing `homepage` property in
 
 ```
         And the returned data "projects.0" property has only the following properties with Redmine version ">= 5.1.0"
+            """
+            id
+            name
+            identifier
+            description
+            homepage
+            """
+        But the returned data "projects.0" property has only the following properties with Redmine version ">= 5.1.0 < 6.0.0"
             """
             id
             name
@@ -64,22 +72,12 @@ A new Redmine version could introduce new REST-API endpoints.
 Tests for this endpoint should not be run on older Redmine versions.
 This can be handled on the `scenario` or `feature` layer.
 
-1. Tag features or scenarios e.g. with `@since60000`.
+1. Tag features e.g. with `@since70000`.
 
 ```
-@since60000
-Feature: Interacting with the new REST API endpoint
+@since70000
+Feature: Interacting with a REST API endpoint added in 7.0.0
     [...]
-```
-
-or
-
-```
-    @since60000
-    Scenario: Using a new feature
-        Given I have a "NativeCurlClient" client
-        And I create a project with name "Test Project" and identifier "test-project"
-        [...]
 ```
 
 2. Exclude the tag from the specific suite in the `behat.yml` (note the `~` prefix):
@@ -88,10 +86,10 @@ or
 default:
     suites:
         [...]
-        redmine_6_0:
+        redmine_6_1:
             [...]
             filters:
-                tags: "~@since60000"
+                tags: "~@since70000"
 
 ```
 
@@ -101,19 +99,19 @@ A new Redmine version could remove REST-API endpoints.
 Tests for this endpoint should not be run on newer Redmine versions.
 This can be handled on the `scenario` or `feature` layer.
 
-1. Tag features or scenarios e.g. with `@until60000`.
+1. Tag features e.g. with `@until70000`.
 
 ```
-@until60000
-Feature: Interacting with the a REST API endpoint removed in 6.0.0
+@until70000
+Feature: Interacting with a REST API endpoint removed in 7.0.0
     [...]
 ```
 
-or
+or tag scenarios e.g. with `@until70000`.
 
 ```
-    @until60000
-    Scenario: Using a deprecated feature
+    @until70000
+    Scenario: Using a feature removed in 7.0.0
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
         [...]
@@ -125,9 +123,9 @@ or
 default:
     suites:
         [...]
-        redmine_6_0:
+        redmine_7_0:
             [...]
             filters:
-                tags: "~@until60000"
+                tags: "~@until70000"
 
 ```

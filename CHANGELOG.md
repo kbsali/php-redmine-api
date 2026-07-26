@@ -13,9 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Behaviour-driven tests are run against Redmine 7.0.0, 6.1.3, 6.0.10.
-
-### Removed
+- Behaviour-driven tests are run against Redmine 7.0.0, 6.1.3, 6.0.10, 5.1.12.
 
 ## [v2.9.1](https://github.com/kbsali/php-redmine-api/compare/v2.9.0...v2.9.1) - 2026-04-03
 
