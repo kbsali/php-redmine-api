@@ -37,53 +37,79 @@ jobs:
       - name: Run tests
         run: composer run phpunit -- --no-coverage
 
-  # This does not work
-  # behat:
-  #   name: Tests (Behat with PHP ${{ matrix.php }})
-  #   runs-on: ubuntu-latest
+  behat:
+    name: Behat ${{ matrix.suite }} (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
-  #   services:
-  #     redmine-6-0:
-  #       image: redmine:6.0.7
-  #       ports:
-  #           - "5060:3000"
-  #       env:
-  #           # Workaround: Remove secret for Rails 7.2 so it will be generated automatically
-  #           # @see https://github.com/docker-library/redmine/issues/349#issuecomment-2516634932
-  #           # REDMINE_SECRET_KEY_BASE: supersecretkey
-  #           REDMINE_PLUGINS_MIGRATE: true
-  #       volumes:
-  #           - /home/runner/work/_temp/redmine-60007_data/files:/usr/src/redmine/files
-  #           - /home/runner/work/_temp/redmine-60007_data/sqlite:/usr/src/redmine/sqlite
-  #       options: --health-cmd="wget -O /dev/null http://localhost:3000" --health-start-period=30s --health-interval=30s --health-timeout=30s --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.3"]
+        suite: [redmine_6_1, redmine_6_0, redmine_5_1]
+        include:
+          - suite: redmine_6_1
+            service: redmine-6-1
+            port: 5061
+            data-dir: redmine-60101_data
+          - suite: redmine_6_0
+            service: redmine-6-0
+            port: 5060
+            data-dir: redmine-60008_data
+          - suite: redmine_5_1
+            service: redmine-5-1
+            port: 5051
+            data-dir: redmine-50111_data
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       operating-system: ["ubuntu-latest"]
-  #       php: ["8.3"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 2
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpunit
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, curl
+          coverage: xdebug
 
-  #     - name: Setup PHP, with composer and extensions
-  #       uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
-  #       with:
-  #         php-version: ${{ matrix.php }}
-  #         tools: phpunit
-  #         extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite
-  #         coverage: xdebug
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
 
-  #     # Install composer dependencies and handle caching in one go.
-  #     # @link https://github.com/marketplace/actions/install-composer-dependencies
-  #     - name: "Install Composer dependencies"
-  #       uses: "ramsey/composer-install@v2"
+      - name: Create data directory
+        run: |
+          mkdir -p .docker/${{ matrix.data-dir }}/{files,sqlite}
+          chmod -R 777 .docker/${{ matrix.data-dir }}/
 
-  #     - name: Run behat
-  #       run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --suite=redmine_6_0
+      - name: Start Redmine container
+        run: docker compose up -d ${{ matrix.service }}
+
+      - name: Wait for Redmine to be healthy
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:${{ matrix.port }} > /dev/null 2>&1; then
+              echo "Redmine ${{ matrix.service }} is ready"
+              exit 0
+            fi
+            echo "Waiting... ($i/60)"
+            sleep 5
+          done
+          echo "Redmine ${{ matrix.service }} did not become ready"
+          docker compose logs ${{ matrix.service }}
+          exit 1
+
+      - name: Fix permissions
+        run: sudo chmod -R 777 .docker/${{ matrix.data-dir }}/
+
+      - name: Run behat
+        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=${{ matrix.suite }}
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down -v
 
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})

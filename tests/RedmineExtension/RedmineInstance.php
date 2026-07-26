@@ -13,10 +13,12 @@ final class RedmineInstance
 {
     /**
      * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
+     * @param string $rootPath The full path to the Redmine instance data directory (e.g. '/path/to/.docker/redmine-dev_data')
+     * @param string $redmineUrl The full URL to the Redmine instance (e.g. 'http://localhost:5061')
      */
-    public static function create(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath): void
+    public static function create(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, string $redmineUrl): void
     {
-        $tracer->registerInstance(new self($tracer, $version, $rootPath));
+        $tracer->registerInstance(new self($tracer, $version, $rootPath, $redmineUrl));
     }
 
     private InstanceRegistration $tracer;
@@ -41,19 +43,22 @@ final class RedmineInstance
 
     private string $apiKey;
 
-    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath)
+    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, string $redmineUrl)
     {
+        if (trim($rootPath) === '') {
+            throw new InvalidArgumentException('Redmine data path cannot be empty.');
+        }
+
+        if (trim($redmineUrl) === '') {
+            throw new InvalidArgumentException('Redmine url cannot be empty.');
+        }
+
         $this->tracer = $tracer;
         $this->version = $version;
 
         $versionId = strval($version->asId());
 
-        // Default to .docker folder
-        if ($rootPath === '') {
-            $rootPath = dirname(__FILE__, 3) . '/.docker';
-        }
-
-        $this->dataPath = $rootPath . '/redmine-' . $versionId . '_data/';
+        $this->dataPath = rtrim($rootPath, '/') . '/';
 
         $this->workingDB = 'sqlite/redmine.db';
         $this->migratedDB = 'sqlite/redmine-migrated.db';
@@ -63,9 +68,7 @@ final class RedmineInstance
         $this->migratedFiles = 'files-migrated/';
         $this->backupFiles = 'files-bak/';
 
-        $parts = explode('.', $version->asString());
-
-        $this->redmineUrl = 'http://redmine-' . intval($parts[0]) . '-' . intval($parts[1]) . ':3000';
+        $this->redmineUrl = $redmineUrl;
         $this->apiKey = sha1($versionId . time());
 
         $this->runHealthChecks($version);
