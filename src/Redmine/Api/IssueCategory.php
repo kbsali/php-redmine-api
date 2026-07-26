@@ -269,8 +269,12 @@ class IssueCategory extends AbstractApi
         $body = $this->lastResponse->getContent();
 
         if ($this->lastResponse->getStatusCode() !== 201) {
-            if (!Future::isForwardCompatibilityEnabled() && $body === '') {
-                return $body;
+            if (!Future::isForwardCompatibilityEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
             }
 
             throw UnexpectedResponseException::create($this->lastResponse);

@@ -265,6 +265,29 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue/>',
+                500,
+                '',
+                '<error>error</error>',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $return = $api->create([]);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString('<error>error</error>', $return->asXml());
+    }
+
     public function testCreateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
