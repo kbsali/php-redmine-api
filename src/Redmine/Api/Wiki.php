@@ -9,6 +9,7 @@ use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -184,6 +185,15 @@ class Wiki extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 201) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         if ($body !== '') {
             return new SimpleXMLElement($body);
