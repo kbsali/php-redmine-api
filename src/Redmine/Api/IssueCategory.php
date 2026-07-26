@@ -340,7 +340,18 @@ class IssueCategory extends AbstractApi
             PathSerializer::create('/issue_categories/' . urlencode(strval($id)) . '.xml', $params)->getPath(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
