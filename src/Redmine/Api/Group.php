@@ -368,6 +368,17 @@ class Group extends AbstractApi
             '/groups/' . strval($id) . '/users/' . strval($userId) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 }
