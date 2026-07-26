@@ -69,8 +69,6 @@ you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/i
 ## Todo
 
 * Tracking of Redmine API feature support in [#305](https://github.com/kbsali/php-redmine-api/issues/305)
-* Check header's response code (especially for POST/PUT/DELETE requests)
-    * See https://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request/9183272#9183272
 
 ## Limitations / Missing Redmine-API
 

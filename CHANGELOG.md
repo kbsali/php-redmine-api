@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add support for Redmine 7.0.
+- `\Redmine\Client\NativeCurlClient::enableFutureMode()` to opt-in to throwing `UnexpectedResponseException` on unexpected status codes.
+- `\Redmine\Client\Psr18Client::enableFutureMode()` to opt-in to throwing `UnexpectedResponseException` on unexpected status codes.
+- API methods that create, update, or delete resources now verify the HTTP response status code. The return value only changes if `enableFutureMode()` was called – unexpected status codes then throw `UnexpectedResponseException` instead of returning the response body.
 
 ### Changed
 
