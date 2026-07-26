@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -144,5 +146,33 @@ class CreateTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/5/relations.json',
+                'application/json',
+                '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
+                500,
+                'application/json',
+                '{"relation":{}}',
+            ],
+        );
+
+        $api = IssueRelation::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(5, ['issue_to_id' => 10]);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }
