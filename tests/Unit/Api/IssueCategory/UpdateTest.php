@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueCategory::class)]
@@ -78,5 +80,53 @@ class UpdateTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issue_categories/5.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue_category><name>new name</name></issue_category>',
+                500,
+                '',
+                'error body',
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
+
+        $this->assertSame('error body', $api->update(5, ['name' => 'new name']));
+    }
+
+    public function testUpdateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issue_categories/5.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue_category><name>new name</name></issue_category>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->update(5, ['name' => 'new name']);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }
