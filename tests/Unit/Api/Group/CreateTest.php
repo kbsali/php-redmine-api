@@ -149,7 +149,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
                 500,
                 '',
-                'error',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
             ],
         );
 
@@ -157,7 +157,7 @@ class CreateTest extends TestCase
 
         $return = $api->create(['name' => 'Group Name']);
 
-        $this->assertSame('error', $return);
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
     }
 
     public function testCreateThrowsExceptionIfNameIsMissing(): void

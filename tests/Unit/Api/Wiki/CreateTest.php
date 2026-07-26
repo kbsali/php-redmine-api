@@ -111,13 +111,15 @@ class CreateTest extends TestCase
                 '<?xml version="1.0"?><wiki_page/>',
                 500,
                 '',
-                'error',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
             ],
         );
 
         $api = Wiki::fromHttpClient($client);
 
-        $this->assertSame('error', $api->create(5, 'test', []));
+        $return = $api->create(5, 'test', []);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
     }
 
     public function testCreateWithIncorrectStatusCodeThrowsException(): void

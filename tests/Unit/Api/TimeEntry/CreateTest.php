@@ -147,7 +147,7 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
                 500,
                 '',
-                'error',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
             ],
         );
 
@@ -155,7 +155,7 @@ class CreateTest extends TestCase
 
         $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
 
-        $this->assertSame('error', $return);
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void

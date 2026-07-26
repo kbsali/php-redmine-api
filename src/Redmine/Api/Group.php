@@ -200,7 +200,11 @@ class Group extends AbstractApi
 
         if ($statusCode !== 201) {
             if (!Future::isForwardCompatibilityEnabled()) {
-                return $body;
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
             }
 
             throw UnexpectedResponseException::create($this->lastResponse);
@@ -338,7 +342,11 @@ class Group extends AbstractApi
 
         if ($statusCode !== 201) {
             if (!Future::isForwardCompatibilityEnabled()) {
-                return $body;
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
             }
 
             throw UnexpectedResponseException::create($this->lastResponse);
