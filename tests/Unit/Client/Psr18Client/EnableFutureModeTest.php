@@ -19,17 +19,19 @@ final class EnableFutureModeTest extends TestCase
     {
         Future::disableForwardCompatibility();
 
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            '',
-            '',
-        );
-        $client->enableFutureMode();
+        try {
+            $client = new Psr18Client(
+                $this->createStub(ClientInterface::class),
+                $this->createStub(RequestFactoryInterface::class),
+                $this->createStub(StreamFactoryInterface::class),
+                '',
+                '',
+            );
+            $client->enableFutureMode();
 
-        self::assertTrue(Future::isForwardCompatibilityEnabled());
-
-        Future::disableForwardCompatibility();
+            self::assertTrue(Future::isForwardCompatibilityEnabled());
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

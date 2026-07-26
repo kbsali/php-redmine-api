@@ -16,14 +16,16 @@ final class EnableFutureModeTest extends TestCase
     {
         Future::disableForwardCompatibility();
 
-        $client = new NativeCurlClient(
-            '',
-            '',
-        );
-        $client->enableFutureMode();
+        try {
+            $client = new NativeCurlClient(
+                '',
+                '',
+            );
+            $client->enableFutureMode();
 
-        self::assertTrue(Future::isForwardCompatibilityEnabled());
-
-        Future::disableForwardCompatibility();
+            self::assertTrue(Future::isForwardCompatibilityEnabled());
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }
