@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
@@ -103,6 +105,34 @@ class CreateTest extends TestCase
         $return = $api->create(5, ['name' => 'Test Category']);
 
         $this->assertSame('', $return);
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects/5/issue_categories.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(5, ['name' => 'Test Category']);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void
