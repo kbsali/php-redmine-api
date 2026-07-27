@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
@@ -96,5 +98,55 @@ class CreateTest extends TestCase
                 '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
             ],
         ];
+    }
+
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/wiki/test.xml',
+                'application/xml',
+                '<?xml version="1.0"?><wiki_page/>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Wiki::fromHttpClient($client);
+
+        $return = $api->create(5, 'test', []);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/wiki/test.xml',
+                'application/xml',
+                '<?xml version="1.0"?><wiki_page/>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Wiki::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(5, 'test', []);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

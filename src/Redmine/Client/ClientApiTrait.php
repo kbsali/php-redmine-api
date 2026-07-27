@@ -6,6 +6,7 @@ namespace Redmine\Client;
 
 use Redmine\Api;
 use Redmine\Exception\InvalidApiNameException;
+use Redmine\Future;
 
 /**
  * Provide API instantiation to clients.
@@ -60,6 +61,11 @@ trait ClientApiTrait
         $this->apiInstances[$name] = $class::fromHttpClient($this);
 
         return $this->apiInstances[$name];
+    }
+
+    public function enableFutureMode(): void
+    {
+        Future::enableForwardCompatibility();
     }
 
     private function isUploadCall(string $path): bool

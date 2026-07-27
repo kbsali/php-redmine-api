@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
@@ -162,6 +164,28 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $return = $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Create the used mock objects
@@ -222,5 +246,33 @@ class CreateTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

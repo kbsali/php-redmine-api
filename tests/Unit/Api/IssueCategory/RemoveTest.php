@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueCategory::class)]
@@ -62,5 +64,53 @@ class RemoveTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testRemoveWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/issue_categories/25.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                'error body',
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
+
+        $this->assertSame('error body', $api->remove(25));
+    }
+
+    public function testRemoveWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/issue_categories/25.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = IssueCategory::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->remove(25);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

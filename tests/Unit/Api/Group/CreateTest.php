@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
@@ -136,6 +138,28 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $return = $api->create(['name' => 'Group Name']);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
     public function testCreateThrowsExceptionIfNameIsMissing(): void
     {
         // Test values
@@ -152,5 +176,33 @@ class CreateTest extends TestCase
 
         // Perform the tests
         $api->create($postParameter);
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(['name' => 'Group Name']);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

@@ -10,6 +10,7 @@ use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -256,8 +257,16 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ($body === '') {
-            return $body;
+        if ($this->lastResponse->getStatusCode() !== 201) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
         }
 
         return new SimpleXMLElement($body);
@@ -306,7 +315,18 @@ class Issue extends AbstractApi
             XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -324,6 +344,19 @@ class Issue extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 201) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         if ($body === '') {
             return $body;
@@ -345,7 +378,18 @@ class Issue extends AbstractApi
             '/issues/' . urlencode(strval($id)) . '/watchers/' . urlencode(strval($watcherUserId)) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -498,7 +542,18 @@ class Issue extends AbstractApi
             JsonSerializer::createFromArray(['issue' => $params])->getEncoded(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 201 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -515,7 +570,18 @@ class Issue extends AbstractApi
             '/issues/' . urlencode(strval($id)) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 200 && $statusCode !== 204) {
+            if (!Future::isForwardCompatibilityEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**

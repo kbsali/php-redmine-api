@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -127,6 +129,34 @@ class UpdateTest extends TestCase
 
         // Perform the tests
         $api->update(5, $parameters);
+    }
+
+    public function testUpdateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/memberships/5.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><role_ids>2</role_ids><user_id>4</user_id></membership>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Membership::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 
     /**

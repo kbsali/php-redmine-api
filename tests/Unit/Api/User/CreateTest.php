@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
@@ -121,6 +123,28 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
+
+        $return = $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Test values
@@ -205,5 +229,33 @@ class CreateTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }

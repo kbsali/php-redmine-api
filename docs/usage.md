@@ -215,6 +215,34 @@ try {
 }
 ```
 
+### Forward compatibility mode
+
+By default, API methods that create, update, or delete resources return the raw response body even if the HTTP status code indicates an error. This preserves backwards compatibility with existing code.
+
+You can opt-in to stricter behavior by enabling the forward compatibility mode on the client:
+
+```php
+$client->enableFutureMode();
+```
+
+After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error) throws `\Redmine\Exception\UnexpectedResponseException` instead of returning the response body. This allows you to catch and handle errors more reliably.
+
+```php
+$client->enableFutureMode();
+
+try {
+    $client->getApi('issue')->create([
+        'project_id' => 1,
+        'subject' => 'test',
+    ]);
+} catch (\Redmine\Exception\UnexpectedResponseException $e) {
+    // Handle unexpected response (wrong status code)
+    $response = $e->getResponse();
+    $statusCode = $response->getStatusCode();
+    $body = $response->getContent();
+}
+```
+
 ## API
 
 ### Mid-level API

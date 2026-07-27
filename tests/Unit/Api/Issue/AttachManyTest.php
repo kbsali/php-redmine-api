@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
@@ -96,5 +98,53 @@ class AttachManyTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testAttachManyWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/5.json',
+                'application/json',
+                '{"issue":{"id":5,"uploads":[]}}',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->attachMany(5, []));
+    }
+
+    public function testAttachManyWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/5.json',
+                'application/json',
+                '{"issue":{"id":5,"uploads":[]}}',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $api->attachMany(5, []);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
     }
 }
