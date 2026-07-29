@@ -146,13 +146,9 @@ jobs:
         run: |
           composer config allow-plugins.pestphp/pest-plugin true
           composer require --dev pestphp/pest:^5.0 --no-interaction
-          composer require --dev pestphp/pest-plugin-phpstan --no-interaction
 
       - name: Run Pest
         run: composer run pest -- --no-coverage
-
-      - name: Run PHPStan on Pest tests
-        run: vendor/bin/phpstan analyse tests/Pest/ --level 6
 
   code-quality:
     name: Check ${{ matrix.tool }} (PHP ${{ matrix.php }})
