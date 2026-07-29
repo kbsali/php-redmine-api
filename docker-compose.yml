@@ -13,7 +13,7 @@ services:
             - ./:/work
         working_dir: /work
 
-    php:
+    php74:
         build: # Info to build the Docker image
             context: ./.docker # Specify where the Dockerfile is located (e.g. in the root directory of the project)
             dockerfile: PHP74-Dockerfile # Specify the name of the Dockerfile
@@ -24,6 +24,18 @@ services:
             - redmine-dev
         volumes:
             - ./:/var/www/project/ # Location of the project for php-fpm. Note this should be the same for NGINX.*
+
+    php:
+        build:
+            context: ./.docker
+            dockerfile: PHP85-Dockerfile
+        ports:
+            - 8112:80
+        depends_on:
+            - init-volumes
+            - redmine-dev
+        volumes:
+            - ./:/var/www/project/
 
     redmine-dev:
         image: redmine:7.0.0
