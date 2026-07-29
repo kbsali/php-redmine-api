@@ -1,0 +1,10 @@
+{
+    "source": {
+        "directories": [
+            "src/"
+        ]
+    },
+    "logs": {
+        "text": ".phpunit.cache/infection.log"
+    }
+}

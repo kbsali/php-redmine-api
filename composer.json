@@ -64,7 +64,7 @@
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit -c tests/phpunit-coverage.dist.xml --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
-        "pest": "pest --config phpunit.pest.dist.xml",
+        "infection": "infection --threads=4 --min-covered-msi=0",
         "phpunit": "phpunit -c phpunit.dist.xml",
         "rectify": [
             "@rector",
