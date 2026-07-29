@@ -5,4 +5,7 @@ parameters:
         - src/
         - tests/
 
+    excludePaths:
+        - tests/Pest/
+
     treatPhpDocTypesAsCertain: false
