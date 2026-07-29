@@ -34,7 +34,6 @@
         "behat/behat": "^3.15",
         "friendsofphp/php-cs-fixer": "^3.95",
         "guzzlehttp/psr7": "^2.8 || ^3.0",
-        "pestphp/pest": "^5.0",
         "php-mock/php-mock-phpunit": "^2.15",
         "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^9.6 || ^10.5 || ^11.5 || ^12.5 || ^13.0",
@@ -51,10 +50,7 @@
         }
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
+        "sort-packages": true
     },
     "scripts": {
         "bdt": [

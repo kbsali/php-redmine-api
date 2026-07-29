@@ -34,8 +34,6 @@ jobs:
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: "Install Composer dependencies"
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
-        env:
-          COMPOSER_IGNORE_PLATFORM_REQ: php
 
       - name: Run tests
         run: composer run phpunit -- --no-coverage
@@ -85,8 +83,6 @@ jobs:
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
-        env:
-          COMPOSER_IGNORE_PLATFORM_REQ: php
 
       - name: Create data directory
         run: |
@@ -146,6 +142,11 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
 
+      - name: Install Pest
+        run: |
+          composer config allow-plugins.pestphp/pest-plugin true
+          composer require --dev pestphp/pest:^5.0 --no-interaction
+
       - name: Run Pest
         run: composer run pest -- --no-coverage
 
@@ -178,8 +179,6 @@ jobs:
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: "Install Composer dependencies"
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
-        env:
-          COMPOSER_IGNORE_PLATFORM_REQ: php
 
       - name: Run static code analysis
         if: ${{ matrix.tool == 'phpstan' }}
