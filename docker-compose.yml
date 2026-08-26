@@ -67,7 +67,7 @@ services:
             - ./.docker/redmine-70000_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-6-1:
-        image: redmine:6.1.3
+        image: redmine:7.0.1
         user: "33:33"
         ports:
             - "5061:3000"
@@ -81,7 +81,7 @@ services:
             - ./.docker/redmine-60103_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-6-0:
-        image: redmine:6.0.10
+        image: redmine:7.0.1
         user: "33:33"
         ports:
             - "5060:3000"
@@ -95,7 +95,7 @@ services:
             - ./.docker/redmine-60010_data/sqlite:/usr/src/redmine/sqlite
 
     redmine-5-1:
-        image: redmine:5.1.12
+        image: redmine:7.0.1
         user: "33:33"
         ports:
             - "5051:3000"
