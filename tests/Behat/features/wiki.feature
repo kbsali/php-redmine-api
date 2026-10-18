@@ -263,6 +263,93 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    Scenario: Listing of zero wiki pages
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I list all wiki pages for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            wiki_pages
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | wiki_pages        | []                   |
+
+    Scenario: Listing of multiple wiki pages
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a wiki page with name "Parent" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # Parent page        |
+        And I create a wiki page with name "Child" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # Child page         |
+            | parent_title      | Parent               |
+        When I list all wiki pages for project identifier "test-project"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            wiki_pages
+            """
+        And the returned data "wiki_pages" property is an array
+        And the returned data "wiki_pages" property contains "2" items
+        And the returned data "wiki_pages.0" property is an array
+        And the returned data "wiki_pages.0" property has only the following properties with Redmine version ">= 7.0.1"
+            """
+            title
+            parent
+            version
+            project
+            created_on
+            updated_on
+            """
+        But the returned data "wiki_pages.0" property has only the following properties with Redmine version "< 7.0.1"
+            """
+            title
+            parent
+            version
+            created_on
+            updated_on
+            """
+        And the returned data "wiki_pages.0" property contains the following data
+            | property          | value                |
+            | title             | Child                |
+            | version           | 1                    |
+        And the returned data "wiki_pages.0.parent" property contains the following data
+            | property          | value                |
+            | title             | Parent               |
+        And the returned data "wiki_pages.0.project" property contains the following data with Redmine version ">= 7.0.1"
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+        And the returned data "wiki_pages.1" property is an array
+        And the returned data "wiki_pages.1" property has only the following properties with Redmine version ">= 7.0.1"
+            """
+            title
+            version
+            project
+            created_on
+            updated_on
+            """
+        But the returned data "wiki_pages.1" property has only the following properties with Redmine version "< 7.0.1"
+            """
+            title
+            version
+            created_on
+            updated_on
+            """
+        And the returned data "wiki_pages.1" property contains the following data
+            | property          | value                |
+            | title             | Parent               |
+            | version           | 1                    |
+        And the returned data "wiki_pages.1.project" property contains the following data with Redmine version ">= 7.0.1"
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+
     Scenario: Updating a wiki page
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

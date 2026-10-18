@@ -52,6 +52,20 @@ trait WikiContextTrait
     }
 
     /**
+     * @When I list all wiki pages for project identifier :identifier
+     */
+    public function iListAllWikiPagesForProjectIdentifier(string $identifier): void
+    {
+        /** @var Wiki */
+        $api = $this->getNativeCurlClient()->getApi('wiki');
+
+        $this->registerClientResponse(
+            $api->listByProject($identifier),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the wiki page with name :pageName and project identifier :identifier with the following data
      */
     public function iUpdateTheWikiPageWithNameAndProjectIdentifierWithTheFollowingData(string $pageName, string $identifier, TableNode $table): void
