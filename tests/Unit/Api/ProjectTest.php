@@ -214,8 +214,11 @@ class ProjectTest extends TestCase
         $api = Project::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->listing());
-        $this->assertSame($expectedReturn, $api->listing());
+        $firstResult = $api->listing();
+        $secondResult = $api->listing();
+
+        $this->assertSame($expectedReturn, $firstResult);
+        $this->assertSame($expectedReturn, $secondResult);
     }
 
     /**

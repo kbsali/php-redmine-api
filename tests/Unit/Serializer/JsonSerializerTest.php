@@ -87,7 +87,6 @@ class JsonSerializerTest extends TestCase
             ],
             [
                 '["foo":"bar"]',
-                /** @phpstan-ignore smaller.alwaysTrue(Remove this line after release of PHP 8.6) */
                 (PHP_VERSION_ID < 80600) ? 'Catched error "Syntax error" while decoding JSON: ["foo":"bar"]' : 'Catched error "Syntax error near location 1:7" while decoding JSON: ["foo":"bar"]',
             ],
         ];

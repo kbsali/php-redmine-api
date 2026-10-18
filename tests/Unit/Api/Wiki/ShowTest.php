@@ -86,7 +86,6 @@ class ShowTest extends TestCase
                 null,
                 '/projects/5/wiki/page.json?include=attachments',
                 'string',
-                /** @phpstan-ignore smaller.alwaysTrue(Remove this line after release of PHP 8.6) */
                 (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:1',
             ],
             'false response' => [

@@ -106,8 +106,12 @@ class ListNamesTest extends TestCase
         $api = Role::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame([1 => 'Role 1'], $api->listNames());
-        $this->assertSame([1 => 'Role 1'], $api->listNames());
-        $this->assertSame([1 => 'Role 1'], $api->listNames());
+        $firstResult = $api->listNames();
+        $secondResult = $api->listNames();
+        $thirdResult = $api->listNames();
+
+        $this->assertSame([1 => 'Role 1'], $firstResult);
+        $this->assertSame([1 => 'Role 1'], $secondResult);
+        $this->assertSame([1 => 'Role 1'], $thirdResult);
     }
 }

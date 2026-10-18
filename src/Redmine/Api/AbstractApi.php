@@ -240,7 +240,7 @@ abstract class AbstractApi implements Api
             false !== $var
             && null !== $var
             && '' !== $var
-            && !((is_array($var) || is_object($var)) && empty($var));
+            && (!is_array($var) && !is_object($var) || !empty($var));
     }
 
     /**
