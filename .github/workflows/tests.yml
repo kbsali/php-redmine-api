@@ -53,15 +53,15 @@ jobs:
           - suite: redmine_7_0
             service: redmine-7-0
             port: 5070
-            data-dir: redmine-70000_data
+            data-dir: redmine-70002_data
           - suite: redmine_6_1
             service: redmine-6-1
             port: 5061
-            data-dir: redmine-60103_data
+            data-dir: redmine-60105_data
           - suite: redmine_6_0
             service: redmine-6-0
             port: 5060
-            data-dir: redmine-60010_data
+            data-dir: redmine-60011_data
           - suite: redmine_5_1
             service: redmine-5-1
             port: 5051
