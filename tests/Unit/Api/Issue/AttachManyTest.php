@@ -61,7 +61,7 @@ class AttachManyTest extends TestCase
                     }
                 }
                 JSON,
-                201,
+                204,
                 '',
             ],
             'test with many attachments' => [
@@ -94,7 +94,7 @@ class AttachManyTest extends TestCase
                     }
                 }
                 JSON,
-                201,
+                204,
                 '',
             ],
         ];
