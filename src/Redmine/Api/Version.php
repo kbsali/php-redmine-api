@@ -328,7 +328,7 @@ class Version extends AbstractApi
         $body = $this->lastResponse->getContent();
         $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 200 && $statusCode !== 204) {
+        if ($statusCode !== 204) {
             if (!Future::isForwardCompatibilityEnabled()) {
                 return $body;
             }
@@ -396,7 +396,7 @@ class Version extends AbstractApi
         $body = $this->lastResponse->getContent();
         $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 200 && $statusCode !== 204) {
+        if ($statusCode !== 204) {
             if (!Future::isForwardCompatibilityEnabled()) {
                 return $body;
             }
