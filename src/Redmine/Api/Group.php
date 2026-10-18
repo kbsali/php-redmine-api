@@ -340,7 +340,7 @@ class Group extends AbstractApi
         $body = $this->lastResponse->getContent();
         $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 201) {
+        if ($statusCode !== 204) {
             if (!Future::isForwardCompatibilityEnabled()) {
                 if ($body === '') {
                     return $body;
