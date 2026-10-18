@@ -161,6 +161,10 @@ Feature: Interacting with the REST API for wikis
             | property          | value                |
             | id                | 1                    |
             | name              | Redmine Admin        |
+        And the returned data "wiki_page.project" property contains the following data with Redmine version ">= 7.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
 
     @error
     Scenario: Try to show a not existing wiki page
@@ -230,6 +234,10 @@ Feature: Interacting with the REST API for wikis
             | property          | value                |
             | id                | 1                    |
             | name              | Redmine Admin        |
+        And the returned data "wiki_page.project" property contains the following data with Redmine version ">= 7.0.0"
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
         And the returned data "wiki_page.attachments" property is an array
         And the returned data "wiki_page.attachments" property contains "1" items
         And the returned data "wiki_page.attachments.0" property is an array
