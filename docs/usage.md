@@ -227,6 +227,8 @@ $client->enableFutureMode();
 
 After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error) throws `\Redmine\Exception\UnexpectedResponseException` instead of returning the response body. This allows you to catch and handle errors more reliably.
 
+> :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
+
 ```php
 $client->enableFutureMode();
 
