@@ -59,7 +59,7 @@ class AddWatcherTest extends TestCase
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user_id>5</user_id>
                 XML,
-                201,
+                204,
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
@@ -85,6 +85,34 @@ class AddWatcherTest extends TestCase
 
         // Perform the tests
         $return = $api->addWatcher(1, 2);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testAddWatcherWithCorrectStatusCodeAndForwardCompatibilityReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        try {
+            Future::enableForwardCompatibility();
+
+            $return = $api->addWatcher(1, 2);
+        } finally {
+            Future::disableForwardCompatibility();
+        }
 
         $this->assertSame('', $return);
     }
