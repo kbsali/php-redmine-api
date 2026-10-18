@@ -164,6 +164,30 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = Project::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
+
+        $this->assertSame('', $return);
+    }
+
     public function testCreateWithIncorrectStatusCodeReturnsBody(): void
     {
         $client = AssertingHttpClient::create(
