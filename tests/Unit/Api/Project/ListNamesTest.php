@@ -165,8 +165,12 @@ class ListNamesTest extends TestCase
         $api = Project::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame([1 => 'Project 1'], $api->listNames());
-        $this->assertSame([1 => 'Project 1'], $api->listNames());
-        $this->assertSame([1 => 'Project 1'], $api->listNames());
+        $firstResult = $api->listNames();
+        $secondResult = $api->listNames();
+        $thirdResult = $api->listNames();
+
+        $this->assertSame([1 => 'Project 1'], $firstResult);
+        $this->assertSame([1 => 'Project 1'], $secondResult);
+        $this->assertSame([1 => 'Project 1'], $thirdResult);
     }
 }

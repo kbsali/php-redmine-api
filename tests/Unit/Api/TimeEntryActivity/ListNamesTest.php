@@ -106,8 +106,12 @@ class ListNamesTest extends TestCase
         $api = TimeEntryActivity::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame([1 => 'TimeEntryActivity 1'], $api->listNames());
-        $this->assertSame([1 => 'TimeEntryActivity 1'], $api->listNames());
-        $this->assertSame([1 => 'TimeEntryActivity 1'], $api->listNames());
+        $firstResult = $api->listNames();
+        $secondResult = $api->listNames();
+        $thirdResult = $api->listNames();
+
+        $this->assertSame([1 => 'TimeEntryActivity 1'], $firstResult);
+        $this->assertSame([1 => 'TimeEntryActivity 1'], $secondResult);
+        $this->assertSame([1 => 'TimeEntryActivity 1'], $thirdResult);
     }
 }

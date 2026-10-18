@@ -106,8 +106,12 @@ class ListNamesTest extends TestCase
         $api = Tracker::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame([1 => 'Tracker 1'], $api->listNames());
-        $this->assertSame([1 => 'Tracker 1'], $api->listNames());
-        $this->assertSame([1 => 'Tracker 1'], $api->listNames());
+        $firstResult = $api->listNames();
+        $secondResult = $api->listNames();
+        $thirdResult = $api->listNames();
+
+        $this->assertSame([1 => 'Tracker 1'], $firstResult);
+        $this->assertSame([1 => 'Tracker 1'], $secondResult);
+        $this->assertSame([1 => 'Tracker 1'], $thirdResult);
     }
 }

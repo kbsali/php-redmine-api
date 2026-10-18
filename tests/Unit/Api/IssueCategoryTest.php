@@ -216,8 +216,11 @@ class IssueCategoryTest extends TestCase
         $api = IssueCategory::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame($expectedReturn, $api->listing(5));
-        $this->assertSame($expectedReturn, $api->listing(5));
+        $firstResult = $api->listing(5);
+        $secondResult = $api->listing(5);
+
+        $this->assertSame($expectedReturn, $firstResult);
+        $this->assertSame($expectedReturn, $secondResult);
     }
 
     /**

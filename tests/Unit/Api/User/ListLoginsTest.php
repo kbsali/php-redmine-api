@@ -165,8 +165,12 @@ class ListLoginsTest extends TestCase
         $api = User::fromHttpClient($client);
 
         // Perform the tests
-        $this->assertSame([1 => 'username'], $api->listLogins());
-        $this->assertSame([1 => 'username'], $api->listLogins());
-        $this->assertSame([1 => 'username'], $api->listLogins());
+        $firstResult = $api->listLogins();
+        $secondResult = $api->listLogins();
+        $thirdResult = $api->listLogins();
+
+        $this->assertSame([1 => 'username'], $firstResult);
+        $this->assertSame([1 => 'username'], $secondResult);
+        $this->assertSame([1 => 'username'], $thirdResult);
     }
 }

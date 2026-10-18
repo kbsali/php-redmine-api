@@ -12,12 +12,44 @@ namespace Redmine\Tests\RedmineExtension;
 final class RedmineVersion
 {
     /**
+     * Redmine 7.0.2
+     *
+     * @link https://www.redmine.org/versions/230
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_7_0#702-2026-09-30
+     */
+    public const V7_0_2 = '7.0.2';
+
+    /**
+     * Redmine 7.0.1
+     *
+     * @link https://www.redmine.org/versions/229
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_7_0#701-2026-08-26
+     */
+    public const V7_0_1 = '7.0.1';
+
+    /**
      * Redmine 7.0.0
      *
      * @link https://www.redmine.org/versions/216
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_7_0#700-2026-06-30
      */
     public const V7_0_0 = '7.0.0';
+
+    /**
+     * Redmine 6.1.5
+     *
+     * @link https://www.redmine.org/versions/231
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#615-2026-09-30
+     */
+    public const V6_1_5 = '6.1.5';
+
+    /**
+     * Redmine 6.1.4
+     *
+     * @link https://www.redmine.org/versions/227
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#614-2026-08-26
+     */
+    public const V6_1_4 = '6.1.4';
 
     /**
      * Redmine 6.1.3
@@ -50,6 +82,14 @@ final class RedmineVersion
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#610-2025-09-21
      */
     public const V6_1_0 = '6.1.0';
+
+    /**
+     * Redmine 6.0.11
+     *
+     * @link https://www.redmine.org/versions/226
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#6011-2026-08-26
+     */
+    public const V6_0_11 = '6.0.11';
 
     /**
      * Redmine 6.0.10
