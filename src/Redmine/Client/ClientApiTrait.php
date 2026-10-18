@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Client;
 
 use Redmine\Api;
+use Redmine\Api\AbstractApi;
 use Redmine\Exception\InvalidApiNameException;
 use Redmine\Future;
 
@@ -19,6 +20,8 @@ trait ClientApiTrait
      * @var array<Api>
      */
     private array $apiInstances = [];
+
+    private bool $futureMode = false;
 
     /**
      * @var array<string,class-string>
@@ -60,12 +63,39 @@ trait ClientApiTrait
         $class = $this->apiClassnames[$name];
         $this->apiInstances[$name] = $class::fromHttpClient($this);
 
+        if ($this->futureMode) {
+            self::enableFutureModeOnApi($this->apiInstances[$name]);
+        }
+
         return $this->apiInstances[$name];
     }
 
+    /**
+     * Throw an `UnexpectedResponseException` on unexpected response status codes.
+     *
+     * The mode applies to all APIs of this client, including APIs already returned by `getApi()`.
+     */
     public function enableFutureMode(): void
     {
         Future::enableForwardCompatibility();
+
+        $this->futureMode = true;
+
+        foreach ($this->apiInstances as $api) {
+            self::enableFutureModeOnApi($api);
+        }
+    }
+
+    private static function enableFutureModeOnApi(Api $api): void
+    {
+        if (! $api instanceof AbstractApi) {
+            return;
+        }
+
+        // Set the private property without adding a public method to AbstractApi
+        \Closure::bind(static function (AbstractApi $api): void {
+            $api->futureMode = true;
+        }, null, AbstractApi::class)($api);
     }
 
     private function isUploadCall(string $path): bool
