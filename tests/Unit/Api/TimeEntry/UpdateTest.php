@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(TimeEntry::class)]
 class UpdateTest extends TestCase
@@ -82,13 +82,9 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->update(1, ['hours' => '10.25']);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->update(1, ['hours' => '10.25']);
     }
 
     /**

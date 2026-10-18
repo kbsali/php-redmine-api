@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Membership::class)]
 class UpdateTest extends TestCase
@@ -150,13 +150,9 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
     }
 
     /**

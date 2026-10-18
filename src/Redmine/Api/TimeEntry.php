@@ -9,7 +9,6 @@ use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -177,7 +176,7 @@ class TimeEntry extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 201) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 if ($body === '') {
                     return $body;
                 }
@@ -228,7 +227,7 @@ class TimeEntry extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 
@@ -258,7 +257,7 @@ class TimeEntry extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 

@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class RemoveWatcherTest extends TestCase
@@ -96,12 +96,8 @@ class RemoveWatcherTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->removeWatcher(25, 5);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->removeWatcher(25, 5);
     }
 }

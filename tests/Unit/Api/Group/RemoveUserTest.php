@@ -8,8 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Group::class)]
 class RemoveUserTest extends TestCase
@@ -73,12 +73,8 @@ class RemoveUserTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->removeUser(5, 10);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->removeUser(5, 10);
     }
 }

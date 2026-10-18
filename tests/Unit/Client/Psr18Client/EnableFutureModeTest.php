@@ -11,26 +11,11 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Redmine\Api\AbstractApi;
 use Redmine\Client\Psr18Client;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Psr18Client::class)]
 final class EnableFutureModeTest extends TestCase
 {
-    public function testEnableFutureModeEnablesFutureMode(): void
-    {
-        Future::disableForwardCompatibility();
-
-        try {
-            $client = $this->createClient();
-            $client->enableFutureMode();
-
-            self::assertTrue(Future::isForwardCompatibilityEnabled());
-        } finally {
-            Future::disableForwardCompatibility();
-        }
-    }
-
     public function testFutureModeIsDisabledByDefault(): void
     {
         $client = $this->createClient();
@@ -43,51 +28,39 @@ final class EnableFutureModeTest extends TestCase
 
     public function testEnableFutureModeEnablesFutureModeOnNewApis(): void
     {
-        try {
-            $client = $this->createClient();
-            $client->enableFutureMode();
+        $client = $this->createClient();
+        $client->enableFutureMode();
 
-            /** @var AbstractApi */
-            $api = $client->getApi('issue');
+        /** @var AbstractApi */
+        $api = $client->getApi('issue');
 
-            self::assertTrue(FutureMode::isEnabled($api));
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        self::assertTrue(FutureMode::isEnabled($api));
     }
 
     public function testEnableFutureModeEnablesFutureModeOnExistingApis(): void
     {
-        try {
-            $client = $this->createClient();
+        $client = $this->createClient();
 
-            /** @var AbstractApi */
-            $api = $client->getApi('issue');
+        /** @var AbstractApi */
+        $api = $client->getApi('issue');
 
-            $client->enableFutureMode();
+        $client->enableFutureMode();
 
-            self::assertTrue(FutureMode::isEnabled($api));
-            self::assertSame($api, $client->getApi('issue'));
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        self::assertTrue(FutureMode::isEnabled($api));
+        self::assertSame($api, $client->getApi('issue'));
     }
 
     public function testEnableFutureModeDoesNotEnableFutureModeOnOtherClients(): void
     {
-        try {
-            $client = $this->createClient();
-            $otherClient = $this->createClient();
+        $client = $this->createClient();
+        $otherClient = $this->createClient();
 
-            $client->enableFutureMode();
+        $client->enableFutureMode();
 
-            /** @var AbstractApi */
-            $api = $otherClient->getApi('issue');
+        /** @var AbstractApi */
+        $api = $otherClient->getApi('issue');
 
-            self::assertFalse(FutureMode::isEnabled($api));
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        self::assertFalse(FutureMode::isEnabled($api));
     }
 
     private function createClient(): Psr18Client

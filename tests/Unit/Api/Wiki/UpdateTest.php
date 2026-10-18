@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Wiki::class)]
 class UpdateTest extends TestCase
@@ -101,13 +101,9 @@ class UpdateTest extends TestCase
 
         $api = Wiki::fromHttpClient($client);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $return = $api->update(5, 'test', []);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $return = $api->update(5, 'test', []);
 
         $this->assertSame('', $return);
     }
@@ -153,12 +149,8 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->update(5, 'test', []);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->update(5, 'test', []);
     }
 }

@@ -10,7 +10,6 @@ use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Serializer\JsonSerializer;
@@ -258,7 +257,7 @@ class Issue extends AbstractApi
         $body = $this->lastResponse->getContent();
 
         if ($this->lastResponse->getStatusCode() !== 201) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 if ($body === '') {
                     return $body;
                 }
@@ -323,7 +322,7 @@ class Issue extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 
@@ -351,7 +350,7 @@ class Issue extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 if ($body === '') {
                     return $body;
                 }
@@ -386,7 +385,7 @@ class Issue extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 
@@ -550,7 +549,7 @@ class Issue extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 
@@ -578,7 +577,7 @@ class Issue extends AbstractApi
         $statusCode = $this->lastResponse->getStatusCode();
 
         if ($statusCode !== 204) {
-            if (!Future::isForwardCompatibilityEnabled()) {
+            if (!$this->isFutureModeEnabled()) {
                 return $body;
             }
 

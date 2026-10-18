@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
@@ -106,13 +106,9 @@ class AddUserTest extends TestCase
 
         $api = Group::fromHttpClient($client);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $return = $api->addUser(1, 2);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $return = $api->addUser(1, 2);
 
         $this->assertSame('', $return);
     }
@@ -158,12 +154,8 @@ class AddUserTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->addUser(1, 2);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->addUser(1, 2);
     }
 }

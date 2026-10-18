@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Membership;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Membership::class)]
@@ -222,12 +222,8 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
     }
 }

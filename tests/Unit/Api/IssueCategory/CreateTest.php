@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(IssueCategory::class)]
@@ -173,13 +173,9 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->create(5, ['name' => 'Test Category']);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->create(5, ['name' => 'Test Category']);
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void

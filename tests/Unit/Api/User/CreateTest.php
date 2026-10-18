@@ -10,9 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(User::class)]
@@ -274,12 +274,8 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->create(['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com']);
     }
 }

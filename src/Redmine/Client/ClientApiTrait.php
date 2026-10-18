@@ -7,7 +7,6 @@ namespace Redmine\Client;
 use Redmine\Api;
 use Redmine\Api\AbstractApi;
 use Redmine\Exception\InvalidApiNameException;
-use Redmine\Future;
 
 /**
  * Provide API instantiation to clients.
@@ -77,8 +76,6 @@ trait ClientApiTrait
      */
     public function enableFutureMode(): void
     {
-        Future::enableForwardCompatibility();
-
         $this->futureMode = true;
 
         foreach ($this->apiInstances as $api) {

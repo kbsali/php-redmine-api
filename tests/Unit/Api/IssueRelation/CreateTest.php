@@ -11,9 +11,9 @@ use Redmine\Api\IssueRelation;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
-use Redmine\Future;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(IssueRelation::class)]
 class CreateTest extends TestCase
@@ -189,12 +189,8 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        try {
-            Future::enableForwardCompatibility();
+        FutureMode::enable($api);
 
-            $api->create(5, ['issue_to_id' => 10]);
-        } finally {
-            Future::disableForwardCompatibility();
-        }
+        $api->create(5, ['issue_to_id' => 10]);
     }
 }
