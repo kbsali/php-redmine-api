@@ -138,6 +138,30 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(['name' => 'Group Name']);
+
+        $this->assertSame('', $return);
+    }
+
     public function testCreateWithIncorrectStatusCodeReturnsBody(): void
     {
         $client = AssertingHttpClient::create(
