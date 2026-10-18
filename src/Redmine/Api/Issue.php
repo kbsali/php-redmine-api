@@ -269,6 +269,10 @@ class Issue extends AbstractApi
             throw UnexpectedResponseException::create($this->lastResponse);
         }
 
+        if ($body === '') {
+            return $body;
+        }
+
         return new SimpleXMLElement($body);
     }
 
