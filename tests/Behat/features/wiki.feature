@@ -36,7 +36,7 @@ Feature: Interacting with the REST API for wikis
             """
         And the returned data has proterties with the following data
             | property          | value                |
-            | title             | Test+Page            |
+            | title             | Test_Page            |
             | text              | # My first wiki page |
             | version           | 1                    |
             | comments          | []                   |
@@ -90,7 +90,7 @@ Feature: Interacting with the REST API for wikis
             """
         And the returned data has proterties with the following data
             | property          | value                |
-            | title             | Test+Page            |
+            | title             | Test_Page            |
             | text              | # My first wiki page |
             | version           | 1                    |
             | comments          | []                   |
@@ -146,7 +146,7 @@ Feature: Interacting with the REST API for wikis
             """
         And the returned data "wiki_page" property contains the following data
             | property          | value                |
-            | title             | Test+Page            |
+            | title             | Test_Page            |
             | text              | # My first wiki page |
             | version           | 1                    |
             | comments          | null                 |
@@ -216,7 +216,7 @@ Feature: Interacting with the REST API for wikis
             """
         And the returned data "wiki_page" property contains the following data
             | property          | value                |
-            | title             | Test+Page            |
+            | title             | Test_Page            |
             | text              | # My first wiki page |
             | version           | 1                    |
             | comments          | null                 |

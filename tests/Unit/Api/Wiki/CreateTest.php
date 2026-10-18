@@ -67,7 +67,7 @@ class CreateTest extends TestCase
                 5,
                 'about page',
                 [],
-                '/projects/5/wiki/about+page.xml',
+                '/projects/5/wiki/about%20page.xml',
                 <<< XML
                 <?xml version="1.0"?>
                 <wiki_page/>
