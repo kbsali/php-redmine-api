@@ -16,7 +16,7 @@ use Redmine\Exception\InvalidApiNameException;
 trait ClientApiTrait
 {
     /**
-     * @var array<Api>
+     * @var array<AbstractApi>
      */
     private array $apiInstances = [];
 
@@ -83,12 +83,8 @@ trait ClientApiTrait
         }
     }
 
-    private static function enableFutureModeOnApi(Api $api): void
+    private static function enableFutureModeOnApi(AbstractApi $api): void
     {
-        if (! $api instanceof AbstractApi) {
-            return;
-        }
-
         // Set the private property without adding a public method to AbstractApi
         \Closure::bind(static function (AbstractApi $api): void {
             $api->futureMode = true;
