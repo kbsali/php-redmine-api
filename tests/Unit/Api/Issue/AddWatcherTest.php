@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Issue::class)]
@@ -57,7 +59,7 @@ class AddWatcherTest extends TestCase
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user_id>5</user_id>
                 XML,
-                201,
+                204,
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
@@ -85,5 +87,75 @@ class AddWatcherTest extends TestCase
         $return = $api->addWatcher(1, 2);
 
         $this->assertSame('', $return);
+    }
+
+    public function testAddWatcherWithCorrectStatusCodeAndForwardCompatibilityReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $return = $api->addWatcher(1, 2);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testAddWatcherWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $return = $api->addWatcher(1, 2);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
+    public function testAddWatcherWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/issues/1/watchers.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->addWatcher(1, 2);
     }
 }

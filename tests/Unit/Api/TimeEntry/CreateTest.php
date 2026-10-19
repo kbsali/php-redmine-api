@@ -9,8 +9,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntry;
 use Redmine\Exception\MissingParameterException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(TimeEntry::class)]
@@ -134,6 +136,52 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
+    public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/time_entries.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = TimeEntry::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/time_entries.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        $return = $api->create(['issue_id' => 5, 'hours' => 5.25]);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
     public function testCreateThrowsExceptionWithEmptyParameters(): void
     {
         // Test values
@@ -198,5 +246,29 @@ class CreateTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testCreateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/time_entries.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->create(['issue_id' => 5, 'hours' => 5.25]);
     }
 }

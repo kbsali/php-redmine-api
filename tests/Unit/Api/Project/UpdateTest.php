@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Project::class)]
 class UpdateTest extends TestCase
@@ -56,5 +58,49 @@ class UpdateTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><project><id>1</id></project>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, []));
+    }
+
+    public function testUpdateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><project><id>1</id></project>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->update(1, []);
     }
 }

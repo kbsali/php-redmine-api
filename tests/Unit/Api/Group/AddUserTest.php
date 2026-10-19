@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
@@ -57,7 +59,7 @@ class AddUserTest extends TestCase
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user_id>5</user_id>
                 XML,
-                201,
+                204,
                 '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
             ],
         ];
@@ -85,5 +87,75 @@ class AddUserTest extends TestCase
         $return = $api->addUser(1, 2);
 
         $this->assertSame('', $return);
+    }
+
+    public function testAddUserWithCorrectStatusCodeAndForwardCompatibilityReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups/1/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $return = $api->addUser(1, 2);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testAddUserWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups/1/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $return = $api->addUser(1, 2);
+
+        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
+    }
+
+    public function testAddUserWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups/1/users.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><user_id>2</user_id>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->addUser(1, 2);
     }
 }

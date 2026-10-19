@@ -33,6 +33,11 @@ abstract class AbstractApi implements Api
     private \Redmine\Http\HttpClient $httpClient;
 
     /**
+     * Enabled by the client via `enableFutureMode()`.
+     */
+    private bool $futureMode = false;
+
+    /**
      * @var Response
      */
     protected $lastResponse;
@@ -68,6 +73,11 @@ abstract class AbstractApi implements Api
     final protected function getHttpClient(): HttpClient
     {
         return $this->httpClient;
+    }
+
+    final protected function isFutureModeEnabled(): bool
+    {
+        return $this->futureMode;
     }
 
     final public function getLastResponse(): Response

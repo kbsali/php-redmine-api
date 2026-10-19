@@ -278,6 +278,9 @@ class IssueTest extends TestCase
         $legacyClient->expects($this->exactly(1))
             ->method('getLastResponseContentType')
             ->willReturn('application/xml');
+        $legacyClient->expects($this->exactly(1))
+            ->method('getLastResponseStatusCode')
+            ->willReturn(201);
 
         // Create the object under test
         $api = new Issue($legacyClient);

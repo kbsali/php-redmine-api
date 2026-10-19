@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Project::class)]
 class RemoveTest extends TestCase
@@ -52,5 +54,49 @@ class RemoveTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testRemoveWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/projects/5.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $this->assertSame('', $api->remove(5));
+    }
+
+    public function testRemoveWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/projects/5.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Project::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->remove(5);
     }
 }

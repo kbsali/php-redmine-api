@@ -156,7 +156,17 @@ class Attachment extends AbstractApi
             $attachment,
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+
+        if ($this->lastResponse->getStatusCode() !== 201) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -175,6 +185,17 @@ class Attachment extends AbstractApi
             '/attachments/' . urlencode(strval($id)) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 }

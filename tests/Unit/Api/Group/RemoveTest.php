@@ -7,7 +7,9 @@ namespace Redmine\Tests\Unit\Api\Group;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Group::class)]
 class RemoveTest extends TestCase
@@ -30,5 +32,49 @@ class RemoveTest extends TestCase
         $api = Group::fromHttpClient($client);
 
         $this->assertSame('', $api->remove(5));
+    }
+
+    public function testRemoveWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/groups/5.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $this->assertSame('', $api->remove(5));
+    }
+
+    public function testRemoveWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                '/groups/5.xml',
+                'application/xml',
+                '',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Group::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->remove(5);
     }
 }

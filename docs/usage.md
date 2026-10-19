@@ -215,6 +215,38 @@ try {
 }
 ```
 
+### Forward compatibility mode
+
+By default, API methods that create, update, or delete resources do not check the HTTP status code of the response. Their return values are unchanged from earlier versions, even if the status code indicates an error: depending on the method this is the response body as a string, a `SimpleXMLElement` or an array. This preserves backwards compatibility with existing code.
+
+You can opt-in to stricter behavior by enabling the forward compatibility mode on the client:
+
+```php
+$client->enableFutureMode();
+```
+
+After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error) throws `\Redmine\Exception\UnexpectedResponseException`. This allows you to catch and handle errors more reliably.
+
+> :bulb: The forward compatibility mode only applies to the client on which `enableFutureMode()` was called and to all APIs returned by its `getApi()` method, including APIs that were returned before. Other clients are not affected. API instances created manually with `fromHttpClient()` always use the default behavior.
+
+> :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
+
+```php
+$client->enableFutureMode();
+
+try {
+    $client->getApi('issue')->create([
+        'project_id' => 1,
+        'subject' => 'test',
+    ]);
+} catch (\Redmine\Exception\UnexpectedResponseException $e) {
+    // Handle unexpected response (wrong status code)
+    $response = $e->getResponse();
+    $statusCode = $response->getStatusCode();
+    $body = $response->getContent();
+}
+```
+
 ## API
 
 ### Mid-level API

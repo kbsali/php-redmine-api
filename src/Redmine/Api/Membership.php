@@ -149,6 +149,18 @@ class Membership extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
+        if ($this->lastResponse->getStatusCode() !== 201) {
+            if (!$this->isFutureModeEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
         if ('' !== $body) {
             return new SimpleXMLElement($body);
         }
@@ -185,7 +197,18 @@ class Membership extends AbstractApi
             XmlSerializer::createFromArray(['membership' => $params])->getEncoded(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -204,7 +227,18 @@ class Membership extends AbstractApi
             '/memberships/' . $id . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**

@@ -195,6 +195,19 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 201) {
+            if (!$this->isFutureModeEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         if ($body === '') {
             return $body;
@@ -229,7 +242,18 @@ class Group extends AbstractApi
             XmlSerializer::createFromArray(['group' => $params])->getEncoded(),
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -280,7 +304,18 @@ class Group extends AbstractApi
             '/groups/' . strval($id) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -302,6 +337,19 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                if ($body === '') {
+                    return $body;
+                }
+
+                return new SimpleXMLElement($body);
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         if ($body === '') {
             return $body;
@@ -327,6 +375,17 @@ class Group extends AbstractApi
             '/groups/' . strval($id) . '/users/' . strval($userId) . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 }

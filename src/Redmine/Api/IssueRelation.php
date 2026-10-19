@@ -159,7 +159,18 @@ class IssueRelation extends AbstractApi
             '/relations/' . $id . '.xml',
         ));
 
-        return $this->lastResponse->getContent();
+        $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 204) {
+            if (!$this->isFutureModeEnabled()) {
+                return $body;
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
+
+        return $body;
     }
 
     /**
@@ -200,6 +211,15 @@ class IssueRelation extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+        $statusCode = $this->lastResponse->getStatusCode();
+
+        if ($statusCode !== 201) {
+            if (!$this->isFutureModeEnabled()) {
+                return JsonSerializer::createFromString($body)->getNormalized();
+            }
+
+            throw UnexpectedResponseException::create($this->lastResponse);
+        }
 
         return JsonSerializer::createFromString($body)->getNormalized();
     }

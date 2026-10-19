@@ -9,8 +9,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Exception\InvalidParameterException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Version::class)]
 class UpdateTest extends TestCase
@@ -222,5 +224,49 @@ class UpdateTest extends TestCase
 
         // Perform the tests
         $api->update(5, $parameters);
+    }
+
+    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/versions/5.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Version::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(5, []));
+    }
+
+    public function testUpdateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/versions/5.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Version::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->update(5, []);
     }
 }

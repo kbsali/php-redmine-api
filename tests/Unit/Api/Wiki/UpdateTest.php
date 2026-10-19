@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Wiki::class)]
 class UpdateTest extends TestCase
@@ -80,5 +82,75 @@ class UpdateTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    public function testUpdateWithCorrectStatusCodeAndForwardCompatibilityReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/wiki/test.xml',
+                'application/xml',
+                '<?xml version="1.0"?><wiki_page/>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Wiki::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $return = $api->update(5, 'test', []);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/wiki/test.xml',
+                'application/xml',
+                '<?xml version="1.0"?><wiki_page/>',
+                500,
+                '',
+                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
+            ],
+        );
+
+        $api = Wiki::fromHttpClient($client);
+
+        $return = $api->update(5, 'test', []);
+
+        $this->assertSame('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return);
+    }
+
+    public function testUpdateWithIncorrectStatusCodeThrowsException(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/projects/5/wiki/test.xml',
+                'application/xml',
+                '<?xml version="1.0"?><wiki_page/>',
+                500,
+                '',
+                '',
+            ],
+        );
+
+        $api = Wiki::fromHttpClient($client);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        FutureMode::enable($api);
+
+        $api->update(5, 'test', []);
     }
 }
