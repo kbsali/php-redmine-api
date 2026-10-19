@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Behaviour-driven tests are run against Redmine 7.0.2, 6.1.5, 6.0.11, 5.1.12.
 
+### Fixed
+
+- Wiki page titles with spaces are now encoded as `%20` instead of `+`, so `Redmine\Api\Wiki` creates, shows and removes the page `Test_Page` for the title `Test Page`. Pages created with a `+` in their title since v2.6.0 can still be accessed by passing the title with `+`, e.g. `Test+Page`.
+
 ## [v2.9.1](https://github.com/kbsali/php-redmine-api/compare/v2.9.0...v2.9.1) - 2026-04-03
 
 ### Fixed

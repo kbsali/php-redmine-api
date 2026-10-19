@@ -61,6 +61,18 @@ class UpdateTest extends TestCase
                 204,
                 '',
             ],
+            'test with space in page name' => [
+                5,
+                'about page',
+                [],
+                '/projects/5/wiki/about%20page.xml',
+                <<< XML
+                <?xml version="1.0"?>
+                <wiki_page/>
+                XML,
+                204,
+                '',
+            ],
             'test with params' => [
                 5,
                 'test',

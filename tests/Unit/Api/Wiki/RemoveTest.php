@@ -57,7 +57,7 @@ class RemoveTest extends TestCase
             'test with special chars in page name' => [
                 5,
                 'test page',
-                '/projects/5/wiki/test+page.xml',
+                '/projects/5/wiki/test%20page.xml',
                 204,
                 '',
             ],

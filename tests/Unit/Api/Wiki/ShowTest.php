@@ -80,6 +80,22 @@ class ShowTest extends TestCase
                 '["API Response"]',
                 ['API Response'],
             ],
+            'array response with space in page name' => [
+                5,
+                'about page',
+                null,
+                '/projects/5/wiki/about%20page.json?include=attachments',
+                '["API Response"]',
+                ['API Response'],
+            ],
+            'array response with plus in page name' => [
+                5,
+                'about+page',
+                null,
+                '/projects/5/wiki/about%2Bpage.json?include=attachments',
+                '["API Response"]',
+                ['API Response'],
+            ],
             'string response' => [
                 5,
                 'page',

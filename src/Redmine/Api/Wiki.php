@@ -136,9 +136,9 @@ class Wiki extends AbstractApi
         ];
 
         if (null === $version) {
-            $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '.json';
+            $path = '/projects/' . $project . '/wiki/' . rawurlencode($page) . '.json';
         } else {
-            $path = '/projects/' . $project . '/wiki/' . urlencode($page) . '/' . $version . '.json';
+            $path = '/projects/' . $project . '/wiki/' . rawurlencode($page) . '/' . $version . '.json';
         }
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeJsonRequest(
@@ -179,7 +179,7 @@ class Wiki extends AbstractApi
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
-            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
+            '/projects/' . $project . '/wiki/' . rawurlencode($page) . '.xml',
             XmlSerializer::createFromArray(['wiki_page' => $params])->getEncoded(),
         ));
 
@@ -235,7 +235,7 @@ class Wiki extends AbstractApi
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
-            '/projects/' . $project . '/wiki/' . urlencode($page) . '.xml',
+            '/projects/' . $project . '/wiki/' . rawurlencode($page) . '.xml',
         ));
 
         $body = $this->lastResponse->getContent();
