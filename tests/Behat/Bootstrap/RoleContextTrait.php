@@ -60,4 +60,20 @@ trait RoleContextTrait
             $api->getLastResponse(),
         );
     }
+
+    /**
+     * @When I show the role with id :id
+     *
+     * @param mixed $id
+     */
+    public function iShowTheRoleWithId($id): void
+    {
+        /** @var Role */
+        $api = $this->getNativeCurlClient()->getApi('role');
+
+        $this->registerClientResponse(
+            $api->show($id),
+            $api->getLastResponse(),
+        );
+    }
 }
