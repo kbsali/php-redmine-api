@@ -30,6 +30,22 @@ trait IssueRelationContextTrait
     }
 
     /**
+     * @When I show the issue relation with the id :relationId
+     *
+     * @param mixed $relationId
+     */
+    public function iShowTheIssueRelationWithTheId($relationId): void
+    {
+        /** @var IssueRelation */
+        $api = $this->getNativeCurlClient()->getApi('issue_relation');
+
+        $this->registerClientResponse(
+            $api->show($relationId),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I delete the issue relation with the id :relationId
      *
      * @param mixed $relationId
