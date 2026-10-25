@@ -50,6 +50,52 @@ Feature: Interacting with the REST API for issue relations
             | relation_type     | relates              |
             | delay             | null                 |
 
+    Scenario: Showing an issue relation
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | first issue          |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | second issue         |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        And I create an issue relation for issue id "1" with the following data
+            | property          | value                |
+            | issue_to_id       | 2                    |
+        When I show the issue relation with the id "1"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"relation":{"id":1,"issue_id":1,"issue_to_id":2,"relation_type":"relates","delay":null}}
+            """
+        And the returned data has only the following properties
+            """
+            id
+            issue_id
+            issue_to_id
+            relation_type
+            delay
+            """
+        And the returned data contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | issue_id          | 1                    |
+            | issue_to_id       | 2                    |
+            | relation_type     | relates              |
+            | delay             | null                 |
+
     Scenario: Deleting an issue relation
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
@@ -78,3 +124,13 @@ Feature: Interacting with the REST API for issue relations
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Showing a not existing issue relation
+        Given I have a "NativeCurlClient" client
+        When I show the issue relation with the id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is an array
+        And the returned data contains "0" items

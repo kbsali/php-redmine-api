@@ -97,6 +97,22 @@ trait IssueCategoryContextTrait
     }
 
     /**
+     * @When I show the issue category with id :id
+     *
+     * @param mixed $id
+     */
+    public function iShowTheIssueCategoryWithId($id): void
+    {
+        /** @var IssueCategory */
+        $api = $this->getNativeCurlClient()->getApi('issue_category');
+
+        $this->registerClientResponse(
+            $api->show($id),
+            $api->getLastResponse(),
+        );
+    }
+
+    /**
      * @When I update the issue category with id :id and the following data
      *
      * @param mixed $id

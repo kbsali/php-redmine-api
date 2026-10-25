@@ -167,6 +167,50 @@ Feature: Interacting with the REST API for issue categories
         And the response has the content type "application/json"
         And the returned data contains "108" items
 
+    Scenario: Showing an issue category
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue category for project identifier "test-project" and with the following data
+            | property          | value                |
+            | name              | Category name        |
+            | assigned_to_id    | 1                    |
+        When I show the issue category with id "1"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            issue_category
+            """
+        And the returned data "issue_category" property is an array
+        And the returned data "issue_category" property has only the following properties
+            """
+            id
+            project
+            name
+            assigned_to
+            """
+        And the returned data "issue_category" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Category name        |
+        And the returned data "issue_category.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+        And the returned data "issue_category.assigned_to" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Redmine Admin        |
+
+    @error
+    Scenario: Showing a not existing issue category
+        Given I have a "NativeCurlClient" client
+        When I show the issue category with id "1"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

@@ -202,6 +202,84 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
+    Scenario: Showing an issue
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I show the issue with id "1"
+        Then the response has the status code "200"
+        And the response has the content type "application/json"
+        And the returned data has only the following properties
+            """
+            issue
+            """
+        And the returned data "issue" property is an array
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            """
+        And the returned data "issue" property contains the following data
+            | property              | value                |
+            | id                    | 1                    |
+            | subject               | issue subject        |
+            | description           | null                 |
+            | due_date              | null                 |
+            | done_ratio            | 0                    |
+            | is_private            | false                |
+            | estimated_hours       | null                 |
+            | total_estimated_hours | null                 |
+            | spent_hours           | 0.0                  |
+            | total_spent_hours     | 0.0                  |
+            | closed_on             | null                 |
+        And the returned data "issue.project" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Test Project         |
+        And the returned data "issue.tracker" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Defect               |
+        And the returned data "issue.status" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | New                  |
+            | is_closed         | false                |
+        And the returned data "issue.priority" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Normal               |
+        And the returned data "issue.author" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Redmine Admin        |
+
     @error
     Scenario: Showing a not existing issue
         Given I have a "NativeCurlClient" client
