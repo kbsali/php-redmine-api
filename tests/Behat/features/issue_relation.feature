@@ -76,6 +76,10 @@ Feature: Interacting with the REST API for issue relations
         When I show the issue relation with the id "1"
         Then the response has the status code "200"
         And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"relation":{"id":1,"issue_id":1,"issue_to_id":2,"relation_type":"relates","delay":null}}
+            """
         And the returned data has only the following properties
             """
             id
