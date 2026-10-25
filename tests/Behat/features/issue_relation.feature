@@ -120,3 +120,13 @@ Feature: Interacting with the REST API for issue relations
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Showing a not existing issue relation
+        Given I have a "NativeCurlClient" client
+        When I show the issue relation with the id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is an array
+        And the returned data contains "0" items
