@@ -114,6 +114,8 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     *
      * @return array<mixed> relation's details or empty array on error
      */
     public function show($id)
@@ -125,6 +127,23 @@ class IssueRelation extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
+        if ($this->isFutureModeEnabled()) {
+            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            try {
+                $data = JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                throw UnexpectedResponseException::create($this->lastResponse, $e);
+            }
+
+            if (!is_array($data) || !array_key_exists('relation', $data) || !is_array($data['relation'])) {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            return $data['relation'];
+        }
 
         if ('' === $body) {
             return [];
