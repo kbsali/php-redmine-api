@@ -84,3 +84,12 @@ Feature: Interacting with the REST API for roles
             | time_entries_visibility   | all                  |
             | users_visibility          | all                  |
             | permissions               | []                   |
+
+    @error
+    Scenario: Showing a not existing role
+        Given I have a "NativeCurlClient" client
+        When I show the role with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
