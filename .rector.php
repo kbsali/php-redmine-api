@@ -17,7 +17,6 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
         \Rector\Set\ValueObject\SetList::EARLY_RETURN,
         \Rector\Set\ValueObject\SetList::INSTANCEOF,
-        \Rector\Set\ValueObject\SetList::STRICT_BOOLEANS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
 ;
