@@ -21,6 +21,7 @@ Nothing yet.
 ### Changed
 
 - Behaviour-driven tests are run against Redmine 7.0.2, 6.1.5, 6.0.11, 5.1.12.
+- All source files now declare `strict_types=1`.
 - The `show()` methods of `Attachment`, `Group`, `Issue`, `IssueCategory`, `IssueRelation`, `Project`, `Role`, `TimeEntry`, `User`, `Version` and `Wiki` now verify the response. The return value only changes if `enableFutureMode()` was called on the client – an unexpected status code, an empty body or a body that cannot be decoded into an array then throws `UnexpectedResponseException`.
 
 ### Fixed
