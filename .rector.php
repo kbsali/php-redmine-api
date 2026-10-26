@@ -15,8 +15,6 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::DEAD_CODE,
         \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION,
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
-        \Rector\Set\ValueObject\SetList::EARLY_RETURN,
-        \Rector\Set\ValueObject\SetList::INSTANCEOF,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
 ;
