@@ -10,6 +10,8 @@ jobs:
   redmine-release:
     name: Check for Redmine updates
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
 
     steps:
       - name: Check for updates
