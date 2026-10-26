@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Check for updates
-        uses: git-for-windows/rss-to-issues@v0
+        uses: git-for-windows/rss-to-issues@99d302b353c4751ca1bda6130fb24934ec12e01e # v0.0.13
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           feed: https://www.redmine.org/projects/redmine/news.atom
