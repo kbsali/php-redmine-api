@@ -1,11 +1,11 @@
 {
-  "extends": ["config:base", "group:all", "schedule:weekly"],
+  "extends": ["config:recommended", "group:all", "schedule:weekly"],
   "assigneesFromCodeOwners": true,
   "assigneesSampleSize": 1,
   "separateMinorPatch": true,
   "packageRules": [
     {
-      "updateTypes": ["patch"],
+      "matchUpdateTypes": ["patch"],
       "enabled": false
     },
     {
