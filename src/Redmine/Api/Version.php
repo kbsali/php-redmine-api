@@ -214,6 +214,8 @@ class Version extends AbstractApi
      *
      * @param int $id the version id
      *
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     *
      * @return array<mixed>|false|string information about the version as array of false|string on error
      */
     public function show($id)
@@ -224,6 +226,24 @@ class Version extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+
+        if ($this->isFutureModeEnabled()) {
+            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            try {
+                $data = JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                throw UnexpectedResponseException::create($this->lastResponse, $e);
+            }
+
+            if (!is_array($data)) {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            return $data;
+        }
 
         if ('' === $body) {
             return false;

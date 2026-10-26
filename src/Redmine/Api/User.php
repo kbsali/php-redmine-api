@@ -226,6 +226,8 @@ class User extends AbstractApi
      * @param int|string   $id     the user id or `current` for retrieving the user whose credentials are used
      * @param array<mixed> $params extra associated data
      *
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     *
      * @return array<mixed>|false|string information about the user as array or false|string on error
      */
     public function show($id, array $params = [])
@@ -248,6 +250,24 @@ class User extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
+
+        if ($this->isFutureModeEnabled()) {
+            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            try {
+                $data = JsonSerializer::createFromString($body)->getNormalized();
+            } catch (SerializerException $e) {
+                throw UnexpectedResponseException::create($this->lastResponse, $e);
+            }
+
+            if (!is_array($data)) {
+                throw UnexpectedResponseException::create($this->lastResponse);
+            }
+
+            return $data;
+        }
 
         if ('' === $body) {
             return false;

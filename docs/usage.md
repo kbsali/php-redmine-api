@@ -219,13 +219,17 @@ try {
 
 By default, API methods that create, update, or delete resources do not check the HTTP status code of the response. Their return values are unchanged from earlier versions, even if the status code indicates an error: depending on the method this is the response body as a string, a `SimpleXMLElement` or an array. This preserves backwards compatibility with existing code.
 
+The same applies to the `show()` methods that read a single resource: on errors they return `false`, an error message as a string or, in `IssueRelation::show()`, an empty array.
+
 You can opt-in to stricter behavior by enabling the forward compatibility mode on the client:
 
 ```php
 $client->enableFutureMode();
 ```
 
-After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error) throws `\Redmine\Exception\UnexpectedResponseException`. This allows you to catch and handle errors more reliably.
+After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error or a 404 for a not existing resource) throws `\Redmine\Exception\UnexpectedResponseException`. This allows you to catch and handle errors more reliably.
+
+The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException` if the response body is empty or cannot be decoded into an array. So in forward compatibility mode, `show()` either returns an array or throws an exception.
 
 > :bulb: The forward compatibility mode only applies to the client on which `enableFutureMode()` was called and to all APIs returned by its `getApi()` method, including APIs that were returned before. Other clients are not affected. API instances created manually with `fromHttpClient()` always use the default behavior.
 
@@ -244,6 +248,21 @@ try {
     $response = $e->getResponse();
     $statusCode = $response->getStatusCode();
     $body = $response->getContent();
+}
+```
+
+```php
+$client->enableFutureMode();
+
+try {
+    $issue = $client->getApi('issue')->show(123);
+} catch (\Redmine\Exception\UnexpectedResponseException $e) {
+    if ($e->getResponse()->getStatusCode() === 404) {
+        // Handle not existing issue
+    }
+
+    // Handle other unexpected responses, e.g. an invalid JSON body.
+    // In this case $e->getPrevious() contains the decoding error.
 }
 ```
 
