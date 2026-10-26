@@ -5,6 +5,9 @@ on:
     branches: [v2.x]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     name: Tests (PHPUnit with PHP ${{ matrix.php }})
@@ -41,8 +44,6 @@ jobs:
   behat:
     name: Behat ${{ matrix.suite }} (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     strategy:
       fail-fast: false
