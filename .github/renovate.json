@@ -7,6 +7,12 @@
     {
       "updateTypes": ["patch"],
       "enabled": false
+    },
+    {
+      "description": "Behat tests run against older Redmine versions on purpose, new releases are reported by check-for-releases.yml",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["redmine"],
+      "enabled": false
     }
   ]
 }
