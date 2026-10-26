@@ -21,8 +21,6 @@ final class FutureMode
 
     public static function isEnabled(AbstractApi $api): bool
     {
-        return Closure::bind(static function (AbstractApi $api): bool {
-            return $api->futureMode;
-        }, null, AbstractApi::class)($api);
+        return Closure::bind(static fn(AbstractApi $api): bool => $api->futureMode, null, AbstractApi::class)($api);
     }
 }
