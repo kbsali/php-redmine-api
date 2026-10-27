@@ -115,9 +115,7 @@ class Attachment extends AbstractApi
             JsonSerializer::createFromArray(['attachment' => $params])->getEncoded(),
         ));
 
-        if ($this->lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($this->lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }

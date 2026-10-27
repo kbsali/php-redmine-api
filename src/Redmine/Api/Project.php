@@ -352,11 +352,7 @@ class Project extends AbstractApi
             '',
         ));
 
-        $lastResponse = $this->getLastResponse();
-
-        if ($lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }
@@ -388,11 +384,7 @@ class Project extends AbstractApi
             '',
         ));
 
-        $lastResponse = $this->getLastResponse();
-
-        if ($lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }
@@ -424,11 +416,7 @@ class Project extends AbstractApi
             '',
         ));
 
-        $lastResponse = $this->getLastResponse();
-
-        if ($lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }
@@ -460,11 +448,7 @@ class Project extends AbstractApi
             '',
         ));
 
-        $lastResponse = $this->getLastResponse();
-
-        if ($lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }
