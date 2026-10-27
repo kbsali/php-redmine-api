@@ -213,8 +213,6 @@ class IssueRelation extends AbstractApi
     {
         $defaults = [
             'relation_type' => 'relates',
-            'issue_to_id' => null,
-            'delay' => null,
         ];
 
         $params = $this->sanitizeParams($defaults, $params);
