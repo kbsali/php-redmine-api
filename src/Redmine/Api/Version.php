@@ -270,14 +270,7 @@ class Version extends AbstractApi
      */
     public function create($project, array $params = [])
     {
-        $defaults = [
-            'name' => null,
-            'description' => null,
-            'status' => null,
-            'sharing' => null,
-            'due_date' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (
             !isset($params['name'])
@@ -327,14 +320,7 @@ class Version extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = [
-            'name' => null,
-            'description' => null,
-            'status' => null,
-            'sharing' => null,
-            'due_date' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
         $this->validateStatus($params);
         $this->validateSharing($params);
 
