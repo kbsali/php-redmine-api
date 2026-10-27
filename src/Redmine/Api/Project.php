@@ -269,12 +269,7 @@ class Project extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $defaults = [
-            'name' => null,
-            'identifier' => null,
-            'description' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (
             !isset($params['name'])
@@ -325,9 +320,6 @@ class Project extends AbstractApi
     {
         $defaults = [
             'id' => $id,
-            'name' => null,
-            'identifier' => null,
-            'description' => null,
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
