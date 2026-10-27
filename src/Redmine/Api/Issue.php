@@ -245,23 +245,8 @@ class Issue extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $defaults = [
-            'subject' => null,
-            'description' => null,
-            'project_id' => null,
-            'category_id' => null,
-            'priority_id' => null,
-            'status_id' => null,
-            'tracker_id' => null,
-            'assigned_to_id' => null,
-            'author_id' => null,
-            'due_date' => null,
-            'start_date' => null,
-            'watcher_user_ids' => null,
-            'fixed_version_id' => null,
-        ];
         $params = $this->cleanParams($params);
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         // FIXME: Throw exception on missing mandatory parameters
         // if (!isset($params['subject']) || !isset($params['project_id']) || !isset($params['tracker_id']) || !isset($params['priority_id']) || !isset($params['status_id'])) {
@@ -309,15 +294,6 @@ class Issue extends AbstractApi
     {
         $defaults = [
             'id' => $id,
-            'subject' => null,
-            'notes' => null,
-            'private_notes' => false,
-            'category_id' => null,
-            'priority_id' => null,
-            'status_id' => null,
-            'tracker_id' => null,
-            'assigned_to_id' => null,
-            'due_date' => null,
         ];
         $params = $this->cleanParams($params);
         $sanitizedParams = $this->sanitizeParams($defaults, $params);

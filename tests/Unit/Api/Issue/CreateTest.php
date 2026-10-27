@@ -77,9 +77,9 @@ class CreateTest extends TestCase
                 <issue>
                     <subject>Issue subject</subject>
                     <project_id>1</project_id>
+                    <tracker_id>2</tracker_id>
                     <priority_id>3</priority_id>
                     <status_id>4</status_id>
-                    <tracker_id>2</tracker_id>
                 </issue>
                 XML,
                 201,
@@ -102,9 +102,9 @@ class CreateTest extends TestCase
                     <description>line1
                 line2</description>
                     <project_id>1</project_id>
+                    <tracker_id>2</tracker_id>
                     <priority_id>3</priority_id>
                     <status_id>4</status_id>
-                    <tracker_id>2</tracker_id>
                 </issue>
                 XML,
                 201,
@@ -124,11 +124,11 @@ class CreateTest extends TestCase
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
                     <subject>Issue subject with some xml entities: &amp; &lt; &gt; " ' </subject>
-                    <description>Description with some xml entities: &amp; &lt; &gt; " ' </description>
                     <project_id>1</project_id>
+                    <tracker_id>2</tracker_id>
                     <priority_id>3</priority_id>
                     <status_id>4</status_id>
-                    <tracker_id>2</tracker_id>
+                    <description>Description with some xml entities: &amp; &lt; &gt; " ' </description>
                 </issue>
                 XML,
                 201,
@@ -187,22 +187,15 @@ class CreateTest extends TestCase
                 <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
+                    <project_id>1</project_id>
+                    <tracker_id>2</tracker_id>
+                    <status_id>3</status_id>
+                    <priority_id>4</priority_id>
                     <subject>Issue subject</subject>
                     <description>Issue description</description>
-                    <project_id>1</project_id>
                     <category_id>5</category_id>
-                    <priority_id>4</priority_id>
-                    <status_id>3</status_id>
-                    <tracker_id>2</tracker_id>
-                    <assigned_to_id>7</assigned_to_id>
-                    <author_id>12</author_id>
-                    <due_date>2024-12-31</due_date>
-                    <start_date>2024-01-01</start_date>
-                    <watcher_user_ids type="array">
-                        <watcher_user_id>10</watcher_user_id>
-                        <watcher_user_id>11</watcher_user_id>
-                    </watcher_user_ids>
                     <fixed_version_id>6</fixed_version_id>
+                    <assigned_to_id>7</assigned_to_id>
                     <parent_issue_id>8</parent_issue_id>
                     <custom_fields type="array">
                         <custom_field id="9" name="Custom field 9">
@@ -219,7 +212,14 @@ class CreateTest extends TestCase
                             <value>https://example.com/?one=first&amp;two=second</value>
                         </custom_field>
                     </custom_fields>
+                    <watcher_user_ids type="array">
+                        <watcher_user_id>10</watcher_user_id>
+                        <watcher_user_id>11</watcher_user_id>
+                    </watcher_user_ids>
                     <estimated_hours>2.5</estimated_hours>
+                    <author_id>12</author_id>
+                    <due_date>2024-12-31</due_date>
+                    <start_date>2024-01-01</start_date>
                     <uploads type="array">
                         <upload>
                             <token>1.first-token</token>
