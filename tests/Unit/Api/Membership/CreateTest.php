@@ -50,6 +50,39 @@ class CreateTest extends TestCase
     }
 
     /**
+     * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getCreateData')]
+    public function testCreateWithFutureModeReturnsCorrectResponse(int $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Membership::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->create($identifier, $parameters);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array
@@ -115,6 +148,32 @@ class CreateTest extends TestCase
 
         // Create the object under test
         $api = Membership::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testCreateWithFutureModeAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects/5/memberships.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = Membership::fromHttpClient($client);
+
+        FutureMode::enable($api);
 
         // Perform the tests
         $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
