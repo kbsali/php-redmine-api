@@ -31,6 +31,49 @@ docker compose exec behat composer run behat -- --suite=redmine_6_1 --tags=issue
 docker compose exec behat composer run behat -- --suite=redmine_6_1 --format=progress
 ```
 
+## Future mode
+
+The client from the step `Given I have a "NativeCurlClient" client` runs with the future mode enabled
+(see `Redmine\Client\NativeCurlClient::enableFutureMode()`).
+In future mode the API methods throw an `UnexpectedResponseException` on an unexpected response.
+
+A `When` step that calls the API with `FeatureContext::registerClientCall()` catches this exception
+and registers the response of the exception as the last response, so you can assert the exception and the response:
+
+```
+    @error
+    Scenario: Showing a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I show the issue with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+```
+
+A scenario fails, if an exception was thrown but not asserted.
+The steps `the returned data ...` fail after an exception, because there is no returned data.
+
+### Without future mode
+
+If the behaviour without future mode differs, add a second scenario directly below.
+Use the step `Given I have a "NativeCurlClient" client without future mode`,
+add the suffix "without future mode" to the title and tag the scenario with `@without-future-mode`:
+
+```
+    @error @without-future-mode
+    Scenario: Showing a not existing issue without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I show the issue with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+        And the returned data is false
+```
+
+In v3.0.0 the future mode becomes the only behaviour.
+Then the step and all scenarios tagged with `@without-future-mode` will be removed.
+
 ## Redmine version specific features
 
 Some Redmine features are specific for a Redmine version. These situations are handled in different ways.
