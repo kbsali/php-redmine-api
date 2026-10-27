@@ -7,18 +7,14 @@ return \Rector\Config\RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
-    // uncomment to reach your current PHP version
-    //->withPhpSets()
-    ->withPhp74Sets()
+    // use the PHP version from composer.json
+    ->withPhpSets()
     ->withPhpVersion(70400)
     ->withSets([
         \Rector\Set\ValueObject\SetList::CODE_QUALITY,
         \Rector\Set\ValueObject\SetList::DEAD_CODE,
         \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION,
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
-        \Rector\Set\ValueObject\SetList::EARLY_RETURN,
-        \Rector\Set\ValueObject\SetList::INSTANCEOF,
-        \Rector\Set\ValueObject\SetList::STRICT_BOOLEANS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
 ;
