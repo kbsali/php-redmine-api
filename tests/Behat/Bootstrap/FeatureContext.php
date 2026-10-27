@@ -12,7 +12,9 @@ use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\AbstractApi;
 use Redmine\Client\NativeCurlClient;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
 use Redmine\Tests\RedmineExtension\RedmineInstance;
@@ -60,6 +62,20 @@ final class FeatureContext implements Context
     }
 
     /**
+     * @AfterScenario
+     */
+    public function assertNoUnassertedException(): void
+    {
+        if ($this->lastException instanceof UnexpectedResponseException && ! $this->lastExceptionWasAsserted) {
+            throw new RuntimeException(
+                'The API call threw ' . get_class($this->lastException) . ', but no step asserted it.',
+                0,
+                $this->lastException,
+            );
+        }
+    }
+
+    /**
      * @AfterSuite
      */
     public static function clean(AfterSuiteScope $scope): void
@@ -83,6 +99,10 @@ final class FeatureContext implements Context
      * @var array<mixed>
      */
     private array $lastReturnAsArray;
+
+    private ?UnexpectedResponseException $lastException = null;
+
+    private bool $lastExceptionWasAsserted = false;
 
     public function __construct(string $redmineVersion, string $rootPath, string $redmineUrl)
     {
@@ -145,6 +165,57 @@ final class FeatureContext implements Context
         unset($this->lastReturnAsArray);
         $this->lastReturn = $lastReturn;
         $this->lastResponse = $lastResponse;
+        $this->lastException = null;
+        $this->lastExceptionWasAsserted = false;
+    }
+
+    /**
+     * Calls the API and registers the response, even if an UnexpectedResponseException is thrown.
+     *
+     * @param callable(): mixed $apiCall
+     */
+    private function registerClientCall(AbstractApi $api, callable $apiCall): void
+    {
+        try {
+            $lastReturn = $apiCall();
+        } catch (UnexpectedResponseException $e) {
+            $response = $e->getResponse();
+
+            if (!$response instanceof Response) {
+                throw $e;
+            }
+
+            $this->registerClientResponse(null, $response);
+            $this->lastException = $e;
+
+            return;
+        }
+
+        $this->registerClientResponse($lastReturn, $api->getLastResponse());
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getLastReturn()
+    {
+        if ($this->lastException instanceof UnexpectedResponseException) {
+            throw new RuntimeException(
+                'There is no returned data, because the API call threw ' . get_class($this->lastException) . '.',
+            );
+        }
+
+        return $this->lastReturn;
+    }
+
+    /**
+     * @Then an UnexpectedResponseException was thrown
+     */
+    public function anUnexpectedResponseExceptionWasThrown(): void
+    {
+        TestCase::assertInstanceOf(UnexpectedResponseException::class, $this->lastException);
+
+        $this->lastExceptionWasAsserted = true;
     }
 
     /**
@@ -200,7 +271,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsTrue(): void
     {
-        TestCase::assertTrue($this->lastReturn);
+        TestCase::assertTrue($this->getLastReturn());
     }
 
     /**
@@ -208,7 +279,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsFalse(): void
     {
-        TestCase::assertFalse($this->lastReturn);
+        TestCase::assertFalse($this->getLastReturn());
     }
 
     /**
@@ -216,7 +287,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsExactly(string $content): void
     {
-        TestCase::assertSame($content, $this->lastReturn);
+        TestCase::assertSame($content, $this->getLastReturn());
     }
 
     /**
@@ -224,7 +295,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string): void
     {
-        TestCase::assertSame($string->getRaw(), $this->lastReturn);
+        TestCase::assertSame($string->getRaw(), $this->getLastReturn());
     }
 
     /**
@@ -232,7 +303,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsAnInstanceOf(string $className): void
     {
-        TestCase::assertInstanceOf($className, $this->lastReturn);
+        TestCase::assertInstanceOf($className, $this->getLastReturn());
     }
 
     /**
@@ -240,7 +311,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsAnArray(): void
     {
-        TestCase::assertIsArray($this->lastReturn);
+        TestCase::assertIsArray($this->getLastReturn());
     }
 
     /**
@@ -248,7 +319,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataContainsItems(int $count): void
     {
-        TestCase::assertCount($count, $this->lastReturn);
+        TestCase::assertCount($count, $this->getLastReturn());
     }
 
     /**
@@ -256,7 +327,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataContainsTheFollowingData(TableNode $table): void
     {
-        $returnData = $this->lastReturn;
+        $returnData = $this->getLastReturn();
 
         if (! is_array($returnData)) {
             throw new RuntimeException('The returned data is not an array.');
@@ -369,20 +440,21 @@ final class FeatureContext implements Context
             return $this->lastReturnAsArray;
         }
 
+        $lastReturn = $this->getLastReturn();
         $returnData = null;
 
-        if ($this->lastReturn instanceof SimpleXMLElement) {
-            $returnData = json_decode(json_encode($this->lastReturn), true);
-        } elseif (is_string($this->lastReturn)) {
-            $returnData = json_decode($this->lastReturn, true);
-        } elseif (is_array($this->lastReturn)) {
-            $returnData = $this->lastReturn;
+        if ($lastReturn instanceof SimpleXMLElement) {
+            $returnData = json_decode(json_encode($lastReturn), true);
+        } elseif (is_string($lastReturn)) {
+            $returnData = json_decode($lastReturn, true);
+        } elseif (is_array($lastReturn)) {
+            $returnData = $lastReturn;
         }
 
         if (! is_array($returnData)) {
             throw new RuntimeException(sprintf(
                 'the last returned data "%s" could not parsed into an array.',
-                json_encode($this->lastReturn),
+                json_encode($lastReturn),
             ));
         }
 

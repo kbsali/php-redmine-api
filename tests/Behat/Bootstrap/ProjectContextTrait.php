@@ -91,9 +91,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->show($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($identifier),
         );
     }
 

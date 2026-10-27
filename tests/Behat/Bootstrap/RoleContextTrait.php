@@ -71,9 +71,9 @@ trait RoleContextTrait
         /** @var Role */
         $api = $this->getNativeCurlClient()->getApi('role');
 
-        $this->registerClientResponse(
-            $api->show($id),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($id),
         );
     }
 }

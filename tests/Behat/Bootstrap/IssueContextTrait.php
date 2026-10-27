@@ -53,9 +53,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->show($issueId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($issueId),
         );
     }
 
