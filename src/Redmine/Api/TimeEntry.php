@@ -169,15 +169,7 @@ class TimeEntry extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $defaults = [
-            'issue_id' => null,
-            'project_id' => null,
-            'spent_on' => null,
-            'hours' => null,
-            'activity_id' => null,
-            'comments' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (
             (!isset($params['issue_id']) && !isset($params['project_id']))
@@ -228,12 +220,6 @@ class TimeEntry extends AbstractApi
     {
         $defaults = [
             'id' => $id,
-            'issue_id' => null,
-            'project_id' => null,
-            'spent_on' => null,
-            'hours' => null,
-            'activity_id' => null,
-            'comments' => null,
         ];
         $params = $this->sanitizeParams($defaults, $params);
 
