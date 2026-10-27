@@ -131,11 +131,7 @@ class Membership extends AbstractApi
      */
     public function create($project, array $params = [])
     {
-        $defaults = [
-            'user_id' => null,
-            'role_ids' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (!isset($params['user_id']) || !isset($params['role_ids'])) {
             throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
@@ -182,10 +178,7 @@ class Membership extends AbstractApi
      */
     public function update($id, array $params = [])
     {
-        $defaults = [
-            'role_ids' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (!isset($params['role_ids'])) {
             throw new MissingParameterException('Theses parameters are mandatory: `role_ids`');

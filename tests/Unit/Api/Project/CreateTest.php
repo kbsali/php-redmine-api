@@ -61,7 +61,7 @@ class CreateTest extends TestCase
                     'name' => 'Test Project',
                 ],
                 '/projects.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
                 201,
                 '<?xml version="1.0" encoding="UTF-8"?><project></project>',
             ],
@@ -75,8 +75,8 @@ class CreateTest extends TestCase
                 <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
-                    <name>Test Project with some xml entities: &amp; &lt; &gt; " ' </name>
                     <identifier>test-project</identifier>
+                    <name>Test Project with some xml entities: &amp; &lt; &gt; " ' </name>
                     <description>Description with some xml entities: &amp; &lt; &gt; " ' </description>
                 </project>
                 XML,
@@ -93,8 +93,8 @@ class CreateTest extends TestCase
                 <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
-                    <name>Test Project</name>
                     <identifier>test-project</identifier>
+                    <name>Test Project</name>
                     <tracker_ids type="array">
                         <tracker>10</tracker>
                         <tracker>5</tracker>
@@ -121,8 +121,8 @@ class CreateTest extends TestCase
                 <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
-                    <name>Test Project</name>
                     <identifier>test-project</identifier>
+                    <name>Test Project</name>
                     <custom_fields type="array">
                         <custom_field name="cf_name" field_format="string" id="123" multiple="true">
                             <value type="array">
@@ -148,7 +148,7 @@ class CreateTest extends TestCase
                 'POST',
                 '/projects.xml',
                 'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
                 500,
                 '',
                 '',
@@ -172,7 +172,7 @@ class CreateTest extends TestCase
                 'POST',
                 '/projects.xml',
                 'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
                 201,
                 '',
                 '',
@@ -196,7 +196,7 @@ class CreateTest extends TestCase
                 'POST',
                 '/projects.xml',
                 'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
                 500,
                 '',
                 '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
@@ -280,7 +280,7 @@ class CreateTest extends TestCase
                 'POST',
                 '/projects.xml',
                 'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><name>Test Project</name><identifier>test-project</identifier></project>',
+                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
                 500,
                 '',
                 '',

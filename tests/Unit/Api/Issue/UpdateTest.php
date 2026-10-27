@@ -76,9 +76,9 @@ class UpdateTest extends TestCase
                     <id>1</id>
                     <subject>test note (xml) 1</subject>
                     <notes>test note api</notes>
-                    <priority_id>5</priority_id>
-                    <status_id>2</status_id>
                     <assigned_to_id>1</assigned_to_id>
+                    <status_id>2</status_id>
+                    <priority_id>5</priority_id>
                     <due_date>2014-05-13</due_date>
                 </issue>
                 XML,
@@ -209,11 +209,11 @@ class UpdateTest extends TestCase
                 <?xml version="1.0"?>
                 <issue>
                     <id>70</id>
+                    <project_id>3</project_id>
                     <category_id>45</category_id>
                     <status_id>123</status_id>
                     <tracker_id>9</tracker_id>
                     <assigned_to_id>6</assigned_to_id>
-                    <project_id>3</project_id>
                     <author_id>5</author_id>
                 </issue>
                 XML,

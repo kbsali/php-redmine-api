@@ -79,10 +79,10 @@ class CreateTest extends TestCase
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user>
                     <login>user</login>
-                    <password>secret</password>
                     <lastname>last</lastname>
                     <firstname>first</firstname>
                     <mail>mail@example.com</mail>
+                    <password>secret</password>
                     <custom_fields type="array">
                         <custom_field id="5">
                             <value>Value 5</value>

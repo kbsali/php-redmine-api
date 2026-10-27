@@ -190,12 +190,7 @@ class Wiki extends AbstractApi
      */
     public function create($project, $page, array $params = [])
     {
-        $defaults = [
-            'text' => null,
-            'comments' => null,
-            'version' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',

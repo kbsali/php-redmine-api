@@ -293,14 +293,7 @@ class User extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $defaults = [
-            'login' => null,
-            'password' => null,
-            'lastname' => null,
-            'firstname' => null,
-            'mail' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (
             !isset($params['login'])
@@ -353,11 +346,6 @@ class User extends AbstractApi
     {
         $defaults = [
             'id' => $id,
-            'login' => null,
-            'password' => null,
-            'lastname' => null,
-            'firstname' => null,
-            'mail' => null,
         ];
         $params = $this->sanitizeParams($defaults, $params);
 

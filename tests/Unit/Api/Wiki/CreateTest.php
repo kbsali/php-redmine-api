@@ -89,9 +89,9 @@ class CreateTest extends TestCase
                 <<< XML
                 <?xml version="1.0"?>
                 <wiki_page>
-                    <text>Some page text with xml entities: &amp; &lt; &gt; " ' </text>
-                    <comments>Initial Edit with xml entities: &amp; &lt; &gt; " ' </comments>
                     <title>Test Wikipage with xml entities: &amp; &lt; &gt; " ' </title>
+                    <comments>Initial Edit with xml entities: &amp; &lt; &gt; " ' </comments>
+                    <text>Some page text with xml entities: &amp; &lt; &gt; " ' </text>
                 </wiki_page>
                 XML,
                 201,
