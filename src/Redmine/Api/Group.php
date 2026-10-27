@@ -265,35 +265,21 @@ class Group extends AbstractApi
             PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
 
-        $body = $this->lastResponse->getContent();
+        if (!$this->isFutureModeEnabled()) {
+            $body = $this->lastResponse->getContent();
 
-        if ($this->isFutureModeEnabled()) {
-            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
-                throw UnexpectedResponseException::create($this->lastResponse);
+            if ('' === $body) {
+                return false;
             }
 
             try {
-                $data = JsonSerializer::createFromString($body)->getNormalized();
+                return JsonSerializer::createFromString($body)->getNormalized();
             } catch (SerializerException $e) {
-                throw UnexpectedResponseException::create($this->lastResponse, $e);
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
             }
-
-            if (!is_array($data)) {
-                throw UnexpectedResponseException::create($this->lastResponse);
-            }
-
-            return $data;
         }
 
-        if ('' === $body) {
-            return false;
-        }
-
-        try {
-            return JsonSerializer::createFromString($body)->getNormalized();
-        } catch (SerializerException $e) {
-            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-        }
+        return $this->getJsonArrayOrThrow();
     }
 
     /**
