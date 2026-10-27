@@ -219,18 +219,18 @@ Feature: Interacting with the REST API for projects
         And the response has the content ""
         And the returned data is true
 
-    @error
-    Scenario: Showing a not existing project
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Showing a not existing project without future mode
+        Given I have a "NativeCurlClient" client without future mode
         When I show the project with identifier "not-existing"
         Then the response has the status code "404"
         And the response has the content type "application/json"
         And the response has the content ""
         And the returned data is false
 
-    @error
-    Scenario: Showing an archived project is not possible
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Showing an archived project is not possible without future mode
+        Given I have a "NativeCurlClient" client without future mode
         And I create a project with name "Test Project" and identifier "test-project"
         And I archive the project with identifier "test-project"
         When I show the project with identifier "test-project"

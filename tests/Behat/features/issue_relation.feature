@@ -125,9 +125,9 @@ Feature: Interacting with the REST API for issue relations
         And the response has the content ""
         And the returned data is exactly ""
 
-    @error
-    Scenario: Showing a not existing issue relation
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Showing a not existing issue relation without future mode
+        Given I have a "NativeCurlClient" client without future mode
         When I show the issue relation with the id "10"
         Then the response has the status code "404"
         And the response has the content type "application/json"

@@ -166,9 +166,9 @@ Feature: Interacting with the REST API for wikis
             | id                | 1                    |
             | name              | Test Project         |
 
-    @error
-    Scenario: Try to show a not existing wiki page
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Try to show a not existing wiki page without future mode
+        Given I have a "NativeCurlClient" client without future mode
         And I create a project with name "Test Project" and identifier "test-project"
         When I show the wiki page with name "This-page-does-not-exist" and project identifier "test-project"
         Then the response has the status code "404"

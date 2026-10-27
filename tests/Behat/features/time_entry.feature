@@ -152,9 +152,9 @@ Feature: Interacting with the REST API for time_entries
             | id                | 1                    |
             | name              | development          |
 
-    @error
-    Scenario: Try to show a non-existing time_entry
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Try to show a non-existing time_entry without future mode
+        Given I have a "NativeCurlClient" client without future mode
         And I have a time entry activiy with name "development"
         And I create a project with name "Test Project" and identifier "test-project"
         When I show the time entry with the id "1"

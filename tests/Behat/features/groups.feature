@@ -96,9 +96,9 @@ Feature: Interacting with the REST API for groups
             | id                | 5                    |
             | name              | Test Group           |
 
-    @error
-    Scenario: Try to show a non-existing group
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Try to show a non-existing group without future mode
+        Given I have a "NativeCurlClient" client without future mode
         When I show the group with id "40"
         Then the response has the status code "404"
         And the response has the content type "application/json"

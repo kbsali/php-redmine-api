@@ -102,11 +102,31 @@ final class FeatureContext implements Context
      */
     public function iHaveAClient($clientName): void
     {
+        $this->client = $this->createClient($clientName);
+    }
+
+    /**
+     * @todo remove this step and all scenarios tagged with `@without-future-mode` in v3.0.0
+     *
+     * @Given I have a :clientName client without future mode
+     *
+     * @param mixed $clientName
+     */
+    public function iHaveAClientWithoutFutureMode($clientName): void
+    {
+        $this->client = $this->createClient($clientName);
+    }
+
+    /**
+     * @param mixed $clientName
+     */
+    private function createClient($clientName): NativeCurlClient
+    {
         if ($clientName !== 'NativeCurlClient') {
             throw new InvalidArgumentException('Client ' . $clientName . ' is not supported.');
         }
 
-        $this->client = new NativeCurlClient(
+        return new NativeCurlClient(
             $this->redmine->getRedmineUrl(),
             $this->redmine->getApiKey(),
         );

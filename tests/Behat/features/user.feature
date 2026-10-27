@@ -97,9 +97,9 @@ Feature: Interacting with the REST API for users
             | groups            | []                   |
             | memberships       | []                   |
 
-    @error
-    Scenario: Showing a not existing user
-        Given I have a "NativeCurlClient" client
+    @error @without-future-mode
+    Scenario: Showing a not existing user without future mode
+        Given I have a "NativeCurlClient" client without future mode
         When I show the user with id "10"
         Then the response has the status code "404"
         And the response has the content type "application/json"
