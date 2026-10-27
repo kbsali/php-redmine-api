@@ -42,6 +42,34 @@ class RemoveWatcherTest extends TestCase
     }
 
     /**
+     * @dataProvider getRemoveWatcherData
+     */
+    #[DataProvider('getRemoveWatcherData')]
+    public function testRemoveWatcherWithFutureModeReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                $expectedPath,
+                'application/xml',
+                '',
+                $responseCode,
+                '',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $this->assertSame($response, $api->removeWatcher($issueId, $watcherUserId));
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getRemoveWatcherData(): array
