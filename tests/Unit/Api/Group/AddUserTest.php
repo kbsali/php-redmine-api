@@ -46,6 +46,37 @@ class AddUserTest extends TestCase
     }
 
     /**
+     * @dataProvider getAddUserData
+     */
+    #[DataProvider('getAddUserData')]
+    public function testAddUserWithFutureModeReturnsCorrectResponse(int $groupId, int $userId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->addUser($groupId, $userId);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getAddUserData(): array
