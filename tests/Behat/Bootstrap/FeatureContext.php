@@ -66,11 +66,11 @@ final class FeatureContext implements Context
      */
     public function assertNoUnassertedException(): void
     {
-        if ($this->lastException instanceof UnexpectedResponseException && ! $this->lastExceptionWasAsserted) {
+        if ($this->unassertedExceptions !== []) {
             throw new RuntimeException(
-                'The API call threw ' . get_class($this->lastException) . ', but no step asserted it.',
+                'An API call threw ' . get_class($this->unassertedExceptions[0]) . ', but no step asserted it.',
                 0,
-                $this->lastException,
+                $this->unassertedExceptions[0],
             );
         }
     }
@@ -102,7 +102,10 @@ final class FeatureContext implements Context
 
     private ?UnexpectedResponseException $lastException = null;
 
-    private bool $lastExceptionWasAsserted = false;
+    /**
+     * @var UnexpectedResponseException[]
+     */
+    private array $unassertedExceptions = [];
 
     public function __construct(string $redmineVersion, string $rootPath, string $redmineUrl)
     {
@@ -167,7 +170,6 @@ final class FeatureContext implements Context
         $this->lastReturn = $lastReturn;
         $this->lastResponse = $lastResponse;
         $this->lastException = null;
-        $this->lastExceptionWasAsserted = false;
     }
 
     /**
@@ -188,6 +190,7 @@ final class FeatureContext implements Context
 
             $this->registerClientResponse(null, $response);
             $this->lastException = $e;
+            $this->unassertedExceptions[] = $e;
 
             return;
         }
@@ -216,7 +219,10 @@ final class FeatureContext implements Context
     {
         TestCase::assertInstanceOf(UnexpectedResponseException::class, $this->lastException);
 
-        $this->lastExceptionWasAsserted = true;
+        $this->unassertedExceptions = array_values(array_filter(
+            $this->unassertedExceptions,
+            fn(UnexpectedResponseException $e): bool => $e !== $this->lastException,
+        ));
     }
 
     /**
