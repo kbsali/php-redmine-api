@@ -22,6 +22,8 @@ use Redmine\Serializer\JsonSerializer;
  */
 class IssueRelation extends AbstractApi
 {
+    use ResponseValidationTrait;
+
     final public static function fromHttpClient(HttpClient $httpClient): self
     {
         return new self($httpClient, true);
@@ -179,15 +181,12 @@ class IssueRelation extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 204) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
     }
@@ -228,15 +227,12 @@ class IssueRelation extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 201) {
-            if (!$this->isFutureModeEnabled()) {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return JsonSerializer::createFromString($body)->getNormalized();
         }
+
+        $this->throwOnUnexpectedStatusCode(201);
 
         return JsonSerializer::createFromString($body)->getNormalized();
     }
