@@ -21,6 +21,8 @@ use Redmine\Serializer\PathSerializer;
  */
 class Attachment extends AbstractApi
 {
+    use ResponseValidationTrait;
+
     final public static function fromHttpClient(HttpClient $httpClient): self
     {
         return new self($httpClient, true);
@@ -178,13 +180,11 @@ class Attachment extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ($this->lastResponse->getStatusCode() !== 201) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(201);
 
         return $body;
     }
@@ -206,15 +206,12 @@ class Attachment extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 204) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
     }
