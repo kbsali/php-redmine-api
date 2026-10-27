@@ -267,11 +267,7 @@ class IssueCategory extends AbstractApi
      */
     public function create($project, array $params = [])
     {
-        $defaults = [
-            'name' => null,
-            'assigned_to_id' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         if (
             !isset($params['name'])
@@ -318,11 +314,7 @@ class IssueCategory extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $defaults = [
-            'name' => null,
-            'assigned_to_id' => null,
-        ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->sanitizeParams([], $params);
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',
