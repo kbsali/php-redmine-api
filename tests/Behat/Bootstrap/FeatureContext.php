@@ -123,6 +123,7 @@ final class FeatureContext implements Context
     public function iHaveAClient($clientName): void
     {
         $this->client = $this->createClient($clientName);
+        $this->client->enableFutureMode();
     }
 
     /**

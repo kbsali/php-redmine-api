@@ -91,6 +91,16 @@ Feature: Interacting with the REST API for versions
             | estimated_hours   | 0.0                  |
             | spent_hours       | 0.0                  |
 
+    @error
+    Scenario: Showing a not existing version
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I show the version with id "1"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
     @error @without-future-mode
     Scenario: Showing a not existing version without future mode
         Given I have a "NativeCurlClient" client without future mode

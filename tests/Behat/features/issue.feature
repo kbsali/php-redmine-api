@@ -280,6 +280,15 @@ Feature: Interacting with the REST API for issues
             | id                | 1                    |
             | name              | Redmine Admin        |
 
+    @error
+    Scenario: Showing a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I show the issue with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
     @error @without-future-mode
     Scenario: Showing a not existing issue without future mode
         Given I have a "NativeCurlClient" client without future mode

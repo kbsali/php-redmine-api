@@ -85,6 +85,15 @@ Feature: Interacting with the REST API for roles
             | users_visibility          | all                  |
             | permissions               | []                   |
 
+    @error
+    Scenario: Showing a not existing role
+        Given I have a "NativeCurlClient" client
+        When I show the role with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
     @error @without-future-mode
     Scenario: Showing a not existing role without future mode
         Given I have a "NativeCurlClient" client without future mode
