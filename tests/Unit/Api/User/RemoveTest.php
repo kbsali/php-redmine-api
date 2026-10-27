@@ -42,6 +42,34 @@ class RemoveTest extends TestCase
     }
 
     /**
+     * @dataProvider getRemoveData
+     */
+    #[DataProvider('getRemoveData')]
+    public function testRemoveWithFutureModeReturnsCorrectResponse(int $id, string $expectedPath, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'DELETE',
+                $expectedPath,
+                'application/xml',
+                '',
+                $responseCode,
+                '',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = User::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $this->assertSame($response, $api->remove($id));
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getRemoveData(): array
