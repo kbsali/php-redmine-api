@@ -82,6 +82,15 @@ Feature: Interacting with the REST API for attachments
     Scenario: Try to show details of a non-existing attachment
         Given I have a "NativeCurlClient" client
         When I show the attachment with the id "1"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to show details of a non-existing attachment without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I show the attachment with the id "1"
         Then the response has the status code "404"
         And the response has the content type "application/json"
         And the response has the content ""

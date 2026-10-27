@@ -158,6 +158,17 @@ Feature: Interacting with the REST API for time_entries
         And I have a time entry activiy with name "development"
         And I create a project with name "Test Project" and identifier "test-project"
         When I show the time entry with the id "1"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to show a non-existing time_entry without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have a time entry activiy with name "development"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I show the time entry with the id "1"
         Then the response has the status code "404"
         And the response has the content type "application/json"
         And the response has the content ""

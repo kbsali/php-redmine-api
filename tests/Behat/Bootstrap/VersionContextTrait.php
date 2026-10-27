@@ -51,9 +51,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->show($versionId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($versionId),
         );
     }
 

@@ -78,9 +78,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->show($groupId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($groupId),
         );
     }
 

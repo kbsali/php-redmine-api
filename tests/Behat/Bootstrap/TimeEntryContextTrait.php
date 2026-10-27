@@ -59,9 +59,9 @@ trait TimeEntryContextTrait
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');
 
-        $this->registerClientResponse(
-            $api->show($activityId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($activityId),
         );
     }
 

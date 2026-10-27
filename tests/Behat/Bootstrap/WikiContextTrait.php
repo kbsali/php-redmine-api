@@ -45,9 +45,9 @@ trait WikiContextTrait
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
 
-        $this->registerClientResponse(
-            $api->show($identifier, $pageName),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($identifier, $pageName),
         );
     }
 

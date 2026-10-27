@@ -57,9 +57,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->show($userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($userId),
         );
     }
 

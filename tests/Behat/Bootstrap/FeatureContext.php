@@ -12,7 +12,9 @@ use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\AbstractApi;
 use Redmine\Client\NativeCurlClient;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\Response;
 use Redmine\Tests\RedmineExtension\BehatHookTracer;
 use Redmine\Tests\RedmineExtension\RedmineInstance;
@@ -60,6 +62,20 @@ final class FeatureContext implements Context
     }
 
     /**
+     * @AfterScenario
+     */
+    public function assertNoUnassertedException(): void
+    {
+        if ($this->unassertedExceptions !== []) {
+            throw new RuntimeException(
+                'An API call threw ' . get_class($this->unassertedExceptions[0]) . ', but no step asserted it.',
+                0,
+                $this->unassertedExceptions[0],
+            );
+        }
+    }
+
+    /**
      * @AfterSuite
      */
     public static function clean(AfterSuiteScope $scope): void
@@ -84,6 +100,13 @@ final class FeatureContext implements Context
      */
     private array $lastReturnAsArray;
 
+    private ?UnexpectedResponseException $lastException = null;
+
+    /**
+     * @var UnexpectedResponseException[]
+     */
+    private array $unassertedExceptions = [];
+
     public function __construct(string $redmineVersion, string $rootPath, string $redmineUrl)
     {
         $version = RedmineVersion::tryFrom($redmineVersion);
@@ -102,11 +125,32 @@ final class FeatureContext implements Context
      */
     public function iHaveAClient($clientName): void
     {
+        $this->client = $this->createClient($clientName);
+        $this->client->enableFutureMode();
+    }
+
+    /**
+     * @todo remove this step and all scenarios tagged with `@without-future-mode` in v3.0.0
+     *
+     * @Given I have a :clientName client without future mode
+     *
+     * @param mixed $clientName
+     */
+    public function iHaveAClientWithoutFutureMode($clientName): void
+    {
+        $this->client = $this->createClient($clientName);
+    }
+
+    /**
+     * @param mixed $clientName
+     */
+    private function createClient($clientName): NativeCurlClient
+    {
         if ($clientName !== 'NativeCurlClient') {
             throw new InvalidArgumentException('Client ' . $clientName . ' is not supported.');
         }
 
-        $this->client = new NativeCurlClient(
+        return new NativeCurlClient(
             $this->redmine->getRedmineUrl(),
             $this->redmine->getApiKey(),
         );
@@ -125,6 +169,60 @@ final class FeatureContext implements Context
         unset($this->lastReturnAsArray);
         $this->lastReturn = $lastReturn;
         $this->lastResponse = $lastResponse;
+        $this->lastException = null;
+    }
+
+    /**
+     * Calls the API and registers the response, even if an UnexpectedResponseException is thrown.
+     *
+     * @param callable(): mixed $apiCall
+     */
+    private function registerClientCall(AbstractApi $api, callable $apiCall): void
+    {
+        try {
+            $lastReturn = $apiCall();
+        } catch (UnexpectedResponseException $e) {
+            $response = $e->getResponse();
+
+            if (!$response instanceof Response) {
+                throw $e;
+            }
+
+            $this->registerClientResponse(null, $response);
+            $this->lastException = $e;
+            $this->unassertedExceptions[] = $e;
+
+            return;
+        }
+
+        $this->registerClientResponse($lastReturn, $api->getLastResponse());
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getLastReturn()
+    {
+        if ($this->lastException instanceof UnexpectedResponseException) {
+            throw new RuntimeException(
+                'There is no returned data, because the API call threw ' . get_class($this->lastException) . '.',
+            );
+        }
+
+        return $this->lastReturn;
+    }
+
+    /**
+     * @Then an UnexpectedResponseException was thrown
+     */
+    public function anUnexpectedResponseExceptionWasThrown(): void
+    {
+        TestCase::assertInstanceOf(UnexpectedResponseException::class, $this->lastException);
+
+        $this->unassertedExceptions = array_values(array_filter(
+            $this->unassertedExceptions,
+            fn(UnexpectedResponseException $e): bool => $e !== $this->lastException,
+        ));
     }
 
     /**
@@ -180,7 +278,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsTrue(): void
     {
-        TestCase::assertTrue($this->lastReturn);
+        TestCase::assertTrue($this->getLastReturn());
     }
 
     /**
@@ -188,7 +286,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsFalse(): void
     {
-        TestCase::assertFalse($this->lastReturn);
+        TestCase::assertFalse($this->getLastReturn());
     }
 
     /**
@@ -196,7 +294,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsExactly(string $content): void
     {
-        TestCase::assertSame($content, $this->lastReturn);
+        TestCase::assertSame($content, $this->getLastReturn());
     }
 
     /**
@@ -204,7 +302,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string): void
     {
-        TestCase::assertSame($string->getRaw(), $this->lastReturn);
+        TestCase::assertSame($string->getRaw(), $this->getLastReturn());
     }
 
     /**
@@ -212,7 +310,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsAnInstanceOf(string $className): void
     {
-        TestCase::assertInstanceOf($className, $this->lastReturn);
+        TestCase::assertInstanceOf($className, $this->getLastReturn());
     }
 
     /**
@@ -220,7 +318,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataIsAnArray(): void
     {
-        TestCase::assertIsArray($this->lastReturn);
+        TestCase::assertIsArray($this->getLastReturn());
     }
 
     /**
@@ -228,7 +326,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataContainsItems(int $count): void
     {
-        TestCase::assertCount($count, $this->lastReturn);
+        TestCase::assertCount($count, $this->getLastReturn());
     }
 
     /**
@@ -236,7 +334,7 @@ final class FeatureContext implements Context
      */
     public function theReturnedDataContainsTheFollowingData(TableNode $table): void
     {
-        $returnData = $this->lastReturn;
+        $returnData = $this->getLastReturn();
 
         if (! is_array($returnData)) {
             throw new RuntimeException('The returned data is not an array.');
@@ -349,20 +447,21 @@ final class FeatureContext implements Context
             return $this->lastReturnAsArray;
         }
 
+        $lastReturn = $this->getLastReturn();
         $returnData = null;
 
-        if ($this->lastReturn instanceof SimpleXMLElement) {
-            $returnData = json_decode(json_encode($this->lastReturn), true);
-        } elseif (is_string($this->lastReturn)) {
-            $returnData = json_decode($this->lastReturn, true);
-        } elseif (is_array($this->lastReturn)) {
-            $returnData = $this->lastReturn;
+        if ($lastReturn instanceof SimpleXMLElement) {
+            $returnData = json_decode(json_encode($lastReturn), true);
+        } elseif (is_string($lastReturn)) {
+            $returnData = json_decode($lastReturn, true);
+        } elseif (is_array($lastReturn)) {
+            $returnData = $lastReturn;
         }
 
         if (! is_array($returnData)) {
             throw new RuntimeException(sprintf(
                 'the last returned data "%s" could not parsed into an array.',
-                json_encode($this->lastReturn),
+                json_encode($lastReturn),
             ));
         }
 

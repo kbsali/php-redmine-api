@@ -106,9 +106,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->show($id),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($id),
         );
     }
 
