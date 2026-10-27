@@ -127,38 +127,30 @@ class IssueRelation extends AbstractApi
             '/relations/' . urlencode(strval($id)) . '.json',
         ));
 
-        $body = $this->lastResponse->getContent();
+        if (!$this->isFutureModeEnabled()) {
+            $body = $this->lastResponse->getContent();
 
-        if ($this->isFutureModeEnabled()) {
-            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
-                throw UnexpectedResponseException::create($this->lastResponse);
+            if ('' === $body) {
+                return [];
             }
 
             try {
                 $data = JsonSerializer::createFromString($body)->getNormalized();
             } catch (SerializerException $e) {
-                throw UnexpectedResponseException::create($this->lastResponse, $e);
+                return [];
             }
 
-            if (!is_array($data) || !array_key_exists('relation', $data) || !is_array($data['relation'])) {
-                throw UnexpectedResponseException::create($this->lastResponse);
+            if (! is_array($data) || ! array_key_exists('relation', $data) || ! is_array($data['relation'])) {
+                return [];
             }
 
             return $data['relation'];
         }
 
-        if ('' === $body) {
-            return [];
-        }
+        $data = $this->getJsonArrayOrThrow();
 
-        try {
-            $data = JsonSerializer::createFromString($body)->getNormalized();
-        } catch (SerializerException $e) {
-            return [];
-        }
-
-        if (! is_array($data) || ! array_key_exists('relation', $data) || ! is_array($data['relation'])) {
-            return [];
+        if (!array_key_exists('relation', $data) || !is_array($data['relation'])) {
+            throw UnexpectedResponseException::create($this->lastResponse);
         }
 
         return $data['relation'];
