@@ -26,6 +26,8 @@ use SimpleXMLElement;
  */
 class IssueCategory extends AbstractApi
 {
+    use ResponseValidationTrait;
+
     final public static function fromHttpClient(HttpClient $httpClient): self
     {
         return new self($httpClient, true);
@@ -283,17 +285,15 @@ class IssueCategory extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ($this->lastResponse->getStatusCode() !== 201) {
-            if (!$this->isFutureModeEnabled()) {
-                if ($body === '') {
-                    return $body;
-                }
-
-                return new SimpleXMLElement($body);
+        if (!$this->isFutureModeEnabled()) {
+            if ($body === '') {
+                return $body;
             }
 
-            throw UnexpectedResponseException::create($this->lastResponse);
+            return new SimpleXMLElement($body);
         }
+
+        $this->throwOnUnexpectedStatusCode(201);
 
         if ($body === '') {
             return $body;
@@ -323,15 +323,12 @@ class IssueCategory extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 204) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
     }
@@ -356,15 +353,12 @@ class IssueCategory extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 204) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
     }
