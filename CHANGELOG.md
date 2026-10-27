@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.x)
 
-Nothing yet.
+### Changed
+
+- The order of the XML elements in the request bodies of some `create()` and `update()` methods has changed. Redmine ignores the order, but tests that compare exact request bodies may need an update.
 
 ## [v2.10.0](https://github.com/kbsali/php-redmine-api/compare/v2.9.1...v2.10.0) - 2026-10-26
 
