@@ -21,6 +21,8 @@ use Redmine\Serializer\PathSerializer;
  */
 class Attachment extends AbstractApi
 {
+    use ResponseValidationTrait;
+
     final public static function fromHttpClient(HttpClient $httpClient): self
     {
         return new self($httpClient, true);
@@ -70,35 +72,21 @@ class Attachment extends AbstractApi
             '/attachments/' . urlencode(strval($id)) . '.json',
         ));
 
-        $body = $this->lastResponse->getContent();
+        if (!$this->isFutureModeEnabled()) {
+            $body = $this->lastResponse->getContent();
 
-        if ($this->isFutureModeEnabled()) {
-            if ($this->lastResponse->getStatusCode() !== 200 || $body === '') {
-                throw UnexpectedResponseException::create($this->lastResponse);
+            if ('' === $body) {
+                return false;
             }
 
             try {
-                $data = JsonSerializer::createFromString($body)->getNormalized();
+                return JsonSerializer::createFromString($body)->getNormalized();
             } catch (SerializerException $e) {
-                throw UnexpectedResponseException::create($this->lastResponse, $e);
+                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
             }
-
-            if (!is_array($data)) {
-                throw UnexpectedResponseException::create($this->lastResponse);
-            }
-
-            return $data;
         }
 
-        if ('' === $body) {
-            return false;
-        }
-
-        try {
-            return JsonSerializer::createFromString($body)->getNormalized();
-        } catch (SerializerException $e) {
-            return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-        }
+        return $this->getJsonArrayOrThrow();
     }
 
     /**
@@ -127,9 +115,7 @@ class Attachment extends AbstractApi
             JsonSerializer::createFromArray(['attachment' => $params])->getEncoded(),
         ));
 
-        if ($this->lastResponse->getStatusCode() !== 204) {
-            throw UnexpectedResponseException::create($this->lastResponse);
-        }
+        $this->throwOnUnexpectedStatusCode(204);
 
         return true;
     }
@@ -178,13 +164,11 @@ class Attachment extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if ($this->lastResponse->getStatusCode() !== 201) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(201);
 
         return $body;
     }
@@ -206,15 +190,12 @@ class Attachment extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-        $statusCode = $this->lastResponse->getStatusCode();
 
-        if ($statusCode !== 204) {
-            if (!$this->isFutureModeEnabled()) {
-                return $body;
-            }
-
-            throw UnexpectedResponseException::create($this->lastResponse);
+        if (!$this->isFutureModeEnabled()) {
+            return $body;
         }
+
+        $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
     }

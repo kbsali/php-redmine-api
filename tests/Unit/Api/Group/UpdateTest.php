@@ -44,6 +44,36 @@ class UpdateTest extends TestCase
     }
 
     /**
+     * @dataProvider getUpdateData
+     *
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getUpdateData')]
+    public function testUpdateWithFutureModeReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                '',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $this->assertSame('', $api->update($id, $parameters));
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getUpdateData(): array

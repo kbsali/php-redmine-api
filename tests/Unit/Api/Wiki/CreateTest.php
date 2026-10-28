@@ -48,6 +48,39 @@ class CreateTest extends TestCase
     }
 
     /**
+     * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getCreateData')]
+    public function testCreateWithFutureModeReturnsCorrectResponse(int $id, string $page, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Wiki::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->create($id, $page, $parameters);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array

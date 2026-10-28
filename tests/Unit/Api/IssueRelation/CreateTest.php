@@ -51,6 +51,40 @@ class CreateTest extends TestCase
     }
 
     /**
+     * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
+     * @param array<mixed> $expectedReturn
+     */
+    #[DataProvider('getCreateData')]
+    public function testCreateWithFutureModeReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response, array $expectedReturn): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/json',
+                $expectedBody,
+                $responseCode,
+                'application/json',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = IssueRelation::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->create($issueId, $parameters);
+
+        $this->assertIsArray($return);
+        $this->assertSame($expectedReturn, $return);
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array

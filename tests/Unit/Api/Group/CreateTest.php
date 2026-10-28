@@ -50,6 +50,39 @@ class CreateTest extends TestCase
     }
 
     /**
+     * @dataProvider getCreateData
+     *
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getCreateData')]
+    public function testCreateWithFutureModeReturnsCorrectResponse(array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->create($parameters);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array
@@ -155,6 +188,32 @@ class CreateTest extends TestCase
 
         // Create the object under test
         $api = Group::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(['name' => 'Group Name']);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testCreateWithFutureModeAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/groups.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><group><name>Group Name</name></group>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        FutureMode::enable($api);
 
         // Perform the tests
         $return = $api->create(['name' => 'Group Name']);

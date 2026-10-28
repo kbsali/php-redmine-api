@@ -51,6 +51,40 @@ class CreateTest extends TestCase
     }
 
     /**
+     * @dataProvider getCreateData
+     *
+     * @param string|int $identifier
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getCreateData')]
+    public function testCreateWithFutureModeReturnsCorrectResponse($identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        // Create the object under test
+        $api = IssueCategory::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $return = $api->create($identifier, $parameters);
+
+        $this->assertInstanceOf(SimpleXMLElement::class, $return);
+        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array
@@ -124,6 +158,32 @@ class CreateTest extends TestCase
 
         // Create the object under test
         $api = IssueCategory::fromHttpClient($client);
+
+        // Perform the tests
+        $return = $api->create(5, ['name' => 'Test Category']);
+
+        $this->assertSame('', $return);
+    }
+
+    public function testCreateWithFutureModeAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                '/projects/5/issue_categories.xml',
+                'application/xml',
+                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+                201,
+                '',
+                '',
+            ],
+        );
+
+        // Create the object under test
+        $api = IssueCategory::fromHttpClient($client);
+
+        FutureMode::enable($api);
 
         // Perform the tests
         $return = $api->create(5, ['name' => 'Test Category']);

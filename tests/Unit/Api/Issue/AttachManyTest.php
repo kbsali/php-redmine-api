@@ -44,6 +44,36 @@ class AttachManyTest extends TestCase
     }
 
     /**
+     * @dataProvider getAttachManyData
+     *
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getAttachManyData')]
+    public function testAttachManyWithFutureModeReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                $expectedPath,
+                'application/json',
+                $expectedBody,
+                $responseCode,
+                '',
+                $response,
+            ],
+        );
+
+        // AttachMany the object under test
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        // Perform the tests
+        $this->assertSame('', $api->attachMany($issueId, $parameters));
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function getAttachManyData(): array
