@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Role;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Role::class)]
@@ -113,5 +114,43 @@ class ListNamesTest extends TestCase
         $this->assertSame([1 => 'Role 1'], $firstResult);
         $this->assertSame([1 => 'Role 1'], $secondResult);
         $this->assertSame([1 => 'Role 1'], $thirdResult);
+    }
+
+    public function testListNamesAfterUnexpectedResponseRequestsDataAgain(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/roles.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"roles":[{"id":1,"name":"Role 1"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = Role::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listNames();
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame([1 => 'Role 1'], $api->listNames());
     }
 }

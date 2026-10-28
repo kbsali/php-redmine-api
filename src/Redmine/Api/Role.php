@@ -96,14 +96,16 @@ class Role extends AbstractApi
             return $this->roleNames;
         }
 
-        $this->roleNames = [];
+        $names = [];
         $list = $this->list();
 
         if (array_key_exists('roles', $list)) {
             foreach ($list['roles'] as $role) {
-                $this->roleNames[(int) $role['id']] = $role['name'];
+                $names[(int) $role['id']] = $role['name'];
             }
         }
+
+        $this->roleNames = $names;
 
         return $this->roleNames;
     }
