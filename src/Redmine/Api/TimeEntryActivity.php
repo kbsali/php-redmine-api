@@ -90,14 +90,16 @@ class TimeEntryActivity extends AbstractApi
             return $this->timeEntryActivityNames;
         }
 
-        $this->timeEntryActivityNames = [];
+        $names = [];
         $list = $this->list();
 
         if (array_key_exists('time_entry_activities', $list)) {
             foreach ($list['time_entry_activities'] as $activity) {
-                $this->timeEntryActivityNames[(int) $activity['id']] = $activity['name'];
+                $names[(int) $activity['id']] = $activity['name'];
             }
         }
+
+        $this->timeEntryActivityNames = $names;
 
         return $this->timeEntryActivityNames;
     }
