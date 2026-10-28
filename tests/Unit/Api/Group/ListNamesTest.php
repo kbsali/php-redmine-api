@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Group::class)]
@@ -113,5 +114,43 @@ class ListNamesTest extends TestCase
         $this->assertSame([1 => 'Group 1'], $firstResult);
         $this->assertSame([1 => 'Group 1'], $secondResult);
         $this->assertSame([1 => 'Group 1'], $thirdResult);
+    }
+
+    public function testListNamesAfterUnexpectedResponseRequestsDataAgain(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/groups.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/groups.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"groups":[{"id":1,"name":"Group 1"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = Group::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listNames();
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame([1 => 'Group 1'], $api->listNames());
     }
 }

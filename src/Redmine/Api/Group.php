@@ -100,11 +100,13 @@ class Group extends AbstractApi
             return $this->groupNames;
         }
 
-        $this->groupNames = [];
+        $names = [];
 
         foreach ($this->list()['groups'] as $group) {
-            $this->groupNames[(int) $group['id']] = $group['name'];
+            $names[(int) $group['id']] = $group['name'];
         }
+
+        $this->groupNames = $names;
 
         return $this->groupNames;
     }
