@@ -9,6 +9,7 @@ use Redmine\Api;
 use Redmine\Client\Client;
 use Redmine\Exception;
 use Redmine\Exception\SerializerException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 use Redmine\Http\Request;
@@ -25,6 +26,8 @@ use SimpleXMLElement;
  */
 abstract class AbstractApi implements Api
 {
+    use ResponseValidationTrait;
+
     /**
      * @var Client
      */
@@ -303,6 +306,7 @@ abstract class AbstractApi implements Api
      * @param string       $endpoint API end point
      * @param array<mixed> $params   optional query parameters to be passed to the api (offset, limit, ...)
      *
+     * @throws UnexpectedResponseException if the status code is not 200 (only if future mode is enabled)
      * @throws SerializerException if response body could not be converted into array
      *
      * @return array<mixed> elements found
@@ -431,6 +435,7 @@ abstract class AbstractApi implements Api
     /**
      * Requests the path and returns the response body as array.
      *
+     * @throws UnexpectedResponseException if the status code is not 200 (only if future mode is enabled)
      * @throws SerializerException if response body could not be converted into array
      *
      * @return array<mixed>
@@ -442,6 +447,10 @@ abstract class AbstractApi implements Api
             $path,
             $this->getContentTypeFromPath($path),
         ));
+
+        if ($this->isFutureModeEnabled()) {
+            $this->throwOnUnexpectedStatusCode(200);
+        }
 
         return $this->getResponseAsArray($this->lastResponse);
     }
