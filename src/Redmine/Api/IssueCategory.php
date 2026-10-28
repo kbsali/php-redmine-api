@@ -105,6 +105,8 @@ class IssueCategory extends AbstractApi
      * @param string|int $projectIdentifier project id or literal identifier
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<int,string> list of issue category names (id => name)
      */
@@ -121,15 +123,17 @@ class IssueCategory extends AbstractApi
             return $this->issueCategoriesNames[$projectIdentifier];
         }
 
-        $this->issueCategoriesNames[$projectIdentifier] = [];
+        $names = [];
 
         $list = $this->listByProject($projectIdentifier);
 
         if (array_key_exists('issue_categories', $list)) {
             foreach ($list['issue_categories'] as $category) {
-                $this->issueCategoriesNames[$projectIdentifier][(int) $category['id']] = $category['name'];
+                $names[(int) $category['id']] = $category['name'];
             }
         }
+
+        $this->issueCategoriesNames[$projectIdentifier] = $names;
 
         return $this->issueCategoriesNames[$projectIdentifier];
     }
