@@ -92,15 +92,17 @@ class CustomField extends AbstractApi
             return $this->customFieldNames;
         }
 
-        $this->customFieldNames = [];
+        $names = [];
 
         $list = $this->list();
 
         if (array_key_exists('custom_fields', $list)) {
             foreach ($list['custom_fields'] as $customField) {
-                $this->customFieldNames[(int) $customField['id']] = (string) $customField['name'];
+                $names[(int) $customField['id']] = (string) $customField['name'];
             }
         }
+
+        $this->customFieldNames = $names;
 
         return $this->customFieldNames;
     }
