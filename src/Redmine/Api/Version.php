@@ -103,6 +103,8 @@ class Version extends AbstractApi
      * @param string|int $projectIdentifier project id or literal identifier
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
+     * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<int,string> list of version names (id => name)
      */
@@ -119,15 +121,17 @@ class Version extends AbstractApi
             return $this->versionNames[$projectIdentifier];
         }
 
-        $this->versionNames[$projectIdentifier] = [];
+        $names = [];
 
         $list = $this->listByProject($projectIdentifier);
 
         if (array_key_exists('versions', $list)) {
             foreach ($list['versions'] as $version) {
-                $this->versionNames[$projectIdentifier][(int) $version['id']] = $version['name'];
+                $names[(int) $version['id']] = $version['name'];
             }
         }
+
+        $this->versionNames[$projectIdentifier] = $names;
 
         return $this->versionNames[$projectIdentifier];
     }
