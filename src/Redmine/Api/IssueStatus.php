@@ -92,15 +92,17 @@ class IssueStatus extends AbstractApi
             return $this->issueStatusNames;
         }
 
-        $this->issueStatusNames = [];
+        $names = [];
 
         $list = $this->list();
 
         if (array_key_exists('issue_statuses', $list)) {
             foreach ($list['issue_statuses'] as $issueStatus) {
-                $this->issueStatusNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+                $names[(int) $issueStatus['id']] = (string) $issueStatus['name'];
             }
         }
+
+        $this->issueStatusNames = $names;
 
         return $this->issueStatusNames;
     }
