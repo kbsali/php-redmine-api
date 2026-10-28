@@ -310,13 +310,7 @@ abstract class AbstractApi implements Api
     protected function retrieveData(string $endpoint, array $params = []): array
     {
         if ($params === []) {
-            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-                'GET',
-                strval($endpoint),
-                $this->getContentTypeFromPath(strval($endpoint)),
-            ));
-
-            return $this->getResponseAsArray($this->lastResponse);
+            return $this->requestDataAsArray($endpoint);
         }
 
         $params = $this->sanitizeParams(
@@ -346,13 +340,7 @@ abstract class AbstractApi implements Api
             $params['limit'] = $realLimit;
             $params['offset'] = $offset;
 
-            $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-                'GET',
-                PathSerializer::create($endpoint, $params)->getPath(),
-                $this->getContentTypeFromPath($endpoint),
-            ));
-
-            $newDataSet = $this->getResponseAsArray($this->lastResponse);
+            $newDataSet = $this->requestDataAsArray(PathSerializer::create($endpoint, $params)->getPath());
 
             $returnData = array_merge_recursive($returnData, $newDataSet);
 
@@ -438,6 +426,24 @@ abstract class AbstractApi implements Api
         }
 
         return $xml;
+    }
+
+    /**
+     * Requests the path and returns the response body as array.
+     *
+     * @throws SerializerException if response body could not be converted into array
+     *
+     * @return array<mixed>
+     */
+    private function requestDataAsArray(string $path): array
+    {
+        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
+            'GET',
+            $path,
+            $this->getContentTypeFromPath($path),
+        ));
+
+        return $this->getResponseAsArray($this->lastResponse);
     }
 
     /**
