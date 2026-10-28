@@ -298,6 +298,38 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is false
 
+    @error
+    Scenario: Listing issues with an invalid filter
+        Given I have a "NativeCurlClient" client
+        When I list all issues with the following parameters
+            | property          | value                |
+            | created_on        | invalid              |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"errors":["Created is invalid"]}
+            """
+
+    @error @without-future-mode
+    Scenario: Listing issues with an invalid filter without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I list all issues with the following parameters
+            | property          | value                |
+            | created_on        | invalid              |
+        Then the response has the status code "422"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"errors":["Created is invalid"]}
+            """
+        And the returned data has only the following properties
+            """
+            errors
+            """
+        And the returned data "errors" property contains "1" items
+
     Scenario: Adding a watcher to an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

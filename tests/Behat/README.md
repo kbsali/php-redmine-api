@@ -35,9 +35,7 @@ docker compose exec behat composer run behat -- --suite=redmine_6_1 --format=pro
 
 The client from the step `Given I have a "NativeCurlClient" client` runs with the future mode enabled
 (see `Redmine\Client\NativeCurlClient::enableFutureMode()`).
-In future mode the API methods that implement future mode error handling throw an `UnexpectedResponseException`
-on an unexpected response. Some methods don't throw yet, e.g. `Attachment::download()` still returns `false`
-(see [#504](https://github.com/kbsali/php-redmine-api/issues/504)).
+In future mode the API methods throw an `UnexpectedResponseException` on an unexpected response.
 
 A `When` step that calls the API with `FeatureContext::registerClientCall()` catches this exception
 and registers the response of the exception as the last response, so you can assert the exception and the response:
