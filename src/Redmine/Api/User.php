@@ -100,7 +100,7 @@ class User extends AbstractApi
             return $this->userLogins;
         }
 
-        $this->userLogins = [];
+        $logins = [];
 
         $limit = 100;
         $offset = 0;
@@ -118,10 +118,12 @@ class User extends AbstractApi
                 $listCount = count($list['users']);
 
                 foreach ($list['users'] as $user) {
-                    $this->userLogins[(int) $user['id']] = (string) $user['login'];
+                    $logins[(int) $user['id']] = (string) $user['login'];
                 }
             }
         } while ($listCount === $limit);
+
+        $this->userLogins = $logins;
 
         return $this->userLogins;
     }
