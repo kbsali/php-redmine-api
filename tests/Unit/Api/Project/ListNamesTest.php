@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
@@ -172,5 +173,71 @@ class ListNamesTest extends TestCase
         $this->assertSame([1 => 'Project 1'], $firstResult);
         $this->assertSame([1 => 'Project 1'], $secondResult);
         $this->assertSame([1 => 'Project 1'], $thirdResult);
+    }
+
+    public function testListNamesAfterUnexpectedResponseOnSecondPageRequestsAllPagesAgain(): void
+    {
+        $assertData = [];
+        $request1 = [];
+
+        for ($i = 1; $i <= 100; $i++) {
+            $assertData[$i] = 'Project ' . $i;
+            $request1[] = ['id' => $i, 'name' => 'Project ' . $i];
+        }
+
+        $assertData[101] = 'Project 101';
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['projects' => $request1]),
+            ],
+            [
+                'GET',
+                '/projects.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/projects.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['projects' => $request1]),
+            ],
+            [
+                'GET',
+                '/projects.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"projects":[{"id":101,"name":"Project 101"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = Project::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listNames();
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame($assertData, $api->listNames());
     }
 }

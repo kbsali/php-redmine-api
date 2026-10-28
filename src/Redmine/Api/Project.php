@@ -101,7 +101,7 @@ class Project extends AbstractApi
             return $this->projectNames;
         }
 
-        $this->projectNames = [];
+        $names = [];
 
         $limit = 100;
         $offset = 0;
@@ -119,10 +119,12 @@ class Project extends AbstractApi
                 $listCount = count($list['projects']);
 
                 foreach ($list['projects'] as $issueStatus) {
-                    $this->projectNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+                    $names[(int) $issueStatus['id']] = (string) $issueStatus['name'];
                 }
             }
         } while ($listCount === $limit);
+
+        $this->projectNames = $names;
 
         return $this->projectNames;
     }
