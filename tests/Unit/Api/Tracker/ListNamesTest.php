@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Tracker;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Tracker::class)]
@@ -113,5 +114,43 @@ class ListNamesTest extends TestCase
         $this->assertSame([1 => 'Tracker 1'], $firstResult);
         $this->assertSame([1 => 'Tracker 1'], $secondResult);
         $this->assertSame([1 => 'Tracker 1'], $thirdResult);
+    }
+
+    public function testListNamesAfterUnexpectedResponseRequestsDataAgain(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/trackers.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"trackers":[{"id":1,"name":"Tracker 1"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = Tracker::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listNames();
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame([1 => 'Tracker 1'], $api->listNames());
     }
 }
