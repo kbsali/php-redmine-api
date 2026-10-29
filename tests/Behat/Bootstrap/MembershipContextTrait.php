@@ -29,9 +29,9 @@ trait MembershipContextTrait
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
 
-        $this->registerClientResponse(
-            $api->create($identifier, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($identifier, $data),
         );
     }
 
@@ -55,9 +55,9 @@ trait MembershipContextTrait
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
 
-        $this->registerClientResponse(
-            $api->update($id, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($id, $data),
         );
     }
 
@@ -71,9 +71,9 @@ trait MembershipContextTrait
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
 
-        $this->registerClientResponse(
-            $api->remove($id),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($id),
         );
     }
 
@@ -88,9 +88,9 @@ trait MembershipContextTrait
         /** @var Membership */
         $api = $this->getNativeCurlClient()->getApi('membership');
 
-        $this->registerClientResponse(
-            $api->removeMember($identifier, (int) $userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->removeMember($identifier, (int) $userId),
         );
     }
 }

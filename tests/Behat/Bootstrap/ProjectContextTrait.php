@@ -37,9 +37,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->create($data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($data),
         );
     }
 
@@ -63,9 +63,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->list(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->list(),
         );
     }
 
@@ -77,9 +77,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->listNames(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listNames(),
         );
     }
 
@@ -111,9 +111,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->update($identifier, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($identifier, $data),
         );
     }
 
@@ -125,9 +125,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->close($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->close($identifier),
         );
     }
 
@@ -139,9 +139,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->reopen($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->reopen($identifier),
         );
     }
 
@@ -153,9 +153,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->archive($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->archive($identifier),
         );
     }
 
@@ -167,9 +167,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->unarchive($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->unarchive($identifier),
         );
     }
 
@@ -183,9 +183,9 @@ trait ProjectContextTrait
         /** @var Project */
         $api = $this->getNativeCurlClient()->getApi('project');
 
-        $this->registerClientResponse(
-            $api->remove($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($identifier),
         );
     }
 }

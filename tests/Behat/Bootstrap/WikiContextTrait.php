@@ -31,9 +31,9 @@ trait WikiContextTrait
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
 
-        $this->registerClientResponse(
-            $api->create($identifier, $pageName, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($identifier, $pageName, $data),
         );
     }
 
@@ -59,9 +59,9 @@ trait WikiContextTrait
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
 
-        $this->registerClientResponse(
-            $api->listByProject($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listByProject($identifier),
         );
     }
 
@@ -75,9 +75,9 @@ trait WikiContextTrait
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
 
-        $this->registerClientResponse(
-            $api->update($identifier, $pageName, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($identifier, $pageName, $data),
         );
     }
 
@@ -92,9 +92,9 @@ trait WikiContextTrait
         /** @var Wiki */
         $api = $this->getNativeCurlClient()->getApi('wiki');
 
-        $this->registerClientResponse(
-            $api->remove($identifier, $pageName),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($identifier, $pageName),
         );
     }
 

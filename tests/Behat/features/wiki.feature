@@ -393,3 +393,99 @@ Feature: Interacting with the REST API for wikis
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Try to create a wiki page for a non-existing project
+        Given I have a "NativeCurlClient" client
+        When I create a wiki page with name "Test Page" and project identifier "not-existing" with the following data
+            | property          | value                |
+            | text              | # My first wiki page |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to create a wiki page for a non-existing project without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I create a wiki page with name "Test Page" and project identifier "not-existing" with the following data
+            | property          | value                |
+            | text              | # My first wiki page |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to update a wiki page with a version conflict
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a wiki page with name "Test Page" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # My first wiki page |
+        When I update the wiki page with name "Test Page" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # Changed text       |
+            | version           | 5                    |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "409"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to update a wiki page with a version conflict without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a wiki page with name "Test Page" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # My first wiki page |
+        When I update the wiki page with name "Test Page" and project identifier "test-project" with the following data
+            | property          | value                |
+            | text              | # Changed text       |
+            | version           | 5                    |
+        Then the response has the status code "409"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to update a wiki page of a non-existing project
+        Given I have a "NativeCurlClient" client
+        When I update the wiki page with name "Test Page" and project identifier "not-existing" with the following data
+            | property          | value                |
+            | text              | # Changed text       |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to update a wiki page of a non-existing project without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I update the wiki page with name "Test Page" and project identifier "not-existing" with the following data
+            | property          | value                |
+            | text              | # Changed text       |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to remove a non-existing wiki page
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I remove the wiki page with name "Not Existing" and project identifier "test-project"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to remove a non-existing wiki page without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I remove the wiki page with name "Not Existing" and project identifier "test-project"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""

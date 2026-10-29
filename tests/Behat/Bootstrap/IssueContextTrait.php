@@ -19,9 +19,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->create($data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($data),
         );
     }
 
@@ -37,9 +37,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->update($issueId, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($issueId, $data),
         );
     }
 
@@ -86,9 +86,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->addWatcher($issueId, $userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->addWatcher($issueId, $userId),
         );
     }
 
@@ -103,9 +103,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->removeWatcher($issueId, $userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->removeWatcher($issueId, $userId),
         );
     }
 
@@ -119,9 +119,9 @@ trait IssueContextTrait
         /** @var Issue */
         $api = $this->getNativeCurlClient()->getApi('issue');
 
-        $this->registerClientResponse(
-            $api->remove($issueId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($issueId),
         );
     }
 

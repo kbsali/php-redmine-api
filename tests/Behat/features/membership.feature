@@ -60,3 +60,170 @@ Feature: Interacting with the REST API for memberships
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Try to create a membership with invalid data
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [99]                 |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Role cannot be empty</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to create a membership with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [99]                 |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Role cannot be empty</error></errors>
+            """
+        And the returned data is an instance of "SimpleXMLElement"
+        And the returned data has only the following properties
+            """
+            @attributes
+            error
+            """
+
+    @error
+    Scenario: Try to create a membership for a non-existing project
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create a membership to project with identifier "not-existing" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to create a membership for a non-existing project without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create a membership to project with identifier "not-existing" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to update a membership with invalid data
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        When I update the membership with id "1" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [99]                 |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Role cannot be empty</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to update a membership with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a membership to project with identifier "test-project" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        When I update the membership with id "1" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [99]                 |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Role cannot be empty</error></errors>
+            """
+        And the returned data is exactly
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Role cannot be empty</error></errors>
+            """
+
+    @error
+    Scenario: Try to update a non-existing membership
+        Given I have a "NativeCurlClient" client
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I update the membership with id "10" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to update a non-existing membership without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have a role with the name "Developer"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I update the membership with id "10" and the following data
+            | property          | value                |
+            | user_id           | 1                    |
+            | role_ids          | [3]                  |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to remove a non-existing membership
+        Given I have a "NativeCurlClient" client
+        When I remove the membership with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to remove a non-existing membership without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the membership with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to remove an user from a non-existing project
+        Given I have a "NativeCurlClient" client
+        When I remove the user with id "1" from the project with identifier "not-existing"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""

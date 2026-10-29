@@ -214,3 +214,151 @@ Feature: Interacting with the REST API for versions
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Try to create a version with invalid data
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        When I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to create a version with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        When I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
+            """
+        And the returned data is an instance of "SimpleXMLElement"
+        And the returned data has only the following properties
+            """
+            @attributes
+            error
+            """
+
+    @error
+    Scenario: Try to create a version for a non-existing project
+        Given I have a "NativeCurlClient" client
+        When I create a version with project identifier "not-existing" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to create a version for a non-existing project without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I create a version with project identifier "not-existing" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to update a version with invalid data
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Other-Version        |
+        When I update the version with id "2" and the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to update a version with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Other-Version        |
+        When I update the version with id "2" and the following data
+            | property          | value                |
+            | name              | Test-Version         |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
+            """
+        And the returned data is exactly
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
+            """
+
+    @error
+    Scenario: Try to update a non-existing version
+        Given I have a "NativeCurlClient" client
+        When I update the version with id "10" and the following data
+            | property          | value                |
+            | name              | New Version name     |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to update a non-existing version without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I update the version with id "10" and the following data
+            | property          | value                |
+            | name              | New Version name     |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to remove a non-existing version
+        Given I have a "NativeCurlClient" client
+        When I remove the version with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to remove a non-existing version without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the version with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""

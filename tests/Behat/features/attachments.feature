@@ -147,3 +147,50 @@ Feature: Interacting with the REST API for attachments
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Try to update an attachment with invalid data
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
+            | property          | value                |
+            | filename          | testfile.txt         |
+        When I update the attachment with the id "1" with the following data
+            | property          | value                |
+            | filename          |                      |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"errors":["File cannot be blank"]}
+            """
+
+    @error
+    Scenario: Try to update a non-existing attachment
+        Given I have a "NativeCurlClient" client
+        When I update the attachment with the id "10" with the following data
+            | property          | value                |
+            | filename          | testfile2.txt        |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
+    @error
+    Scenario: Try to remove a non-existing attachment
+        Given I have a "NativeCurlClient" client
+        When I remove the attachment with the id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to remove a non-existing attachment without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the attachment with the id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
