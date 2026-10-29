@@ -143,3 +143,86 @@ Feature: Interacting with the REST API for issue relations
         And the response has the content ""
         And the returned data is an array
         And the returned data contains "0" items
+
+    @error
+    Scenario: Try to create an issue relation with invalid data
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | first issue          |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I create an issue relation for issue id "1" with the following data
+            | property          | value                |
+            | issue_to_id       | 1                    |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"errors":["Related issue is invalid"]}
+            """
+
+    @error @without-future-mode
+    Scenario: Try to create an issue relation with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | first issue          |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I create an issue relation for issue id "1" with the following data
+            | property          | value                |
+            | issue_to_id       | 1                    |
+        Then the response has the status code "422"
+        And the response has the content type "application/json"
+        And the response has the content
+            """
+            {"errors":["Related issue is invalid"]}
+            """
+        And the returned data has only the following properties
+            """
+            errors
+            """
+        And the returned data "errors" property contains "1" items
+
+    @error
+    Scenario: Try to create an issue relation for a non-existing issue
+        Given I have a "NativeCurlClient" client
+        When I create an issue relation for issue id "10" with the following data
+            | property          | value                |
+            | issue_to_id       | 2                    |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/json"
+        And the response has the content ""
+
+    @error
+    Scenario: Try to delete a non-existing issue relation
+        Given I have a "NativeCurlClient" client
+        When I delete the issue relation with the id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to delete a non-existing issue relation without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I delete the issue relation with the id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""

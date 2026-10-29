@@ -23,9 +23,9 @@ trait IssueRelationContextTrait
         /** @var IssueRelation */
         $api = $this->getNativeCurlClient()->getApi('issue_relation');
 
-        $this->registerClientResponse(
-            $api->create($issueId, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($issueId, $data),
         );
     }
 
@@ -55,9 +55,9 @@ trait IssueRelationContextTrait
         /** @var IssueRelation */
         $api = $this->getNativeCurlClient()->getApi('issue_relation');
 
-        $this->registerClientResponse(
-            $api->remove($relationId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($relationId),
         );
     }
 }
