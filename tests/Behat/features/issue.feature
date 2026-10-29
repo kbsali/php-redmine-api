@@ -387,3 +387,181 @@ Feature: Interacting with the REST API for issues
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Creating an issue with invalid data
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create an issue with the following data
+            | property          | value                |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Subject cannot be blank</error></errors>
+            """
+
+    @error
+    Scenario: Updating an issue with invalid data
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | start_date        | 2026-10-02           |
+            | due_date          | 2026-10-01           |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Due date must be greater than start date</error></errors>
+            """
+
+    @error
+    Scenario: Updating a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I update the issue with id "10" and the following data
+            | property          | value                |
+            | subject           | new issue subject    |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error
+    Scenario: Adding a watcher to a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I add the user id "1" as a watcher to the issue with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "403"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error
+    Scenario: Removing a watcher from a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I remove the user id "1" as a watcher from the issue with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "403"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error
+    Scenario: Removing a not existing issue
+        Given I have a "NativeCurlClient" client
+        When I remove the issue with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Creating an issue with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        When I create an issue with the following data
+            | property          | value                |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Subject cannot be blank</error></errors>
+            """
+        And the returned data is an instance of "SimpleXMLElement"
+        And the returned data has only the following properties
+            """
+            @attributes
+            error
+            """
+
+    @error @without-future-mode
+    Scenario: Updating an issue with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | start_date        | 2026-10-02           |
+            | due_date          | 2026-10-01           |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Due date must be greater than start date</error></errors>
+            """
+        And the returned data is exactly
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Due date must be greater than start date</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Updating a not existing issue without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I update the issue with id "10" and the following data
+            | property          | value                |
+            | subject           | new issue subject    |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error @without-future-mode
+    Scenario: Adding a watcher to a not existing issue without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I add the user id "1" as a watcher to the issue with id "10"
+        Then the response has the status code "403"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error @without-future-mode
+    Scenario: Removing a watcher from a not existing issue without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the user id "1" as a watcher from the issue with id "10"
+        Then the response has the status code "403"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error @without-future-mode
+    Scenario: Removing a not existing issue without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the issue with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
