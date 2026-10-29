@@ -328,7 +328,7 @@ Feature: Interacting with the REST API for issues
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
-        When I show the issue with id "1"
+        When I show the issue with id "1" including journals
         Then the response has the status code "200"
         And the returned data "issue" property has only the following properties
             """
@@ -351,10 +351,15 @@ Feature: Interacting with the REST API for issues
             created_on
             updated_on
             closed_on
+            journals
             """
         And the returned data "issue" property contains the following data
             | property          | value                |
             | subject           | new issue subject    |
+        And the returned data "issue.journals" property contains "1" items
+        And the returned data "issue.journals.0" property contains the following data
+            | property          | value                |
+            | notes             | unassigned           |
 
     @custom_field
     Scenario: Unassigning an issue and updating a custom field in one request

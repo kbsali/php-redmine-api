@@ -76,6 +76,22 @@ trait IssueContextTrait
     }
 
     /**
+     * @When I show the issue with id :issueId including journals
+     *
+     * @param mixed $issueId
+     */
+    public function iShowTheIssueWithIdIncludingJournals($issueId): void
+    {
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($issueId, ['include' => 'journals']),
+        );
+    }
+
+    /**
      * @When I add the user id :userId as a watcher to the issue with id :issueId
      *
      * @param mixed $userId
