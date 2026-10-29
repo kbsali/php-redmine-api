@@ -299,6 +299,7 @@ class Issue extends AbstractApi
         }
 
         // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
+        // @see https://www.redmine.org/issues/33744
         if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
             $request = HttpFactory::makeJsonRequest(
                 'PUT',
