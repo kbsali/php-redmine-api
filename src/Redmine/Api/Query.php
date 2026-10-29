@@ -58,6 +58,7 @@ class Query extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of queries found
      */

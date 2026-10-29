@@ -60,6 +60,22 @@ trait IssueContextTrait
     }
 
     /**
+     * @When I list all issues with the following parameters
+     */
+    public function iListAllIssuesWithTheFollowingParameters(TableNode $table): void
+    {
+        $params = $this->prepareIssueData($table);
+
+        /** @var Issue */
+        $api = $this->getNativeCurlClient()->getApi('issue');
+
+        $this->registerClientCall(
+            $api,
+            fn() => $api->list($params),
+        );
+    }
+
+    /**
      * @When I add the user id :userId as a watcher to the issue with id :issueId
      *
      * @param mixed $userId

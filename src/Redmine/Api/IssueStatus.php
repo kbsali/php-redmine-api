@@ -68,6 +68,7 @@ class IssueStatus extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of issue statuses found
      */
@@ -91,15 +92,17 @@ class IssueStatus extends AbstractApi
             return $this->issueStatusNames;
         }
 
-        $this->issueStatusNames = [];
+        $names = [];
 
         $list = $this->list();
 
         if (array_key_exists('issue_statuses', $list)) {
             foreach ($list['issue_statuses'] as $issueStatus) {
-                $this->issueStatusNames[(int) $issueStatus['id']] = (string) $issueStatus['name'];
+                $names[(int) $issueStatus['id']] = (string) $issueStatus['name'];
             }
         }
+
+        $this->issueStatusNames = $names;
 
         return $this->issueStatusNames;
     }

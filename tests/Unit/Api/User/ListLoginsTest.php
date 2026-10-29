@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\User;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(User::class)]
@@ -172,5 +173,71 @@ class ListLoginsTest extends TestCase
         $this->assertSame([1 => 'username'], $firstResult);
         $this->assertSame([1 => 'username'], $secondResult);
         $this->assertSame([1 => 'username'], $thirdResult);
+    }
+
+    public function testListLoginsAfterUnexpectedResponseOnSecondPageRequestsAllPagesAgain(): void
+    {
+        $assertData = [];
+        $request1 = [];
+
+        for ($i = 1; $i <= 100; $i++) {
+            $assertData[$i] = 'user ' . $i;
+            $request1[] = ['id' => $i, 'login' => 'user ' . $i];
+        }
+
+        $assertData[101] = 'user 101';
+
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/users.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['users' => $request1]),
+            ],
+            [
+                'GET',
+                '/users.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/users.json?limit=100&offset=0',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                json_encode(['users' => $request1]),
+            ],
+            [
+                'GET',
+                '/users.json?limit=100&offset=100',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"users":[{"id":101,"login":"user 101"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = User::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listLogins();
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame($assertData, $api->listLogins());
     }
 }

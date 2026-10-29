@@ -68,6 +68,7 @@ class Tracker extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of trackers found
      */
@@ -91,14 +92,16 @@ class Tracker extends AbstractApi
             return $this->trackerNames;
         }
 
-        $this->trackerNames = [];
+        $names = [];
         $list = $this->list();
 
         if (array_key_exists('trackers', $list)) {
             foreach ($list['trackers'] as $role) {
-                $this->trackerNames[(int) $role['id']] = $role['name'];
+                $names[(int) $role['id']] = $role['name'];
             }
         }
+
+        $this->trackerNames = $names;
 
         return $this->trackerNames;
     }

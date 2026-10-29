@@ -73,9 +73,9 @@ trait AttachmentContextTrait
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
 
-        $this->registerClientResponse(
-            $api->download($attachmentId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->download($attachmentId),
         );
     }
 

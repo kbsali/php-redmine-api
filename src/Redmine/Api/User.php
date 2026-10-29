@@ -76,6 +76,7 @@ class User extends AbstractApi
      * @param array<mixed> $params to allow offset/limit (and more) to be passed
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of users found
      */
@@ -99,7 +100,7 @@ class User extends AbstractApi
             return $this->userLogins;
         }
 
-        $this->userLogins = [];
+        $logins = [];
 
         $limit = 100;
         $offset = 0;
@@ -117,10 +118,12 @@ class User extends AbstractApi
                 $listCount = count($list['users']);
 
                 foreach ($list['users'] as $user) {
-                    $this->userLogins[(int) $user['id']] = (string) $user['login'];
+                    $logins[(int) $user['id']] = (string) $user['login'];
                 }
             }
         } while ($listCount === $limit);
+
+        $this->userLogins = $logins;
 
         return $this->userLogins;
     }

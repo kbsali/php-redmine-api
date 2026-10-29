@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Exception\InvalidParameterException;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\TestDataProvider;
@@ -136,5 +137,43 @@ class ListNamesByProjectTest extends TestCase
         $this->expectExceptionMessage('Redmine\Api\IssueCategory::listNamesByProject(): Argument #1 ($projectIdentifier) must be of type int or string');
 
         $api->listNamesByProject($projectIdentifier);
+    }
+
+    public function testListNamesByProjectAfterUnexpectedResponseRequestsDataAgain(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '',
+            ],
+            [
+                'GET',
+                '/projects/5/issue_categories.json',
+                'application/json',
+                '',
+                200,
+                'application/json',
+                '{"issue_categories":[{"id":1,"name":"Category 1"}]}',
+            ],
+        );
+
+        // Create the object under test
+        $api = IssueCategory::fromHttpClient($client);
+
+        // Perform the tests
+        try {
+            $api->listNamesByProject(5);
+            $this->fail('Expected UnexpectedResponseException was not thrown.');
+        } catch (UnexpectedResponseException $e) {
+            $this->assertSame('', $e->getResponse()->getContent());
+        }
+
+        $this->assertSame([1 => 'Category 1'], $api->listNamesByProject(5));
     }
 }

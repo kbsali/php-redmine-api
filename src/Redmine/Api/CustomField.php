@@ -68,6 +68,7 @@ class CustomField extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of custom fields found
      */
@@ -91,15 +92,17 @@ class CustomField extends AbstractApi
             return $this->customFieldNames;
         }
 
-        $this->customFieldNames = [];
+        $names = [];
 
         $list = $this->list();
 
         if (array_key_exists('custom_fields', $list)) {
             foreach ($list['custom_fields'] as $customField) {
-                $this->customFieldNames[(int) $customField['id']] = (string) $customField['name'];
+                $names[(int) $customField['id']] = (string) $customField['name'];
             }
         }
+
+        $this->customFieldNames = $names;
 
         return $this->customFieldNames;
     }

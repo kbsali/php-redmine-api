@@ -66,6 +66,7 @@ class TimeEntryActivity extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
      *
      * @return array<mixed> list of time entry activities found
      */
@@ -89,14 +90,16 @@ class TimeEntryActivity extends AbstractApi
             return $this->timeEntryActivityNames;
         }
 
-        $this->timeEntryActivityNames = [];
+        $names = [];
         $list = $this->list();
 
         if (array_key_exists('time_entry_activities', $list)) {
             foreach ($list['time_entry_activities'] as $activity) {
-                $this->timeEntryActivityNames[(int) $activity['id']] = $activity['name'];
+                $names[(int) $activity['id']] = $activity['name'];
             }
         }
+
+        $this->timeEntryActivityNames = $names;
 
         return $this->timeEntryActivityNames;
     }

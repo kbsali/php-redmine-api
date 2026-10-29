@@ -125,6 +125,8 @@ class Attachment extends AbstractApi
      *
      * @param int $id the attachment number
      *
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     *
      * @return string|false the attachment content as string of false on error
      */
     public function download($id)
@@ -134,9 +136,15 @@ class Attachment extends AbstractApi
             '/attachments/download/' . urlencode(strval($id)),
         ));
 
-        if (200 !== $this->lastResponse->getStatusCode()) {
-            return false;
+        if (!$this->isFutureModeEnabled()) {
+            if (200 !== $this->lastResponse->getStatusCode()) {
+                return false;
+            }
+
+            return $this->lastResponse->getContent();
         }
+
+        $this->throwOnUnexpectedStatusCode(200);
 
         return $this->lastResponse->getContent();
     }

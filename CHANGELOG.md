@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The order of the XML elements in the request bodies of some `create()` and `update()` methods has changed. Redmine ignores the order, but tests that compare exact request bodies may need an update.
+- All `list*()` methods and `Attachment::download()` now verify the response status code. The return value only changes if `enableFutureMode()` was called on the client – a status code other than `200` then throws `UnexpectedResponseException`, e.g. on a `422` response with `{"errors":[...]}` that was returned as data before. This also affects the `listNames()` methods and the deprecated `all()`, `listing()` and `getIdByName()` methods, which call the `list*()` methods.
+
+### Fixed
+
+- `listNames()` of `CustomField`, `Group`, `IssueStatus`, `Project`, `Role`, `TimeEntryActivity` and `Tracker`, `listNamesByProject()` of `IssueCategory` and `Version` and `User::listLogins()` no longer cache an empty or partial result if a request throws an exception. The next call sends the requests again.
 
 ## [v2.10.0](https://github.com/kbsali/php-redmine-api/compare/v2.9.1...v2.10.0) - 2026-10-26
 

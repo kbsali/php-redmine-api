@@ -121,6 +121,16 @@ Feature: Interacting with the REST API for attachments
     Scenario: Try to download a non-existing attachment
         Given I have a "NativeCurlClient" client
         When I download the attachment with the id "1"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "text/html"
+        # The response body contains a 404 HTML page from Redmine
+        # And the response has the content "<!DOCTYPE html><html lang="en">..."
+
+    @error @without-future-mode
+    Scenario: Try to download a non-existing attachment without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I download the attachment with the id "1"
         Then the response has the status code "404"
         And the response has the content type "text/html"
         # The response body contains a 404 HTML page from Redmine
