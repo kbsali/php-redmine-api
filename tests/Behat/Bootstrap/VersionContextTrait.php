@@ -37,9 +37,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->create($identifier, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($identifier, $data),
         );
     }
 
@@ -67,9 +67,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->listByProject($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listByProject($identifier),
         );
     }
 
@@ -83,9 +83,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->listNamesByProject($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listNamesByProject($identifier),
         );
     }
 
@@ -105,9 +105,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->update($id, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($id, $data),
         );
     }
 
@@ -121,9 +121,9 @@ trait VersionContextTrait
         /** @var Version */
         $api = $this->getNativeCurlClient()->getApi('version');
 
-        $this->registerClientResponse(
-            $api->remove($versionId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($versionId),
         );
     }
 }
