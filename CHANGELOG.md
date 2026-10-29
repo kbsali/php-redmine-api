@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `Issue::update()` now unassigns an issue if `assigned_to_id` is an empty string and `enableFutureMode()` was called on the client. Redmine ignores an empty `assigned_to_id` in XML requests, so the update is sent as a JSON request in this case (#502).
 - `listNames()` of `CustomField`, `Group`, `IssueStatus`, `Project`, `Role`, `TimeEntryActivity` and `Tracker`, `listNamesByProject()` of `IssueCategory` and `Version` and `User::listLogins()` no longer cache an empty or partial result if a request throws an exception. The next call sends the requests again.
 
 ## [v2.10.0](https://github.com/kbsali/php-redmine-api/compare/v2.9.1...v2.10.0) - 2026-10-26

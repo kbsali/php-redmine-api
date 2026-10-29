@@ -272,6 +272,9 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
+     * An empty string unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
+     * Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only unassigned if future mode is enabled.
+     *
      * @param int          $id     the issue number
      * @param array<mixed> $params
      *
