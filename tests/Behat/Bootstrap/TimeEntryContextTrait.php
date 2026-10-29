@@ -23,9 +23,9 @@ trait TimeEntryContextTrait
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');
 
-        $this->registerClientResponse(
-            $api->create($data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($data),
         );
     }
 
@@ -45,9 +45,9 @@ trait TimeEntryContextTrait
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');
 
-        $this->registerClientResponse(
-            $api->update($id, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($id, $data),
         );
     }
 
@@ -75,9 +75,9 @@ trait TimeEntryContextTrait
         /** @var TimeEntry */
         $api = $this->getNativeCurlClient()->getApi('time_entry');
 
-        $this->registerClientResponse(
-            $api->remove($activityId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($activityId),
         );
     }
 }
