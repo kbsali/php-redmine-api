@@ -25,9 +25,9 @@ trait AttachmentContextTrait
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
 
-        $this->registerClientResponse(
-            $api->upload(file_get_contents($filepath), $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->upload(file_get_contents($filepath), $data),
         );
     }
 
@@ -45,9 +45,9 @@ trait AttachmentContextTrait
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
 
-        $this->registerClientResponse(
-            $api->update($attachmentId, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($attachmentId, $data),
         );
     }
 
@@ -89,9 +89,9 @@ trait AttachmentContextTrait
         /** @var Attachment */
         $api = $this->getNativeCurlClient()->getApi('attachment');
 
-        $this->registerClientResponse(
-            $api->remove($attachmentId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($attachmentId),
         );
     }
 }
