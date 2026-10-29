@@ -295,11 +295,22 @@ class Issue extends AbstractApi
             $sanitizedParams['fixed_version_id'] = '';
         }
 
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
-            'PUT',
-            '/issues/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
-        ));
+        // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
+        if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
+            $request = HttpFactory::makeJsonRequest(
+                'PUT',
+                '/issues/' . urlencode(strval($id)) . '.json',
+                JsonSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
+            );
+        } else {
+            $request = HttpFactory::makeXmlRequest(
+                'PUT',
+                '/issues/' . urlencode(strval($id)) . '.xml',
+                XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
+            );
+        }
+
+        $this->lastResponse = $this->getHttpClient()->request($request);
 
         $body = $this->lastResponse->getContent();
 
