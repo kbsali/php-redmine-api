@@ -58,9 +58,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->create($identifier, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($identifier, $data),
         );
     }
 
@@ -74,9 +74,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->listByProject($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listByProject($identifier),
         );
     }
 
@@ -90,9 +90,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->listNamesByProject($identifier),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listNamesByProject($identifier),
         );
     }
 
@@ -128,9 +128,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->update($id, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($id, $data),
         );
     }
 
@@ -144,9 +144,9 @@ trait IssueCategoryContextTrait
         /** @var IssueCategory */
         $api = $this->getNativeCurlClient()->getApi('issue_category');
 
-        $this->registerClientResponse(
-            $api->remove($id),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($id),
         );
     }
 }
