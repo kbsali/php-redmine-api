@@ -411,6 +411,16 @@ $client->getApi('issue')->update($issueId, [
     'priority_id' => 5,
     'due_date' => date('Y-m-d'),
 ]);
+
+// To unassign a user or a version, use an empty string (`null` values are not sent).
+// Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only
+// unassigned if the client has called `enableFutureMode()`. Otherwise use this workaround:
+$client->requestPut(
+    '/issues/' . $issueId . '.json',
+    '{"issue": {"assigned_to_id": ""}}'
+);
+$client->getApi('issue')->update($issueId, ['fixed_version_id' => '']);
+
 $client->getApi('issue')->addWatcher($issueId, $userId);
 $client->getApi('issue')->removeWatcher($issueId, $userId);
 $client->getApi('issue')->setIssueStatus($issueId, 'Resolved');

@@ -272,6 +272,9 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
+     * An empty string unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
+     * Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only unassigned if future mode is enabled.
+     *
      * @param int          $id     the issue number
      * @param array<mixed> $params
      *
@@ -295,11 +298,23 @@ class Issue extends AbstractApi
             $sanitizedParams['fixed_version_id'] = '';
         }
 
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
-            'PUT',
-            '/issues/' . urlencode(strval($id)) . '.xml',
-            XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
-        ));
+        // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
+        // @see https://www.redmine.org/issues/33744
+        if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
+            $request = HttpFactory::makeJsonRequest(
+                'PUT',
+                '/issues/' . urlencode(strval($id)) . '.json',
+                JsonSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
+            );
+        } else {
+            $request = HttpFactory::makeXmlRequest(
+                'PUT',
+                '/issues/' . urlencode(strval($id)) . '.xml',
+                XmlSerializer::createFromArray(['issue' => $sanitizedParams])->getEncoded(),
+            );
+        }
+
+        $this->lastResponse = $this->getHttpClient()->request($request);
 
         $body = $this->lastResponse->getContent();
 

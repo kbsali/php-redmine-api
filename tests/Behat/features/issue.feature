@@ -202,6 +202,227 @@ Feature: Interacting with the REST API for issues
         And the response has the content ""
         And the returned data is exactly ""
 
+    Scenario: Unassigning an issue
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "v1" and project identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | assigned_to_id    | 1                    |
+            | fixed_version_id  | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | assigned_to_id    |                      |
+            | fixed_version_id  |                      |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+        When I show the issue with id "1"
+        Then the response has the status code "200"
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            """
+
+    @without-future-mode
+    Scenario: Unassigning an issue without future mode has no effect on the assigned user
+        Given I have a "NativeCurlClient" client without future mode
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "v1" and project identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | assigned_to_id    | 1                    |
+            | fixed_version_id  | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | assigned_to_id    |                      |
+            | fixed_version_id  |                      |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+        When I show the issue with id "1"
+        Then the response has the status code "200"
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            assigned_to
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            """
+
+    Scenario: Unassigning an issue and updating other data in one request
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "v1" and project identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | assigned_to_id    | 1                    |
+            | fixed_version_id  | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | subject           | new issue subject    |
+            | notes             | unassigned           |
+            | assigned_to_id    |                      |
+            | fixed_version_id  |                      |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+        When I show the issue with id "1" including journals
+        Then the response has the status code "200"
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            journals
+            """
+        And the returned data "issue" property contains the following data
+            | property          | value                |
+            | subject           | new issue subject    |
+        And the returned data "issue.journals" property contains "1" items
+        And the returned data "issue.journals.0" property contains the following data
+            | property          | value                |
+            | notes             | unassigned           |
+
+    @custom_field
+    Scenario: Unassigning an issue and updating a custom field in one request
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with name "v1" and project identifier "test-project"
+        And I create a custom field for issues with the name "Note"
+        And I enable the tracker with ID "1" for custom field with ID "1"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | assigned_to_id    | 1                    |
+            | fixed_version_id  | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | assigned_to_id    |                      |
+            | custom_fields     | [{"id":1,"value":"Note for custom field"}] |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        And the returned data is exactly ""
+        When I show the issue with id "1"
+        Then the response has the status code "200"
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            fixed_version
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            custom_fields
+            created_on
+            updated_on
+            closed_on
+            """
+        And the returned data "issue" property contains the following data
+            | property          | value                |
+            | subject           | issue subject        |
+        And the returned data "issue.custom_fields.0" property contains the following data
+            | property          | value                |
+            | id                | 1                    |
+            | name              | Note                 |
+            | value             | Note for custom field |
+
     Scenario: Showing an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"
