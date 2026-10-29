@@ -305,3 +305,137 @@ Feature: Interacting with the REST API for users
         And the response has an empty content type
         And the response has the content ""
         And the returned data is exactly ""
+
+    @error
+    Scenario: Try to create an user with invalid data
+        Given I have a "NativeCurlClient" client
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | other@example.com    |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Login has already been taken</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to create an user with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | other@example.com    |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Login has already been taken</error></errors>
+            """
+        And the returned data is an instance of "SimpleXMLElement"
+        And the returned data has only the following properties
+            """
+            @attributes
+            error
+            """
+
+    @error
+    Scenario: Try to update an user with invalid data
+        Given I have a "NativeCurlClient" client
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I update the user with id "5" and the following data
+            | property          | value                |
+            | mail              | invalid              |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Email is invalid</error></errors>
+            """
+
+    @error @without-future-mode
+    Scenario: Try to update an user with invalid data without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I create a user with the following data
+            | property          | value                |
+            | login             | username             |
+            | firstname         | first                |
+            | lastname          | last                 |
+            | mail              | mail@example.com     |
+        When I update the user with id "5" and the following data
+            | property          | value                |
+            | mail              | invalid              |
+        Then the response has the status code "422"
+        And the response has the content type "application/xml"
+        And the response has the content
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Email is invalid</error></errors>
+            """
+        And the returned data is exactly
+            """
+            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Email is invalid</error></errors>
+            """
+
+    @error
+    Scenario: Try to update a non-existing user
+        Given I have a "NativeCurlClient" client
+        When I update the user with id "10" and the following data
+            | property          | value                |
+            | firstname         | new_first            |
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to update a non-existing user without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I update the user with id "10" and the following data
+            | property          | value                |
+            | firstname         | new_first            |
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""
+
+    @error
+    Scenario: Try to remove a non-existing user
+        Given I have a "NativeCurlClient" client
+        When I remove the user with id "10"
+        Then an UnexpectedResponseException was thrown
+        And the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+
+    @error @without-future-mode
+    Scenario: Try to remove a non-existing user without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        When I remove the user with id "10"
+        Then the response has the status code "404"
+        And the response has the content type "application/xml"
+        And the response has the content ""
+        And the returned data is exactly ""

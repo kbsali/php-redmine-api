@@ -43,9 +43,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->create($data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($data),
         );
     }
 
@@ -71,9 +71,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->list(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->list(),
         );
     }
 
@@ -85,9 +85,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->listLogins(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listLogins(),
         );
     }
 
@@ -107,9 +107,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->update($id, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($id, $data),
         );
     }
 
@@ -123,9 +123,9 @@ trait UserContextTrait
         /** @var User */
         $api = $this->getNativeCurlClient()->getApi('user');
 
-        $this->registerClientResponse(
-            $api->remove($userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($userId),
         );
     }
 }
