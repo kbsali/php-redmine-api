@@ -36,9 +36,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->create($data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->create($data),
         );
     }
 
@@ -50,9 +50,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->list(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->list(),
         );
     }
 
@@ -64,9 +64,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->listNames(),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->listNames(),
         );
     }
 
@@ -98,9 +98,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->update($groupId, $data),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->update($groupId, $data),
         );
     }
 
@@ -115,9 +115,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->addUser($groupId, $userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->addUser($groupId, $userId),
         );
     }
 
@@ -132,9 +132,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->removeUser($groupId, $userId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->removeUser($groupId, $userId),
         );
     }
 
@@ -148,9 +148,9 @@ trait GroupContextTrait
         /** @var Group */
         $api = $this->getNativeCurlClient()->getApi('group');
 
-        $this->registerClientResponse(
-            $api->remove($groupId),
-            $api->getLastResponse(),
+        $this->registerClientCall(
+            $api,
+            fn() => $api->remove($groupId),
         );
     }
 }
