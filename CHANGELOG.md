@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The order of the XML elements in the request bodies of some `create()` and `update()` methods has changed. Redmine ignores the order, but tests that compare exact request bodies may need an update.
 - All `list*()` methods and `Attachment::download()` now verify the response status code. The return value only changes if `enableFutureMode()` was called on the client – a status code other than `200` then throws `UnexpectedResponseException`, e.g. on a `422` response with `{"errors":[...]}` that was returned as data before. This also affects the `listNames()` methods and the deprecated `all()`, `listing()` and `getIdByName()` methods, which call the `list*()` methods.
+- The exception message of `AbstractApi::__construct()` for an invalid client now uses `get_debug_type()`, e.g. `int` instead of `integer`.
 
 ### Removed
 
