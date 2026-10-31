@@ -48,7 +48,7 @@ final class NativeCurlClient implements Client, HttpClient
     public function __construct(
         string $url,
         string $apikeyOrUsername,
-        ?string $password = null
+        ?string $password = null,
     ) {
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
@@ -310,10 +310,6 @@ final class NativeCurlClient implements Client, HttpClient
         if (CURLE_OK !== $curlErrorNumber) {
             $e = new ClientException(curl_error($curl), $curlErrorNumber);
 
-            if (PHP_VERSION_ID < 80000) {
-                curl_close($curl);
-            }
-
             throw $e;
         }
 
@@ -325,17 +321,11 @@ final class NativeCurlClient implements Client, HttpClient
             $this->lastResponseContentType = $possibleContentType;
         }
 
-        if (PHP_VERSION_ID < 80000) {
-            curl_close($curl);
-        }
-
         return $this->lastResponseStatusCode < 400;
     }
 
     /**
      * Prepare the request by setting the cURL options.
-     *
-     * BC for PHP 7.4: Do not add the return type because CurlHandle was introduced in PHP 8.0
      *
      * @return mixed a cURL handle on success, <b>FALSE</b> on errors
      */

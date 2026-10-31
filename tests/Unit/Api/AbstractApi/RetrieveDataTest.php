@@ -191,9 +191,6 @@ class RetrieveDataTest extends TestCase
     private function retrieveData(AbstractApi $api, string $path, array $params = [])
     {
         $method = new ReflectionMethod($api, 'retrieveData');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         return $method->invoke($api, $path, $params);
     }

@@ -150,6 +150,7 @@ class XmlSerializerTest extends TestCase
         $serializer = XmlSerializer::createFromArray($data);
 
         $this->assertXmlStringEqualsXmlString($expected, $serializer->__toString());
+        $this->assertXmlStringEqualsXmlString($expected, $serializer->getEncoded());
     }
 
     /**
@@ -220,6 +221,36 @@ class XmlSerializerTest extends TestCase
                     <project_id>1</project_id>
                     <subject>Example</subject>
                     <priority_id>4</priority_id>
+                </issue>
+                XML,
+            ],
+            'test with custom fields with attachment token' => [
+                [
+                    'issue' => [
+                        'subject' => 'Example',
+                        'custom_fields' => [
+                            [
+                                'id' => 123,
+                                'value' => [
+                                    'token' => '1.sample-token',
+                                    'filename' => 'test.txt',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                    <subject>Example</subject>
+                    <custom_fields type="array">
+                        <custom_field id="123" multiple="true">
+                            <value>
+                                <token>1.sample-token</token>
+                                <filename>test.txt</filename>
+                            </value>
+                        </custom_field>
+                    </custom_fields>
                 </issue>
                 XML,
             ],

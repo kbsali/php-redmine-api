@@ -33,7 +33,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         string $method,
         string $path,
         $data,
-        string $expectedOutput
+        string $expectedOutput,
     ): void {
         $response = $this->createStub(ResponseInterface::class);
 

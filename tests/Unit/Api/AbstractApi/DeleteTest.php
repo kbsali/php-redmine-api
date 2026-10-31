@@ -33,9 +33,6 @@ class DeleteTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'delete');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml');
@@ -56,9 +53,6 @@ class DeleteTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'delete');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         // Perform the tests
         $return = $method->invoke($api, 'path.xml');
