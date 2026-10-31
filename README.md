@@ -53,7 +53,7 @@ you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/i
 
 ## Requirements
 
-* PHP ^7.4 || ^8.0
+* PHP ^8.2
 * The PHP [SimpleXML](https://php.net/manual/en/book.simplexml.php) extension
 * The PHP [JSON](https://php.net/manual/en/book.json.php) extension
 * Enabled REST web service on your Redmine server

@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The order of the XML elements in the request bodies of some `create()` and `update()` methods has changed. Redmine ignores the order, but tests that compare exact request bodies may need an update.
 - All `list*()` methods and `Attachment::download()` now verify the response status code. The return value only changes if `enableFutureMode()` was called on the client – a status code other than `200` then throws `UnexpectedResponseException`, e.g. on a `422` response with `{"errors":[...]}` that was returned as data before. This also affects the `listNames()` methods and the deprecated `all()`, `listing()` and `getIdByName()` methods, which call the `list*()` methods.
 
+### Removed
+
+- Support for PHP 7.4, 8.0 and 8.1. Please stay on v2.10 if you cannot update to PHP 8.2 or newer.
+
 ### Fixed
 
 - `Issue::update()` now unassigns an issue if `assigned_to_id` is an empty string and `enableFutureMode()` was called on the client. Redmine ignores an empty `assigned_to_id` in XML requests, so the update is sent as a JSON request in this case (#502).
