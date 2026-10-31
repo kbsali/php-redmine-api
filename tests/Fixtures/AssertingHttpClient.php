@@ -106,10 +106,6 @@ final class AssertingHttpClient implements HttpClient
 
         $createStubMethod = new \ReflectionMethod($this->testCase, 'createStub');
 
-        if (PHP_VERSION_ID < 80100) {
-            $createStubMethod->setAccessible(true);
-        }
-
         /** @var \PHPUnit\Framework\MockObject\Stub&Response $response */
         $response = $createStubMethod->invoke($this->testCase, Response::class);
 
