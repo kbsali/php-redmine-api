@@ -48,7 +48,7 @@ final class NativeCurlClient implements Client, HttpClient
     public function __construct(
         string $url,
         string $apikeyOrUsername,
-        ?string $password = null
+        ?string $password = null,
     ) {
         $this->url = $url;
         $this->apikeyOrUsername = $apikeyOrUsername;
