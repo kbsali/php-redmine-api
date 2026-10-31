@@ -64,7 +64,7 @@ you are welcome to [create an issue](https://github.com/kbsali/php-redmine-api/i
 ### Optional
 
 * The PHP [cURL](https://php.net/manual/en/book.curl.php) extension if you want to use the native `cURL` functions.
-* [PHPUnit](https://phpunit.de/) >= 9.0 (optional) to run the test suite
+* [PHPUnit](https://phpunit.de/) >= 11.5 (optional) to run the test suite
 
 ## Todo
 
