@@ -7,88 +7,51 @@ use Behat\Config\Profile;
 use Behat\Config\Suite;
 use Redmine\Tests\Behat\Bootstrap\FeatureContext;
 
+/**
+ * Redmine versions tested by the Behat suites.
+ *
+ * Make sure that every entry has a service in /docker-compose.yml
+ * and a matching port in the github-actions matrix of /.github/workflows/tests.yml.
+ *
+ * @var array<string, array{version: string, dataDir: string, service: string, port: int}>
+ */
+$redmineVersions = [
+    'redmine_7_0' => ['version' => '7.0.2', 'dataDir' => 'redmine-70002_data', 'service' => 'redmine-7-0', 'port' => 5070],
+    'redmine_6_1' => ['version' => '6.1.5', 'dataDir' => 'redmine-60105_data', 'service' => 'redmine-6-1', 'port' => 5061],
+    'redmine_6_0' => ['version' => '6.0.11', 'dataDir' => 'redmine-60011_data', 'service' => 'redmine-6-0', 'port' => 5060],
+    'redmine_5_1' => ['version' => '5.1.12', 'dataDir' => 'redmine-50112_data', 'service' => 'redmine-5-1', 'port' => 5051],
+];
+
+$createSuite = static fn(string $name, string $version, string $dataDir, string $url): Suite => (new Suite($name))
+    ->addContext(
+        FeatureContext::class,
+        [
+            'redmineVersion' => $version,
+            'rootPath' => '%paths.base%/../../.docker/' . $dataDir,
+            'redmineUrl' => $url,
+        ],
+    );
+
+// Profile for local development: the Redmine instances are reachable through the Docker network
+$default = (new Profile('default'))
+    ->withSuite(
+        $createSuite('default', '7.0.2', 'redmine-dev_data', 'http://redmine-dev:3000')
+            ->withPaths('%paths.base%/features'),
+    );
+
+// Profile for GitHub Actions: the Redmine instances are reachable through localhost ports
+$githubActions = new Profile('github-actions');
+
+foreach ($redmineVersions as $name => $redmine) {
+    $default = $default->withSuite(
+        $createSuite($name, $redmine['version'], $redmine['dataDir'], 'http://' . $redmine['service'] . ':3000'),
+    );
+
+    $githubActions = $githubActions->withSuite(
+        $createSuite($name, $redmine['version'], $redmine['dataDir'], 'http://localhost:' . $redmine['port']),
+    );
+}
+
 return (new Config())
-    ->withProfile((new Profile('default'))
-        ->withSuite((new Suite('default'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '7.0.2',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-dev_data',
-                    'redmineUrl' => 'http://redmine-dev:3000',
-                ],
-            )
-            ->withPaths('%paths.base%/features'))
-        ->withSuite((new Suite('redmine_7_0'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '7.0.2',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-70002_data',
-                    'redmineUrl' => 'http://redmine-7-0:3000',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_6_1'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '6.1.5',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-60105_data',
-                    'redmineUrl' => 'http://redmine-6-1:3000',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_6_0'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '6.0.11',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-60011_data',
-                    'redmineUrl' => 'http://redmine-6-0:3000',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_5_1'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '5.1.12',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-50112_data',
-                    'redmineUrl' => 'http://redmine-5-1:3000',
-                ],
-            )))
-    ->withProfile((new Profile('github-actions'))
-        ->withSuite((new Suite('redmine_7_0'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '7.0.2',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-70002_data',
-                    'redmineUrl' => 'http://localhost:5070',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_6_1'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '6.1.5',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-60105_data',
-                    'redmineUrl' => 'http://localhost:5061',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_6_0'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '6.0.11',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-60011_data',
-                    'redmineUrl' => 'http://localhost:5060',
-                ],
-            ))
-        ->withSuite((new Suite('redmine_5_1'))
-            ->addContext(
-                FeatureContext::class,
-                [
-                    'redmineVersion' => '5.1.12',
-                    'rootPath' => '%paths.base%/../../.docker/redmine-50112_data',
-                    'redmineUrl' => 'http://localhost:5051',
-                ],
-            )));
+    ->withProfile($default)
+    ->withProfile($githubActions);
