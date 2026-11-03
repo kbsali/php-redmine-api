@@ -9,9 +9,7 @@ use Redmine\Api\User;
 
 trait UserContextTrait
 {
-    /**
-     * @Given I create :count users
-     */
+    #[\Behat\Step\Given('I create :count users')]
     public function iCreateUsers(int $count): void
     {
         while ($count > 0) {
@@ -29,9 +27,7 @@ trait UserContextTrait
         }
     }
 
-    /**
-     * @When I create a user with the following data
-     */
+    #[\Behat\Step\When('I create a user with the following data')]
     public function iCreateAUserWithTheFollowingData(TableNode $table): void
     {
         $data = [];
@@ -49,9 +45,7 @@ trait UserContextTrait
         );
     }
 
-    /**
-     * @When I show the user with id :userId
-     */
+    #[\Behat\Step\When('I show the user with id :userId')]
     public function iShowTheUserWithId(int $userId): void
     {
         /** @var User */
@@ -63,9 +57,7 @@ trait UserContextTrait
         );
     }
 
-    /**
-     * @When I list all users
-     */
+    #[\Behat\Step\When('I list all users')]
     public function iListAllUsers(): void
     {
         /** @var User */
@@ -77,9 +69,7 @@ trait UserContextTrait
         );
     }
 
-    /**
-     * @When I list all user logins
-     */
+    #[\Behat\Step\When('I list all user logins')]
     public function iListAllUserLogins(): void
     {
         /** @var User */
@@ -92,10 +82,9 @@ trait UserContextTrait
     }
 
     /**
-     * @When I update the user with id :id and the following data
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I update the user with id :id and the following data')]
     public function iUpdateTheUserWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
@@ -114,10 +103,9 @@ trait UserContextTrait
     }
 
     /**
-     * @When I remove the user with id :userId
-     *
      * @param mixed $userId
      */
+    #[\Behat\Step\When('I remove the user with id :userId')]
     public function iRemoveTheUserWithId($userId): void
     {
         /** @var User */

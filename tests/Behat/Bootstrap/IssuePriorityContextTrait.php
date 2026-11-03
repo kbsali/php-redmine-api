@@ -6,9 +6,7 @@ namespace Redmine\Tests\Behat\Bootstrap;
 
 trait IssuePriorityContextTrait
 {
-    /**
-     * @Given I have an issue priority with the name :priority
-     */
+    #[\Behat\Step\Given('I have an issue priority with the name :priority')]
     public function iHaveAnIssuePriorityWithTheName(string $priority): void
     {
         // support for creating time entry activity via REST API is missing

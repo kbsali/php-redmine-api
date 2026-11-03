@@ -9,9 +9,7 @@ use Redmine\Api\TimeEntry;
 
 trait TimeEntryContextTrait
 {
-    /**
-     * @When I create a time entry with the following data
-     */
+    #[\Behat\Step\When('I create a time entry with the following data')]
     public function iCreateATimeEntryWithTheFollowingData(TableNode $table): void
     {
         $data = [];
@@ -30,10 +28,9 @@ trait TimeEntryContextTrait
     }
 
     /**
-     * @When I update the time entry with id :id and the following data
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I update the time entry with id :id and the following data')]
     public function iUpdateTheTimeEntryWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
@@ -51,9 +48,7 @@ trait TimeEntryContextTrait
         );
     }
 
-    /**
-     * @When I show the time entry with the id :activityId
-     */
+    #[\Behat\Step\When('I show the time entry with the id :activityId')]
     public function iShowTheTimeEntryWithTheId(int $activityId): void
     {
         /** @var TimeEntry */
@@ -66,10 +61,9 @@ trait TimeEntryContextTrait
     }
 
     /**
-     * @When I remove the time entry with id :activityId
-     *
      * @param mixed $activityId
      */
+    #[\Behat\Step\When('I remove the time entry with id :activityId')]
     public function iRemoveTheTimeEntryWithId($activityId): void
     {
         /** @var TimeEntry */

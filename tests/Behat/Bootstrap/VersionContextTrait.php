@@ -9,9 +9,7 @@ use Redmine\Api\Version;
 
 trait VersionContextTrait
 {
-    /**
-     * @When I create a version with name :versionName and project identifier :identifier
-     */
+    #[\Behat\Step\When('I create a version with name :versionName and project identifier :identifier')]
     public function iCreateAVersionWithNameAndProjectIdentifier(string $versionName, string $identifier): void
     {
         $this->iCreateAVersionWithProjectIdentifierAndWithTheFollowingData(
@@ -23,9 +21,7 @@ trait VersionContextTrait
         );
     }
 
-    /**
-     * @When I create a version with project identifier :identifier with the following data
-     */
+    #[\Behat\Step\When('I create a version with project identifier :identifier with the following data')]
     public function iCreateAVersionWithProjectIdentifierAndWithTheFollowingData(string $identifier, TableNode $table): void
     {
         $data = [];
@@ -43,9 +39,7 @@ trait VersionContextTrait
         );
     }
 
-    /**
-     * @When I show the version with id :versionId
-     */
+    #[\Behat\Step\When('I show the version with id :versionId')]
     public function iShowTheVersionWithId(int $versionId): void
     {
         /** @var Version */
@@ -58,10 +52,9 @@ trait VersionContextTrait
     }
 
     /**
-     * @When I list all versions for project identifier :identifier
-     *
      * @param mixed $identifier
      */
+    #[\Behat\Step\When('I list all versions for project identifier :identifier')]
     public function iListAllVersionsForProjectIdentifier($identifier): void
     {
         /** @var Version */
@@ -74,10 +67,9 @@ trait VersionContextTrait
     }
 
     /**
-     * @When I list all version names for project identifier :identifier
-     *
      * @param mixed $identifier
      */
+    #[\Behat\Step\When('I list all version names for project identifier :identifier')]
     public function iListAllVersionNamesForProjectIdentifier($identifier): void
     {
         /** @var Version */
@@ -90,10 +82,9 @@ trait VersionContextTrait
     }
 
     /**
-     * @When I update the version with id :id and the following data
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I update the version with id :id and the following data')]
     public function iUpdateTheVersionWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
@@ -112,10 +103,9 @@ trait VersionContextTrait
     }
 
     /**
-     * @When I remove the version with id :versionId
-     *
      * @param mixed $versionId
      */
+    #[\Behat\Step\When('I remove the version with id :versionId')]
     public function iRemoveTheVersionWithId($versionId): void
     {
         /** @var Version */

@@ -10,10 +10,9 @@ use Redmine\Api\Membership;
 trait MembershipContextTrait
 {
     /**
-     * @When I create a membership to project with identifier :identifier and the following data
-     *
      * @param mixed $identifier
      */
+    #[\Behat\Step\When('I create a membership to project with identifier :identifier and the following data')]
     public function iCreateAMembershipToProjectWithIdentifierAndTheFollowingData($identifier, TableNode $table): void
     {
         $data = [];
@@ -36,10 +35,9 @@ trait MembershipContextTrait
     }
 
     /**
-     * @When I update the membership with id :id and the following data
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I update the membership with id :id and the following data')]
     public function iUpdateTheMembershipWithIdAndTheFollowingData($id, TableNode $table): void
     {
         $data = [];
@@ -62,10 +60,9 @@ trait MembershipContextTrait
     }
 
     /**
-     * @When I remove the membership with id :id
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I remove the membership with id :id')]
     public function iRemoveTheMembershipWithId($id): void
     {
         /** @var Membership */
@@ -78,11 +75,10 @@ trait MembershipContextTrait
     }
 
     /**
-     * @When I remove the user with id :userId from the project with identifier :identifier
-     *
      * @param mixed $userId
      * @param mixed $identifier
      */
+    #[\Behat\Step\When('I remove the user with id :userId from the project with identifier :identifier')]
     public function iRemoveTheUserWithIdFromTheProjectWithIdentifier($userId, $identifier): void
     {
         /** @var Membership */

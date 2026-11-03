@@ -9,10 +9,9 @@ use Redmine\Api\IssueStatus;
 trait IssueStatusContextTrait
 {
     /**
-     * @Given I have an issue status with the name :issueStatusName
-     *
      * @param mixed $issueStatusName
      */
+    #[\Behat\Step\Given('I have an issue status with the name :issueStatusName')]
     public function iHaveAnIssueStatusWithTheName($issueStatusName): void
     {
         // support for creating issue status via REST API is missing
@@ -27,9 +26,7 @@ trait IssueStatusContextTrait
         );
     }
 
-    /**
-     * @When I list all issue statuses
-     */
+    #[\Behat\Step\When('I list all issue statuses')]
     public function iListAllIssueStatuses(): void
     {
         /** @var IssueStatus */
@@ -41,9 +38,7 @@ trait IssueStatusContextTrait
         );
     }
 
-    /**
-     * @When I list all issue status names
-     */
+    #[\Behat\Step\When('I list all issue status names')]
     public function iListAllIssueStatusNames(): void
     {
         /** @var IssueStatus */

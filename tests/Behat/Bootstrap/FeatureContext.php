@@ -44,26 +44,20 @@ final class FeatureContext implements Context
 
     private static ?BehatHookTracer $tracer = null;
 
-    /**
-     * @BeforeSuite
-     */
+    #[\Behat\Hook\BeforeSuite]
     public static function prepare(BeforeSuiteScope $scope): void
     {
         self::$tracer = new BehatHookTracer();
         self::$tracer->hook($scope);
     }
 
-    /**
-     * @AfterScenario
-     */
+    #[\Behat\Hook\AfterScenario]
     public static function reset(AfterScenarioScope $scope): void
     {
         self::$tracer->hook($scope);
     }
 
-    /**
-     * @AfterScenario
-     */
+    #[\Behat\Hook\AfterScenario]
     public function assertNoUnassertedException(): void
     {
         if ($this->unassertedExceptions !== []) {
@@ -75,9 +69,7 @@ final class FeatureContext implements Context
         }
     }
 
-    /**
-     * @AfterSuite
-     */
+    #[\Behat\Hook\AfterSuite]
     public static function clean(AfterSuiteScope $scope): void
     {
         self::$tracer->hook($scope);
@@ -119,10 +111,9 @@ final class FeatureContext implements Context
     }
 
     /**
-     * @Given I have a :clientName client
-     *
      * @param mixed $clientName
      */
+    #[\Behat\Step\Given('I have a :clientName client')]
     public function iHaveAClient($clientName): void
     {
         $this->client = $this->createClient($clientName);
@@ -132,10 +123,9 @@ final class FeatureContext implements Context
     /**
      * @todo remove this step and all scenarios tagged with `@without-future-mode` in v3.0.0
      *
-     * @Given I have a :clientName client without future mode
-     *
      * @param mixed $clientName
      */
+    #[\Behat\Step\Given('I have a :clientName client without future mode')]
     public function iHaveAClientWithoutFutureMode($clientName): void
     {
         $this->client = $this->createClient($clientName);
@@ -212,9 +202,7 @@ final class FeatureContext implements Context
         return $this->lastReturn;
     }
 
-    /**
-     * @Then an UnexpectedResponseException was thrown
-     */
+    #[\Behat\Step\Then('an UnexpectedResponseException was thrown')]
     public function anUnexpectedResponseExceptionWasThrown(): void
     {
         TestCase::assertInstanceOf(UnexpectedResponseException::class, $this->lastException);
@@ -225,9 +213,7 @@ final class FeatureContext implements Context
         ));
     }
 
-    /**
-     * @Then the response has the status code :statusCode
-     */
+    #[\Behat\Step\Then('the response has the status code :statusCode')]
     public function theResponseHasTheStatusCode(int $statusCode): void
     {
         TestCase::assertSame(
@@ -237,9 +223,7 @@ final class FeatureContext implements Context
         );
     }
 
-    /**
-     * @Then the response has the content type :contentType
-     */
+    #[\Behat\Step\Then('the response has the content type :contentType')]
     public function theResponseHasTheContentType(string $contentType): void
     {
         TestCase::assertStringStartsWith(
@@ -249,89 +233,67 @@ final class FeatureContext implements Context
         );
     }
 
-    /**
-     * @Then the response has an empty content type
-     */
+    #[\Behat\Step\Then('the response has an empty content type')]
     public function theResponseHasAnEmptyContentType(): void
     {
         TestCase::assertSame('', $this->lastResponse->getContentType());
     }
 
-    /**
-     * @Then the response has the content :content
-     */
+    #[\Behat\Step\Then('the response has the content :content')]
     public function theResponseHasTheContent(string $content): void
     {
         TestCase::assertSame($content, $this->lastResponse->getContent());
     }
 
-    /**
-     * @Then the response has the content
-     */
+    #[\Behat\Step\Then('the response has the content')]
     public function theResponseHasTheContentWithMultipleLines(PyStringNode $string): void
     {
         TestCase::assertSame($string->getRaw(), $this->lastResponse->getContent());
     }
 
-    /**
-     * @Then the returned data is true
-     */
+    #[\Behat\Step\Then('the returned data is true')]
     public function theReturnedDataIsTrue(): void
     {
         TestCase::assertTrue($this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data is false
-     */
+    #[\Behat\Step\Then('the returned data is false')]
     public function theReturnedDataIsFalse(): void
     {
         TestCase::assertFalse($this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data is exactly :content
-     */
+    #[\Behat\Step\Then('the returned data is exactly :content')]
     public function theReturnedDataIsExactly(string $content): void
     {
         TestCase::assertSame($content, $this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data is exactly
-     */
+    #[\Behat\Step\Then('the returned data is exactly')]
     public function theReturnedDataIsExactlyWithMultipleLines(PyStringNode $string): void
     {
         TestCase::assertSame($string->getRaw(), $this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data is an instance of :className
-     */
+    #[\Behat\Step\Then('the returned data is an instance of :className')]
     public function theReturnedDataIsAnInstanceOf(string $className): void
     {
         TestCase::assertInstanceOf($className, $this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data is an array
-     */
+    #[\Behat\Step\Then('the returned data is an array')]
     public function theReturnedDataIsAnArray(): void
     {
         TestCase::assertIsArray($this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data contains :count items
-     */
+    #[\Behat\Step\Then('the returned data contains :count items')]
     public function theReturnedDataContainsItems(int $count): void
     {
         TestCase::assertCount($count, $this->getLastReturn());
     }
 
-    /**
-     * @Then the returned data contains the following data
-     */
+    #[\Behat\Step\Then('the returned data contains the following data')]
     public function theReturnedDataContainsTheFollowingData(TableNode $table): void
     {
         $returnData = $this->getLastReturn();
@@ -343,33 +305,25 @@ final class FeatureContext implements Context
         $this->assertTableNodeIsSameAsArray($table, $returnData);
     }
 
-    /**
-     * @Then the returned data has only the following properties
-     */
+    #[\Behat\Step\Then('the returned data has only the following properties')]
     public function theReturnedDataHasOnlyTheFollowingProperties(PyStringNode $string): void
     {
         $this->theReturnedDataPropertyHasOnlyTheFollowingProperties(null, $string);
     }
 
-    /**
-     * @Then the returned data has only the following properties with Redmine version :versionComparision
-     */
+    #[\Behat\Step\Then('the returned data has only the following properties with Redmine version :versionComparision')]
     public function theReturnedDataHasOnlyTheFollowingPropertiesWithRedmineVersion(string $versionComparision, PyStringNode $string): void
     {
         $this->theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion(null, $versionComparision, $string);
     }
 
-    /**
-     * @Then the returned data has proterties with the following data
-     */
+    #[\Behat\Step\Then('the returned data has proterties with the following data')]
     public function theReturnedDataHasProtertiesWithTheFollowingData(TableNode $table): void
     {
         $this->theReturnedDataPropertyContainsTheFollowingData(null, $table);
     }
 
-    /**
-     * @Then the returned data :property property is an array
-     */
+    #[\Behat\Step\Then('the returned data :property property is an array')]
     public function theReturnedDataPropertyIsAnArray(?string $property): void
     {
         $returnData = $this->getLastReturnAsArray();
@@ -379,9 +333,7 @@ final class FeatureContext implements Context
         TestCase::assertIsArray($value);
     }
 
-    /**
-     * @Then the returned data :property property contains :count items
-     */
+    #[\Behat\Step\Then('the returned data :property property contains :count items')]
     public function theReturnedDataPropertyContainsItems(?string $property, int $count): void
     {
         $returnData = $this->getLastReturnAsArray();
@@ -392,9 +344,7 @@ final class FeatureContext implements Context
         TestCase::assertCount($count, $value);
     }
 
-    /**
-     * @Then the returned data :property property contains the following data
-     */
+    #[\Behat\Step\Then('the returned data :property property contains the following data')]
     public function theReturnedDataPropertyContainsTheFollowingData(?string $property, TableNode $table): void
     {
         $returnData = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
@@ -406,9 +356,7 @@ final class FeatureContext implements Context
         $this->assertTableNodeIsSameAsArray($table, $returnData);
     }
 
-    /**
-     * @Then the returned data :property property contains the following data with Redmine version :versionComparision
-     */
+    #[\Behat\Step\Then('the returned data :property property contains the following data with Redmine version :versionComparision')]
     public function theReturnedDataPropertyContainsTheFollowingDataWithRedmineVersion(?string $property, string $versionComparision, TableNode $table): void
     {
         if ($this->isVersionMatch($versionComparision)) {
@@ -416,9 +364,7 @@ final class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Then the returned data :property property has only the following properties
-     */
+    #[\Behat\Step\Then('the returned data :property property has only the following properties')]
     public function theReturnedDataPropertyHasOnlyTheFollowingProperties(?string $property, PyStringNode $string): void
     {
         $value = $this->getItemFromArray($this->getLastReturnAsArray(), $property);
@@ -428,9 +374,7 @@ final class FeatureContext implements Context
         TestCase::assertSame($string->getStrings(), $properties);
     }
 
-    /**
-     * @Then the returned data :property property has only the following properties with Redmine version :versionComparision
-     */
+    #[\Behat\Step\Then('the returned data :property property has only the following properties with Redmine version :versionComparision')]
     public function theReturnedDataPropertyHasOnlyTheFollowingPropertiesWithRedmineVersion(?string $property, string $versionComparision, PyStringNode $string): void
     {
         if ($this->isVersionMatch($versionComparision)) {

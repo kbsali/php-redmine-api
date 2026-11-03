@@ -9,9 +9,7 @@ use Redmine\Api\Issue;
 
 trait IssueContextTrait
 {
-    /**
-     * @When I create an issue with the following data
-     */
+    #[\Behat\Step\When('I create an issue with the following data')]
     public function iCreateAnIssueWithTheFollowingData(TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
@@ -26,10 +24,9 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I update the issue with id :issueId and the following data
-     *
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I update the issue with id :issueId and the following data')]
     public function iUpdateTheIssueWithIdAndTheFollowingData($issueId, TableNode $table): void
     {
         $data = $this->prepareIssueData($table);
@@ -44,10 +41,9 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I show the issue with id :issueId
-     *
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I show the issue with id :issueId')]
     public function iShowTheIssueWithId($issueId): void
     {
         /** @var Issue */
@@ -59,9 +55,7 @@ trait IssueContextTrait
         );
     }
 
-    /**
-     * @When I list all issues with the following parameters
-     */
+    #[\Behat\Step\When('I list all issues with the following parameters')]
     public function iListAllIssuesWithTheFollowingParameters(TableNode $table): void
     {
         $params = $this->prepareIssueData($table);
@@ -76,10 +70,9 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I show the issue with id :issueId including journals
-     *
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I show the issue with id :issueId including journals')]
     public function iShowTheIssueWithIdIncludingJournals($issueId): void
     {
         /** @var Issue */
@@ -92,11 +85,10 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I add the user id :userId as a watcher to the issue with id :issueId
-     *
      * @param mixed $userId
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I add the user id :userId as a watcher to the issue with id :issueId')]
     public function iAddTheUserIdAsAWatcherToTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
@@ -109,11 +101,10 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I remove the user id :userId as a watcher from the issue with id :issueId
-     *
      * @param mixed $userId
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I remove the user id :userId as a watcher from the issue with id :issueId')]
     public function iRemoveTheUserIdAsAWatcherFromTheIssueWithId($userId, $issueId): void
     {
         /** @var Issue */
@@ -126,10 +117,9 @@ trait IssueContextTrait
     }
 
     /**
-     * @When I remove the issue with id :issueId
-     *
      * @param mixed $issueId
      */
+    #[\Behat\Step\When('I remove the issue with id :issueId')]
     public function iRemoveTheIssueWithId($issueId): void
     {
         /** @var Issue */

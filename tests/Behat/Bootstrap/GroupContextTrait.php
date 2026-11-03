@@ -9,9 +9,7 @@ use Redmine\Api\Group;
 
 trait GroupContextTrait
 {
-    /**
-     * @When I create a group with name :groupName
-     */
+    #[\Behat\Step\When('I create a group with name :groupName')]
     public function iCreateAGroupWithName(string $groupName): void
     {
         $table = new TableNode([
@@ -22,9 +20,7 @@ trait GroupContextTrait
         $this->iCreateAGroupWithTheFollowingData($table);
     }
 
-    /**
-     * @When I create a group with the following data
-     */
+    #[\Behat\Step\When('I create a group with the following data')]
     public function iCreateAGroupWithTheFollowingData(TableNode $table): void
     {
         $data = [];
@@ -42,9 +38,7 @@ trait GroupContextTrait
         );
     }
 
-    /**
-     * @When I list all groups
-     */
+    #[\Behat\Step\When('I list all groups')]
     public function iListAllGroups(): void
     {
         /** @var Group */
@@ -56,9 +50,7 @@ trait GroupContextTrait
         );
     }
 
-    /**
-     * @When I list the names of all groups
-     */
+    #[\Behat\Step\When('I list the names of all groups')]
     public function iListTheNamesOfAllGroups(): void
     {
         /** @var Group */
@@ -70,9 +62,7 @@ trait GroupContextTrait
         );
     }
 
-    /**
-     * @When I show the group with id :groupId
-     */
+    #[\Behat\Step\When('I show the group with id :groupId')]
     public function iShowTheGroupWithId(int $groupId): void
     {
         /** @var Group */
@@ -84,9 +74,7 @@ trait GroupContextTrait
         );
     }
 
-    /**
-     * @When I update the group with id :groupId with the following data
-     */
+    #[\Behat\Step\When('I update the group with id :groupId with the following data')]
     public function iUpdateTheGroupWithIdWithTheFollowingData(int $groupId, TableNode $table): void
     {
         $data = [];
@@ -105,11 +93,10 @@ trait GroupContextTrait
     }
 
     /**
-     * @When I add the user with id :userId to the group with id :groupId
-     *
      * @param mixed $userId
      * @param mixed $groupId
      */
+    #[\Behat\Step\When('I add the user with id :userId to the group with id :groupId')]
     public function iAddTheUserWithIdToTheGroupWithId($userId, $groupId): void
     {
         /** @var Group */
@@ -122,11 +109,10 @@ trait GroupContextTrait
     }
 
     /**
-     * @When I remove the user with id :userId from the group with id :groupId
-     *
      * @param mixed $userId
      * @param mixed $groupId
      */
+    #[\Behat\Step\When('I remove the user with id :userId from the group with id :groupId')]
     public function iRemoveTheUserWithIdFromTheGroupWithId($userId, $groupId): void
     {
         /** @var Group */
@@ -139,10 +125,9 @@ trait GroupContextTrait
     }
 
     /**
-     * @When I remove the group with id :groupId
-     *
      * @param mixed $groupId
      */
+    #[\Behat\Step\When('I remove the group with id :groupId')]
     public function iRemoveTheGroupWithId($groupId): void
     {
         /** @var Group */

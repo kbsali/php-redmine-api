@@ -8,9 +8,7 @@ use Redmine\Api\TimeEntryActivity;
 
 trait TimeEntryActivityContextTrait
 {
-    /**
-     * @Given I have a time entry activiy with name :activityName
-     */
+    #[\Behat\Step\Given('I have a time entry activiy with name :activityName')]
     public function iHaveATimeEntryActiviyWithName(string $activityName): void
     {
         // support for creating time entry activity via REST API is missing
@@ -27,9 +25,7 @@ trait TimeEntryActivityContextTrait
         );
     }
 
-    /**
-     * @When I list all time entry activities
-     */
+    #[\Behat\Step\When('I list all time entry activities')]
     public function iListAllTimeEntryActivities(): void
     {
         /** @var TimeEntryActivity */
@@ -41,9 +37,7 @@ trait TimeEntryActivityContextTrait
         );
     }
 
-    /**
-     * @When I list all time entry activity names
-     */
+    #[\Behat\Step\When('I list all time entry activity names')]
     public function iListAllTimeEntryActivityNames(): void
     {
         /** @var TimeEntryActivity */
