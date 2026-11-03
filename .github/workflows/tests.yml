@@ -113,7 +113,7 @@ jobs:
         run: sudo chmod -R 777 .docker/${{ matrix.data-dir }}/
 
       - name: Run behat
-        run: vendor/bin/behat --config tests/Behat/behat.yml --profile=github-actions --format=progress --suite=${{ matrix.suite }}
+        run: vendor/bin/behat --config tests/Behat/behat.php --profile=github-actions --format=progress --suite=${{ matrix.suite }}
 
       - name: Cleanup
         if: always()

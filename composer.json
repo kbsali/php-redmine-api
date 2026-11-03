@@ -60,7 +60,7 @@
             "@behat --format=progress --suite=redmine_6_0",
             "@behat --format=progress --suite=redmine_5_1"
         ],
-        "behat": "behat --config tests/Behat/behat.yml",
+        "behat": "behat --config tests/Behat/behat.php",
         "codestyle": "php-cs-fixer fix",
         "coverage": "phpunit -c tests/phpunit-coverage.dist.xml --coverage-html=\".phpunit.cache/code-coverage\"",
         "phpstan": "phpstan analyze --memory-limit 512M --configuration .phpstan.neon",
