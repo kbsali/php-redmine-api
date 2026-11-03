@@ -56,7 +56,7 @@ abstract class AbstractApi implements Api
                 __METHOD__,
                 Client::class,
                 HttpClient::class,
-                (is_object($client)) ? get_class($client) : gettype($client),
+                get_debug_type($client),
             ));
         }
 

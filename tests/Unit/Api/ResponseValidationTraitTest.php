@@ -145,11 +145,6 @@ class ResponseValidationTraitTest extends TestCase
         $property = new ReflectionProperty($api, 'lastResponse');
         $method = new ReflectionMethod($api, $methodName);
 
-        if (PHP_VERSION_ID < 80100) {
-            $property->setAccessible(true);
-            $method->setAccessible(true);
-        }
-
         $property->setValue($api, $response);
 
         return $method->invoke($api, ...$arguments);

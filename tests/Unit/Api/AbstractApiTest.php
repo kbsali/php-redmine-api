@@ -27,9 +27,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->assertSame($client, $method->invoke($api));
     }
@@ -41,9 +38,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
     }
@@ -55,6 +49,15 @@ class AbstractApiTest extends TestCase
 
         /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
         new class (new \stdClass()) extends AbstractApi {};
+    }
+
+    public function testCreateWithNonObjectThrowsExceptionWithDebugType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `int` given');
+
+        /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
+        new class (123) extends AbstractApi {};
     }
 
     public function testGetTriggersDeprecationWarning(): void
@@ -204,9 +207,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'isNotNull');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->assertSame($expected, $method->invoke($api, $value));
     }
@@ -406,9 +406,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->assertSame($expected, $method->invoke($api, $path));
     }
@@ -446,9 +443,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $method->invoke($api, '/data.json', ['limit' => 101]);
     }
@@ -473,9 +467,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $method->invoke($api, '/data.json', ['limit' => 301]);
     }
@@ -494,9 +485,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveData');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->expectException($expectedException);
         $this->expectExceptionMessage($expectedMessage);
@@ -530,9 +518,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'retrieveAll');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $this->assertSame($expected, $method->invoke($api, ''));
     }
@@ -556,9 +541,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'attachCustomFieldXML');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         $xml = new SimpleXMLElement('<?xml version="1.0"?><issue/>');
 

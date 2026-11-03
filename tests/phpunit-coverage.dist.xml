@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
          bootstrap="../vendor/autoload.php"
+         cacheDirectory="../.phpunit.cache"
          colors="true"
          beStrictAboutOutputDuringTests="true"
 >
-  <coverage cacheDirectory="../.phpunit.cache">
+  <source>
     <include>
       <directory suffix=".php">../src/Redmine/</directory>
     </include>
-  </coverage>
+  </source>
   <php>
     <ini name="error_reporting" value="E_ALL" />
     <ini name="display_errors" value="1" />

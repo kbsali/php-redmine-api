@@ -202,6 +202,7 @@ class JsonSerializerTest extends TestCase
         $serializer = JsonSerializer::createFromArray($data);
 
         $this->assertJsonStringEqualsJsonString($expected, $serializer->__toString());
+        $this->assertJsonStringEqualsJsonString($expected, $serializer->getEncoded());
     }
 
     /**

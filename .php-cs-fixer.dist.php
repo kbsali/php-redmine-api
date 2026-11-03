@@ -37,7 +37,6 @@ return (new \PhpCsFixer\Config())
         'phpdoc_types_no_duplicates' => true,
         'phpdoc_var_annotation_correct_order' => true,
         'phpdoc_var_without_name' => true,
-        'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arguments', 'arrays']], // Remove this rule after dropping support for PHP 7.4
     ])
     ->setFinder($finder)
     ->setRiskyAllowed(true)
