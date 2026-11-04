@@ -16,9 +16,9 @@ use Redmine\Tests\Behat\Bootstrap\FeatureContext;
  * @var array<string, array{version: string, dataDir: string, service: string, port: int}>
  */
 $redmineVersions = [
-    'redmine_7_0' => ['version' => '7.0.2', 'dataDir' => 'redmine-70002_data', 'service' => 'redmine-7-0', 'port' => 5070],
-    'redmine_6_1' => ['version' => '6.1.5', 'dataDir' => 'redmine-60105_data', 'service' => 'redmine-6-1', 'port' => 5061],
-    'redmine_6_0' => ['version' => '6.0.11', 'dataDir' => 'redmine-60011_data', 'service' => 'redmine-6-0', 'port' => 5060],
+    'redmine_7_0' => ['version' => '7.0.3', 'dataDir' => 'redmine-70003_data', 'service' => 'redmine-7-0', 'port' => 5070],
+    'redmine_6_1' => ['version' => '6.1.6', 'dataDir' => 'redmine-60106_data', 'service' => 'redmine-6-1', 'port' => 5061],
+    'redmine_6_0' => ['version' => '6.0.12', 'dataDir' => 'redmine-60012_data', 'service' => 'redmine-6-0', 'port' => 5060],
     'redmine_5_1' => ['version' => '5.1.12', 'dataDir' => 'redmine-50112_data', 'service' => 'redmine-5-1', 'port' => 5051],
 ];
 
@@ -35,7 +35,7 @@ $createSuite = static fn(string $name, string $version, string $dataDir, string 
 // Profile for local development: the Redmine instances are reachable through the Docker network
 $default = (new Profile('default'))
     ->withSuite(
-        $createSuite('default', '7.0.2', 'redmine-dev_data', 'http://redmine-dev:3000')
+        $createSuite('default', '7.0.3', 'redmine-dev_data', 'http://redmine-dev:3000')
             ->withPaths('%paths.base%/features'),
     );
 
