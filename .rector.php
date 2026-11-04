@@ -19,11 +19,6 @@ return \Rector\Config\RectorConfig::configure()
     ])
     // @see https://github.com/kbsali/php-redmine-api/issues/514
     ->withSkip([
-        \Art4\RectorBcLibrary\Rector\BackwardCompatibleRector::class => [
-            __DIR__ . '/tests/Unit/Api/AbstractApi/RetrieveDataTest.php',
-            __DIR__ . '/tests/Unit/Api/ResponseValidationTraitTest.php',
-        ],
-        \Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector::class,
         \Rector\DeadCode\Rector\ClassMethod\RemoveMixedDocblockOverruledByNativeTypeRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
     ])
