@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Http\Request;
 use Redmine\Http\Response;
-use stdClass;
 
 #[CoversClass(NativeCurlClient::class)]
 class RequestTest extends TestCase
@@ -26,7 +25,7 @@ class RequestTest extends TestCase
     {
         $namespace = 'Redmine\Client';
 
-        $curl = $this->createStub(stdClass::class);
+        $curl = curl_init();
 
         $curlInit = $this->getFunctionMock($namespace, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);
@@ -100,7 +99,7 @@ class RequestTest extends TestCase
     {
         $namespace = 'Redmine\Client';
 
-        $curl = $this->createStub(stdClass::class);
+        $curl = curl_init();
 
         $curlInit = $this->getFunctionMock($namespace, 'curl_init');
         $curlInit->expects($this->exactly(1))->willReturn($curl);

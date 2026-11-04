@@ -327,9 +327,9 @@ final class NativeCurlClient implements Client, HttpClient
     /**
      * Prepare the request by setting the cURL options.
      *
-     * @return mixed a cURL handle on success, <b>FALSE</b> on errors
+     * @return \CurlHandle|false a cURL handle on success, <b>FALSE</b> on errors
      */
-    private function createCurl(string $method, string $path, string $body = '', string $contentType = '')
+    private function createCurl(string $method, string $path, string $body = '', string $contentType = ''): \CurlHandle|false
     {
         // General cURL options
         $curlOptions = [

@@ -20,7 +20,6 @@ return \Rector\Config\RectorConfig::configure()
     // @see https://github.com/kbsali/php-redmine-api/issues/514
     ->withSkip([
         \Art4\RectorBcLibrary\Rector\BackwardCompatibleRector::class => [
-            __DIR__ . '/src/Redmine/Client/NativeCurlClient.php',
             __DIR__ . '/tests/Unit/Api/AbstractApi/RetrieveDataTest.php',
             __DIR__ . '/tests/Unit/Api/ResponseValidationTraitTest.php',
         ],
