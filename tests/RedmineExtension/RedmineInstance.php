@@ -87,7 +87,7 @@ final class RedmineInstance
 
     public function getVersionString(): string
     {
-        return $this->version->asString();
+        return $this->version->value;
     }
 
     public function getRedmineUrl(): string
@@ -113,7 +113,7 @@ final class RedmineInstance
             throw new InvalidArgumentException(sprintf(
                 'Could not connect to Redmine server at %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.php.',
                 $this->redmineUrl,
-                $version->asString(),
+                $version->value,
             ));
         }
 
@@ -121,7 +121,7 @@ final class RedmineInstance
             throw new InvalidArgumentException(sprintf(
                 'Could not find database file in %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.php.',
                 $this->dataPath . $this->workingDB,
-                $version->asString(),
+                $version->value,
             ));
         }
     }
