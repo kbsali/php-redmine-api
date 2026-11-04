@@ -79,17 +79,18 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $expectedMessages
+     * @param array<int>    $expectedCodes
+     * @param array<string> $expectedMessages
      *
      * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
-    public function testCreateFromStringWithInvalidStringThrowsException(string $data, int $expectedCode, array $expectedMessages): void
+    public function testCreateFromStringWithInvalidStringThrowsException(string $data, array $expectedCodes, array $expectedMessages): void
     {
         try {
             XmlSerializer::createFromString($data);
         } catch (SerializerException $th) {
-            $this->assertSame($expectedCode, $th->getCode());
+            $this->assertContains($th->getCode(), $expectedCodes);
             $this->assertContains($th->getMessage(), $expectedMessages);
         }
     }
@@ -102,28 +103,31 @@ class XmlSerializerTest extends TestCase
         return [
             'empty string' => [
                 '',
-                \LIBXML_ERR_NONE,
+                // libxml2 < 2.13 reports no error, newer versions report "Document is empty"
+                [\LIBXML_ERR_NONE, \LIBXML_ERR_FATAL],
                 [
                     'Catched errors: "" while decoding XML: ',
+                    'Catched errors: "Document is empty' . "\n" . '" while decoding XML: ',
                 ],
             ],
             'wrong start tag' => [
                 '<?xml version="1.0" encoding="UTF-8"?>',
-                \LIBXML_ERR_FATAL,
+                [\LIBXML_ERR_FATAL],
                 [
                     'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
                 ],
             ],
             'invalid element name as start tag' => [
                 '<?xml version="1.0" encoding="UTF-8"?><>',
-                \LIBXML_ERR_FATAL,
+                [\LIBXML_ERR_FATAL],
                 [
                     'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                    'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
                 ],
             ],
             'Premature end of data' => [
                 '<?xml version="1.0" encoding="UTF-8"?><a>',
-                \LIBXML_ERR_FATAL,
+                [\LIBXML_ERR_FATAL],
                 [
                     'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
                     'Catched errors: "EndTag: \'</\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
@@ -131,9 +135,10 @@ class XmlSerializerTest extends TestCase
             ],
             'invalid element name as start tag 2' => [
                 '<?xml version="1.0" encoding="UTF-8"?></>',
-                \LIBXML_ERR_FATAL,
+                [\LIBXML_ERR_FATAL],
                 [
                     'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                    'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
                 ],
             ],
         ];
@@ -361,17 +366,23 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<string> $expectedMessages
+     * @param array<mixed>  $data
      *
      * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
-    public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data): void
+    public function testCreateFromArrayWithInvalidDataThrowsException(array $expectedMessages, array $data): void
     {
-        $this->expectException(SerializerException::class);
-        $this->expectExceptionMessage($message);
+        try {
+            XmlSerializer::createFromArray($data);
+        } catch (SerializerException $th) {
+            $this->assertContains($th->getMessage(), $expectedMessages);
 
-        XmlSerializer::createFromArray($data);
+            return;
+        }
+
+        $this->fail('Expected exception ' . SerializerException::class . ' was not thrown.');
     }
 
     /**
@@ -381,7 +392,11 @@ class XmlSerializerTest extends TestCase
     {
         return [
             'invalid element name as start tag' => [
-                'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
+                [
+                    'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
+                    // newer libxml2 versions stop after the first error
+                    'Could not create XML from array: "StartTag: invalid element name' . "\n" . '"',
+                ],
                 ['0' => ['foobar']],
             ],
         ];
