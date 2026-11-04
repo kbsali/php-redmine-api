@@ -217,7 +217,7 @@ final class NativeCurlClient implements Client, HttpClient
                 throw new \InvalidArgumentException(sprintf(
                     'If argument #1 ($option) passed to %s() is set to `CURLOPT_HTTPHEADER` (10023), then Argument #2 ($value) must be of the type array, but `%s` given',
                     __METHOD__,
-                    gettype($value),
+                    get_debug_type($value),
                 ));
             }
 
@@ -440,9 +440,9 @@ final class NativeCurlClient implements Client, HttpClient
 
             if ($this->isUploadCall($path)) {
                 $httpHeaders[] = 'Content-Type: application/octet-stream';
-            } elseif ('json' === substr($tmp['path'], -4)) {
+            } elseif (str_ends_with($tmp['path'], 'json')) {
                 $httpHeaders[] = 'Content-Type: application/json';
-            } elseif ('xml' === substr($tmp['path'], -3)) {
+            } elseif (str_ends_with($tmp['path'], 'xml')) {
                 $httpHeaders[] = 'Content-Type: text/xml';
             }
         }

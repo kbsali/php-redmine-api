@@ -136,11 +136,11 @@ abstract class AbstractApi implements Api
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
+        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
-        if (true === $decodeIfJson && '' !== $body && 0 === strpos($contentType, 'application/json')) {
+        if (true === $decodeIfJson && '' !== $body && str_starts_with($contentType, 'application/json')) {
             try {
                 return JsonSerializer::createFromString($body)->getNormalized();
             } catch (SerializerException $e) {
@@ -177,7 +177,7 @@ abstract class AbstractApi implements Api
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
+        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -210,7 +210,7 @@ abstract class AbstractApi implements Api
         $contentType = $this->lastResponse->getContentType();
 
         // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && 0 === strpos($contentType, 'application/xml')) {
+        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
             return new SimpleXMLElement($body);
         }
 
@@ -469,9 +469,9 @@ abstract class AbstractApi implements Api
         $returnData = null;
 
         // parse XML
-        if (0 === strpos($contentType, 'application/xml')) {
+        if (str_starts_with($contentType, 'application/xml')) {
             $returnData = XmlSerializer::createFromString($body)->getNormalized();
-        } elseif (0 === strpos($contentType, 'application/json')) {
+        } elseif (str_starts_with($contentType, 'application/json')) {
             $returnData = JsonSerializer::createFromString($body)->getNormalized();
         }
 
@@ -519,15 +519,15 @@ abstract class AbstractApi implements Api
 
         $path = strtolower($path);
 
-        if (false !== strpos($path, '/uploads.json') || false !== strpos($path, '/uploads.xml')) {
+        if (str_contains($path, '/uploads.json') || str_contains($path, '/uploads.xml')) {
             return 'application/octet-stream';
         }
 
-        if ('json' === substr($tmp['path'], -4)) {
+        if (str_ends_with($tmp['path'], 'json')) {
             return 'application/json';
         }
 
-        if ('xml' === substr($tmp['path'], -3)) {
+        if (str_ends_with($tmp['path'], 'xml')) {
             return 'application/xml';
         }
 

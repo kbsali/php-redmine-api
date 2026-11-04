@@ -95,7 +95,7 @@ trait ClientApiTrait
     {
         $path = strtolower($path);
 
-        return (false !== strpos($path, '/uploads.json')) || (false !== strpos($path, '/uploads.xml'));
+        return (str_contains($path, '/uploads.json')) || (str_contains($path, '/uploads.xml'));
     }
 
     private function isValidFilePath(string $body): bool
