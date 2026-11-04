@@ -21,8 +21,6 @@ class Psr18ClientRequestGenerationTest extends TestCase
 {
     /**
      * @dataProvider createdGetRequestsData
-     *
-     * @param mixed $data
      */
     #[DataProvider('createdGetRequestsData')]
     public function testPsr18ClientCreatesCorrectRequests(
@@ -32,7 +30,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         ?string $impersonateUser,
         string $method,
         string $path,
-        $data,
+        string|bool|null $data,
         string $expectedOutput,
     ): void {
         $response = $this->createStub(ResponseInterface::class);

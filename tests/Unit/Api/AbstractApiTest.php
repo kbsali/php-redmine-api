@@ -197,10 +197,10 @@ class AbstractApiTest extends TestCase
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      *
-     * @param mixed $value
+     * @param bool|string|int|float|\stdClass|array<mixed>|null $value
      */
     #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
-    public function testIsNotNullReturnsCorrectBoolean(bool $expected, $value): void
+    public function testIsNotNullReturnsCorrectBoolean(bool $expected, bool|string|int|float|\stdClass|array|null $value): void
     {
         $client = $this->createStub(Client::class);
 
@@ -505,10 +505,10 @@ class AbstractApiTest extends TestCase
     /**
      * @dataProvider getRetrieveAllData
      *
-     * @param mixed $expected
+     * @param string|bool|array<mixed> $expected
      */
     #[DataProvider('getRetrieveAllData')]
-    public function testDeprecatedRetrieveAll(string $content, string $contentType, $expected): void
+    public function testDeprecatedRetrieveAll(string $content, string $contentType, string|bool|array $expected): void
     {
         $client = $this->createStub(Client::class);
         $client->method('requestGet')->willReturn(true);

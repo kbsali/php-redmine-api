@@ -21,11 +21,10 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      *
-     * @param string|int $identifier
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
-    public function testCreateReturnsCorrectResponse($identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    public function testCreateReturnsCorrectResponse(int|string $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -53,11 +52,10 @@ class CreateTest extends TestCase
     /**
      * @dataProvider getCreateData
      *
-     * @param string|int $identifier
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
-    public function testCreateWithFutureModeReturnsCorrectResponse($identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    public function testCreateWithFutureModeReturnsCorrectResponse(int|string $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

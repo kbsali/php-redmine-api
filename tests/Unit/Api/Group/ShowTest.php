@@ -19,12 +19,11 @@ class ShowTest extends TestCase
     /**
      * @dataProvider getShowData
      *
-     * @param string|int $groupId
      * @param array<mixed> $parameters
-     * @param mixed $expectedReturn
+     * @param string|bool|array<mixed> $expectedReturn
      */
     #[DataProvider('getShowData')]
-    public function testShowReturnsCorrectResponse($groupId, array $parameters, string $expectedPath, string $response, $expectedReturn): void
+    public function testShowReturnsCorrectResponse(int|string $groupId, array $parameters, string $expectedPath, string $response, string|bool|array $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,

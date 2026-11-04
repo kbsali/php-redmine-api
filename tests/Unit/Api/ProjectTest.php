@@ -86,10 +86,10 @@ class ProjectTest extends TestCase
      *
      * @dataProvider getAllData
      *
-     * @param mixed $expectedResponse
+     * @param string|bool|array<mixed> $expectedResponse
      */
     #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponse(string $response, string $responseType, $expectedResponse): void
+    public function testAllReturnsClientGetResponse(string $response, string $responseType, string|bool|array $expectedResponse): void
     {
         $client = AssertingHttpClient::create(
             $this,

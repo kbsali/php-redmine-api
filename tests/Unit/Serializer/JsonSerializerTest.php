@@ -63,12 +63,12 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @param mixed $expected
-     *
      * @dataProvider getEncodedToNormalizedData
+     *
+     * @param bool|int|string|array<mixed>|null $expected
      */
     #[DataProvider('getEncodedToNormalizedData')]
-    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, $expected): void
+    public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, bool|int|string|array|null $expected): void
     {
         $serializer = JsonSerializer::createFromString($data);
 

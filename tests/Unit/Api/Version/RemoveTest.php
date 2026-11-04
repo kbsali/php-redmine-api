@@ -17,11 +17,9 @@ class RemoveTest extends TestCase
 {
     /**
      * @dataProvider getRemoveData
-     *
-     * @param mixed $id
      */
     #[DataProvider('getRemoveData')]
-    public function testRemoveReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response): void
+    public function testRemoveReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -45,11 +43,9 @@ class RemoveTest extends TestCase
 
     /**
      * @dataProvider getRemoveData
-     *
-     * @param mixed $id
      */
     #[DataProvider('getRemoveData')]
-    public function testRemoveWithFutureModeReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response): void
+    public function testRemoveWithFutureModeReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
