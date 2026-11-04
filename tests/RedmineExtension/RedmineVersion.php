@@ -12,6 +12,14 @@ namespace Redmine\Tests\RedmineExtension;
 final class RedmineVersion
 {
     /**
+     * Redmine 7.0.3
+     *
+     * @link https://www.redmine.org/versions/232
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_7_0#703-2026-11-01
+     */
+    public const V7_0_3 = '7.0.3';
+
+    /**
      * Redmine 7.0.2
      *
      * @link https://www.redmine.org/versions/230
@@ -34,6 +42,14 @@ final class RedmineVersion
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_7_0#700-2026-06-30
      */
     public const V7_0_0 = '7.0.0';
+
+    /**
+     * Redmine 6.1.6
+     *
+     * @link https://www.redmine.org/versions/233
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#616-2026-11-01
+     */
+    public const V6_1_6 = '6.1.6';
 
     /**
      * Redmine 6.1.5
@@ -82,6 +98,14 @@ final class RedmineVersion
      * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_1#610-2025-09-21
      */
     public const V6_1_0 = '6.1.0';
+
+    /**
+     * Redmine 6.0.12
+     *
+     * @link https://www.redmine.org/versions/234
+     * @link https://www.redmine.org/projects/redmine/wiki/Changelog_6_0#6012-2026-11-01
+     */
+    public const V6_0_12 = '6.0.12';
 
     /**
      * Redmine 6.0.11
