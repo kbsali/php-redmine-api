@@ -24,10 +24,8 @@ return \Rector\Config\RectorConfig::configure()
             __DIR__ . '/tests/Unit/Api/AbstractApi/RetrieveDataTest.php',
             __DIR__ . '/tests/Unit/Api/ResponseValidationTraitTest.php',
         ],
-        \Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector::class,
         \Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector::class,
         \Rector\DeadCode\Rector\ClassMethod\RemoveMixedDocblockOverruledByNativeTypeRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
     ])
 ;
