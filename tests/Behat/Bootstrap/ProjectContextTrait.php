@@ -9,9 +9,7 @@ use Redmine\Api\Project;
 
 trait ProjectContextTrait
 {
-    /**
-     * @When I create a project with name :name and identifier :identifier
-     */
+    #[\Behat\Step\When('I create a project with name :name and identifier :identifier')]
     public function iCreateAProjectWithNameAndIdentifier(string $name, string $identifier): void
     {
         $table = new TableNode([
@@ -23,9 +21,7 @@ trait ProjectContextTrait
         $this->iCreateAProjectWithTheFollowingData($table);
     }
 
-    /**
-     * @When I create a project with the following data
-     */
+    #[\Behat\Step\When('I create a project with the following data')]
     public function iCreateAProjectWithTheFollowingData(TableNode $table): void
     {
         $data = [];
@@ -43,9 +39,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @Given I create :count projects
-     */
+    #[\Behat\Step\Given('I create :count projects')]
     public function iCreateProjects(int $count): void
     {
         while ($count > 0) {
@@ -55,9 +49,7 @@ trait ProjectContextTrait
         }
     }
 
-    /**
-     * @When I list all projects
-     */
+    #[\Behat\Step\When('I list all projects')]
     public function iListAllProjects(): void
     {
         /** @var Project */
@@ -69,9 +61,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I list all project names
-     */
+    #[\Behat\Step\When('I list all project names')]
     public function iListAllProjectNames(): void
     {
         /** @var Project */
@@ -83,9 +73,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I show the project with identifier :identifier
-     */
+    #[\Behat\Step\When('I show the project with identifier :identifier')]
     public function iShowTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
@@ -97,9 +85,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I update the project with identifier :identifier with the following data
-     */
+    #[\Behat\Step\When('I update the project with identifier :identifier with the following data')]
     public function iUpdateTheProjectWithIdentifierWithTheFollowingData(string $identifier, TableNode $table): void
     {
         $data = [];
@@ -117,9 +103,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I close the project with identifier :identifier
-     */
+    #[\Behat\Step\When('I close the project with identifier :identifier')]
     public function iCloseTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
@@ -131,9 +115,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I reopen the project with identifier :identifier
-     */
+    #[\Behat\Step\When('I reopen the project with identifier :identifier')]
     public function iReopenTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
@@ -145,9 +127,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I archive the project with identifier :identifier
-     */
+    #[\Behat\Step\When('I archive the project with identifier :identifier')]
     public function iArchiveTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
@@ -159,9 +139,7 @@ trait ProjectContextTrait
         );
     }
 
-    /**
-     * @When I unarchive the project with identifier :identifier
-     */
+    #[\Behat\Step\When('I unarchive the project with identifier :identifier')]
     public function iUnarchiveTheProjectWithIdentifier(string $identifier): void
     {
         /** @var Project */
@@ -174,10 +152,9 @@ trait ProjectContextTrait
     }
 
     /**
-     * @When I remove the project with identifier :identifier
-     *
      * @param mixed $identifier
      */
+    #[\Behat\Step\When('I remove the project with identifier :identifier')]
     public function iRemoveTheProjectWithIdentifier($identifier): void
     {
         /** @var Project */

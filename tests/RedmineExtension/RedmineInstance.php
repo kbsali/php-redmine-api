@@ -111,7 +111,7 @@ final class RedmineInstance
 
         if ($data === false || $statusCode !== 200) {
             throw new InvalidArgumentException(sprintf(
-                'Could not connect to Redmine server at %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.yml.',
+                'Could not connect to Redmine server at %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.php.',
                 $this->redmineUrl,
                 $version->asString(),
             ));
@@ -119,7 +119,7 @@ final class RedmineInstance
 
         if (! file_exists($this->dataPath . $this->workingDB)) {
             throw new InvalidArgumentException(sprintf(
-                'Could not find database file in %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.yml.',
+                'Could not find database file in %s, please make sure that Redmine %s has a docker service in /docker-composer.yml and is correctly configured in /tests/Behat/behat.php.',
                 $this->dataPath . $this->workingDB,
                 $version->asString(),
             ));

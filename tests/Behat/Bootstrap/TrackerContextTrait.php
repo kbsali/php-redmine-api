@@ -8,9 +8,7 @@ use Redmine\Api\Tracker;
 
 trait TrackerContextTrait
 {
-    /**
-     * @Given I have a tracker with the name :trackerName and default status id :statusId
-     */
+    #[\Behat\Step\Given('I have a tracker with the name :trackerName and default status id :statusId')]
     public function iHaveATrackerWithTheNameAndDefaultStatusId(string $trackerName, int $statusId): void
     {
         // support for creating tracker via REST API is missing
@@ -27,9 +25,7 @@ trait TrackerContextTrait
         );
     }
 
-    /**
-     * @When I list all trackers
-     */
+    #[\Behat\Step\When('I list all trackers')]
     public function iListAllTrackers(): void
     {
         /** @var Tracker */
@@ -41,9 +37,7 @@ trait TrackerContextTrait
         );
     }
 
-    /**
-     * @When I list all tracker names
-     */
+    #[\Behat\Step\When('I list all tracker names')]
     public function iListAllTrackerNames(): void
     {
         /** @var Tracker */

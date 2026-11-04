@@ -9,10 +9,9 @@ use Redmine\Api\Role;
 trait RoleContextTrait
 {
     /**
-     * @Given I have a role with the name :name
-     *
      * @param mixed $name
      */
+    #[\Behat\Step\Given('I have a role with the name :name')]
     public function iHaveARoleWithTheName($name): void
     {
         // support for creating issue status via REST API is missing
@@ -33,9 +32,7 @@ trait RoleContextTrait
         );
     }
 
-    /**
-     * @When I list all roles
-     */
+    #[\Behat\Step\When('I list all roles')]
     public function iListAllRoles(): void
     {
         /** @var Role */
@@ -47,9 +44,7 @@ trait RoleContextTrait
         );
     }
 
-    /**
-     * @When I list all role names
-     */
+    #[\Behat\Step\When('I list all role names')]
     public function iListAllRoleNames(): void
     {
         /** @var Role */
@@ -62,10 +57,9 @@ trait RoleContextTrait
     }
 
     /**
-     * @When I show the role with id :id
-     *
      * @param mixed $id
      */
+    #[\Behat\Step\When('I show the role with id :id')]
     public function iShowTheRoleWithId($id): void
     {
         /** @var Role */

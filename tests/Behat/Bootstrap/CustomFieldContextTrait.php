@@ -9,10 +9,9 @@ use Redmine\Api\CustomField;
 trait CustomFieldContextTrait
 {
     /**
-     * @Given I create a custom field for issues with the name :customFieldName
-     *
      * @param mixed $customFieldName
      */
+    #[\Behat\Step\Given('I create a custom field for issues with the name :customFieldName')]
     public function iCreateACustomFieldForIssuesWithTheName($customFieldName): void
     {
         // support for creating custom fields via REST API is missing
@@ -31,11 +30,10 @@ trait CustomFieldContextTrait
     }
 
     /**
-     * @Given I enable the tracker with ID :trackerId for custom field with ID :customFieldId
-     *
      * @param mixed $trackerId
      * @param mixed $customFieldId
      */
+    #[\Behat\Step\Given('I enable the tracker with ID :trackerId for custom field with ID :customFieldId')]
     public function iEnableTheTrackerWithIdForCustomFieldWithId($trackerId, $customFieldId): void
     {
         // support for enabling custom fields for trackers via REST API is missing
@@ -49,9 +47,7 @@ trait CustomFieldContextTrait
         );
     }
 
-    /**
-     * @When I list all custom fields
-     */
+    #[\Behat\Step\When('I list all custom fields')]
     public function iListAllCustomFields(): void
     {
         /** @var CustomField */
@@ -63,9 +59,7 @@ trait CustomFieldContextTrait
         );
     }
 
-    /**
-     * @When I list all custom field names
-     */
+    #[\Behat\Step\When('I list all custom field names')]
     public function iListAllCustomFieldNames(): void
     {
         /** @var CustomField */

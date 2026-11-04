@@ -9,9 +9,7 @@ use Redmine\Api\Attachment;
 
 trait AttachmentContextTrait
 {
-    /**
-     * @When I upload the content of the file :filepath with the following data
-     */
+    #[\Behat\Step\When('I upload the content of the file :filepath with the following data')]
     public function iUploadTheContentOfTheFileWithTheFollowingData(string $filepath, TableNode $table): void
     {
         $data = [];
@@ -31,9 +29,7 @@ trait AttachmentContextTrait
         );
     }
 
-    /**
-     * @When I update the attachment with the id :attachmentId with the following data
-     */
+    #[\Behat\Step\When('I update the attachment with the id :attachmentId with the following data')]
     public function iUpdateTheAttachmentWithTheIdWithTheFollowingData(int $attachmentId, TableNode $table): void
     {
         $data = [];
@@ -51,9 +47,7 @@ trait AttachmentContextTrait
         );
     }
 
-    /**
-     * @When I show the attachment with the id :attachmentId
-     */
+    #[\Behat\Step\When('I show the attachment with the id :attachmentId')]
     public function iShowTheAttachmentWithTheId(int $attachmentId): void
     {
         /** @var Attachment */
@@ -65,9 +59,7 @@ trait AttachmentContextTrait
         );
     }
 
-    /**
-     * @When I download the attachment with the id :attachmentId
-     */
+    #[\Behat\Step\When('I download the attachment with the id :attachmentId')]
     public function iDownloadTheAttachmentWithTheId(int $attachmentId): void
     {
         /** @var Attachment */
@@ -80,10 +72,9 @@ trait AttachmentContextTrait
     }
 
     /**
-     * @When I remove the attachment with the id :attachmentId
-     *
      * @param mixed $attachmentId
      */
+    #[\Behat\Step\When('I remove the attachment with the id :attachmentId')]
     public function iRemoveTheAttachmentWithTheId($attachmentId): void
     {
         /** @var Attachment */

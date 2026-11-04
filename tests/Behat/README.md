@@ -123,18 +123,15 @@ Feature: Interacting with a REST API endpoint added in 7.0.0
     [...]
 ```
 
-2. Exclude the tag from the specific suite in the `behat.yml` (note the `~` prefix):
+2. Exclude the tag from the specific suite in the `behat.php` (note the `~` prefix):
 
+```php
+->withSuite((new Suite('redmine_6_1'))
+    [...]
+    ->withFilter(new TagFilter('~@since70000')))
 ```
-default:
-    suites:
-        [...]
-        redmine_6_1:
-            [...]
-            filters:
-                tags: "~@since70000"
 
-```
+`TagFilter` is `Behat\Config\Filter\TagFilter`.
 
 ### Removed Rest-API Endpoints
 
@@ -160,15 +157,12 @@ or tag scenarios e.g. with `@until70000`.
         [...]
 ```
 
-2. Exclude the tag from the specific suite in the `behat.yml` (note the `~` prefix):
+2. Exclude the tag from the specific suite in the `behat.php` (note the `~` prefix):
 
+```php
+->withSuite((new Suite('redmine_7_0'))
+    [...]
+    ->withFilter(new TagFilter('~@until70000')))
 ```
-default:
-    suites:
-        [...]
-        redmine_7_0:
-            [...]
-            filters:
-                tags: "~@until70000"
 
-```
+`TagFilter` is `Behat\Config\Filter\TagFilter`.
