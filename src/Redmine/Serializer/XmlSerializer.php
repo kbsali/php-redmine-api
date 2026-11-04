@@ -169,10 +169,9 @@ final class XmlSerializer implements Stringable
     }
 
     /**
-     * @param string|int $k
      * @param mixed $v
      */
-    private function addChildToXmlElement(SimpleXMLElement $xml, $k, $v): void
+    private function addChildToXmlElement(SimpleXMLElement $xml, int|string $k, $v): void
     {
         $specialParams = [
             'enabled_module_names' => 'enabled_module_names',

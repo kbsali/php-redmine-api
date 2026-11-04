@@ -17,12 +17,9 @@ class DownloadTest extends TestCase
 {
     /**
      * @dataProvider getDownloadData
-     *
-     * @param mixed $id
-     * @param mixed $expectedReturn
      */
     #[DataProvider('getDownloadData')]
-    public function testDownloadReturnsCorrectResponse($id, string $expectedPath, int $responseCode, string $response, $expectedReturn): void
+    public function testDownloadReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response, string|bool $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -58,11 +55,9 @@ class DownloadTest extends TestCase
 
     /**
      * @dataProvider getDownloadWithFutureModeData
-     *
-     * @param mixed $id
      */
     #[DataProvider('getDownloadWithFutureModeData')]
-    public function testDownloadWithFutureModeReturnsCorrectResponse($id, string $expectedPath, string $response): void
+    public function testDownloadWithFutureModeReturnsCorrectResponse(int|string $id, string $expectedPath, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,

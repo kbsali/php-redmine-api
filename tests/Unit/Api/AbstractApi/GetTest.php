@@ -45,10 +45,10 @@ class GetTest extends TestCase
     /**
      * @dataProvider getJsonDecodingFromGetMethodData
      *
-     * @param mixed $expected
+     * @param string|bool|array<mixed> $expected
      */
     #[DataProvider('getJsonDecodingFromGetMethodData')]
-    public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, $expected): void
+    public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, string|bool|array $expected): void
     {
         $client = $this->createStub(Client::class);
         $client->method('getLastResponseBody')->willReturn($response);

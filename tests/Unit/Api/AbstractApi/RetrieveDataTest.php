@@ -185,10 +185,8 @@ class RetrieveDataTest extends TestCase
 
     /**
      * @param array<mixed> $params
-     *
-     * @return mixed
      */
-    private function retrieveData(AbstractApi $api, string $path, array $params = [])
+    private function retrieveData(AbstractApi $api, string $path, array $params = []): mixed
     {
         $method = new ReflectionMethod($api, 'retrieveData');
 

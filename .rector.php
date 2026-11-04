@@ -17,17 +17,4 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
     ])
-    // @see https://github.com/kbsali/php-redmine-api/issues/514
-    ->withSkip([
-        \Art4\RectorBcLibrary\Rector\BackwardCompatibleRector::class => [
-            __DIR__ . '/src/Redmine/Client/NativeCurlClient.php',
-            __DIR__ . '/tests/Unit/Api/AbstractApi/RetrieveDataTest.php',
-            __DIR__ . '/tests/Unit/Api/ResponseValidationTraitTest.php',
-        ],
-        \Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector::class,
-        \Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector::class,
-        \Rector\DeadCode\Rector\ClassMethod\RemoveMixedDocblockOverruledByNativeTypeRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
-    ])
 ;

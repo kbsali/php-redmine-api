@@ -133,10 +133,8 @@ class ResponseValidationTraitTest extends TestCase
 
     /**
      * Call a private method of the trait on an API with the response as last response.
-     *
-     * @return mixed
      */
-    private function callTraitMethod(Response $response, string $methodName, int ...$arguments)
+    private function callTraitMethod(Response $response, string $methodName, int ...$arguments): mixed
     {
         $api = new class ($this->createStub(HttpClient::class)) extends AbstractApi {
             use ResponseValidationTrait;

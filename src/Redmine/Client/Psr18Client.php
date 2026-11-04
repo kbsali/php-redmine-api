@@ -318,9 +318,9 @@ final class Psr18Client implements Client, HttpClient
 
             if ($this->isUploadCall($path)) {
                 $request = $request->withHeader('Content-Type', 'application/octet-stream');
-            } elseif ('json' === substr($tmp['path'], -4)) {
+            } elseif (str_ends_with($tmp['path'], 'json')) {
                 $request = $request->withHeader('Content-Type', 'application/json');
-            } elseif ('xml' === substr($tmp['path'], -3)) {
+            } elseif (str_ends_with($tmp['path'], 'xml')) {
                 $request = $request->withHeader('Content-Type', 'text/xml');
             }
         }
