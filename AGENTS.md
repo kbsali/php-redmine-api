@@ -32,7 +32,7 @@ The issue tracker is GitHub (`kbsali/php-redmine-api`). How agents search, close
 
 ### Refactoring ideas
 
-When you notice a possible refactoring while doing other work, ask the human whether to note it. Once they agree, post it as a comment on the open Housekeeping ticket (`docs/agents/issue-tracker.md`, **Housekeeping**): where it is, what would change, and why. When two Housekeeping tickets are open, ask the human which one, and recommend the younger.
+When you notice a possible refactoring while doing other work, post it directly as a comment on the open Housekeeping ticket (`docs/agents/issue-tracker.md`, **Housekeeping**); no permission from the human is needed. Say where it is, what would change, and why. When two Housekeeping tickets are open, ask the human which one, and recommend the younger.
 
 ### Conventions
 
