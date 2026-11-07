@@ -30,6 +30,10 @@ Notes:
 
 The issue tracker is GitHub (`kbsali/php-redmine-api`). How agents search, close and link issues and pull requests is described in `docs/agents/issue-tracker.md`.
 
+### Refactoring ideas
+
+When you notice a possible refactoring while doing other work, ask the human whether to note it. Once they agree, post it as a comment on the open Housekeeping ticket (`docs/agents/issue-tracker.md`, **Housekeeping**): where it is, what would change, and why. When two Housekeeping tickets are open, ask the human which one, and recommend the younger.
+
 ### Conventions
 
 - **Strict BC promise** – no breaking changes; new exceptions only behind the per-client future mode gate (`$this->isFutureModeEnabled()` in `AbstractApi`, enabled via `$client->enableFutureMode()`; tests use `Redmine\Tests\Fixtures\FutureMode::enable($api)`)
