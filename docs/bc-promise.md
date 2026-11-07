@@ -1,10 +1,10 @@
 # Backward compatibility
 
-This document describes what users of `kbsali/php-redmine-api` can rely on when they update the library.
+This document describes what users of `kbsali/redmine-api` can rely on when they update the library.
 
 ## Who is affected
 
-The library is a Composer package (`kbsali/php-redmine-api`). Its users call the API classes, use the clients
+The library is a Composer package (`kbsali/redmine-api`). Its users call the API classes, use the clients
 and, in some cases, extend or implement library classes.
 
 ## Versioning
@@ -33,13 +33,10 @@ the exceptions in `Redmine\Exception\`.
 
 Classes of the `Redmine\Api\` namespace are meant to be created with `fromHttpClient()` and to be wrapped, not
 extended. Their constructors and the possibility to extend them are deprecated and will end in `3.0.0`.
-Custom clients implement the interfaces `Redmine\Client\Client` and `Redmine\Http\HttpClient`.
 
 ## Deprecations
 
-A deprecated part is marked with `@deprecated` in the code and triggers an `E_USER_DEPRECATED` message that names
-the version it was deprecated in and the replacement. It is listed under `Deprecated` in the changelog.
-A deprecated part stays at least until the next major release.
+A deprecated part is listed under `Deprecated` in the changelog. It stays at least until the next major release.
 
 ## Future mode
 
@@ -47,16 +44,23 @@ Where a change cannot be announced with a deprecation message, for example when 
 exception, the new behavior is available through `$client->enableFutureMode()` first and becomes the default in
 a major release.
 
-## Supported versions
+Future mode applies to the client on which `enableFutureMode()` was called and to the APIs returned by its
+`getApi()` method. APIs created directly with `fromHttpClient()` always use the default behavior.
 
-The supported PHP versions are in `composer.json`, the tested Redmine versions in the README.
+## Requirements
+
+The PHP version, the PHP extensions and the dependencies the package needs are in the `require` section of
+`composer.json`, and Composer installs the package accordingly. Changing them is not a breaking change as long as
+the public API stays the same. The tested Redmine versions are in the README.
 
 ## Exceptions to the promise
 
 Security fixes and bug fixes may change behavior that users relied on, when keeping it would be unsafe or wrong.
-They are listed in the changelog.
+They are listed in the changelog. A fix that makes a call throw a new exception does so only after
+`enableFutureMode()` was called.
 
 ## How the promise is checked
 
-The tests, PHPStan and a Rector BC library (`art4/rector-bc-library`) run on every change. There is no automatic
+The tests, PHPStan and the code style check run in the CI on every change. Rector with a BC library
+(`art4/rector-bc-library`) runs as a check before a commit (`composer test`), not in the CI. There is no automatic
 comparison of the public API with the last release.
