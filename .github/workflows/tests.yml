@@ -132,7 +132,7 @@ jobs:
       matrix:
         operating-system: ["ubuntu-latest"]
         php: ["8.2"]
-        tool: ["phpstan", "code-coverage", "code-style"]
+        tool: ["phpstan", "code-coverage", "code-style", "rector"]
 
     steps:
       - name: Checkout
@@ -174,3 +174,7 @@ jobs:
       - name: Check code-style
         if: ${{ matrix.tool == 'code-style' }}
         run: composer run codestyle -- --dry-run --diff
+
+      - name: Check Rector
+        if: ${{ matrix.tool == 'rector' }}
+        run: composer run rector -- --dry-run --output-format=github
