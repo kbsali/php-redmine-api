@@ -7,7 +7,9 @@ namespace Redmine\Tests\Unit\Api\Issue;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
+use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class SetIssueStatusTest extends TestCase
@@ -41,5 +43,29 @@ class SetIssueStatusTest extends TestCase
 
         // Perform the tests
         $this->assertSame('', $api->setIssueStatus(5, 'Status Name'));
+    }
+
+    public function testSetIssueStatusWithFutureModeThrowsOnFailingStatusLookup(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'GET',
+                '/issue_statuses.json',
+                'application/json',
+                '',
+                500,
+                'application/json',
+                '{"errors":["Internal error"]}',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(UnexpectedResponseException::class);
+
+        $api->setIssueStatus(5, 'Status Name');
     }
 }
