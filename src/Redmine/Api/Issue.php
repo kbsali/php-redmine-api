@@ -586,6 +586,8 @@ class Issue extends AbstractApi
             $this->issueCategoryApi = $issueCategoryApi;
         }
 
+        $this->passFutureModeTo($this->issueCategoryApi);
+
         return $this->issueCategoryApi;
     }
 
@@ -605,7 +607,24 @@ class Issue extends AbstractApi
             $this->issueStatusApi = $issueStatusApi;
         }
 
+        $this->passFutureModeTo($this->issueStatusApi);
+
         return $this->issueStatusApi;
+    }
+
+    /**
+     * Internal APIs created from an HTTP client do not know the future mode of this instance.
+     */
+    private function passFutureModeTo(AbstractApi $api): void
+    {
+        if (!$this->isFutureModeEnabled()) {
+            return;
+        }
+
+        // Set the private property without adding a method to AbstractApi
+        \Closure::bind(static function (AbstractApi $api): void {
+            $api->futureMode = true;
+        }, null, AbstractApi::class)($api);
     }
 
     /**
@@ -623,6 +642,8 @@ class Issue extends AbstractApi
 
             $this->projectApi = $projectApi;
         }
+
+        $this->passFutureModeTo($this->projectApi);
 
         return $this->projectApi;
     }
@@ -643,6 +664,8 @@ class Issue extends AbstractApi
             $this->trackerApi = $trackerApi;
         }
 
+        $this->passFutureModeTo($this->trackerApi);
+
         return $this->trackerApi;
     }
 
@@ -661,6 +684,8 @@ class Issue extends AbstractApi
 
             $this->userApi = $userApi;
         }
+
+        $this->passFutureModeTo($this->userApi);
 
         return $this->userApi;
     }
