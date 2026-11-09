@@ -24,6 +24,7 @@ use SimpleXMLElement;
  */
 class Membership extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -134,7 +135,7 @@ class Membership extends AbstractApi
      */
     public function create($project, array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         if (!isset($params['user_id']) || !isset($params['role_ids'])) {
             throw new MissingParameterException('Theses parameters are mandatory: `user_id`, `role_ids`');
@@ -179,7 +180,7 @@ class Membership extends AbstractApi
      */
     public function update($id, array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         if (!isset($params['role_ids'])) {
             throw new MissingParameterException('Theses parameters are mandatory: `role_ids`');

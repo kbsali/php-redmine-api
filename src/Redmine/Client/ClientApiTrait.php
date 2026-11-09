@@ -73,6 +73,10 @@ trait ClientApiTrait
      * Throw an `UnexpectedResponseException` on unexpected response status codes.
      *
      * The mode applies to all APIs of this client, including APIs already returned by `getApi()`.
+     *
+     * The params of `create()` and `update()` methods must not be `''`, `[]` or `false` on the top level,
+     * otherwise an `InvalidArgumentException` is thrown. Use `null` to skip a parameter,
+     * `Param::Clear` to clear a field or `0` to switch off a boolean.
      */
     public function enableFutureMode(): void
     {

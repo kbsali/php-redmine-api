@@ -99,7 +99,7 @@ trait ProjectContextTrait
 
         $this->registerClientCall(
             $api,
-            fn() => $api->update($identifier, $data),
+            fn() => $api->update($identifier, $this->replaceClearMarker($data)),
         );
     }
 

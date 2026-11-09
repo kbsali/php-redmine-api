@@ -203,4 +203,32 @@ class UpdateTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Membership::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"role_ids"');
+
+        $api->update(1, ['role_ids' => $value]);
+    }
 }

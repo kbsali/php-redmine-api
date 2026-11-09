@@ -15,10 +15,10 @@ trait RequestParamsTrait
      * Merges the defaults with the params and removes all empty values.
      * `Param::Clear` is the only way to send an empty value.
      *
-     * @throws \InvalidArgumentException if future mode is enabled and a value is `''`, `[]` or `false`
-     *
      * @param array<mixed> $defaults
      * @param array<mixed> $params
+     *
+     * @throws \InvalidArgumentException if future mode is enabled and a value is `''`, `[]` or `false`
      *
      * @return array<mixed>
      */

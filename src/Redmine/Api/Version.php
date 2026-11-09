@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class Version extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -263,7 +264,7 @@ class Version extends AbstractApi
      */
     public function create($project, array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         if (
             !isset($params['name'])
@@ -310,7 +311,7 @@ class Version extends AbstractApi
      */
     public function update($id, array $params)
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
         $this->validateStatus($params);
         $this->validateSharing($params);
 

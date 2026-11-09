@@ -98,7 +98,7 @@ trait VersionContextTrait
 
         $this->registerClientCall(
             $api,
-            fn() => $api->update($id, $data),
+            fn() => $api->update($id, $this->replaceClearMarker($data)),
         );
     }
 

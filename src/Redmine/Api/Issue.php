@@ -236,7 +236,7 @@ class Issue extends AbstractApi
     public function create(array $params = [])
     {
         $params = $this->cleanParams($params);
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         // FIXME: Throw exception on missing mandatory parameters
         // if (!isset($params['subject']) || !isset($params['project_id']) || !isset($params['tracker_id']) || !isset($params['priority_id']) || !isset($params['status_id'])) {
@@ -273,7 +273,8 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * An empty string unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
+     * `Param::Clear` or an empty string unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
+     * Use `Param::Clear` to clear other fields.
      * Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only unassigned if future mode is enabled.
      *
      * @param int          $id     the issue number

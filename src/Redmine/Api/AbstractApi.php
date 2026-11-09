@@ -243,6 +243,8 @@ abstract class AbstractApi implements Api
     /**
      * Checks if the variable passed is not null.
      *
+     * @deprecated v2.11.0 Will be removed in v3.0.0
+     *
      * @param mixed $var Variable to be checked
      *
      * @return bool
@@ -257,6 +259,8 @@ abstract class AbstractApi implements Api
     }
 
     /**
+     * @deprecated v2.11.0 Will be removed in v3.0.0
+     *
      * @param array<mixed> $defaults
      * @param array<mixed> $params
      *
@@ -317,12 +321,18 @@ abstract class AbstractApi implements Api
             return $this->requestDataAsArray($endpoint);
         }
 
-        $params = $this->sanitizeParams(
-            [
-                'limit' => 25,
-                'offset' => 0,
-            ],
-            $params,
+        $params = array_filter(
+            array_merge(
+                [
+                    'limit' => 25,
+                    'offset' => 0,
+                ],
+                $params,
+            ),
+            static fn($value): bool => false !== $value
+                && null !== $value
+                && '' !== $value
+                && (!is_array($value) && !is_object($value) || !empty($value)),
         );
 
         $returnData = [];

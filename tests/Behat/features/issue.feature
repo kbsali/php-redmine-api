@@ -302,6 +302,42 @@ Feature: Interacting with the REST API for issues
             closed_on
             """
 
+    Scenario: Clearing fields of an issue
+        Given I have a "NativeCurlClient" client
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | description       | some description     |
+            | start_date        | 2030-01-01           |
+            | due_date          | 2030-01-31           |
+            | estimated_hours   | 2.5                  |
+            | assigned_to_id    | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | description       | {clear}              |
+            | start_date        | {clear}              |
+            | due_date          | {clear}              |
+            | estimated_hours   | {clear}              |
+            | assigned_to_id    | {clear}              |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        When I show the issue with id "1"
+        Then the returned data "issue" property contains the following data
+            | property          | value                |
+            | description       |                      |
+            | start_date        | null                 |
+            | due_date          | null                 |
+            | estimated_hours   | null                 |
+
     Scenario: Unassigning an issue and updating other data in one request
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

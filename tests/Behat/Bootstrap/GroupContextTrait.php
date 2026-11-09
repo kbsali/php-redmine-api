@@ -74,6 +74,18 @@ trait GroupContextTrait
         );
     }
 
+    #[\Behat\Step\When('I show the group with id :groupId including its users')]
+    public function iShowTheGroupWithIdIncludingItsUsers(int $groupId): void
+    {
+        /** @var Group */
+        $api = $this->getNativeCurlClient()->getApi('group');
+
+        $this->registerClientCall(
+            $api,
+            fn() => $api->show($groupId, ['include' => 'users']),
+        );
+    }
+
     #[\Behat\Step\When('I update the group with id :groupId with the following data')]
     public function iUpdateTheGroupWithIdWithTheFollowingData(int $groupId, TableNode $table): void
     {
@@ -88,7 +100,7 @@ trait GroupContextTrait
 
         $this->registerClientCall(
             $api,
-            fn() => $api->update($groupId, $data),
+            fn() => $api->update($groupId, $this->replaceClearMarker($data)),
         );
     }
 

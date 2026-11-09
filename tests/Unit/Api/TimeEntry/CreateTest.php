@@ -330,4 +330,32 @@ class CreateTest extends TestCase
 
         $api->create(['issue_id' => 5, 'hours' => 5.25]);
     }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testCreateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"comments"');
+
+        $api->create(['comments' => $value]);
+    }
 }

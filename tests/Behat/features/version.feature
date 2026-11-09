@@ -203,6 +203,27 @@ Feature: Interacting with the REST API for versions
         And the response has the content ""
         And the returned data is exactly ""
 
+    Scenario: Clearing the description and the due date of a version
+        Given I have a "NativeCurlClient" client
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create a version with project identifier "test-project" with the following data
+            | property          | value                |
+            | name              | Test-Version         |
+            | description       | some description     |
+            | due_date          | 2030-01-31           |
+        When I update the version with id "1" and the following data
+            | property          | value                |
+            | description       | {clear}              |
+            | due_date          | {clear}              |
+        Then the response has the status code "204"
+        And the response has an empty content type
+        And the response has the content ""
+        When I show the version with id "1"
+        Then the returned data "version" property contains the following data
+            | property          | value                |
+            | description       | null                 |
+            | due_date          | null                 |
+
     Scenario: Removing a version
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
