@@ -26,6 +26,7 @@ use SimpleXMLElement;
  */
 class Issue extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     /**
@@ -286,21 +287,19 @@ class Issue extends AbstractApi
             'id' => $id,
         ];
         $params = $this->cleanParams($params);
-        $sanitizedParams = $this->sanitizeParams($defaults, $params);
 
-        // Allow assigned_to_id to be `` (empty string) to unassign a user from an issue
-        if (array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
-            $sanitizedParams['assigned_to_id'] = '';
+        // An empty string is still allowed to unassign a user or a version
+        foreach (['assigned_to_id', 'fixed_version_id'] as $name) {
+            if (array_key_exists($name, $params) && '' === $params[$name]) {
+                $params[$name] = Param::Clear;
+            }
         }
 
-        // Allow fixed_version_id to be `` (empty string) to unassign a version from an issue
-        if (array_key_exists('fixed_version_id', $params) && '' === $params['fixed_version_id']) {
-            $sanitizedParams['fixed_version_id'] = '';
-        }
+        $sanitizedParams = $this->buildRequestParams($defaults, $params);
 
         // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
         // @see https://www.redmine.org/issues/33744
-        if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && '' === $params['assigned_to_id']) {
+        if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && Param::Clear === $params['assigned_to_id']) {
             $request = HttpFactory::makeJsonRequest(
                 'PUT',
                 '/issues/' . urlencode(strval($id)) . '.json',
