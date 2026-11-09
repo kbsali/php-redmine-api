@@ -24,7 +24,7 @@ Notes:
   `docker compose run --rm --user "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer behat composer update --with-all-dependencies`
   This installs PHPUnit 11.5. If composer reports permission errors in `vendor/`, fix the ownership first: `docker compose run --rm --user 0 behat chown -R "$(id -u):$(id -g)" vendor composer.lock`
 - **Behat** needs running Redmine containers. After `docker compose up -d`, wait until all containers are healthy (about 30–60s) before running Behat.
-- The **pipeline** has 27 checks (PHPUnit × 5 PHP versions, Behat × 4 suites, code quality × 3, GitGuardian). Every push triggers a full pipeline run.
+- The **pipeline** consists of the jobs in `.github/workflows/tests.yml` and of external checks (CodeRabbit, Codecov, GitGuardian). It runs for every pull request and for pushes to `v2.x`; a push to any other branch without a pull request starts nothing. Wait until all checks of the pull request have finished.
 
 ### Issue tracker
 
