@@ -37,6 +37,7 @@ When you notice a possible refactoring while doing other work, post it directly 
 ### Conventions
 
 - **Strict BC promise** – no breaking changes; new exceptions only behind the per-client future mode gate (`$this->isFutureModeEnabled()` in `AbstractApi`, enabled via `$client->enableFutureMode()`; tests use `Redmine\Tests\Fixtures\FutureMode::enable($api)`)
+- **One unit test file per API method** – tests live in `tests/Unit/Api/<Api>/<Method>Test.php` (e.g. `Issue/UpdateTest.php`). Add to the existing file instead of creating a topic file; the maintainers merge topic files into the method files.
 - **QA before committing** – PHPUnit + code style + PHPStan + Rector + Behat must pass, on PHP 8.2 (the lowest supported version). Run Rector with `docker compose run --rm php composer run rector -- --dry-run`. Mention the PHP versions used in the PR's QA section.
 - **No co-author/attribution lines** – commit messages and PR descriptions contain no `Co-Authored-By:` trailers, no session links and no "Generated with" notes.
 - **English on GitHub** – issue comments, PR titles, PR descriptions and review comments on GitHub are always written in English.
