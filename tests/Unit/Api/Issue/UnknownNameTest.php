@@ -107,6 +107,23 @@ class UnknownNameTest extends TestCase
         ];
     }
 
+    public function testCreateWithFutureModeReportsUnknownProjectBeforeLookingUpCategory(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            ['GET', '/projects.json?limit=100&offset=0', 'application/json', '', 200, 'application/json', '{"projects":[{"name":"Project Name","id":3}]}'],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('The value "Missing" of the parameter "project" is unknown');
+
+        $api->create(['project' => 'Missing', 'category' => 'Category Name']);
+    }
+
     public function testSetIssueStatusWithFutureModeThrowsOnUnknownStatus(): void
     {
         $client = AssertingHttpClient::create(
