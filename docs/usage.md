@@ -237,7 +237,7 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 ### Empty values in `create()` and `update()`
 
-Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`, which unassigns the user or the version. To clear a field, use `\Redmine\Api\Param::Clear`:
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`: it unassigns the version, but the user only if the client has called `enableFutureMode()`, because Redmine ignores an empty `assigned_to_id` in XML requests. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
 
 ```php
 use Redmine\Api\Param;

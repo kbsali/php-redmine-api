@@ -427,6 +427,14 @@ class Issue extends AbstractApi
      */
     private function cleanParams(array $params = []): array
     {
+        // Clearing a field does not need a lookup of the name
+        foreach (['project', 'category', 'status', 'tracker', 'assigned_to', 'author'] as $name) {
+            if (array_key_exists($name, $params) && Param::Clear === $params[$name]) {
+                $params[$name . '_id'] = Param::Clear;
+                unset($params[$name]);
+            }
+        }
+
         if (isset($params['project'])) {
             $projectApi = $this->getProjectApi();
 

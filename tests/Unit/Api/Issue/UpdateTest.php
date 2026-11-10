@@ -366,6 +366,48 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update(1, ['assigned_to_id' => Param::Clear]));
     }
 
+    public function testUpdateClearAssigneeByLoginWithParamClearDoesNotLookUpTheUser(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.json',
+                'application/json',
+                '{"issue":{"id":1,"assigned_to_id":""}}',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->assertSame('', $api->update(1, ['assigned_to' => Param::Clear]));
+    }
+
+    public function testUpdateClearCategoryWithParamClearDoesNotLookUpTheCategory(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id><category_id></category_id></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['category' => Param::Clear]));
+    }
+
     public function testUpdateConvertsNestedParamClear(): void
     {
         $client = AssertingHttpClient::create(

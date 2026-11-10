@@ -382,6 +382,28 @@ Feature: Interacting with the REST API for issues
             | start_date        | null                 |
             | due_date          | null                 |
             | estimated_hours   | null                 |
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            """
 
     Scenario: Unassigning an issue and updating other data in one request
         Given I have a "NativeCurlClient" client
