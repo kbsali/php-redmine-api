@@ -8,6 +8,7 @@ use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Client\Psr18Client;
 use Redmine\Exception;
+use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
@@ -399,7 +400,7 @@ class Issue extends AbstractApi
         $issueStatusApi = $this->getIssueStatusApi();
 
         return $this->update($id, [
-            'status_id' => array_search($status, $issueStatusApi->listNames(), true),
+            'status_id' => $this->lookupId('status', $status, $issueStatusApi->listNames()),
         ]);
     }
 
@@ -416,6 +417,31 @@ class Issue extends AbstractApi
             'notes' => $note,
             'private_notes' => $privateNote,
         ]);
+    }
+
+    /**
+     * Resolves the id of a literal identifier.
+     *
+     * @param mixed                   $value the literal identifier given by the caller
+     * @param array<int|string,mixed> $names the known names indexed by their id
+     *
+     * @throws InvalidParameterException if future mode is enabled and the name is unknown
+     *
+     * @return int|string|false the id, or false if the name is unknown and future mode is disabled
+     */
+    private function lookupId(string $param, $value, array $names): int|string|false
+    {
+        $id = array_search($value, $names, true);
+
+        if (false === $id && $this->isFutureModeEnabled()) {
+            throw new InvalidParameterException(sprintf(
+                'The value "%s" of the parameter "%s" is unknown.',
+                is_scalar($value) ? strval($value) : get_debug_type($value),
+                $param,
+            ));
+        }
+
+        return $id;
     }
 
     /**
@@ -439,10 +465,10 @@ class Issue extends AbstractApi
             $projectApi = $this->getProjectApi();
 
             // TODO: project names are not unique; there could be collisions
-            $params['project_id'] = array_search(
+            $params['project_id'] = $this->lookupId(
+                'project',
                 $params['project'],
                 $projectApi->listNames(),
-                true,
             );
             unset($params['project']);
         }
@@ -450,10 +476,10 @@ class Issue extends AbstractApi
         if (isset($params['category']) && isset($params['project_id'])) {
             $issueCategoryApi = $this->getIssueCategoryApi();
 
-            $params['category_id'] = array_search(
+            $params['category_id'] = $this->lookupId(
+                'category',
                 $params['category'],
                 $issueCategoryApi->listNamesByProject($params['project_id']),
-                true,
             );
             unset($params['category']);
         }
@@ -461,10 +487,10 @@ class Issue extends AbstractApi
         if (isset($params['status'])) {
             $issueStatusApi = $this->getIssueStatusApi();
 
-            $params['status_id'] = array_search(
+            $params['status_id'] = $this->lookupId(
+                'status',
                 $params['status'],
                 $issueStatusApi->listNames(),
-                true,
             );
             unset($params['status']);
         }
@@ -472,10 +498,10 @@ class Issue extends AbstractApi
         if (isset($params['tracker'])) {
             $trackerApi = $this->getTrackerApi();
 
-            $params['tracker_id'] = array_search(
+            $params['tracker_id'] = $this->lookupId(
+                'tracker',
                 $params['tracker'],
                 $trackerApi->listNames(),
-                true,
             );
             unset($params['tracker']);
         }
@@ -483,10 +509,10 @@ class Issue extends AbstractApi
         if (isset($params['assigned_to'])) {
             $userApi = $this->getUserApi();
 
-            $params['assigned_to_id'] = array_search(
+            $params['assigned_to_id'] = $this->lookupId(
+                'assigned_to',
                 $params['assigned_to'],
                 $userApi->listLogins(),
-                true,
             );
             unset($params['assigned_to']);
         }
@@ -494,10 +520,10 @@ class Issue extends AbstractApi
         if (isset($params['author'])) {
             $userApi = $this->getUserApi();
 
-            $params['author_id'] = array_search(
+            $params['author_id'] = $this->lookupId(
+                'author',
                 $params['author'],
                 $userApi->listLogins(),
-                true,
             );
             unset($params['author']);
         }
