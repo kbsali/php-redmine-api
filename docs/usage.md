@@ -237,7 +237,7 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 ### Empty values in `create()` and `update()`
 
-The `create()` and `update()` methods do not send `null`, `false`, `''` and `[]` to Redmine. To clear a field, use `\Redmine\Api\Param::Clear`:
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send `null`, `false`, `''` and `[]` to Redmine. To clear a field, use `\Redmine\Api\Param::Clear`:
 
 ```php
 use Redmine\Api\Param;
@@ -251,7 +251,9 @@ $client->getApi('group')->update($groupId, ['user_ids' => Param::Clear]);
 
 To switch off a boolean (e.g. `is_public`, `admin` or `is_private`), pass `0` instead of `false`.
 
-After calling `enableFutureMode()`, a top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException` instead of being dropped silently. Use `null` to skip a parameter, `Param::Clear` to clear a field or `0` to switch off a boolean. `Issue::update()` still accepts `''` for `assigned_to_id` and `fixed_version_id`.
+Except for `Attachment::update()`, after calling `enableFutureMode()`, a top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException` instead of being dropped silently. Use `null` to skip a parameter, `Param::Clear` to clear a field or `0` to switch off a boolean. `Issue::update()` still accepts `''` for `assigned_to_id` and `fixed_version_id`.
+
+`Attachment::update()` sends all values unchanged, with and without future mode (`null` is sent as `null`). Omit a parameter to skip it. `Param::Clear` is sent as an empty string.
 
 ```php
 $client->enableFutureMode();
