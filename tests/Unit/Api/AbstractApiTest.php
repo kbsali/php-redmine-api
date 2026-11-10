@@ -194,6 +194,24 @@ class AbstractApiTest extends TestCase
         $api->runDelete('/path.json');
     }
 
+    public function testSanitizeParamsMergesDefaultsAndRemovesEmptyValues(): void
+    {
+        $client = $this->createStub(Client::class);
+
+        $api = new class ($client) extends AbstractApi {};
+
+        $method = new ReflectionMethod($api, 'sanitizeParams');
+
+        $this->assertSame(
+            ['id' => 5, 'name' => 'new', 'zero' => 0],
+            $method->invoke(
+                $api,
+                ['id' => 5, 'name' => 'old'],
+                ['name' => 'new', 'null' => null, 'false' => false, 'empty' => '', 'array' => [], 'zero' => 0],
+            ),
+        );
+    }
+
     /**
      * @dataProvider getIsNotNullReturnsCorrectBooleanData
      *
