@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.x)
 
+### Added
+
+- `Redmine\Api\Param::Clear` clears a field in `create()` and `update()` methods, e.g. `['description' => Param::Clear]`. `null`, `false`, `''` and `[]` are still not sent (#470).
+
 ### Changed
 
+- If `enableFutureMode()` was called on the client, a top-level value of `''`, `[]` or `false` in the params of `create()` and `update()` methods now throws an `InvalidArgumentException` instead of being dropped silently. Use `null` to skip a parameter, `Param::Clear` to clear a field or `0` to switch off a boolean. `Issue::update()` still accepts `''` for `assigned_to_id` and `fixed_version_id` (#470).
 - The order of the XML elements in the request bodies of some `create()` and `update()` methods has changed. Redmine ignores the order, but tests that compare exact request bodies may need an update.
 - All `list*()` methods and `Attachment::download()` now verify the response status code. The return value only changes if `enableFutureMode()` was called on the client – a status code other than `200` then throws `UnexpectedResponseException`, e.g. on a `422` response with `{"errors":[...]}` that was returned as data before. This also affects the `listNames()` methods and the deprecated `all()`, `listing()` and `getIdByName()` methods, which call the `list*()` methods.
 - The exception message of `AbstractApi::__construct()` for an invalid client now uses `get_debug_type()`, e.g. `int` instead of `integer`.
 - The exception message of `NativeCurlClient::setCurlOption()` for an invalid `CURLOPT_HTTPHEADER` value now uses `get_debug_type()`, e.g. `int` instead of `integer`.
 - Behaviour-driven tests are run against Redmine 7.0.3, 6.1.6, 6.0.12, 5.1.12.
+
+### Deprecated
+
+- `AbstractApi::isNotNull()` and `AbstractApi::sanitizeParams()` are deprecated and will be removed in v3.0.0 (#470).
 
 ### Removed
 

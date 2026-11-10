@@ -127,6 +127,19 @@ Feature: Interacting with the REST API for groups
         And the response has the content ""
         And the returned data is exactly ""
 
+    Scenario: Removing all users from a group by clearing the user ids
+        Given I have a "NativeCurlClient" client
+        And I create a group with name "Test Group"
+        And I add the user with id "1" to the group with id "5"
+        When I update the group with id "5" with the following data
+            | property          | value                |
+            | user_ids          | {clear}              |
+        Then the response has the status code "204"
+        When I show the group with id "5" including its users
+        Then the returned data "group" property contains the following data
+            | property          | value                |
+            | users             | []                   |
+
     Scenario: Adding an user to a group
         Given I have a "NativeCurlClient" client
         And I create a group with name "Test Group"

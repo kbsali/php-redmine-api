@@ -7,8 +7,10 @@ namespace Redmine\Tests\Unit\Api\TimeEntry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\Param;
 use Redmine\Api\TimeEntry;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\FutureMode;
 
@@ -176,5 +178,53 @@ class UpdateTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"comments"');
+
+        $api->update(1, ['comments' => $value]);
+    }
+
+    public function testUpdateWithParamClearSendsEmptyValue(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/time_entries/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><time_entry><id>1</id><comments></comments></time_entry>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = TimeEntry::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['comments' => Param::Clear]));
     }
 }

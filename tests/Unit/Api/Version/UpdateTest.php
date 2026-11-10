@@ -7,6 +7,7 @@ namespace Redmine\Tests\Unit\Api\Version;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\Param;
 use Redmine\Api\Version;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -121,22 +122,6 @@ class UpdateTest extends TestCase
                 204,
                 '',
             ],
-            'test with status empty string' => [
-                5,
-                ['status' => ''],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with status false' => [
-                5,
-                ['status' => false],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
             'test with status null' => [
                 5,
                 ['status' => null],
@@ -182,22 +167,6 @@ class UpdateTest extends TestCase
                 ['sharing' => 'system'],
                 '/versions/5.xml',
                 '<?xml version="1.0" encoding="UTF-8"?><version><sharing>system</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing empty string' => [
-                5,
-                ['sharing' => ''],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with sharing false' => [
-                5,
-                ['sharing' => false],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
                 204,
                 '',
             ],
@@ -298,5 +267,136 @@ class UpdateTest extends TestCase
         FutureMode::enable($api);
 
         $api->update(5, []);
+    }
+
+    /**
+     * @return array<string,array<mixed>>
+     */
+    public static function getEmptyValueData(): array
+    {
+        return [
+            'test with status empty string' => [
+                5,
+                ['status' => ''],
+                '/versions/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                204,
+                '',
+            ],
+            'test with status false' => [
+                5,
+                ['status' => false],
+                '/versions/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                204,
+                '',
+            ],
+            'test with sharing empty string' => [
+                5,
+                ['sharing' => ''],
+                '/versions/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                204,
+                '',
+            ],
+            'test with sharing false' => [
+                5,
+                ['sharing' => false],
+                '/versions/5.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+                204,
+                '',
+            ],
+        ];
+    }
+
+    /**
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getEmptyValueData')]
+    public function testUpdateDropsEmptyValues(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                '',
+                $response,
+            ],
+        );
+
+        $api = Version::fromHttpClient($client);
+
+        $api->update($id, $parameters);
+    }
+
+    /**
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getEmptyValueData')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValues(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Version::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $api->update($id, $parameters);
+    }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Version::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"description"');
+
+        $api->update(1, ['description' => $value]);
+    }
+
+    public function testUpdateWithParamClearSendsEmptyValue(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/versions/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><version><description></description></version>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Version::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['description' => Param::Clear]));
     }
 }

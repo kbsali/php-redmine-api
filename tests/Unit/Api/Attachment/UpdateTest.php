@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
+use Redmine\Api\Param;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
@@ -56,6 +57,25 @@ class UpdateTest extends TestCase
                 ],
                 '/attachments/5.json',
                 '{"attachment":{"filename":"renamed.zip","description":"updated"}}',
+                true,
+            ],
+            'test clear description' => [
+                5,
+                [
+                    'description' => Param::Clear,
+                ],
+                '/attachments/5.json',
+                '{"attachment":{"description":""}}',
+                true,
+            ],
+            'test empty values are sent unchanged' => [
+                5,
+                [
+                    'filename' => null,
+                    'description' => '',
+                ],
+                '/attachments/5.json',
+                '{"attachment":{"filename":null,"description":""}}',
                 true,
             ],
         ];

@@ -7,8 +7,10 @@ namespace Redmine\Tests\Unit\Api\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Redmine\Api\Param;
 use Redmine\Api\User;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\FutureMode;
 
@@ -189,5 +191,53 @@ class UpdateTest extends TestCase
         FutureMode::enable($api);
 
         $api->update(5, []);
+    }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = User::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"firstname"');
+
+        $api->update(1, ['firstname' => $value]);
+    }
+
+    public function testUpdateWithParamClearSendsEmptyValue(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/users/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><user><id>1</id><firstname></firstname></user>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = User::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['firstname' => Param::Clear]));
     }
 }

@@ -8,7 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
+use Redmine\Api\Param;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\FutureMode;
 
@@ -158,6 +160,22 @@ class UpdateTest extends TestCase
                 <issue>
                     <id>1</id>
                     <fixed_version_id></fixed_version_id>
+                </issue>
+                XML,
+                204,
+                '',
+            ],
+            'test clear description of issue' => [
+                1,
+                [
+                    'description' => Param::Clear,
+                ],
+                '/issues/1.xml',
+                <<< XML
+                <?xml version="1.0"?>
+                <issue>
+                    <id>1</id>
+                    <description></description>
                 </issue>
                 XML,
                 204,
@@ -328,6 +346,88 @@ class UpdateTest extends TestCase
         ];
     }
 
+    public function testUpdateClearAssigneeWithParamClearSendsJsonWithoutFutureMode(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.json',
+                'application/json',
+                '{"issue":{"id":1,"assigned_to_id":""}}',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['assigned_to_id' => Param::Clear]));
+    }
+
+    public function testUpdateClearAssigneeByLoginWithParamClearDoesNotLookUpTheUser(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.json',
+                'application/json',
+                '{"issue":{"id":1,"assigned_to_id":""}}',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->assertSame('', $api->update(1, ['assigned_to' => Param::Clear]));
+    }
+
+    public function testUpdateClearCategoryWithParamClearDoesNotLookUpTheCategory(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id><category_id></category_id></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['category' => Param::Clear]));
+    }
+
+    public function testUpdateConvertsNestedParamClear(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id><custom_fields type="array"><custom_field id="1"><value></value></custom_field></custom_fields></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['custom_fields' => [['id' => 1, 'value' => Param::Clear]]]));
+    }
+
     public function testUpdateUnassignUserWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
@@ -394,5 +494,76 @@ class UpdateTest extends TestCase
         FutureMode::enable($api);
 
         $api->update(1, []);
+    }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/"description".*Param::Clear/');
+
+        $api->update(1, ['description' => $value]);
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testUpdateWithoutFutureModeDropsEmptyValue(mixed $value): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['description' => $value, 'subject' => null]));
+    }
+
+    public function testUpdateWithFutureModeAllowsNullAndEmptyStringForUnassign(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id><fixed_version_id></fixed_version_id></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->assertSame('', $api->update(1, ['description' => null, 'fixed_version_id' => '']));
     }
 }

@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Exception\UnexpectedResponseException;
+use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
@@ -197,7 +198,7 @@ class CreateTest extends TestCase
                         ],
                     ],
                     'watcher_user_ids' => [10, 11],
-                    'is_private' => false,
+                    'is_private' => true,
                     'estimated_hours' => 2.5,
                     'author_id' => 12,
                     'due_date' => '2024-12-31',
@@ -249,6 +250,7 @@ class CreateTest extends TestCase
                         <watcher_user_id>10</watcher_user_id>
                         <watcher_user_id>11</watcher_user_id>
                     </watcher_user_ids>
+                    <is_private>1</is_private>
                     <estimated_hours>2.5</estimated_hours>
                     <author_id>12</author_id>
                     <due_date>2024-12-31</due_date>
@@ -790,5 +792,33 @@ class CreateTest extends TestCase
         $api = Issue::fromHttpClient($client);
 
         $this->assertInstanceOf(SimpleXMLElement::class, $api->create(['tracker' => 'Tracker Name']));
+    }
+
+    /**
+     * @return array<string,array{mixed}>
+     */
+    public static function getEmptyValues(): array
+    {
+        return [
+            'empty string' => [''],
+            'empty array' => [[]],
+            'false' => [false],
+        ];
+    }
+
+    #[DataProvider('getEmptyValues')]
+    public function testCreateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Issue::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('"subject"');
+
+        $api->create(['subject' => $value]);
     }
 }

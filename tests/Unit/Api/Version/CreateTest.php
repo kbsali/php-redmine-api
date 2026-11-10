@@ -153,22 +153,6 @@ class CreateTest extends TestCase
                 201,
                 '<?xml version="1.0" encoding="UTF-8"?><version></version>',
             ],
-            'test with empty sharing parameter false' => [
-                5,
-                ['name' => 'test', 'sharing' => false],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with empty sharing parameter empty string' => [
-                5,
-                ['name' => 'test', 'sharing' => ''],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
         ];
     }
 
@@ -347,5 +331,72 @@ class CreateTest extends TestCase
         FutureMode::enable($api);
 
         $api->create(5, ['name' => 'test']);
+    }
+
+    /**
+     * @return array<string,array<mixed>>
+     */
+    public static function getEmptyValueData(): array
+    {
+        return [
+            'test with empty sharing parameter false' => [
+                5,
+                ['name' => 'test', 'sharing' => false],
+                '/projects/5/versions.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+                201,
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            ],
+            'test with empty sharing parameter empty string' => [
+                5,
+                ['name' => 'test', 'sharing' => ''],
+                '/projects/5/versions.xml',
+                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+                201,
+                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            ],
+        ];
+    }
+
+    /**
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getEmptyValueData')]
+    public function testCreateDropsEmptyValues(int $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'POST',
+                $expectedPath,
+                'application/xml',
+                $expectedBody,
+                $responseCode,
+                'application/xml',
+                $response,
+            ],
+        );
+
+        $api = Version::fromHttpClient($client);
+
+        $api->create($identifier, $parameters);
+    }
+
+    /**
+     * @param array<mixed> $parameters
+     */
+    #[DataProvider('getEmptyValueData')]
+    public function testCreateWithFutureModeThrowsOnEmptyValues(int $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    {
+        $client = $this->createMock(HttpClient::class);
+        $client->expects($this->never())->method('request');
+
+        $api = Version::fromHttpClient($client);
+
+        FutureMode::enable($api);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $api->create($identifier, $parameters);
     }
 }

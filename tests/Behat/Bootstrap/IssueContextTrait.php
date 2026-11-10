@@ -150,6 +150,6 @@ trait IssueContextTrait
             $data[$key] = $value;
         }
 
-        return $data;
+        return $this->replaceClearMarker($data);
     }
 }

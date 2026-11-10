@@ -106,6 +106,12 @@ class Attachment extends AbstractApi
      */
     final public function update(int $id, array $params): bool
     {
+        // Other values are sent unchanged, only the marker for clearing a field is converted
+        $params = array_map(
+            static fn($value) => $value === Param::Clear ? '' : $value,
+            $params,
+        );
+
         // we are using `PUT` instead of documented `PATCH`
         // @see https://github.com/kbsali/php-redmine-api/pull/395#issuecomment-2004089154
         // @see https://www.redmine.org/projects/redmine/wiki/Rest_Attachments#PATCH

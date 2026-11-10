@@ -235,6 +235,26 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 > :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
 
+### Empty values in `create()` and `update()`
+
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`: it unassigns the version, but the user only if the client has called `enableFutureMode()`, because Redmine ignores an empty `assigned_to_id` in XML requests. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
+
+```php
+use Redmine\Api\Param;
+
+$client->getApi('issue')->update($issueId, [
+    'description' => Param::Clear,
+    'due_date' => Param::Clear,
+]);
+$client->getApi('group')->update($groupId, ['user_ids' => Param::Clear]);
+```
+
+To switch off a boolean (e.g. `is_public`, `admin` or `is_private`), pass `0` instead of `false`.
+
+Except for `Attachment::update()`, after calling `enableFutureMode()`, a top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException` instead of being dropped silently. Use `null` to skip a parameter, `Param::Clear` to clear a field or `0` to switch off a boolean. `Issue::update()` still accepts `''` for `assigned_to_id` and `fixed_version_id`.
+
+`Attachment::update()` sends all values unchanged, with and without future mode (`null` is sent as `null`). Omit a parameter to skip it. `Param::Clear` is sent as an empty string.
+
 ```php
 $client->enableFutureMode();
 
@@ -308,7 +328,6 @@ $client->getApi('project')->show($projectId);
 $client->getApi('project')->create([
     'name' => 'some name',
     'identifier' => 'the_identifier',
-    'tracker_ids' => [],
 ]);
 $client->getApi('project')->update($projectId, [
     'name' => 'different name',
@@ -400,7 +419,6 @@ $client->getApi('issue')->create([
             'value' => $_POST['EMAIL'],
         ],
     ],
-    'watcher_user_ids' => [],
 ]);
 $client->getApi('issue')->update($issueId, [
     // 'subject'        => 'test note (xml) 1',
@@ -412,14 +430,13 @@ $client->getApi('issue')->update($issueId, [
     'due_date' => date('Y-m-d'),
 ]);
 
-// To unassign a user or a version, use an empty string (`null` values are not sent).
-// Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only
-// unassigned if the client has called `enableFutureMode()`. Otherwise use this workaround:
-$client->requestPut(
-    '/issues/' . $issueId . '.json',
-    '{"issue": {"assigned_to_id": ""}}'
-);
-$client->getApi('issue')->update($issueId, ['fixed_version_id' => '']);
+// To unassign a user or a version, use `Param::Clear` (`null` values are not sent).
+// An empty string for `assigned_to_id` unassigns the user only if the client has called
+// `enableFutureMode()`, because Redmine ignores it in XML requests. `Param::Clear` always works.
+$client->getApi('issue')->update($issueId, [
+    'assigned_to_id' => \Redmine\Api\Param::Clear,
+    'fixed_version_id' => \Redmine\Api\Param::Clear,
+]);
 
 $client->getApi('issue')->addWatcher($issueId, $userId);
 $client->getApi('issue')->removeWatcher($issueId, $userId);

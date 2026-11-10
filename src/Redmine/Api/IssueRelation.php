@@ -22,6 +22,7 @@ use Redmine\Serializer\JsonSerializer;
  */
 class IssueRelation extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -207,7 +208,7 @@ class IssueRelation extends AbstractApi
             'relation_type' => 'relates',
         ];
 
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->buildRequestParams($defaults, $params);
 
         if (!isset($params['issue_to_id'])) {
             throw new MissingParameterException('Theses parameters are mandatory: `issue_to_id`');

@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class Wiki extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -179,7 +180,7 @@ class Wiki extends AbstractApi
      */
     public function create($project, $page, array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',

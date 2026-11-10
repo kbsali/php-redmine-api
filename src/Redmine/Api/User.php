@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class User extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -284,7 +285,7 @@ class User extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         if (
             !isset($params['login'])
@@ -335,7 +336,7 @@ class User extends AbstractApi
         $defaults = [
             'id' => $id,
         ];
-        $params = $this->sanitizeParams($defaults, $params);
+        $params = $this->buildRequestParams($defaults, $params);
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',

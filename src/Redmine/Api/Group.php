@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class Group extends AbstractApi
 {
+    use RequestParamsTrait;
     use ResponseValidationTrait;
 
     final public static function fromHttpClient(HttpClient $httpClient): self
@@ -181,7 +182,7 @@ class Group extends AbstractApi
      */
     public function create(array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         if (
             !isset($params['name'])
@@ -228,7 +229,7 @@ class Group extends AbstractApi
      */
     public function update(int $id, array $params = [])
     {
-        $params = $this->sanitizeParams([], $params);
+        $params = $this->buildRequestParams([], $params);
 
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'PUT',

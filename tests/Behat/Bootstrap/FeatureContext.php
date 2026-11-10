@@ -13,6 +13,7 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
+use Redmine\Api\Param;
 use Redmine\Client\NativeCurlClient;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\Response;
@@ -519,5 +520,20 @@ final class FeatureContext implements Context
         }
 
         throw new InvalidArgumentException('Comparison with Redmine "' . $versionComparision . '" is not supported.');
+    }
+
+    /**
+     * Replaces the table value `{clear}` with `Param::Clear`.
+     *
+     * @param array<string,mixed> $data
+     *
+     * @return array<string,mixed>
+     */
+    private function replaceClearMarker(array $data): array
+    {
+        return array_map(
+            static fn($value) => $value === '{clear}' ? Param::Clear : $value,
+            $data,
+        );
     }
 }
