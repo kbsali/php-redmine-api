@@ -237,7 +237,7 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 ### Empty values in `create()` and `update()`
 
-Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`, which unassigns the user or the version. To clear a field, use `\Redmine\Api\Param::Clear`:
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`, which unassigns the user or the version. To clear a field, use `\Redmine\Api\Param::Clear`:
 
 ```php
 use Redmine\Api\Param;
@@ -431,13 +431,12 @@ $client->getApi('issue')->update($issueId, [
 ]);
 
 // To unassign a user or a version, use `Param::Clear` (`null` values are not sent).
-// Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only
-// unassigned if the client has called `enableFutureMode()`. Otherwise use this workaround:
-$client->requestPut(
-    '/issues/' . $issueId . '.json',
-    '{"issue": {"assigned_to_id": ""}}'
-);
-$client->getApi('issue')->update($issueId, ['fixed_version_id' => \Redmine\Api\Param::Clear]);
+// An empty string for `assigned_to_id` unassigns the user only if the client has called
+// `enableFutureMode()`, because Redmine ignores it in XML requests. `Param::Clear` always works.
+$client->getApi('issue')->update($issueId, [
+    'assigned_to_id' => \Redmine\Api\Param::Clear,
+    'fixed_version_id' => \Redmine\Api\Param::Clear,
+]);
 
 $client->getApi('issue')->addWatcher($issueId, $userId);
 $client->getApi('issue')->removeWatcher($issueId, $userId);

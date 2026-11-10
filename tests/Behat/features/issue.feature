@@ -302,6 +302,51 @@ Feature: Interacting with the REST API for issues
             closed_on
             """
 
+    @without-future-mode
+    Scenario: Unassigning an issue with Param::Clear without future mode
+        Given I have a "NativeCurlClient" client without future mode
+        And I have an issue status with the name "New"
+        And I have an issue priority with the name "Normal"
+        And I have a tracker with the name "Defect" and default status id "1"
+        And I create a project with name "Test Project" and identifier "test-project"
+        And I create an issue with the following data
+            | property          | value                |
+            | subject           | issue subject        |
+            | project           | Test Project         |
+            | tracker           | Defect               |
+            | priority          | Normal               |
+            | status            | New                  |
+            | assigned_to_id    | 1                    |
+        When I update the issue with id "1" and the following data
+            | property          | value                |
+            | assigned_to_id    | {clear}              |
+        Then the response has the status code "204"
+        And the response has the content ""
+        When I show the issue with id "1"
+        Then the response has the status code "200"
+        And the returned data "issue" property has only the following properties
+            """
+            id
+            project
+            tracker
+            status
+            priority
+            author
+            subject
+            description
+            start_date
+            due_date
+            done_ratio
+            is_private
+            estimated_hours
+            total_estimated_hours
+            spent_hours
+            total_spent_hours
+            created_on
+            updated_on
+            closed_on
+            """
+
     Scenario: Clearing fields of an issue
         Given I have a "NativeCurlClient" client
         And I have an issue status with the name "New"

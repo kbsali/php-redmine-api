@@ -346,6 +346,46 @@ class UpdateTest extends TestCase
         ];
     }
 
+    public function testUpdateClearAssigneeWithParamClearSendsJsonWithoutFutureMode(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.json',
+                'application/json',
+                '{"issue":{"id":1,"assigned_to_id":""}}',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['assigned_to_id' => Param::Clear]));
+    }
+
+    public function testUpdateConvertsNestedParamClear(): void
+    {
+        $client = AssertingHttpClient::create(
+            $this,
+            [
+                'PUT',
+                '/issues/1.xml',
+                'application/xml',
+                '<?xml version="1.0"?><issue><id>1</id><custom_fields type="array"><custom_field id="1"><value></value></custom_field></custom_fields></issue>',
+                204,
+                '',
+                '',
+            ],
+        );
+
+        $api = Issue::fromHttpClient($client);
+
+        $this->assertSame('', $api->update(1, ['custom_fields' => [['id' => 1, 'value' => Param::Clear]]]));
+    }
+
     public function testUpdateUnassignUserWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

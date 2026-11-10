@@ -273,9 +273,10 @@ class Issue extends AbstractApi
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Updating-an-issue
      *
-     * `Param::Clear` or an empty string unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
+     * `Param::Clear` unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
      * Use `Param::Clear` to clear other fields.
-     * Redmine ignores an empty `assigned_to_id` in XML requests, so the user is only unassigned if future mode is enabled.
+     * An empty string also unassigns the version. Redmine ignores an empty `assigned_to_id` in XML requests,
+     * so an empty string unassigns the user only if future mode is enabled.
      *
      * @param int          $id     the issue number
      * @param array<mixed> $params
@@ -289,6 +290,11 @@ class Issue extends AbstractApi
         ];
         $params = $this->cleanParams($params);
 
+        // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
+        // @see https://www.redmine.org/issues/33744
+        $unassignUserWithJson = array_key_exists('assigned_to_id', $params)
+            && (Param::Clear === $params['assigned_to_id'] || ($this->isFutureModeEnabled() && '' === $params['assigned_to_id']));
+
         // An empty string is still allowed to unassign a user or a version
         foreach (['assigned_to_id', 'fixed_version_id'] as $name) {
             if (array_key_exists($name, $params) && '' === $params[$name]) {
@@ -298,9 +304,7 @@ class Issue extends AbstractApi
 
         $sanitizedParams = $this->buildRequestParams($defaults, $params);
 
-        // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
-        // @see https://www.redmine.org/issues/33744
-        if ($this->isFutureModeEnabled() && array_key_exists('assigned_to_id', $params) && Param::Clear === $params['assigned_to_id']) {
+        if ($unassignUserWithJson) {
             $request = HttpFactory::makeJsonRequest(
                 'PUT',
                 '/issues/' . urlencode(strval($id)) . '.json',

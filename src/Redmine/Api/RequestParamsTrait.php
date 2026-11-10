@@ -33,6 +33,10 @@ trait RequestParamsTrait
                 continue;
             }
 
+            if (is_array($value)) {
+                $value = $this->replaceNestedParamClear($value);
+            }
+
             if ($this->isFutureModeEnabled() && ('' === $value || [] === $value || false === $value)) {
                 throw new \InvalidArgumentException(sprintf(
                     'The parameter "%s" must not be %s. Use `null` to skip the parameter, `Param::Clear` to clear the field%s.',
@@ -53,5 +57,26 @@ trait RequestParamsTrait
         }
 
         return $requestParams;
+    }
+
+    /**
+     * Replaces `Param::Clear` in nested values (e.g. `custom_fields`) with an empty string.
+     * All other nested values are not changed.
+     *
+     * @param array<mixed> $values
+     *
+     * @return array<mixed>
+     */
+    private function replaceNestedParamClear(array $values): array
+    {
+        foreach ($values as $key => $value) {
+            if ($value === Param::Clear) {
+                $values[$key] = '';
+            } elseif (is_array($value)) {
+                $values[$key] = $this->replaceNestedParamClear($value);
+            }
+        }
+
+        return $values;
     }
 }
