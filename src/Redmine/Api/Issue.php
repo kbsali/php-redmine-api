@@ -289,7 +289,7 @@ class Issue extends AbstractApi
         $defaults = [
             'id' => $id,
         ];
-        $params = $this->cleanParams($params);
+        $params = $this->cleanParams($params, $id);
 
         // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
         // @see https://www.redmine.org/issues/33744
@@ -448,10 +448,11 @@ class Issue extends AbstractApi
      * Transforms literal identifiers to integer ids.
      *
      * @param array<mixed> $params
+     * @param int|string|null $issueId the id of the issue to update, its project is used to look up a category name if the params contain no project (only if future mode is enabled)
      *
      * @return array<mixed>
      */
-    private function cleanParams(array $params = []): array
+    private function cleanParams(array $params = [], $issueId = null): array
     {
         // Clearing a field does not need a lookup of the name
         foreach (['project', 'category', 'status', 'tracker', 'assigned_to', 'author'] as $name) {
@@ -473,6 +474,17 @@ class Issue extends AbstractApi
             unset($params['project']);
         }
 
+        $projectIdOfIssue = false;
+
+        if (isset($params['category']) && ! isset($params['project_id']) && null !== $issueId && $this->isFutureModeEnabled()) {
+            $issue = $this->show($issueId);
+
+            if (is_array($issue) && isset($issue['issue']['project']['id'])) {
+                $params['project_id'] = $issue['issue']['project']['id'];
+                $projectIdOfIssue = true;
+            }
+        }
+
         if (isset($params['category']) && isset($params['project_id'])) {
             $issueCategoryApi = $this->getIssueCategoryApi();
 
@@ -482,6 +494,11 @@ class Issue extends AbstractApi
                 $issueCategoryApi->listNamesByProject($params['project_id']),
             );
             unset($params['category']);
+
+            // The project of the issue is only needed for the lookup, the project is not changed
+            if ($projectIdOfIssue) {
+                unset($params['project_id']);
+            }
         }
 
         if (isset($params['status'])) {

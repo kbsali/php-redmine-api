@@ -235,6 +235,18 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 > :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
 
+### Name aliases in `Issue::create()` and `Issue::update()`
+
+Instead of ids, `Issue::create()` and `Issue::update()` accept the names `project`, `category`, `status`, `tracker`, `assigned_to` (login) and `author` (login). Each name needs extra requests to look up the id. Use the `*_id` params to avoid them.
+
+The alias `category` is resolved with the project of the same call (`project` or `project_id`). If `Issue::update()` is called without a project, the alias is only resolved after calling `enableFutureMode()`: the project of the issue is loaded with one extra request. Without future mode the key `category` is sent unchanged and Redmine ignores it, so pass `project_id` or use `category_id`.
+
+```php
+$client->enableFutureMode();
+
+$client->getApi('issue')->update($issueId, ['category' => 'Category name']);
+```
+
 ### Empty values in `create()` and `update()`
 
 Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`: it unassigns the version, but the user only if the client has called `enableFutureMode()`, because Redmine ignores an empty `assigned_to_id` in XML requests. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
