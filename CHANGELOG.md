@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.x)
+## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.11.0...v2.x)
+
+Nothing yet.
+
+## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
 ### Added
 
@@ -25,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 - `AbstractApi::isNotNull()` and `AbstractApi::sanitizeParams()` are deprecated and will be removed in v3.0.0 (#470).
+- The exceptions `Redmine\Exception\ClientException`, `Redmine\Exception\InvalidApiNameException`, `Redmine\Exception\InvalidParameterException`, `Redmine\Exception\MissingParameterException` and `Redmine\Exception\SerializerException` will be declared `final` in v3.0.0. Stop extending them (#342).
+- The behaviour without `enableFutureMode()` is deprecated. v3.0.0 will only have the behaviour of the future mode, `enableFutureMode()` will then do nothing. See [Preparing for v3.0.0](docs/usage.md#preparing-for-v300) (#508).
 
 ### Removed
 
