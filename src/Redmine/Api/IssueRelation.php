@@ -138,7 +138,7 @@ class IssueRelation extends AbstractApi
 
             try {
                 $data = JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
+            } catch (SerializerException) {
                 return [];
             }
 

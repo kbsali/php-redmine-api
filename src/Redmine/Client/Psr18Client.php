@@ -24,14 +24,8 @@ use Redmine\Http\Response;
 final class Psr18Client implements Client, HttpClient
 {
     use ClientApiTrait;
-
-    private string $url;
-    private string $apikeyOrUsername;
-    private ?string $password;
     private ?string $impersonateUser = null;
-    private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
-    private StreamFactoryInterface $streamFactory;
     private ?ResponseInterface $lastResponse = null;
 
     /**
@@ -40,12 +34,12 @@ final class Psr18Client implements Client, HttpClient
      * @param ?string $password needs to be set if a username is given (not recommended).
      */
     public function __construct(
-        ClientInterface $httpClient,
+        private ClientInterface $httpClient,
         $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $url,
-        string $apikeyOrUsername,
-        ?string $password = null,
+        private StreamFactoryInterface $streamFactory,
+        private string $url,
+        private string $apikeyOrUsername,
+        private ?string $password = null,
     ) {
         if (! $requestFactory instanceof RequestFactoryInterface && ! $requestFactory instanceof ServerRequestFactoryInterface) {
             throw new Exception(sprintf(
@@ -68,13 +62,7 @@ final class Psr18Client implements Client, HttpClient
 
             $requestFactory = $this->handleServerRequestFactory($requestFactory);
         }
-
-        $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
-        $this->streamFactory = $streamFactory;
-        $this->url = $url;
-        $this->apikeyOrUsername = $apikeyOrUsername;
-        $this->password = $password;
     }
 
     /**
@@ -334,12 +322,7 @@ final class Psr18Client implements Client, HttpClient
     private function handleServerRequestFactory(ServerRequestFactoryInterface $factory): RequestFactoryInterface
     {
         return new class ($factory) implements RequestFactoryInterface {
-            private ServerRequestFactoryInterface $factory;
-
-            public function __construct(ServerRequestFactoryInterface $factory)
-            {
-                $this->factory = $factory;
-            }
+            public function __construct(private readonly ServerRequestFactoryInterface $factory) {}
 
             public function createRequest(string $method, $uri): RequestInterface
             {
