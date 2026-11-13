@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [v2.x]
+    branches: [v2.x, v3.x]
   pull_request:
 
 permissions:
@@ -181,6 +181,8 @@ jobs:
 
   roave-bc-check:
     name: BC check (PHP ${{ matrix.php }})
+    # v3.x removes the deprecated API on purpose, so the check is off until the tag v3.0.0 exists (#539).
+    if: false
     runs-on: ubuntu-latest
 
     strategy:
