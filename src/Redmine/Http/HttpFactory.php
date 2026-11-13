@@ -12,7 +12,7 @@ final class HttpFactory
     public static function makeResponse(int $statusCode, string $contentType, string $content): Response
     {
         return new class ($statusCode, $contentType, $content) implements Response {
-            public function __construct(private int $statusCode, private string $contentType, private string $body) {}
+            public function __construct(private readonly int $statusCode, private readonly string $contentType, private readonly string $body) {}
 
             public function getStatusCode(): int
             {
@@ -34,7 +34,7 @@ final class HttpFactory
     public static function makeRequest(string $method, string $path, string $contentType = '', string $content = ''): Request
     {
         return new class ($method, $path, $contentType, $content) implements Request {
-            public function __construct(private string $method, private string $path, private string $contentType, private string $content) {}
+            public function __construct(private readonly string $method, private readonly string $path, private readonly string $contentType, private readonly string $content) {}
 
             public function getMethod(): string
             {

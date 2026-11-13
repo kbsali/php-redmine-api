@@ -322,7 +322,7 @@ final class Psr18Client implements Client, HttpClient
     private function handleServerRequestFactory(ServerRequestFactoryInterface $factory): RequestFactoryInterface
     {
         return new class ($factory) implements RequestFactoryInterface {
-            public function __construct(private ServerRequestFactoryInterface $factory) {}
+            public function __construct(private readonly ServerRequestFactoryInterface $factory) {}
 
             public function createRequest(string $method, $uri): RequestInterface
             {

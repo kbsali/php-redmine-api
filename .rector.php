@@ -7,7 +7,7 @@ return \Rector\Config\RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
-    ->withPhpSets(php80: true)
+    ->withPhpSets(php81: true)
     ->withPhpVersion(80200)
     ->withSets([
         \Rector\Set\ValueObject\SetList::CODE_QUALITY,

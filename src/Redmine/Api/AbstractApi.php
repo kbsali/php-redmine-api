@@ -270,7 +270,7 @@ abstract class AbstractApi implements Api
     {
         return array_filter(
             array_merge($defaults, $params),
-            [$this, 'isNotNull'],
+            $this->isNotNull(...),
         );
     }
 
@@ -495,7 +495,7 @@ abstract class AbstractApi implements Api
     private function handleClient(Client $client): HttpClient
     {
         return new class ($client) implements HttpClient {
-            public function __construct(private Client $client) {}
+            public function __construct(private readonly Client $client) {}
 
             public function request(Request $request): Response
             {

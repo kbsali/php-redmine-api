@@ -21,25 +21,25 @@ final class RedmineInstance
         $tracer->registerInstance(new self($tracer, $version, $rootPath, $redmineUrl));
     }
 
-    private string $dataPath;
+    private readonly string $dataPath;
 
-    private string $workingDB;
+    private readonly string $workingDB;
 
-    private string $migratedDB;
+    private readonly string $migratedDB;
 
-    private string $backupDB;
+    private readonly string $backupDB;
 
-    private string $workingFiles;
+    private readonly string $workingFiles;
 
-    private string $migratedFiles;
+    private readonly string $migratedFiles;
 
-    private string $backupFiles;
+    private readonly string $backupFiles;
 
-    private string $redmineUrl;
+    private readonly string $redmineUrl;
 
-    private string $apiKey;
+    private readonly string $apiKey;
 
-    private function __construct(private InstanceRegistration $tracer, private RedmineVersion $version, string $rootPath, string $redmineUrl)
+    private function __construct(private readonly InstanceRegistration $tracer, private readonly RedmineVersion $version, string $rootPath, string $redmineUrl)
     {
         if (trim($rootPath) === '') {
             throw new InvalidArgumentException('Redmine data path cannot be empty.');
