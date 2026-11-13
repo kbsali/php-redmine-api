@@ -235,6 +235,15 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 
 > :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
 
+#### Preparing for v3.0.0
+
+v3.0.0 will only have the behaviour of the forward compatibility mode, `enableFutureMode()` will then do nothing. To prepare your code for v3.0.0:
+
+1. Update to v2.11.0.
+2. Call `enableFutureMode()` on your client and handle the `\Redmine\Exception\UnexpectedResponseException` and the other exceptions it enables. APIs created with `fromHttpClient()` are not affected, get them from `$client->getApi()` instead.
+3. Replace everything that is marked as deprecated in [CHANGELOG.md](../CHANGELOG.md) and fix the `E_USER_DEPRECATED` notices of your tests.
+4. Update to v3.0.0.
+
 ### Name aliases in `Issue::create()` and `Issue::update()`
 
 Instead of ids, `Issue::create()` and `Issue::update()` accept the names `project`, `category`, `status`, `tracker`, `assigned_to` (login) and `author` (login). Each name needs extra requests to look up the id. Use the `*_id` params to avoid them.
