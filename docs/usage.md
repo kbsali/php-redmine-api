@@ -240,7 +240,7 @@ The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException`
 v3.0.0 will only have the behaviour of the forward compatibility mode, `enableFutureMode()` will then do nothing. To prepare your code for v3.0.0:
 
 1. Update to v2.11.0.
-2. Call `enableFutureMode()` on your client and handle the `\Redmine\Exception\UnexpectedResponseException` and the other exceptions it enables.
+2. Call `enableFutureMode()` on your client and handle the `\Redmine\Exception\UnexpectedResponseException` and the other exceptions it enables. APIs created with `fromHttpClient()` are not affected, get them from `$client->getApi()` instead.
 3. Replace everything that is marked as deprecated in [CHANGELOG.md](../CHANGELOG.md) and fix the `E_USER_DEPRECATED` notices of your tests.
 4. Update to v3.0.0.
 
