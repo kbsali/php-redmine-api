@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use PDO;
 use SQLite3;
 
-final class RedmineInstance
+final readonly class RedmineInstance
 {
     /**
      * @param InstanceRegistration $tracer Required to ensure that RedmineInstance is created while Test Runner is running
@@ -21,25 +21,25 @@ final class RedmineInstance
         $tracer->registerInstance(new self($tracer, $version, $rootPath, $redmineUrl));
     }
 
-    private readonly string $dataPath;
+    private string $dataPath;
 
-    private readonly string $workingDB;
+    private string $workingDB;
 
-    private readonly string $migratedDB;
+    private string $migratedDB;
 
-    private readonly string $backupDB;
+    private string $backupDB;
 
-    private readonly string $workingFiles;
+    private string $workingFiles;
 
-    private readonly string $migratedFiles;
+    private string $migratedFiles;
 
-    private readonly string $backupFiles;
+    private string $backupFiles;
 
-    private readonly string $redmineUrl;
+    private string $redmineUrl;
 
-    private readonly string $apiKey;
+    private string $apiKey;
 
-    private function __construct(private readonly InstanceRegistration $tracer, private readonly RedmineVersion $version, string $rootPath, string $redmineUrl)
+    private function __construct(private InstanceRegistration $tracer, private RedmineVersion $version, string $rootPath, string $redmineUrl)
     {
         if (trim($rootPath) === '') {
             throw new InvalidArgumentException('Redmine data path cannot be empty.');
