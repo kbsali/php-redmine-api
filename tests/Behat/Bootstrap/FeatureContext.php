@@ -63,7 +63,7 @@ final class FeatureContext implements Context
     {
         if ($this->unassertedExceptions !== []) {
             throw new RuntimeException(
-                'An API call threw ' . get_class($this->unassertedExceptions[0]) . ', but no step asserted it.',
+                'An API call threw ' . $this->unassertedExceptions[0]::class . ', but no step asserted it.',
                 0,
                 $this->unassertedExceptions[0],
             );
@@ -196,7 +196,7 @@ final class FeatureContext implements Context
     {
         if ($this->lastException instanceof UnexpectedResponseException) {
             throw new RuntimeException(
-                'There is no returned data, because the API call threw ' . get_class($this->lastException) . '.',
+                'There is no returned data, because the API call threw ' . $this->lastException::class . '.',
             );
         }
 

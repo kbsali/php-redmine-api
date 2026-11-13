@@ -21,10 +21,6 @@ final class RedmineInstance
         $tracer->registerInstance(new self($tracer, $version, $rootPath, $redmineUrl));
     }
 
-    private InstanceRegistration $tracer;
-
-    private RedmineVersion $version;
-
     private string $dataPath;
 
     private string $workingDB;
@@ -43,7 +39,7 @@ final class RedmineInstance
 
     private string $apiKey;
 
-    private function __construct(InstanceRegistration $tracer, RedmineVersion $version, string $rootPath, string $redmineUrl)
+    private function __construct(private InstanceRegistration $tracer, private RedmineVersion $version, string $rootPath, string $redmineUrl)
     {
         if (trim($rootPath) === '') {
             throw new InvalidArgumentException('Redmine data path cannot be empty.');
@@ -53,10 +49,7 @@ final class RedmineInstance
             throw new InvalidArgumentException('Redmine url cannot be empty.');
         }
 
-        $this->tracer = $tracer;
-        $this->version = $version;
-
-        $versionId = strval($version->asId());
+        $versionId = strval($this->version->asId());
 
         $this->dataPath = rtrim($rootPath, '/') . '/';
 
@@ -71,7 +64,7 @@ final class RedmineInstance
         $this->redmineUrl = $redmineUrl;
         $this->apiKey = sha1($versionId . time());
 
-        $this->runHealthChecks($version);
+        $this->runHealthChecks($this->version);
 
         $this->createDatabaseBackup();
         $this->createFilesBackup();

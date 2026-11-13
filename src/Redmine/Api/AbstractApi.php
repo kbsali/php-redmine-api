@@ -495,12 +495,7 @@ abstract class AbstractApi implements Api
     private function handleClient(Client $client): HttpClient
     {
         return new class ($client) implements HttpClient {
-            private Client $client;
-
-            public function __construct(Client $client)
-            {
-                $this->client = $client;
-            }
+            public function __construct(private Client $client) {}
 
             public function request(Request $request): Response
             {

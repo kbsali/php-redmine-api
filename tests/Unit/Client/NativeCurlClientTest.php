@@ -774,7 +774,7 @@ class NativeCurlClientTest extends TestCase
 
         try {
             $client->requestGet('/path');
-        } catch (ClientException $th) {
+        } catch (ClientException) {
         }
     }
 
@@ -813,7 +813,7 @@ class NativeCurlClientTest extends TestCase
 
         try {
             $client->requestPost('/path', '');
-        } catch (ClientException $th) {
+        } catch (ClientException) {
         }
     }
 
@@ -852,7 +852,7 @@ class NativeCurlClientTest extends TestCase
 
         try {
             $client->requestPut('/path', '');
-        } catch (ClientException $th) {
+        } catch (ClientException) {
         }
     }
 
@@ -891,7 +891,7 @@ class NativeCurlClientTest extends TestCase
 
         try {
             $client->requestDelete('/path');
-        } catch (ClientException $th) {
+        } catch (ClientException) {
         }
     }
 
