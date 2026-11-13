@@ -180,7 +180,7 @@ jobs:
         run: composer run rector -- --dry-run --output-format=github
 
   roave-bc-check:
-    name: Compare public API with the last release (PHP ${{ matrix.php }})
+    name: Check backward compatibility (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
     strategy:
