@@ -178,3 +178,31 @@ jobs:
       - name: Check Rector
         if: ${{ matrix.tool == 'rector' }}
         run: composer run rector -- --dry-run --output-format=github
+
+  roave-bc-check:
+    name: BC check (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php: ["8.2"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Roave compares HEAD with the last release tag, fetch all tags
+          fetch-depth: 0
+
+      - name: Setup PHP, with composer
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          # installed globally; its own dependencies conflict with the project's
+          tools: backward-compatibility-check
+
+      - name: Run Roave Backward Compatibility Check
+        run: roave-backward-compatibility-check --format=github-actions
