@@ -4,7 +4,7 @@
 
 ### Docker setup
 
-All PHP commands run inside Docker containers. Check `docker-compose.yml` for the service names. On `v2.x` (default) the `php` and `behat` services both run PHP 8.2.
+All PHP commands run inside Docker containers. Check `docker-compose.yml` for the service names. On `v3.x` (default) and `v2.x` the `php` and `behat` services both run PHP 8.2.
 
 The `behat` container intentionally runs on PHP 8.2 (the lowest supported version). In CI, Behat, PHPStan and code style run on PHP 8.2 as well.
 
@@ -24,7 +24,7 @@ Notes:
   `docker compose run --rm --user "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer behat composer update --with-all-dependencies`
   This installs PHPUnit 11.5. If composer reports permission errors in `vendor/`, fix the ownership first: `docker compose run --rm --user 0 behat chown -R "$(id -u):$(id -g)" vendor composer.lock`
 - **Behat** needs running Redmine containers. After `docker compose up -d`, wait until all containers are healthy (about 30–60s) before running Behat.
-- The **pipeline** consists of the jobs in `.github/workflows/tests.yml` and of external checks (CodeRabbit, Codecov, GitGuardian). It runs for every pull request and for pushes to `v2.x`; a push to any other branch without a pull request starts nothing. Wait until all checks of the pull request have finished.
+- The **pipeline** consists of the jobs in `.github/workflows/tests.yml` and of external checks (CodeRabbit, Codecov, GitGuardian). It runs for every pull request and for pushes to `v2.x` and `v3.x`; a push to any other branch without a pull request starts nothing. Wait until all checks of the pull request have finished.
 
 ### Issue tracker
 
