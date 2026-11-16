@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
@@ -102,37 +101,6 @@ class TimeEntryActivity extends AbstractApi
         $this->timeEntryActivityNames = $names;
 
         return $this->timeEntryActivityNames;
-    }
-
-    /**
-     * List time entry activities.
-     *
-     * @deprecated v2.4.0 Use list() instead.
-     * @see TimeEntryActivity::list()
-     *
-     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of time entry activities found or error message or false
-     */
-    public function all(array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $this->timeEntryActivities = $this->list($params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $this->timeEntryActivities;
     }
 
     /**

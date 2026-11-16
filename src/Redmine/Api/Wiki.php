@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -86,39 +85,6 @@ class Wiki extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
-    }
-
-    /**
-     * List wiki pages of given $project.
-     *
-     * @deprecated v2.4.0 Use listByProject() instead.
-     * @see Wiki::listByProject()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages#Getting-the-pages-list-of-a-wiki
-     *
-     * @param int|string   $project project name
-     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of wiki pages found or error message or false
-     */
-    public function all($project, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $wikiPages = $this->listByProject(strval($project), $params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $wikiPages;
     }
 
     /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -77,38 +76,6 @@ class TimeEntry extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
-    }
-
-    /**
-     * List time entries.
-     *
-     * @deprecated v2.4.0 Use list() instead.
-     * @see TimeEntry::list()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-     *
-     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of time entries found or error message or false
-     */
-    public function all(array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $timeEntries = $this->list($params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $timeEntries;
     }
 
     /**

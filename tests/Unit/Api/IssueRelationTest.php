@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueRelation;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -55,99 +53,4 @@ class IssueRelationTest extends TestCase
         new IssueRelation($this->createStub(HttpClient::class));
     }
 
-    /**
-     * Test all().
-     */
-    public function testAllTriggersDeprecationWarning(): void
-    {
-        $api = IssueRelation::fromHttpClient($this->createStub(HttpClient::class));
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\IssueRelation::all()` is deprecated since v2.4.0, use `Redmine\Api\IssueRelation::listByIssueId()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->all(5);
-    }
-
-    /**
-     * Test all().
-     *
-     * @dataProvider getAllData
-     *
-     * @param string|bool|array<mixed> $expectedResponse
-     */
-    #[DataProvider('getAllData')]
-    public function testAllReturnsClientGetResponseWithProject(string $response, string $responseType, string|bool|array $expectedResponse): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/issues/5/relations.json',
-                'application/json',
-                '',
-                200,
-                $responseType,
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueRelation::fromHttpClient($client);
-
-        // Perform the tests
-        $this->assertSame($expectedResponse, $api->all(5));
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getAllData(): array
-    {
-        return [
-            'array response' => ['["API Response"]', 'application/json', ['API Response']],
-            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
-            'false response' => ['', 'application/json', false],
-        ];
-    }
-
-    /**
-     * Test all().
-     */
-    public function testAllReturnsClientGetResponseWithParametersAndProject(): void
-    {
-        // Test values
-        $parameters = ['not-used'];
-        $response = '["API Response"]';
-        $expectedReturn = ['API Response'];
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/issues/5/relations.json?limit=25&offset=0&0=not-used',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueRelation::fromHttpClient($client);
-
-        // Perform the tests
-        $this->assertSame($expectedReturn, $api->all(5, $parameters));
-    }
 }

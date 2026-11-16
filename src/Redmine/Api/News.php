@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -100,37 +99,4 @@ class News extends AbstractApi
         }
     }
 
-    /**
-     * List news (if no $project is given, it will return ALL the news).
-     *
-     * @deprecated v2.4.0 Use list() or listByProject() instead.
-     * @see News::list()
-     * @see News::listByProject()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_News#GET
-     *
-     * @param string|int   $project project id or literal identifier [optional]
-     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of news found or error message or false
-     */
-    public function all($project = null, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` or `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $news = null === $project ? $this->list($params) : $this->listByProject(strval($project), $params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $news;
-    }
 }
