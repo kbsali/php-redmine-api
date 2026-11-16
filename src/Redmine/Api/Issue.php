@@ -143,46 +143,6 @@ class Issue extends AbstractApi
     }
 
     /**
-     * List issues.
-     *
-     * @deprecated v2.4.0 Use list() instead.
-     * @see Issue::list()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues
-     * available $params :
-     * - offset: skip this number of issues in response (optional)
-     * - limit: number of issues per page (optional)
-     * - sort: column to sort with. Append :desc to invert the order.
-     * - project_id: get issues from the project with the given id, where id is either project id or project identifier
-     * - tracker_id: get issues from the tracker with the given id
-     * - status_id: get issues with the given status id only. Possible values: open, closed, * to get open and closed issues, status id
-     * - assigned_to_id: get issues which are assigned to the given user id
-     * - cf_x: get issues with the given value for custom field with an ID of x. (Custom field must have 'used as a filter' checked.)
-     * - query_id : id of the previously saved query
-     *
-     * @param array<mixed> $params the additional parameters (cf available $params above)
-     *
-     * @return array<mixed>|string|false list of issues found or error message or false
-     */
-    public function all(array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
-
-        try {
-            return $this->list($params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-    }
-
-    /**
      * Get extended information about an issue gitven its id.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Using-JSON

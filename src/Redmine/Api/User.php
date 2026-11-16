@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -127,38 +126,6 @@ class User extends AbstractApi
         $this->userLogins = $logins;
 
         return $this->userLogins;
-    }
-
-    /**
-     * List users.
-     *
-     * @deprecated v2.4.0 Use list() instead.
-     * @see User::list()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#GET
-     *
-     * @param array<mixed> $params to allow offset/limit (and more) to be passed
-     *
-     * @return array<mixed>|string|false list of users found or error message or false
-     */
-    public function all(array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $this->users = $this->list($params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $this->users;
     }
 
     /**

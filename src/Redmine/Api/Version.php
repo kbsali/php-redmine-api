@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
@@ -135,39 +134,6 @@ class Version extends AbstractApi
         $this->versionNames[$projectIdentifier] = $names;
 
         return $this->versionNames[$projectIdentifier];
-    }
-
-    /**
-     * List versions.
-     *
-     * @deprecated v2.4.0 Use listByProject() instead.
-     * @see Version::listByProject()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Versions#GET
-     *
-     * @param string|int   $project project id or literal identifier
-     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of versions found or error message or false
-     */
-    public function all($project, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByProject()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $this->versions = $this->listByProject(strval($project), $params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $this->versions;
     }
 
     /**

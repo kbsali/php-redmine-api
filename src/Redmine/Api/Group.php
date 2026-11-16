@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -110,38 +109,6 @@ class Group extends AbstractApi
         $this->groupNames = $names;
 
         return $this->groupNames;
-    }
-
-    /**
-     * List groups.
-     *
-     * @deprecated v2.4.0 Use list() instead.
-     * @see Group::list()
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_Groups#GET
-     *
-     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of groups found or error message or false
-     */
-    public function all(array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::list()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $this->groups = $this->list($params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $this->groups;
     }
 
     /**
