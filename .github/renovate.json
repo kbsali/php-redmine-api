@@ -1,5 +1,6 @@
 {
   "extends": ["config:recommended", "group:all", "schedule:weekly"],
+  "baseBranches": ["v3.x", "v2.x"],
   "assigneesFromCodeOwners": true,
   "assigneesSampleSize": 1,
   "separateMinorPatch": true,

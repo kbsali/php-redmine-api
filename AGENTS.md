@@ -4,7 +4,7 @@
 
 ### Docker setup
 
-All PHP commands run inside Docker containers. Check `docker-compose.yml` for the service names. On `v2.x` (default) the `php` and `behat` services both run PHP 8.2.
+All PHP commands run inside Docker containers. Check `docker-compose.yml` for the service names. On `v3.x` (default) and `v2.x` the `php` and `behat` services both run PHP 8.2.
 
 The `behat` container intentionally runs on PHP 8.2 (the lowest supported version). In CI, Behat, PHPStan and code style run on PHP 8.2 as well.
 
@@ -24,7 +24,7 @@ Notes:
   `docker compose run --rm --user "$(id -u):$(id -g)" -e COMPOSER_HOME=/tmp/composer behat composer update --with-all-dependencies`
   This installs PHPUnit 11.5. If composer reports permission errors in `vendor/`, fix the ownership first: `docker compose run --rm --user 0 behat chown -R "$(id -u):$(id -g)" vendor composer.lock`
 - **Behat** needs running Redmine containers. After `docker compose up -d`, wait until all containers are healthy (about 30–60s) before running Behat.
-- The **pipeline** consists of the jobs in `.github/workflows/tests.yml` and of external checks (CodeRabbit, Codecov, GitGuardian). It runs for every pull request and for pushes to `v2.x`; a push to any other branch without a pull request starts nothing. Wait until all checks of the pull request have finished.
+- The **pipeline** consists of the jobs in `.github/workflows/tests.yml` and of external checks (CodeRabbit, Codecov, GitGuardian). It runs for every pull request and for pushes to `v2.x` and `v3.x`; a push to any other branch without a pull request starts nothing. Wait until all checks of the pull request have finished.
 
 ### Issue tracker
 
@@ -36,7 +36,8 @@ When you notice a possible refactoring while doing other work, post it directly 
 
 ### Conventions
 
-- **Strict BC promise** – no breaking changes; new exceptions only behind the per-client future mode gate (`$this->isFutureModeEnabled()` in `AbstractApi`, enabled via `$client->enableFutureMode()`; tests use `Redmine\Tests\Fixtures\FutureMode::enable($api)`)
+- **Strict BC promise** – on `v2.x` no breaking changes; new exceptions only behind the per-client future mode gate (`$this->isFutureModeEnabled()` in `AbstractApi`, enabled via `$client->enableFutureMode()`; tests use `Redmine\Tests\Fixtures\FutureMode::enable($api)`)
+- **v3.x removes deprecated API** – on `v3.x` only what v2.11 has deprecated is removed (see the deprecation gate in #539); everything else still follows the BC promise. Each removal is its own pull request with a changelog entry.
 - **One unit test file per API method** – tests live in `tests/Unit/Api/<Api>/<Method>Test.php` (e.g. `Issue/UpdateTest.php`). Add to the existing file instead of creating a topic file; the maintainers merge topic files into the method files.
 - **QA before committing** – PHPUnit + code style + PHPStan + Rector + Behat must pass, on PHP 8.2 (the lowest supported version). Run Rector with `docker compose run --rm php composer run rector -- --dry-run`. Mention the PHP versions used in the PR's QA section.
 - **No co-author/attribution lines** – commit messages and PR descriptions contain no `Co-Authored-By:` trailers, no session links and no "Generated with" notes.
