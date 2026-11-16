@@ -104,23 +104,6 @@ class TimeEntryActivity extends AbstractApi
     }
 
     /**
-     * Returns an array of time entry activities with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see TimeEntryActivity::listNames()
-     *
-     * @param bool $forceUpdate to force the update of the statuses var
-     *
-     * @return array<string,int> list of time entry activities (name => id)
-     */
-    public function listing($forceUpdate = false)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        return $this->doListing((bool) $forceUpdate);
-    }
-
-    /**
      * Get a activities id given its name.
      *
      * @deprecated v2.7.0 Use listNames() instead.

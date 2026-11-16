@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **BREAKING**: Code that used the removed `all()` methods must now handle exceptions. The `list*()` methods throw an `UnexpectedResponseException` on an error response (with `enableFutureMode()`, which is the only behaviour from v3.0.0 on), while `all()` returned `false` or the error message as a string (#348).
+- **BREAKING**: Code that used the removed `listing()` methods must adapt to the `listNames()` methods: they return `[id => name]` instead of `[name => id]` and have no arguments (`$forceUpdate`, `$reverse`, `$params`). They fetch the list once per API instance, so create a new instance to get fresh data (#415).
 
 ### Removed
 
 - **BREAKING**: The `all()` methods of the `Redmine\Api\...` classes were removed, they were deprecated since v2.4.0. Use `list()` instead. Use `listByProject()` instead for `IssueCategory`, `Membership`, `Version` and `Wiki`, `listByIssueId()` for `IssueRelation`, and `list()` or `listByProject()` for `News` (#348).
+- **BREAKING**: The `listing()` methods of the `Redmine\Api\...` classes were removed, they were deprecated since v2.7.0. Use `listNames()` instead. Use `listNamesByProject()` instead for `IssueCategory` and `Version`, and `listLogins()` for `User` (#415).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
