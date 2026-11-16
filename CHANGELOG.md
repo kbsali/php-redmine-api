@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **BREAKING**: Code that used the removed `all()` methods must now handle exceptions. The `list*()` methods throw an exception on an error response, while `all()` returned `false` or the error message as a string (#348).
+- **BREAKING**: Code that used the removed `all()` methods must now handle exceptions. The `list*()` methods throw an `UnexpectedResponseException` on an error response (with `enableFutureMode()`, which is the only behaviour from v3.0.0 on), while `all()` returned `false` or the error message as a string (#348).
 
 ### Removed
 
