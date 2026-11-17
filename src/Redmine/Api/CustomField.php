@@ -24,11 +24,6 @@ class CustomField extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $customFields = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $customFieldNames = null;
@@ -106,47 +101,4 @@ class CustomField extends AbstractApi
         return $this->customFieldNames;
     }
 
-    /**
-     * Get a custom field id given its name.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see CustomField::listNames()
-     *
-     * @param string|int   $name   customer field name
-     * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return int|false
-     */
-    public function getIdByName($name, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false, $params);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
-    }
-
-    /**
-     * @param array<mixed> $params
-     *
-     * @return array<mixed>
-     */
-    private function doListing(bool $forceUpdate, array $params): array
-    {
-        if ($forceUpdate || $this->customFields === null) {
-            $this->customFields = $this->list($params);
-        }
-
-        $ret = [];
-
-        foreach ($this->customFields['custom_fields'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
-    }
 }

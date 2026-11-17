@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\TimeEntryActivity;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -54,62 +53,4 @@ class TimeEntryActivityTest extends TestCase
         new TimeEntryActivity($this->createStub(HttpClient::class));
     }
 
-    public function testGetIdByNameMakesGetRequest(): void
-    {
-        $response = '{"time_entry_activities":[{"id":2,"name":"TimeEntryActivities 2"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/enumerations/time_entry_activities.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        $api = TimeEntryActivity::fromHttpClient($client);
-
-        $this->assertFalse($api->getIdByName('TimeEntryActivities 1'));
-        $this->assertSame(2, $api->getIdByName('TimeEntryActivities 2'));
-    }
-
-    public function testGetIdByNameTriggersDeprecationWarning(): void
-    {
-        $response = '{"time_entry_activities":[{"id":1,"name":"TimeEntryActivity 1"},{"id":5,"name":"TimeEntryActivity 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/enumerations/time_entry_activities.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        $api = TimeEntryActivity::fromHttpClient($client);
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\TimeEntryActivity::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\TimeEntryActivity::listNames()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->getIdByName('TimeEntryActivities 2');
-    }
 }

@@ -34,11 +34,6 @@ class Project extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $projects = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $projectNames = null;
@@ -127,30 +122,6 @@ class Project extends AbstractApi
         $this->projectNames = $names;
 
         return $this->projectNames;
-    }
-
-    /**
-     * Get a project id given its name.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Project::listNames()
-     *
-     * @param string       $name
-     * @param array<mixed> $params to allow offset/limit (and more) to be passed
-     *
-     * @return int|bool
-     */
-    public function getIdByName($name, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false, true, $params);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
     }
 
     /**
@@ -449,23 +420,4 @@ class Project extends AbstractApi
         return $body;
     }
 
-    /**
-     * @param array<mixed> $params
-     *
-     * @return array<mixed>
-     */
-    private function doListing(bool $forceUpdate, bool $reverse, array $params): array
-    {
-        if ($forceUpdate || $this->projects === null) {
-            $this->projects = $this->list($params);
-        }
-
-        $ret = [];
-
-        foreach ($this->projects['projects'] as $e) {
-            $ret[(int) $e['id']] = $e['name'];
-        }
-
-        return $reverse ? array_flip($ret) : $ret;
-    }
 }

@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
 
@@ -54,71 +53,6 @@ class ProjectTest extends TestCase
         );
 
         new Project($this->createStub(HttpClient::class));
-    }
-
-    /**
-     * Test getIdByName().
-     */
-    public function testGetIdByNameMakesGetRequest(): void
-    {
-        // Test values
-        $response = '{"projects":[{"id":5,"name":"Project 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Project::fromHttpClient($client);
-
-        // Perform the tests
-        $this->assertFalse($api->getIdByName('Project 1'));
-        $this->assertSame(5, $api->getIdByName('Project 5'));
-    }
-
-    public function testGetIdByNameTriggersDeprecationWarning(): void
-    {
-        $response = '{"projects":[{"id":1,"name":"Project 1"},{"id":5,"name":"Project 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        $api = Project::fromHttpClient($client);
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\Project::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\Project::listNames()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->getIdByName('Project 1');
     }
 
     public function testDeprecatedPrepareParamsXml(): void
