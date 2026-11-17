@@ -33,11 +33,6 @@ class User extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $users = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $userLogins = null;
@@ -140,30 +135,6 @@ class User extends AbstractApi
     public function getCurrentUser(array $params = [])
     {
         return $this->show('current', $params);
-    }
-
-    /**
-     * Get a user id given its username.
-     *
-     * @deprecated v2.7.0 Use listLogins() instead.
-     * @see User::listLogins()
-     *
-     * @param string       $username
-     * @param array<mixed> $params   to allow offset/limit (and more) to be passed
-     *
-     * @return int|bool
-     */
-    public function getIdByUsername($username, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false, $params);
-
-        if (!isset($arr[$username])) {
-            return false;
-        }
-
-        return $arr[(string) $username];
     }
 
     /**
@@ -331,25 +302,4 @@ class User extends AbstractApi
         return $body;
     }
 
-    /**
-     * @param array<mixed> $params
-     *
-     * @return int[]
-     */
-    private function doListing(bool $forceUpdate, array $params): array
-    {
-        if ($forceUpdate || $this->users === null) {
-            $this->users = $this->list($params);
-        }
-
-        $ret = [];
-
-        if (array_key_exists('users', $this->users)) {
-            foreach ($this->users['users'] as $e) {
-                $ret[$e['login']] = (int) $e['id'];
-            }
-        }
-
-        return $ret;
-    }
 }

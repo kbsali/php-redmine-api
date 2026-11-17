@@ -33,11 +33,6 @@ class Version extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $versions = null;
-
-    /**
      * @var array<array<int,string>>
      */
     private array $versionNames = [];
@@ -134,31 +129,6 @@ class Version extends AbstractApi
         $this->versionNames[$projectIdentifier] = $names;
 
         return $this->versionNames[$projectIdentifier];
-    }
-
-    /**
-     * Get an version id given its name and related project.
-     *
-     * @deprecated v2.7.0 Use listNamesByProject() instead.
-     * @see Version::listNamesByProject()
-     *
-     * @param string|int   $project project id or literal identifier
-     * @param string       $name The version name
-     * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return int|false
-     */
-    public function getIdByName($project, $name, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing($project, false, true, $params);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
     }
 
     /**
@@ -343,25 +313,4 @@ class Version extends AbstractApi
         return $body;
     }
 
-    /**
-     * @param string|int   $projectIdentifier project id or literal identifier
-     * @param array<mixed> $params
-     *
-     * @return array<mixed>
-     */
-    private function doListing($projectIdentifier, bool $forceUpdate, bool $reverse, array $params): array
-    {
-        if ($forceUpdate || $this->versions === null) {
-            $this->versions = $this->listByProject($projectIdentifier, $params);
-        }
-
-        $ret = [];
-        if (array_key_exists('versions', $this->versions)) {
-            foreach ($this->versions['versions'] as $e) {
-                $ret[(int) $e['id']] = $e['name'];
-            }
-        }
-
-        return $reverse ? array_flip($ret) : $ret;
-    }
 }

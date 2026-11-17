@@ -24,11 +24,6 @@ class Tracker extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $trackers = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $trackerNames = null;
@@ -105,44 +100,4 @@ class Tracker extends AbstractApi
         return $this->trackerNames;
     }
 
-    /**
-     * Get a tracker id given its name.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Tracker::listNames()
-     *
-     * @param string|int $name tracker name
-     *
-     * @return int|false
-     */
-    public function getIdByName($name)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function doListing(bool $forceUpdate): array
-    {
-        if ($forceUpdate || $this->trackers === null) {
-            $this->trackers = $this->list();
-        }
-
-        $ret = [];
-
-        foreach ($this->trackers['trackers'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
-    }
 }

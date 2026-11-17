@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Version;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -54,72 +53,6 @@ class VersionTest extends TestCase
         );
 
         new Version($this->createStub(HttpClient::class));
-    }
-
-    /**
-     * Test getIdByName().
-     */
-    public function testGetIdByNameMakesGetRequest(): void
-    {
-        // Test values
-        $response = '{"versions":[{"id":5,"name":"Version 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/versions.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-
-        // Create the object under test
-        $api = Version::fromHttpClient($client);
-
-        // Perform the tests
-        $this->assertFalse($api->getIdByName(5, 'Version 1'));
-        $this->assertSame(5, $api->getIdByName(5, 'Version 5'));
-    }
-
-    public function testGetIdByNameTriggersDeprecationWarning(): void
-    {
-        $response = '{"versions":[{"id":1,"name":"Version 1"},{"id":5,"name":"Version 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/versions.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        $api = Version::fromHttpClient($client);
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\Version::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\Version::listNamesByProject()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->getIdByName(5, 'Version 5');
     }
 
     /**

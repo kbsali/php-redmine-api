@@ -24,11 +24,6 @@ class IssueStatus extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $issueStatuses = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $issueStatusNames = null;
@@ -106,44 +101,4 @@ class IssueStatus extends AbstractApi
         return $this->issueStatusNames;
     }
 
-    /**
-     * Get a status id given its name.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see IssueStatus::listNames()
-     *
-     * @param string $name
-     *
-     * @return int|false
-     */
-    public function getIdByName($name)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
-    }
-
-    /**
-     * @return array<string,int>
-     */
-    private function doListing(bool $forceUpdate): array
-    {
-        if ($forceUpdate || $this->issueStatuses === null) {
-            $this->issueStatuses = $this->list();
-        }
-
-        $ret = [];
-
-        foreach ($this->issueStatuses['issue_statuses'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
-    }
 }

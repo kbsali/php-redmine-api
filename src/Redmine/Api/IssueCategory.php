@@ -34,11 +34,6 @@ class IssueCategory extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $issueCategories = null;
-
-    /**
      * @var array<mixed>
      */
     private array $issueCategoriesNames = [];
@@ -136,30 +131,6 @@ class IssueCategory extends AbstractApi
         $this->issueCategoriesNames[$projectIdentifier] = $names;
 
         return $this->issueCategoriesNames[$projectIdentifier];
-    }
-
-    /**
-     * Get a category id given its name and related project.
-     *
-     * @deprecated v2.7.0 Use listNamesByProject() instead.
-     * @see IssueCategory::listNamesByProject()
-     *
-     * @param string|int $project project id or literal identifier
-     * @param string     $name
-     *
-     * @return int|false
-     */
-    public function getIdByName($project, $name)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNamesByProject()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing($project, false);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
     }
 
     /**
@@ -305,23 +276,4 @@ class IssueCategory extends AbstractApi
         return $body;
     }
 
-    /**
-     * @param int|string $projectIdentifier
-     *
-     * @return array<string,int>
-     */
-    private function doListing($projectIdentifier, bool $forceUpdate): array
-    {
-        if ($forceUpdate || $this->issueCategories === null) {
-            $this->issueCategories = $this->listByProject($projectIdentifier);
-        }
-
-        $ret = [];
-
-        foreach ($this->issueCategories['issue_categories'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
-    }
 }

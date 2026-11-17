@@ -11,11 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **BREAKING**: Code that used the removed `all()` methods must now handle exceptions. The `list*()` methods throw an `UnexpectedResponseException` on an error response (with `enableFutureMode()`, which is the only behaviour from v3.0.0 on), while `all()` returned `false` or the error message as a string (#348).
 - **BREAKING**: Code that used the removed `listing()` methods must adapt to the `listNames()` methods: they return `[id => name]` instead of `[name => id]` and have no `$forceUpdate`, `$reverse` or `$params` arguments. They fetch the list once per API instance (once per project for `IssueCategory` and `Version`), so create a new instance to get fresh data (#415).
+- **BREAKING**: Code that used the removed `getIdByName()` methods must search the result of `listNames()` itself (`listNamesByProject()` for `IssueCategory` and `Version`), e.g. `array_search((string) $name, $api->listNames(), true)`, which returns `false` if the name is not found. Names are not always unique (e.g. projects and versions): `getIdByName()` returned the ID of the last match, `array_search()` returns the first one, so decide yourself which ID you need. `CustomField`, `Project` and `Version` accepted `$params` (e.g. `offset`, `limit`) and searched only the requested page. If you rely on that, call `list($params)` (`listByProject($project, $params)` for `Version`) and search the returned records for the `name`. Without `$params`, `getIdByName()` searched only the first page, `listNames()` reads all pages (#418).
+- **BREAKING**: Code that used the removed `User::getIdByUsername()` must search the result of `listLogins()` itself, e.g. `array_search((string) $username, $api->listLogins(), true)`. `listLogins()` returns only active users. For locked or registered users, or any other filter you passed in `$params`, call `User::list()` with that filter and search the returned `users` for the `login` (#418).
 
 ### Removed
 
 - **BREAKING**: The `all()` methods of the `Redmine\Api\...` classes were removed, they were deprecated since v2.4.0. Use `list()` instead. Use `listByProject()` instead for `IssueCategory`, `Membership`, `Version` and `Wiki`, `listByIssueId()` for `IssueRelation`, and `list()` or `listByProject()` for `News` (#348).
 - **BREAKING**: The `listing()` methods of the `Redmine\Api\...` classes were removed, they were deprecated since v2.7.0. Use `listNames()` instead. Use `listNamesByProject()` instead for `IssueCategory` and `Version`, and `listLogins()` for `User` (#415).
+- **BREAKING**: The `getIdByName()` methods of the `Redmine\Api\...` classes and `User::getIdByUsername()` were removed, they were deprecated since v2.7.0. Use `listNames()` (`listNamesByProject()` for `IssueCategory` and `Version`) or `listLogins()` instead (#418).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 

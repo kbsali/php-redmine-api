@@ -24,11 +24,6 @@ class TimeEntryActivity extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $timeEntryActivities = null;
-
-    /**
      * @var null|array<string>
      */
     private ?array $timeEntryActivityNames = null;
@@ -103,44 +98,4 @@ class TimeEntryActivity extends AbstractApi
         return $this->timeEntryActivityNames;
     }
 
-    /**
-     * Get a activities id given its name.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Project::listNames()
-     *
-     * @param string $name
-     *
-     * @return int|false
-     */
-    public function getIdByName($name)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        $arr = $this->doListing(false);
-
-        if (!isset($arr[$name])) {
-            return false;
-        }
-
-        return $arr[(string) $name];
-    }
-
-    /**
-     * @return array<string,int>
-     */
-    private function doListing(bool $forceUpdate): array
-    {
-        if ($forceUpdate || $this->timeEntryActivities === null) {
-            $this->timeEntryActivities = $this->list();
-        }
-
-        $ret = [];
-
-        foreach ($this->timeEntryActivities['time_entry_activities'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
-    }
 }

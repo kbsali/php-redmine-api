@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Http\HttpClient;
-use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -54,68 +53,4 @@ class IssueCategoryTest extends TestCase
         new IssueCategory($this->createStub(HttpClient::class));
     }
 
-    /**
-     * Test getIdByName().
-     */
-    public function testGetIdByNameMakesGetRequest(): void
-    {
-        // Test values
-        $response = '{"issue_categories":[{"id":5,"name":"IssueCategory 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/issue_categories.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueCategory::fromHttpClient($client);
-
-        // Perform the tests
-        $this->assertFalse($api->getIdByName(5, 'IssueCategory 1'));
-        $this->assertSame(5, $api->getIdByName(5, 'IssueCategory 5'));
-    }
-
-    public function testGetIdByNameTriggersDeprecationWarning(): void
-    {
-        $response = '{"issue_categories":[{"id":1,"name":"IssueCategory 1"},{"id":5,"name":"IssueCategory 5"}]}';
-
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/issue_categories.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                $response,
-            ],
-        );
-
-        $api = IssueCategory::fromHttpClient($client);
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\IssueCategory::getIdByName()` is deprecated since v2.7.0, use `Redmine\Api\IssueCategory::listNamesByProject()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->getIdByName(5, 'Category Name');
-    }
 }
