@@ -107,23 +107,6 @@ class IssueStatus extends AbstractApi
     }
 
     /**
-     * Returns an array of issue statuses with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see IssueStatus::listNames()
-     *
-     * @param bool $forceUpdate to force the update of the statuses var
-     *
-     * @return array<string,int> list of issue statuses (name => id)
-     */
-    public function listing($forceUpdate = false)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        return $this->doListing((bool) $forceUpdate);
-    }
-
-    /**
      * Get a status id given its name.
      *
      * @deprecated v2.7.0 Use listNames() instead.

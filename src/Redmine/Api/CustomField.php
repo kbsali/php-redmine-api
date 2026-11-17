@@ -107,24 +107,6 @@ class CustomField extends AbstractApi
     }
 
     /**
-     * Returns an array of custom fields with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see CustomField::listNames()
-     *
-     * @param bool         $forceUpdate to force the update of the custom fields var
-     * @param array<mixed> $params      optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<string,int> list of custom fields (name => id)
-     */
-    public function listing($forceUpdate = false, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        return $this->doListing((bool) $forceUpdate, $params);
-    }
-
-    /**
      * Get a custom field id given its name.
      *
      * @deprecated v2.7.0 Use listNames() instead.

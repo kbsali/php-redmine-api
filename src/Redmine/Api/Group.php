@@ -33,11 +33,6 @@ class Group extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $groups = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $groupNames = null;
@@ -109,31 +104,6 @@ class Group extends AbstractApi
         $this->groupNames = $names;
 
         return $this->groupNames;
-    }
-
-    /**
-     * Returns an array of groups with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Group::listNames()
-     *
-     * @param bool $forceUpdate to force the update of the groups var
-     *
-     * @return array<string,int> list of groups (name => id)
-     */
-    public function listing($forceUpdate = false)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        if ($forceUpdate || $this->groups === null) {
-            $this->groups = $this->list();
-        }
-        $ret = [];
-        foreach ($this->groups['groups'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
     }
 
     /**

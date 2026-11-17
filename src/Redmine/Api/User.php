@@ -129,24 +129,6 @@ class User extends AbstractApi
     }
 
     /**
-     * Returns an array of users with login/id pairs.
-     *
-     * @deprecated v2.7.0 Use listLogins() instead.
-     * @see User::listLogins()
-     *
-     * @param bool         $forceUpdate to force the update of the users var
-     * @param array<mixed> $params      to allow offset/limit (and more) to be passed
-     *
-     * @return int[] list of users (username => id)
-     */
-    public function listing($forceUpdate = false, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listLogins()` instead.', E_USER_DEPRECATED);
-
-        return $this->doListing((bool) $forceUpdate, $params);
-    }
-
-    /**
      * Return the current user data.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Users#usersidformat

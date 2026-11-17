@@ -28,11 +28,6 @@ class Role extends AbstractApi
     }
 
     /**
-     * @var null|array<mixed>
-     */
-    private ?array $roles = null;
-
-    /**
      * @var null|array<int,string>
      */
     private ?array $roleNames = null;
@@ -107,31 +102,6 @@ class Role extends AbstractApi
         $this->roleNames = $names;
 
         return $this->roleNames;
-    }
-
-    /**
-     * Returns an array of roles with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Role::listNames()
-     *
-     * @param bool $forceUpdate to force the update of the roles var
-     *
-     * @return array<string,int> list of roles (name => id)
-     */
-    public function listing($forceUpdate = false)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        if ($forceUpdate || $this->roles === null) {
-            $this->roles = $this->list();
-        }
-        $ret = [];
-        foreach ($this->roles['roles'] as $e) {
-            $ret[$e['name']] = (int) $e['id'];
-        }
-
-        return $ret;
     }
 
     /**

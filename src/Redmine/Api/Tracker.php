@@ -106,23 +106,6 @@ class Tracker extends AbstractApi
     }
 
     /**
-     * Returns an array of trackers with name/id pairs.
-     *
-     * @deprecated v2.7.0 Use listNames() instead.
-     * @see Tracker::listNames()
-     *
-     * @param bool $forceUpdate to force the update of the trackers var
-     *
-     * @return array<mixed> list of trackers (id => name)
-     */
-    public function listing($forceUpdate = false)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.7.0, use `' . self::class . '::listNames()` instead.', E_USER_DEPRECATED);
-
-        return $this->doListing((bool) $forceUpdate);
-    }
-
-    /**
      * Get a tracker id given its name.
      *
      * @deprecated v2.7.0 Use listNames() instead.
