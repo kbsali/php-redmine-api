@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: Code that used the removed `getIdByName()` methods must search the result of `listNames()` itself (`listNamesByProject()` for `IssueCategory` and `Version`), e.g. `array_search((string) $name, $api->listNames(), true)`, which returns `false` if the name is not found. Names are not always unique (e.g. projects and versions): `getIdByName()` returned the ID of the last match, `array_search()` returns the first one, so decide yourself which ID you need. `CustomField`, `Project` and `Version` accepted `$params` (e.g. `offset`, `limit`) and searched only the requested page. If you rely on that, call `list($params)` (`listByProject($project, $params)` for `Version`) and search the returned records for the `name`. Without `$params`, `getIdByName()` searched only the first page, `listNames()` reads all pages (#418).
 - **BREAKING**: Code that used the removed `User::getIdByUsername()` must search the result of `listLogins()` itself, e.g. `array_search((string) $username, $api->listLogins(), true)`. `listLogins()` returns only active users. For locked or registered users, or any other filter you passed in `$params`, call `User::list()` with that filter and search the returned `users` for the `login` (#418).
 - **BREAKING**: Subclasses of `Redmine\Api\AbstractApi` that called the removed `retrieveAll()` must now handle exceptions. `retrieveData()` throws on an invalid response body, while `retrieveAll()` returned `false` or the error message as a string (#349).
+- **BREAKING**: Code that used the removed `lastCallFailed()` must check the status code itself with `getLastResponse()->getStatusCode()`. `lastCallFailed()` treated every 2xx code except `200` and `201` as a failure, e.g. `204` (#343).
 
 ### Removed
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: The `listing()` methods of the `Redmine\Api\...` classes were removed, they were deprecated since v2.7.0. Use `listNames()` instead. Use `listNamesByProject()` instead for `IssueCategory` and `Version`, and `listLogins()` for `User` (#415).
 - **BREAKING**: The `getIdByName()` methods of the `Redmine\Api\...` classes and `User::getIdByUsername()` were removed, they were deprecated since v2.7.0. Use `listNames()` (`listNamesByProject()` for `IssueCategory` and `Version`) or `listLogins()` instead (#418).
 - **BREAKING**: The protected method `Redmine\Api\AbstractApi::retrieveAll()` was removed, it was deprecated since v2.2.0. Use `retrieveData()` instead (#349).
+- **BREAKING**: `Redmine\Api\AbstractApi::lastCallFailed()` was removed, it was deprecated since v2.1.0. Use `getLastResponse()->getStatusCode()` instead (#343).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
