@@ -520,38 +520,6 @@ class AbstractApiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getRetrieveAllData
-     *
-     * @param string|bool|array<mixed> $expected
-     */
-    #[DataProvider('getRetrieveAllData')]
-    public function testDeprecatedRetrieveAll(string $content, string $contentType, string|bool|array $expected): void
-    {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')->willReturn(true);
-        $client->method('getLastResponseBody')->willReturn($content);
-        $client->method('getLastResponseContentType')->willReturn($contentType);
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, 'retrieveAll');
-
-        $this->assertSame($expected, $method->invoke($api, ''));
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getRetrieveAllData(): array
-    {
-        return [
-            'array response' => ['{"foo_bar": 12345}', 'application/json', ['foo_bar' => 12345]],
-            'string response' => ['"string"', 'application/json', 'Could not convert response body into array: "string"'],
-            'false response' => ['', 'application/json', false],
-        ];
-    }
-
     public function testDeprecatedAttachCustomFieldXML(): void
     {
         $client = $this->createStub(Client::class);

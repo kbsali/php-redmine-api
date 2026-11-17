@@ -7,7 +7,6 @@ namespace Redmine\Api;
 use InvalidArgumentException;
 use Redmine\Api;
 use Redmine\Client\Client;
-use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
@@ -272,35 +271,6 @@ abstract class AbstractApi implements Api
             array_merge($defaults, $params),
             $this->isNotNull(...),
         );
-    }
-
-    /**
-     * Retrieves all the elements of a given endpoint (even if the
-     * total number of elements is greater than 100).
-     *
-     * @deprecated v2.2.0 Use `retrieveData()` instead
-     * @see AbstractApi::retrieveData()
-     *
-     * @param string       $endpoint API end point
-     * @param array<mixed> $params   optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false elements found or error message or false
-     */
-    protected function retrieveAll($endpoint, array $params = [])
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.2.0, use `retrieveData()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $data = $this->retrieveData(strval($endpoint), $params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            return $e->getMessage();
-        }
-
-        return $data;
     }
 
     /**
