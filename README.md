@@ -163,10 +163,6 @@ You can choose between:
 
 #### 1. Native curl Client `Redmine\Client\NativeCurlClient`
 
-> :bulb: This client was introduced in `php-redmine-api` v1.8.0. If you are
-> using the old `Redmine\Client` please [see this migration guide for help to
-> upgrade your code](docs/migrate-to-nativecurlclient.md).
-
 You will need a URL to your Redmine instance and either a valid Apikey...
 
 ```diff

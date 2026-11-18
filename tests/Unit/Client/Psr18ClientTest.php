@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Client;
 
 use Exception;
+use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -90,11 +91,14 @@ class Psr18ClientTest extends TestCase
                 ['X-Redmine-API-Key', 'access_token', $request],
             ]);
 
+        $httpClient = $this->createStub(ClientInterface::class);
+        $httpClient->method('sendRequest')->willReturn(new Response(200));
+
         $requestFactory = $this->createStub(RequestFactoryInterface::class);
         $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
+            $httpClient,
             $requestFactory,
             $this->createStub(StreamFactoryInterface::class),
             'http://test.local',

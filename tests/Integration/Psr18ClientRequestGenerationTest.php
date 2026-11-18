@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\Integration;
 
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -34,11 +35,11 @@ class Psr18ClientRequestGenerationTest extends TestCase
         string|bool|null $data,
         string $expectedOutput,
     ): void {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = new Response(200);
 
         /** @var ClientInterface&\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createStub(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): \PHPUnit\Framework\MockObject\Stub {
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): ResponseInterface {
             // Create a text representation of the HTTP request
             $content = $request->getBody()->__toString();
 

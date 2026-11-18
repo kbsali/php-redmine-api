@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: The protected method `Redmine\Api\Project::prepareParamsXml()` was removed, it was deprecated since v2.3.0. Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead (#346).
 - **BREAKING**: The protected method `Redmine\Api\AbstractApi::attachCustomFieldXML()` was removed, it was deprecated since v2.3.0. Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead (#345).
 - **BREAKING**: The methods `requestGet()`, `requestPost()`, `requestPut()`, `requestDelete()`, `getLastResponseStatusCode()`, `getLastResponseContentType()` and `getLastResponseBody()` were removed from the interface `Redmine\Client\Client` and from the classes `Redmine\Client\NativeCurlClient` and `Redmine\Client\Psr18Client`, they were deprecated since v2.8.0. Use `\Redmine\Http\HttpClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead (#427).
-- The migration guide `docs/migrate-to-psr18client.md` was removed, it described the upgrade from the old `Redmine\Client` of v1.x to the `Psr18Client` (#427).
+- The migration guides `docs/migrate-to-psr18client.md` and `docs/migrate-to-nativecurlclient.md` were removed, they described the upgrade from the old `Redmine\Client` of v1.x to the `Psr18Client` and to the `NativeCurlClient` (#427).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
