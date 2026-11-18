@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Client;
 
 use Exception;
+use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,14 +13,12 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Client;
 use Redmine\Client\Psr18Client;
-use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use stdClass;
 
 #[CoversClass(Psr18Client::class)]
@@ -80,126 +79,6 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
     }
 
-    public function testGetLastResponseStatusCodeIsInitialZero(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame(0, $client->getLastResponseStatusCode());
-    }
-
-    public function testGetLastResponseStatusCodeTriggersDeprecationWarning(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::getLastResponseStatusCode()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseStatusCode();
-    }
-
-    public function testGetLastResponseContentTypeIsInitialEmpty(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame('', $client->getLastResponseContentType());
-    }
-
-    public function testGetLastResponseContentTypeTriggersDeprecationWarning(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::getLastResponseContentType()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseContentType();
-    }
-
-    public function testGetLastResponseBodyIsInitialEmpty(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame('', $client->getLastResponseBody());
-    }
-
-    public function testGetLastResponseBodyTriggersDeprecationWarning(): void
-    {
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $this->createStub(RequestFactoryInterface::class),
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::getLastResponseBody()` is deprecated since v2.8.0, use `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseBody();
-    }
-
     public function testStartAndStopImpersonateUser(): void
     {
         $request = $this->createMock(RequestInterface::class);
@@ -212,254 +91,25 @@ class Psr18ClientTest extends TestCase
                 ['X-Redmine-API-Key', 'access_token', $request],
             ]);
 
+        $httpClient = $this->createStub(ClientInterface::class);
+        $httpClient->method('sendRequest')->willReturn(new Response(200));
+
         $requestFactory = $this->createStub(RequestFactoryInterface::class);
         $requestFactory->method('createRequest')->willReturn($request);
 
         $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
+            $httpClient,
             $requestFactory,
             $this->createStub(StreamFactoryInterface::class),
             'http://test.local',
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->startImpersonateUser('Sam');
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->stopImpersonateUser();
-        $client->requestGet('/path');
-    }
-
-    public function testRequestGetReturnsFalse(): void
-    {
-        $response = $this->createStub(ResponseInterface::class);
-        $response->method('getStatusCode')->willReturn(404);
-
-        $httpClient = $this->createStub(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturn($response);
-
-        $request = $this->createStub(RequestInterface::class);
-        $request->method('withHeader')->willReturn($request);
-
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willReturn($request);
-
-        $client = new Psr18Client(
-            $httpClient,
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame(false, $client->requestGet('/path'));
-    }
-
-    /**
-     * @dataProvider getRequestReponseData
-     */
-    #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
-    {
-        $stream = $this->createStub(StreamInterface::class);
-        $stream->method('__toString')->willReturn($content);
-
-        $response = $this->createStub(ResponseInterface::class);
-        $response->method('getStatusCode')->willReturn($statusCode);
-        $response->method('getHeaderLine')->willReturn($contentType);
-        $response->method('getBody')->willReturn($stream);
-
-        $httpClient = $this->createStub(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturn($response);
-
-        $request = $this->createStub(RequestInterface::class);
-        $request->method('withHeader')->willReturn($request);
-        $request->method('withBody')->willReturn($request);
-
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willReturn($request);
-
-        $client = new Psr18Client(
-            $httpClient,
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame($boolReturn, $client->$method('/path', $data));
-        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
-        $this->assertSame($contentType, $client->getLastResponseContentType());
-        $this->assertSame($content, $client->getLastResponseBody());
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getRequestReponseData(): array
-    {
-        return [
-            ['requestGet', '', true, 101, 'text/plain', ''],
-            ['requestGet', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestGet', '', true, 301, 'application/json', ''],
-            ['requestGet', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestGet', '', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestPost', '{"foo":"bar"}', true, 101, 'text/plain', ''],
-            ['requestPost', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestPost', '{"foo":"bar"}', true, 301, 'application/json', ''],
-            ['requestPost', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestPost', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestPut', '{"foo":"bar"}', true, 101, 'text/plain', ''],
-            ['requestPut', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestPut', '{"foo":"bar"}', true, 301, 'application/json', ''],
-            ['requestPut', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestPut', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestDelete', '', true, 101, 'text/plain', ''],
-            ['requestDelete', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestDelete', '', true, 301, 'application/json', ''],
-            ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
-        ];
-    }
-
-    public function testRequestGetTriggersDeprecationWarning(): void
-    {
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willThrowException(
-            $this->createStub(ClientException::class),
-        );
-
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::requestGet()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestGet('/path');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestPostTriggersDeprecationWarning(): void
-    {
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willThrowException(
-            $this->createStub(ClientException::class),
-        );
-
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::requestPost()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestPost('/path', '');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestPutTriggersDeprecationWarning(): void
-    {
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willThrowException(
-            $this->createStub(ClientException::class),
-        );
-
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::requestPut()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestPut('/path', '');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestDeleteTriggersDeprecationWarning(): void
-    {
-        $requestFactory = $this->createStub(RequestFactoryInterface::class);
-        $requestFactory->method('createRequest')->willThrowException(
-            $this->createStub(ClientException::class),
-        );
-
-        $client = new Psr18Client(
-            $this->createStub(ClientInterface::class),
-            $requestFactory,
-            $this->createStub(StreamFactoryInterface::class),
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\Psr18Client::requestDelete()` is deprecated since v2.8.0, use `\Redmine\Client\Psr18Client::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestDelete('/path');
-        } catch (ClientException) {
-        }
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     /**

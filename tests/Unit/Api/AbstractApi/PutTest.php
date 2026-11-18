@@ -8,7 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
-use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
@@ -48,9 +49,8 @@ class PutTest extends TestCase
     #[DataProvider('getXmlDecodingFromPutMethodData')]
     public function testXmlDecodingFromPutMethod(string $response, string $expected): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
+        $client = $this->createStub(HttpClient::class);
+        $client->method('request')->willReturn(HttpFactory::makeResponse(200, 'application/xml', $response));
 
         $api = new class ($client) extends AbstractApi {};
 

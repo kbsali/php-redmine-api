@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Api;
 
-use Redmine\Client\Client;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -36,7 +35,7 @@ class Wiki extends AbstractApi
      * @deprecated v2.9.0 Use fromHttpClient() instead.
      * @see Wiki::fromHttpClient()
      *
-     * @param Client|HttpClient $client
+     * @param HttpClient $client
      */
     public function __construct($client/*, bool $privatelyCalled = false*/)
     {

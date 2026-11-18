@@ -48,7 +48,7 @@ abstract class AbstractApi implements Api
     protected $lastResponse;
 
     /**
-     * @param Client|HttpClient $client
+     * @param HttpClient $client
      */
     public function __construct($client)
     {
@@ -66,21 +66,17 @@ abstract class AbstractApi implements Api
             $this->client = $client;
         }
 
-        $httpClient = $client;
-
-        if (! $httpClient instanceof HttpClient) {
-            @trigger_error(sprintf(
-                'Passing a `%s` that is not a `%s` to `%s()` is deprecated since v2.11.0 and will throw an `InvalidArgumentException` in v3.0.0, implement `%s` in your client.',
+        if (! $client instanceof HttpClient) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($client) of type %s must also implement %s, `%s` given',
+                __METHOD__,
                 Client::class,
                 HttpClient::class,
-                __METHOD__,
-                HttpClient::class,
-            ), E_USER_DEPRECATED);
-
-            $httpClient = $this->handleClient($client);
+                get_debug_type($client),
+            ));
         }
 
-        $this->httpClient = $httpClient;
+        $this->httpClient = $client;
     }
 
     final protected function getHttpClient(): HttpClient
@@ -364,32 +360,6 @@ abstract class AbstractApi implements Api
         }
 
         return $returnData;
-    }
-
-    private function handleClient(Client $client): HttpClient
-    {
-        return new class ($client) implements HttpClient {
-            public function __construct(private readonly Client $client) {}
-
-            public function request(Request $request): Response
-            {
-                if ($request->getMethod() === 'POST') {
-                    $this->client->requestPost($request->getPath(), $request->getContent());
-                } elseif ($request->getMethod() === 'PUT') {
-                    $this->client->requestPut($request->getPath(), $request->getContent());
-                } elseif ($request->getMethod() === 'DELETE') {
-                    $this->client->requestDelete($request->getPath());
-                } else {
-                    $this->client->requestGet($request->getPath());
-                }
-
-                return HttpFactory::makeResponse(
-                    $this->client->getLastResponseStatusCode(),
-                    $this->client->getLastResponseContentType(),
-                    $this->client->getLastResponseBody(),
-                );
-            }
-        };
     }
 
     private function getContentTypeFromPath(string $path): string

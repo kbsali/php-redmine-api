@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Redmine\Tests\Integration;
 
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,6 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use Redmine\Client\Psr18Client;
+use Redmine\Http\HttpFactory;
 
 #[CoversClass(Psr18Client::class)]
 class Psr18ClientRequestGenerationTest extends TestCase
@@ -33,11 +35,11 @@ class Psr18ClientRequestGenerationTest extends TestCase
         string|bool|null $data,
         string $expectedOutput,
     ): void {
-        $response = $this->createStub(ResponseInterface::class);
+        $response = new Response(200);
 
         /** @var ClientInterface&\PHPUnit\Framework\MockObject\MockObject */
         $httpClient = $this->createStub(ClientInterface::class);
-        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): \PHPUnit\Framework\MockObject\Stub {
+        $httpClient->method('sendRequest')->willReturnCallback(function ($request) use ($response, $expectedOutput): ResponseInterface {
             // Create a text representation of the HTTP request
             $content = $request->getBody()->__toString();
 
@@ -97,7 +99,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             $client->startImpersonateUser($impersonateUser);
         }
 
-        $client->$method($path, $data);
+        $client->request(HttpFactory::makeRequest($method, $path, '', (string) $data));
     }
 
     /**
@@ -108,7 +110,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
         return [
             'Test username/password in auth header' => [
                 'http://test.local', 'username', 'password', null,
-                'requestGet', '/path', null,
+                'GET', '/path', null,
                 'GET http://test.local/path HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=' . \PHP_EOL
@@ -116,7 +118,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test access token in X-Redmine-API-Key header' => [
                 'http://test.local', 'access_token', null, null,
-                'requestGet', '/path', null,
+                'GET', '/path', null,
                 'GET http://test.local/path HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -124,7 +126,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test user impersonate in X-Redmine-Switch-User header' => [
                 'http://test.local', 'access_token', null, 'Robin',
-                'requestGet', '/path', null,
+                'GET', '/path', null,
                 'GET http://test.local/path HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -133,7 +135,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test POST' => [
                 'http://test.local', 'access_token', null, null,
-                'requestPost', '/path.json', '{"foo":"bar"}',
+                'POST', '/path.json', '{"foo":"bar"}',
                 'POST http://test.local/path.json HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -144,7 +146,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             'Test fileupload with file content' => [
                 // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
                 'http://test.local', 'access_token', null, null,
-                'requestPost', '/uploads.json?filename=textfile.md', 'The content of the file',
+                'POST', '/uploads.json?filename=textfile.md', 'The content of the file',
                 'POST http://test.local/uploads.json?filename=textfile.md HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -155,7 +157,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             'Test fileupload with file path' => [
                 // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
                 'http://test.local', 'access_token', null, null,
-                'requestPost', '/uploads.json?filename=textfile.md', realpath(__DIR__ . '/../Fixtures/testfile_01.txt'),
+                'POST', '/uploads.json?filename=textfile.md', realpath(__DIR__ . '/../Fixtures/testfile_01.txt'),
                 'POST http://test.local/uploads.json?filename=textfile.md HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -167,7 +169,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             'Test fileupload with file path to image' => [
                 // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
                 'http://test.local', 'access_token', null, null,
-                'requestPost', '/uploads.json?filename=1x1.png', realpath(__DIR__ . '/../Fixtures/FF4D00-1.png'),
+                'POST', '/uploads.json?filename=1x1.png', realpath(__DIR__ . '/../Fixtures/FF4D00-1.png'),
                 'POST http://test.local/uploads.json?filename=1x1.png HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -177,7 +179,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test PUT' => [
                 'http://test.local', 'access_token', null, null,
-                'requestPut', '/path.json', '{"foo":"bar"}',
+                'PUT', '/path.json', '{"foo":"bar"}',
                 'PUT http://test.local/path.json HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -187,7 +189,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test DELETE' => [
                 'http://test.local', 'access_token', null, null,
-                'requestDelete', '/path.json', '{"foo":"bar"}',
+                'DELETE', '/path.json', '{"foo":"bar"}',
                 'DELETE http://test.local/path.json HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
@@ -196,7 +198,7 @@ class Psr18ClientRequestGenerationTest extends TestCase
             ],
             'Test body will be ignored on DELETE' => [
                 'http://test.local', 'access_token', null, null,
-                'requestDelete', '/path.json', '{"foo":"bar"}',
+                'DELETE', '/path.json', '{"foo":"bar"}',
                 'DELETE http://test.local/path.json HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL

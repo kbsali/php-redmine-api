@@ -163,10 +163,6 @@ You can choose between:
 
 #### 1. Native curl Client `Redmine\Client\NativeCurlClient`
 
-> :bulb: This client was introduced in `php-redmine-api` v1.8.0. If you are
-> using the old `Redmine\Client` please [see this migration guide for help to
-> upgrade your code](docs/migrate-to-nativecurlclient.md).
-
 You will need a URL to your Redmine instance and either a valid Apikey...
 
 ```diff
@@ -214,8 +210,6 @@ $client = new Redmine\Client\NativeCurlClient('https://redmine.example.com', '12
 
 ```
 #### 2. Psr-18 compatible Client `Redmine\Client\Psr18Client`
-
-> :bulb: This client was introduced in `v1.7.0` of this library. If you are using the old `Redmine\Client` please [follow this migration guide](docs/migrate-to-psr18client.md).
 
 The `Psr18Client` requires
 
