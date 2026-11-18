@@ -29,6 +29,9 @@ abstract class AbstractApi implements Api
     use ResponseValidationTrait;
 
     /**
+     * @deprecated v2.11.0 Will be removed in v3.0.0, API classes will only get a `\Redmine\Http\HttpClient`. Use `getHttpClient()` instead.
+     * @see AbstractApi::getHttpClient()
+     *
      * @var Client
      */
     protected $client;
@@ -67,6 +70,14 @@ abstract class AbstractApi implements Api
         $httpClient = $client;
 
         if (! $httpClient instanceof HttpClient) {
+            @trigger_error(sprintf(
+                'Passing a `%s` that is not a `%s` to `%s()` is deprecated since v2.11.0 and will throw an `InvalidArgumentException` in v3.0.0, implement `%s` in your client.',
+                Client::class,
+                HttpClient::class,
+                __METHOD__,
+                HttpClient::class,
+            ), E_USER_DEPRECATED);
+
             $httpClient = $this->handleClient($client);
         }
 
