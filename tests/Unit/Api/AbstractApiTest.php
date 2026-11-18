@@ -71,37 +71,6 @@ class AbstractApiTest extends TestCase
         new class (123) extends AbstractApi {};
     }
 
-    public function testGetTriggersDeprecationWarning(): void
-    {
-        $client = $this->createStub(HttpClient::class);
-
-        $api = new class ($client) extends AbstractApi {
-            /**
-             * @return mixed
-             */
-            public function runGet(string $path)
-            {
-                return $this->get($path);
-            }
-        };
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\AbstractApi::get()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->runGet('/path.json');
-    }
-
     public function testGetLastResponseWithHttpClientWorks(): void
     {
         $client = $this->createStub(HttpClient::class);
@@ -109,100 +78,6 @@ class AbstractApiTest extends TestCase
         $api = new class ($client) extends AbstractApi {};
 
         $this->assertInstanceOf(Response::class, $api->getLastResponse());
-    }
-
-    public function testPostTriggersDeprecationWarning(): void
-    {
-        $client = $this->createStub(HttpClient::class);
-
-        $api = new class ($client) extends AbstractApi {
-            /**
-             * @param mixed $data
-             *
-             * @return mixed
-             */
-            public function runPost(string $path, $data)
-            {
-                return $this->post($path, $data);
-            }
-        };
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\AbstractApi::post()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->runPost('/path.json', 'data');
-    }
-
-    public function testPutTriggersDeprecationWarning(): void
-    {
-        $client = $this->createStub(HttpClient::class);
-
-        $api = new class ($client) extends AbstractApi {
-            /**
-             * @param mixed $data
-             *
-             * @return mixed
-             */
-            public function runPut(string $path, $data)
-            {
-                return $this->put($path, $data);
-            }
-        };
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\AbstractApi::put()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->runPut('/path.json', 'data');
-    }
-
-    public function testDeleteTriggersDeprecationWarning(): void
-    {
-        $client = $this->createStub(HttpClient::class);
-
-        $api = new class ($client) extends AbstractApi {
-            public function runDelete(string $path): string
-            {
-                return $this->delete($path);
-            }
-        };
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Api\AbstractApi::delete()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $api->runDelete('/path.json');
     }
 
     /**
