@@ -215,8 +215,6 @@ $client = new Redmine\Client\NativeCurlClient('https://redmine.example.com', '12
 ```
 #### 2. Psr-18 compatible Client `Redmine\Client\Psr18Client`
 
-> :bulb: This client was introduced in `v1.7.0` of this library. If you are using the old `Redmine\Client` please [follow this migration guide](docs/migrate-to-psr18client.md).
-
 The `Psr18Client` requires
 
 - a `Psr\Http\Client\ClientInterface` implementation (like guzzlehttp/guzzle), [see](https://packagist.org/providers/psr/http-client-implementation)
