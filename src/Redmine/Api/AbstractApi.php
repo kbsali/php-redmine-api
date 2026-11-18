@@ -217,40 +217,6 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * Checks if the variable passed is not null.
-     *
-     * @deprecated v2.11.0 Will be removed in v3.0.0
-     *
-     * @param mixed $var Variable to be checked
-     *
-     * @return bool
-     */
-    protected function isNotNull($var)
-    {
-        return
-            false !== $var
-            && null !== $var
-            && '' !== $var
-            && (!is_array($var) && !is_object($var) || !empty($var));
-    }
-
-    /**
-     * @deprecated v2.11.0 Will be removed in v3.0.0
-     *
-     * @param array<mixed> $defaults
-     * @param array<mixed> $params
-     *
-     * @return array<mixed>
-     */
-    protected function sanitizeParams(array $defaults, array $params)
-    {
-        return array_filter(
-            array_merge($defaults, $params),
-            $this->isNotNull(...),
-        );
-    }
-
-    /**
      * Retrieves as many elements as you want of a given endpoint (even if the
      * total number of elements is greater than 100).
      *

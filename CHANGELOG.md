@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: The `getIdByName()` methods of the `Redmine\Api\...` classes and `User::getIdByUsername()` were removed, they were deprecated since v2.7.0. Use `listNames()` (`listNamesByProject()` for `IssueCategory` and `Version`) or `listLogins()` instead (#418).
 - **BREAKING**: The protected method `Redmine\Api\AbstractApi::retrieveAll()` was removed, it was deprecated since v2.2.0. Use `retrieveData()` instead (#349).
 - **BREAKING**: `Redmine\Api\AbstractApi::lastCallFailed()` was removed, it was deprecated since v2.1.0. Use `getLastResponse()->getStatusCode()` instead (#343).
+- **BREAKING**: The protected methods `Redmine\Api\AbstractApi::sanitizeParams()` and `Redmine\Api\AbstractApi::isNotNull()` were removed, they were deprecated since v2.11.0. Subclasses that need them must filter empty values (`null`, `false`, `''`, `[]`) themselves, e.g. with `array_filter()` (#531).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
