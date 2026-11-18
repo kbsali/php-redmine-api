@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: Code that used the removed `User::getIdByUsername()` must search the result of `listLogins()` itself, e.g. `array_search((string) $username, $api->listLogins(), true)`. `listLogins()` returns only active users. For locked or registered users, or any other filter you passed in `$params`, call `User::list()` with that filter and search the returned `users` for the `login` (#418).
 - **BREAKING**: Subclasses of `Redmine\Api\AbstractApi` that called the removed `retrieveAll()` must now handle exceptions. `retrieveData()` throws on an invalid response body, while `retrieveAll()` returned `false` or the error message as a string (#349).
 - **BREAKING**: Code that used the removed `lastCallFailed()` must check the status code itself with `getLastResponse()->getStatusCode()` of the API instance that made the request. An instance that made no request reports `0`, while `lastCallFailed()` fell back to the status of the client. `lastCallFailed()` treated every 2xx code except `200` and `201` as a failure, e.g. `204` (#343).
+- **BREAKING**: Subclasses of `Redmine\Api\Project` that called the removed `prepareParamsXml()` must now call `\Redmine\Serializer\XmlSerializer::createFromArray(['project' => $params])` themselves. The `project` key is required, it is the root element of the XML. `createFromArray()` returns an `XmlSerializer` and not a `SimpleXMLElement`, use `new SimpleXMLElement($serializer->getEncoded())` if you need one (#346).
 
 ### Removed
 
