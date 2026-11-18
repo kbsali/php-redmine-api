@@ -178,6 +178,41 @@ class RetrieveDataTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider getRetrieveDataWithParamsData
+     */
+    #[DataProvider('getRetrieveDataWithParamsData')]
+    public function testRetrieveDataSendsOnlyNonEmptyParams(mixed $value, string $expectedPath): void
+    {
+        $api = $this->createApi(AssertingHttpClient::create(
+            $this,
+            ['GET', $expectedPath, 'application/json', '', 200, 'application/json', '{"issues":[]}'],
+        ));
+
+        $this->assertSame(['issues' => []], $this->retrieveData($api, '/issues.json', ['limit' => 1, 'foo' => $value]));
+    }
+
+    /**
+     * @return array<string, array{mixed, string}>
+     */
+    public static function getRetrieveDataWithParamsData(): array
+    {
+        return [
+            'null is not sent' => [null, '/issues.json?limit=1&offset=0'],
+            'false is not sent' => [false, '/issues.json?limit=1&offset=0'],
+            'empty string is not sent' => ['', '/issues.json?limit=1&offset=0'],
+            'empty array is not sent' => [[], '/issues.json?limit=1&offset=0'],
+            'true is sent' => [true, '/issues.json?limit=1&offset=0&foo=1'],
+            'integer 0 is sent' => [0, '/issues.json?limit=1&offset=0&foo=0'],
+            'float 0.0 is sent' => [0.0, '/issues.json?limit=1&offset=0&foo=0'],
+            'string "0" is sent' => ['0', '/issues.json?limit=1&offset=0&foo=0'],
+            'string is sent' => ['string', '/issues.json?limit=1&offset=0&foo=string'],
+            'array with 0 is sent' => [[0], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
+            'array with "0" is sent' => [['0'], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
+            'array with empty string is sent' => [[''], '/issues.json?limit=1&offset=0&foo%5B%5D='],
+        ];
+    }
+
     private function createApi(HttpClient $client): AbstractApi
     {
         return new class ($client) extends AbstractApi {};

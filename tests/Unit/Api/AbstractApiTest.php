@@ -193,66 +193,6 @@ class AbstractApiTest extends TestCase
         $api->runDelete('/path.json');
     }
 
-    public function testSanitizeParamsMergesDefaultsAndRemovesEmptyValues(): void
-    {
-        $client = $this->createStub(Client::class);
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, 'sanitizeParams');
-
-        $this->assertSame(
-            ['id' => 5, 'name' => 'new', 'zero' => 0],
-            $method->invoke(
-                $api,
-                ['id' => 5, 'name' => 'old'],
-                ['name' => 'new', 'null' => null, 'false' => false, 'empty' => '', 'array' => [], 'zero' => 0],
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider getIsNotNullReturnsCorrectBooleanData
-     *
-     * @param bool|string|int|float|\stdClass|array<mixed>|null $value
-     */
-    #[DataProvider('getIsNotNullReturnsCorrectBooleanData')]
-    public function testIsNotNullReturnsCorrectBoolean(bool $expected, bool|string|int|float|\stdClass|array|null $value): void
-    {
-        $client = $this->createStub(Client::class);
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, 'isNotNull');
-
-        $this->assertSame($expected, $method->invoke($api, $value));
-    }
-
-    /**
-     * @return array<array{bool, mixed}>
-     */
-    public static function getIsNotNullReturnsCorrectBooleanData(): array
-    {
-        return [
-            [false, null],
-            [false, false],
-            [false, ''],
-            [false, []],
-            [true, true],
-            [true, 0],
-            [true, 1],
-            [true, 0.0],
-            [true, -0.0],
-            [true, 0.5],
-            [true, '0'],
-            [true, 'string'],
-            [true, [0]],
-            [true, ['0']],
-            [true, ['']],
-            [true, new \stdClass()],
-        ];
-    }
-
     /**
      * @dataProvider retrieveDataData
      *
