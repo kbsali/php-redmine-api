@@ -10,12 +10,10 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Http\Request;
 use Redmine\Http\Response;
 use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
-use SimpleXMLElement;
 
 /**
  * Abstract class for Api classes.
@@ -68,135 +66,6 @@ abstract class AbstractApi implements Api
     final public function getLastResponse(): Response
     {
         return ($this->lastResponse instanceof Response) ? $this->lastResponse : HttpFactory::makeResponse(0, '', '');
-    }
-
-    /**
-     * Perform the client get() method.
-     *
-     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
-     * @see \Redmine\Http\HttpClient::request()
-     *
-     * @param string $path
-     * @param bool   $decodeIfJson
-     *
-     * @return string|array<mixed>|SimpleXMLElement|false
-     */
-    protected function get($path, $decodeIfJson = true)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
-
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-            'GET',
-            strval($path),
-            $this->getContentTypeFromPath(strval($path)),
-        ));
-
-        $body = $this->lastResponse->getContent();
-        $contentType = $this->lastResponse->getContentType();
-
-        // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
-            return new SimpleXMLElement($body);
-        }
-
-        if (true === $decodeIfJson && '' !== $body && str_starts_with($contentType, 'application/json')) {
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
-
-        return ('' === $body) ? false : $body;
-    }
-
-    /**
-     * Perform the client post() method.
-     *
-     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
-     * @see \Redmine\Http\HttpClient::request()
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return string|SimpleXMLElement|false
-     */
-    protected function post($path, $data)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
-
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-            'POST',
-            strval($path),
-            $this->getContentTypeFromPath(strval($path)),
-            $data,
-        ));
-
-        $body = $this->lastResponse->getContent();
-        $contentType = $this->lastResponse->getContentType();
-
-        // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
-            return new SimpleXMLElement($body);
-        }
-
-        return $body;
-    }
-
-    /**
-     * Perform the client put() method.
-     *
-     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
-     * @see \Redmine\Http\HttpClient::request()
-     *
-     * @param string $path
-     * @param string $data
-     *
-     * @return string|SimpleXMLElement
-     */
-    protected function put($path, $data)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
-
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-            'PUT',
-            strval($path),
-            $this->getContentTypeFromPath(strval($path)),
-            $data,
-        ));
-
-        $body = $this->lastResponse->getContent();
-        $contentType = $this->lastResponse->getContentType();
-
-        // if response is XML, return a SimpleXMLElement object
-        if ('' !== $body && str_starts_with($contentType, 'application/xml')) {
-            return new SimpleXMLElement($body);
-        }
-
-        return $body;
-    }
-
-    /**
-     * Perform the client delete() method.
-     *
-     * @deprecated v2.6.0 Use `\Redmine\Http\HttpClient::request()` instead
-     * @see \Redmine\Http\HttpClient::request()
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function delete($path)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.6.0, use `\Redmine\Http\HttpClient::request()` instead.', E_USER_DEPRECATED);
-
-        $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeRequest(
-            'DELETE',
-            strval($path),
-            $this->getContentTypeFromPath(strval($path)),
-        ));
-
-        return $this->lastResponse->getContent();
     }
 
     /**
