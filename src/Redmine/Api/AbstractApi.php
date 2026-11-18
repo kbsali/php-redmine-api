@@ -45,7 +45,7 @@ abstract class AbstractApi implements Api
     protected $lastResponse;
 
     /**
-     * @param Client|HttpClient $client
+     * @param HttpClient $client
      */
     public function __construct($client)
     {

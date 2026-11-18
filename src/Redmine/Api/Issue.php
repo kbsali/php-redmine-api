@@ -64,7 +64,7 @@ class Issue extends AbstractApi
      * @deprecated v2.9.0 Use fromHttpClient() instead.
      * @see Issue::fromHttpClient()
      *
-     * @param Client|HttpClient $client
+     * @param HttpClient $client
      */
     public function __construct($client/*, bool $privatelyCalled = false*/)
     {

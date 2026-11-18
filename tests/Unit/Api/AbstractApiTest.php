@@ -49,6 +49,7 @@ class AbstractApiTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) of type Redmine\Client\Client must also implement Redmine\Http\HttpClient, `');
 
+        /** @phpstan-ignore-next-line We are providing a Client that is not a HttpClient to test the exception */
         new class ($client) extends AbstractApi {};
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Api;
 
 use InvalidArgumentException;
-use Redmine\Client\Client;
 use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
@@ -42,7 +41,7 @@ class Project extends AbstractApi
      * @deprecated v2.9.0 Use fromHttpClient() instead.
      * @see Project::fromHttpClient()
      *
-     * @param Client|HttpClient $client
+     * @param HttpClient $client
      */
     public function __construct($client/*, bool $privatelyCalled = false*/)
     {
