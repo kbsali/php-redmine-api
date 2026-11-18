@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Redmine\Tests\Unit\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Api\IssueCategory;
@@ -59,31 +58,6 @@ class IssueTest extends TestCase
         );
 
         new Issue($this->createStub(HttpClient::class));
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getPriorityConstantsData(): array
-    {
-        return [
-            [1, Issue::PRIO_LOW],
-            [2, Issue::PRIO_NORMAL],
-            [3, Issue::PRIO_HIGH],
-            [4, Issue::PRIO_URGENT],
-            [5, Issue::PRIO_IMMEDIATE],
-        ];
-    }
-
-    /**
-     * Test the constants.
-     *
-     * @dataProvider getPriorityConstantsData
-     */
-    #[DataProvider('getPriorityConstantsData')]
-    public function testPriorityConstants(int $expected, int $value): void
-    {
-        $this->assertSame($expected, $value);
     }
 
     /**

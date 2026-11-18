@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: The protected method `Redmine\Api\AbstractApi::retrieveAll()` was removed, it was deprecated since v2.2.0. Use `retrieveData()` instead (#349).
 - **BREAKING**: `Redmine\Api\AbstractApi::lastCallFailed()` was removed, it was deprecated since v2.1.0. Use `getLastResponse()->getStatusCode()` instead (#343).
 - **BREAKING**: The protected methods `Redmine\Api\AbstractApi::sanitizeParams()` and `Redmine\Api\AbstractApi::isNotNull()` were removed, they were deprecated since v2.11.0. Subclasses that need them must filter empty values (`null`, `false`, `''`, `[]`) themselves, e.g. with `array_filter()` (#531).
+- **BREAKING**: The constants `Redmine\Api\Issue::PRIO_LOW`, `PRIO_NORMAL`, `PRIO_HIGH`, `PRIO_URGENT` and `PRIO_IMMEDIATE` were removed, they were deprecated since v2.6.0. The IDs of the issue priorities are not fixed in Redmine and differ between servers, use `IssuePriority::listNames()` to look up the ID of a priority (#385).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
