@@ -47,7 +47,7 @@ class AbstractApiTest extends TestCase
         $client = $this->createStub(Client::class);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) of type Redmine\Client\Client must also implement Redmine\Http\HttpClient, `');
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Http\HttpClient, `');
 
         /** @phpstan-ignore-next-line We are providing a Client that is not a HttpClient to test the exception */
         new class ($client) extends AbstractApi {};
@@ -56,7 +56,7 @@ class AbstractApiTest extends TestCase
     public function testCreateWithoutClitentOrHttpClientThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `stdClass` given');
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Http\HttpClient, `stdClass` given');
 
         /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
         new class (new \stdClass()) extends AbstractApi {};
@@ -65,7 +65,7 @@ class AbstractApiTest extends TestCase
     public function testCreateWithNonObjectThrowsExceptionWithDebugType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Client\Client or Redmine\Http\HttpClient, `int` given');
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) must be of type Redmine\Http\HttpClient, `int` given');
 
         /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
         new class (123) extends AbstractApi {};
