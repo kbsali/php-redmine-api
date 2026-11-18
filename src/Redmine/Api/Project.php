@@ -377,23 +377,6 @@ class Project extends AbstractApi
     }
 
     /**
-     * @deprecated v2.3.0 Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.
-     * @see \Redmine\Serializer\XmlSerializer::createFromArray()
-     *
-     * @param array<mixed> $params
-     *
-     * @return \SimpleXMLElement
-     */
-    protected function prepareParamsXml($params)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
-
-        return new SimpleXMLElement(
-            XmlSerializer::createFromArray(['project' => $params])->getEncoded(),
-        );
-    }
-
-    /**
      * Delete a project.
      *
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Projects

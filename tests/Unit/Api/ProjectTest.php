@@ -8,8 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\Project;
 use Redmine\Http\HttpClient;
-use ReflectionMethod;
-use SimpleXMLElement;
 
 /**
  * @author     Malte Gerth <mail@malte-gerth.de>
@@ -53,16 +51,5 @@ class ProjectTest extends TestCase
         );
 
         new Project($this->createStub(HttpClient::class));
-    }
-
-    public function testDeprecatedPrepareParamsXml(): void
-    {
-        $client = $this->createStub(HttpClient::class);
-
-        $api = Project::fromHttpClient($client);
-
-        $method = new ReflectionMethod($api, 'prepareParamsXml');
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $method->invoke($api, ['id' => 1]));
     }
 }
