@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Api;
 
-use Redmine\Client\Client;
-use Redmine\Client\NativeCurlClient;
-use Redmine\Client\Psr18Client;
 use Redmine\Exception;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\SerializerException;
@@ -35,30 +32,15 @@ class Issue extends AbstractApi
         return new self($httpClient, true);
     }
 
-    /**
-     * @var null|IssueCategory
-     */
-    private $issueCategoryApi;
+    private ?IssueCategory $issueCategoryApi = null;
 
-    /**
-     * @var null|IssueStatus
-     */
-    private $issueStatusApi;
+    private ?IssueStatus $issueStatusApi = null;
 
-    /**
-     * @var null|Project
-     */
-    private $projectApi;
+    private ?Project $projectApi = null;
 
-    /**
-     * @var null|Tracker
-     */
-    private $trackerApi;
+    private ?Tracker $trackerApi = null;
 
-    /**
-     * @var null|User
-     */
-    private $userApi;
+    private ?User $userApi = null;
 
     /**
      * @deprecated v2.9.0 Use fromHttpClient() instead.
@@ -560,42 +542,18 @@ class Issue extends AbstractApi
         return $body;
     }
 
-    /**
-     * @return IssueCategory
-     */
-    private function getIssueCategoryApi()
+    private function getIssueCategoryApi(): IssueCategory
     {
-        if ($this->issueCategoryApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var IssueCategory */
-                $issueCategoryApi = $this->client->getApi('issue_category');
-            } else {
-                $issueCategoryApi = IssueCategory::fromHttpClient($this->getHttpClient());
-            }
-
-            $this->issueCategoryApi = $issueCategoryApi;
-        }
+        $this->issueCategoryApi ??= IssueCategory::fromHttpClient($this->getHttpClient());
 
         $this->passFutureModeTo($this->issueCategoryApi);
 
         return $this->issueCategoryApi;
     }
 
-    /**
-     * @return IssueStatus
-     */
-    private function getIssueStatusApi()
+    private function getIssueStatusApi(): IssueStatus
     {
-        if ($this->issueStatusApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var IssueStatus */
-                $issueStatusApi = $this->client->getApi('issue_status');
-            } else {
-                $issueStatusApi = IssueStatus::fromHttpClient($this->getHttpClient());
-            }
-
-            $this->issueStatusApi = $issueStatusApi;
-        }
+        $this->issueStatusApi ??= IssueStatus::fromHttpClient($this->getHttpClient());
 
         $this->passFutureModeTo($this->issueStatusApi);
 
@@ -617,63 +575,27 @@ class Issue extends AbstractApi
         }, null, AbstractApi::class)($api);
     }
 
-    /**
-     * @return Project
-     */
-    private function getProjectApi()
+    private function getProjectApi(): Project
     {
-        if ($this->projectApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var Project */
-                $projectApi = $this->client->getApi('project');
-            } else {
-                $projectApi = Project::fromHttpClient($this->getHttpClient());
-            }
-
-            $this->projectApi = $projectApi;
-        }
+        $this->projectApi ??= Project::fromHttpClient($this->getHttpClient());
 
         $this->passFutureModeTo($this->projectApi);
 
         return $this->projectApi;
     }
 
-    /**
-     * @return Tracker
-     */
-    private function getTrackerApi()
+    private function getTrackerApi(): Tracker
     {
-        if ($this->trackerApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var Tracker */
-                $trackerApi = $this->client->getApi('tracker');
-            } else {
-                $trackerApi = Tracker::fromHttpClient($this->getHttpClient());
-            }
-
-            $this->trackerApi = $trackerApi;
-        }
+        $this->trackerApi ??= Tracker::fromHttpClient($this->getHttpClient());
 
         $this->passFutureModeTo($this->trackerApi);
 
         return $this->trackerApi;
     }
 
-    /**
-     * @return User
-     */
-    private function getUserApi()
+    private function getUserApi(): User
     {
-        if ($this->userApi === null) {
-            if ($this->client !== null && ! $this->client instanceof NativeCurlClient && ! $this->client instanceof Psr18Client) {
-                /** @var User */
-                $userApi = $this->client->getApi('user');
-            } else {
-                $userApi = User::fromHttpClient($this->getHttpClient());
-            }
-
-            $this->userApi = $userApi;
-        }
+        $this->userApi ??= User::fromHttpClient($this->getHttpClient());
 
         $this->passFutureModeTo($this->userApi);
 

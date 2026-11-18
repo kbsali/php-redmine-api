@@ -27,14 +27,6 @@ abstract class AbstractApi implements Api
 {
     use ResponseValidationTrait;
 
-    /**
-     * @deprecated v2.11.0 Will be removed in v3.0.0, API classes will only get a `\Redmine\Http\HttpClient`. Use `getHttpClient()` instead.
-     * @see AbstractApi::getHttpClient()
-     *
-     * @var Client
-     */
-    protected $client;
-
     private \Redmine\Http\HttpClient $httpClient;
 
     /**
@@ -60,10 +52,6 @@ abstract class AbstractApi implements Api
                 HttpClient::class,
                 get_debug_type($client),
             ));
-        }
-
-        if ($client instanceof Client) {
-            $this->client = $client;
         }
 
         if (! $client instanceof HttpClient) {
