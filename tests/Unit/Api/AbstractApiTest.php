@@ -40,6 +40,27 @@ class AbstractApiTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
     }
 
+    public function testCreateWithClientWithoutHttpClientTriggersDeprecationWarning(): void
+    {
+        $client = $this->createStub(Client::class);
+
+        // PHPUnit 10 compatible way to test trigger_error().
+        set_error_handler(
+            function ($errno, $errstr): bool {
+                $this->assertSame(
+                    'Passing a `Redmine\Client\Client` that is not a `Redmine\Http\HttpClient` to `Redmine\Api\AbstractApi::__construct()` is deprecated since v2.11.0 and will throw an `InvalidArgumentException` in v3.0.0, implement `Redmine\Http\HttpClient` in your client.',
+                    $errstr,
+                );
+
+                restore_error_handler();
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        new class ($client) extends AbstractApi {};
+    }
+
     public function testCreateWithoutClitentOrHttpClientThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
