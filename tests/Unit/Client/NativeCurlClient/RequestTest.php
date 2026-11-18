@@ -95,7 +95,7 @@ class RequestTest extends TestCase
         ];
     }
 
-    public function testRequestWithUploadAndFilepathReturnsCorrectResponse(): void
+    public function testRequestWithUploadSendsFilepathAsContentAsIs(): void
     {
         $namespace = 'Redmine\Client';
 
@@ -107,7 +107,16 @@ class RequestTest extends TestCase
         $curlExec = $this->getFunctionMock($namespace, 'curl_exec');
         $curlExec->expects($this->exactly(1))->willReturn('{"upload":{}}');
 
-        $this->getFunctionMock($namespace, 'curl_setopt_array');
+        $filepath = (string) realpath(__DIR__ . '/../../../Fixtures/testfile_01.txt');
+
+        $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(1))->willReturnCallback(function ($handle, array $options) use ($filepath): bool {
+            $this->assertSame($filepath, $options[CURLOPT_POSTFIELDS]);
+            $this->assertArrayNotHasKey(CURLOPT_INFILE, $options);
+            $this->assertArrayNotHasKey(CURLOPT_INFILESIZE, $options);
+
+            return true;
+        });
 
         $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
         $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
@@ -125,25 +134,11 @@ class RequestTest extends TestCase
             'access_token',
         );
 
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    'Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
         $request = $this->createStub(Request::class);
         $request->method('getMethod')->willReturn('POST');
         $request->method('getPath')->willReturn('/uploads.json');
         $request->method('getContentType')->willReturn('application/octet-stream');
-        $request->method('getContent')->willReturn(realpath(__DIR__ . '/../../../Fixtures/testfile_01.txt'));
+        $request->method('getContent')->willReturn($filepath);
 
         $response = $client->request($request);
 

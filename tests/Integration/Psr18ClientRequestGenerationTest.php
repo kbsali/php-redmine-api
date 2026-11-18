@@ -154,28 +154,16 @@ class Psr18ClientRequestGenerationTest extends TestCase
                 . \PHP_EOL
                 . 'The content of the file',
             ],
-            'Test fileupload with file path' => [
+            'Test fileupload sends a file path as content as is' => [
                 // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
                 'http://test.local', 'access_token', null, null,
-                'POST', '/uploads.json?filename=textfile.md', realpath(__DIR__ . '/../Fixtures/testfile_01.txt'),
+                'POST', '/uploads.json?filename=textfile.md', (string) realpath(__DIR__ . '/../Fixtures/testfile_01.txt'),
                 'POST http://test.local/uploads.json?filename=textfile.md HTTP/1.1' . \PHP_EOL
                 . 'Host: test.local' . \PHP_EOL
                 . 'X-Redmine-API-Key: access_token' . \PHP_EOL
                 . 'Content-Type: application/octet-stream' . \PHP_EOL
                 . \PHP_EOL
-                . 'This is a test file.' . "\n"
-                . 'It will be needed for testing file uploads.' . "\n",
-            ],
-            'Test fileupload with file path to image' => [
-                // @see https://www.redmine.org/projects/redmine/wiki/Rest_api#Attaching-files
-                'http://test.local', 'access_token', null, null,
-                'POST', '/uploads.json?filename=1x1.png', realpath(__DIR__ . '/../Fixtures/FF4D00-1.png'),
-                'POST http://test.local/uploads.json?filename=1x1.png HTTP/1.1' . \PHP_EOL
-                . 'Host: test.local' . \PHP_EOL
-                . 'X-Redmine-API-Key: access_token' . \PHP_EOL
-                . 'Content-Type: application/octet-stream' . \PHP_EOL
-                . \PHP_EOL
-                . base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX/TQBcNTh/AAAACklEQVR4nGNiAAAABgADNjd8qAAAAABJRU5ErkJggg=='),
+                . realpath(__DIR__ . '/../Fixtures/testfile_01.txt'),
             ],
             'Test PUT' => [
                 'http://test.local', 'access_token', null, null,

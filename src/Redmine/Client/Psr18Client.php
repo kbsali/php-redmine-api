@@ -144,18 +144,6 @@ final class Psr18Client implements Client, HttpClient
 
         switch ($method) {
             case 'POST':
-                if ($this->isUploadCall($path) && $this->isValidFilePath($body)) {
-                    @trigger_error('Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
-
-                    $request = $request->withBody(
-                        $this->streamFactory->createStreamFromFile($body),
-                    );
-                } elseif ('' !== $body) {
-                    $request = $request->withBody(
-                        $this->streamFactory->createStream($body),
-                    );
-                }
-                break;
             case 'PUT':
                 if ('' !== $body) {
                     $request = $request->withBody(
