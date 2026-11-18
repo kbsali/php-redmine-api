@@ -6,7 +6,6 @@ namespace Redmine\Api;
 
 use InvalidArgumentException;
 use Redmine\Api;
-use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
@@ -44,21 +43,10 @@ abstract class AbstractApi implements Api
      */
     public function __construct($client)
     {
-        if (! $client instanceof Client && ! $client instanceof HttpClient) {
-            throw new InvalidArgumentException(sprintf(
-                '%s(): Argument #1 ($client) must be of type %s or %s, `%s` given',
-                __METHOD__,
-                Client::class,
-                HttpClient::class,
-                get_debug_type($client),
-            ));
-        }
-
         if (! $client instanceof HttpClient) {
             throw new InvalidArgumentException(sprintf(
-                '%s(): Argument #1 ($client) of type %s must also implement %s, `%s` given',
+                '%s(): Argument #1 ($client) must be of type %s, `%s` given',
                 __METHOD__,
-                Client::class,
                 HttpClient::class,
                 get_debug_type($client),
             ));
