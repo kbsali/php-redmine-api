@@ -306,56 +306,6 @@ abstract class AbstractApi implements Api
     }
 
     /**
-     * Attaches Custom Fields to a create/update query.
-     *
-     * @deprecated v2.3.0 Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead
-     * @see \Redmine\Serializer\XmlSerializer::createFromArray()
-     *
-     * @param SimpleXMLElement $xml    XML Element the custom fields are attached to
-     * @param array<mixed>     $fields array of fields to attach, each field needs name, id and value set
-     *
-     * @return SimpleXMLElement $xml
-     *
-     * @see http://www.redmine.org/projects/redmine/wiki/Rest_api#Working-with-custom-fields
-     */
-    protected function attachCustomFieldXML(SimpleXMLElement $xml, array $fields)
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.3.0, use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead.', E_USER_DEPRECATED);
-
-        $_fields = $xml->addChild('custom_fields');
-        $_fields->addAttribute('type', 'array');
-        foreach ($fields as $field) {
-            $_field = $_fields->addChild('custom_field');
-
-            if (isset($field['name'])) {
-                $_field->addAttribute('name', $field['name']);
-            }
-            if (isset($field['field_format'])) {
-                $_field->addAttribute('field_format', $field['field_format']);
-            }
-            $_field->addAttribute('id', $field['id']);
-            if (array_key_exists('value', $field) && is_array($field['value'])) {
-                $_field->addAttribute('multiple', 'true');
-                $_values = $_field->addChild('value');
-                if (array_key_exists('token', $field['value'])) {
-                    foreach ($field['value'] as $key => $val) {
-                        $_values->addChild($key, $val);
-                    }
-                } else {
-                    $_values->addAttribute('type', 'array');
-                    foreach ($field['value'] as $val) {
-                        $_values->addChild('value', $val);
-                    }
-                }
-            } else {
-                $_field->value = $field['value'];
-            }
-        }
-
-        return $xml;
-    }
-
-    /**
      * Requests the path and returns the response body as array.
      *
      * @throws UnexpectedResponseException if the status code is not 200 (only if future mode is enabled)

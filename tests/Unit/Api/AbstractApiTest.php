@@ -14,7 +14,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\Response;
 use ReflectionMethod;
-use SimpleXMLElement;
 
 #[CoversClass(AbstractApi::class)]
 class AbstractApiTest extends TestCase
@@ -303,18 +302,5 @@ class AbstractApiTest extends TestCase
         return [
             'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '],
         ];
-    }
-
-    public function testDeprecatedAttachCustomFieldXML(): void
-    {
-        $client = $this->createStub(Client::class);
-
-        $api = new class ($client) extends AbstractApi {};
-
-        $method = new ReflectionMethod($api, 'attachCustomFieldXML');
-
-        $xml = new SimpleXMLElement('<?xml version="1.0"?><issue/>');
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $method->invoke($api, $xml, []));
     }
 }
