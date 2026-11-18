@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Client\Client;
 use Redmine\Client\NativeCurlClient;
-use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 
 #[CoversClass(NativeCurlClient::class)]
 class NativeCurlClientTest extends TestCase
@@ -57,108 +57,6 @@ class NativeCurlClientTest extends TestCase
 
         $this->assertInstanceOf(NativeCurlClient::class, $client);
         $this->assertInstanceOf(Client::class, $client);
-    }
-
-    public function testGetLastResponseStatusCodeIsInitialNull(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame(0, $client->getLastResponseStatusCode());
-    }
-
-    public function testGetLastResponseStatusCodeTriggersDeprecationWarning(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseStatusCode()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseStatusCode();
-    }
-
-    public function testGetLastResponseContentTypeIsInitialEmpty(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame('', $client->getLastResponseContentType());
-    }
-
-    public function testGetLastResponseContentTypeTriggersDeprecationWarning(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseContentType()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseContentType();
-    }
-
-    public function testGetLastResponseBodyIsInitialEmpty(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame('', $client->getLastResponseBody());
-    }
-
-    public function testGetLastResponseBodyTriggersDeprecationWarning(): void
-    {
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::getLastResponseBody()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` or `\Redmine\Api\AbstractApi::getLastResponse()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        $client->getLastResponseBody();
     }
 
     public function testStartAndStopImpersonateUser(): void
@@ -210,11 +108,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->startImpersonateUser('Sam');
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->stopImpersonateUser();
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetSslVersion(): void
@@ -265,11 +163,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_HTTP_VERSION);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetSslVerifypeer(): void
@@ -321,11 +219,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_SSL_VERIFYPEER, 1);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_SSL_VERIFYPEER);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetSslVerifyhost(): void
@@ -377,11 +275,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_SSL_VERIFYHOST, 2);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_SSL_VERIFYHOST);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetCustomHttpHeaders(): void
@@ -434,16 +332,16 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_HTTPHEADER, [
             'FooBar: test case sensitivity',
             'double: This will be overridden',
             'DOUBLE: This will override the previous header',
             'invalid-header-will-be-ignored',
         ]);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_HTTPHEADER);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetCustomHost(): void
@@ -495,13 +393,13 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_HTTPHEADER, [
             'Host: http://custom.example.com',
         ]);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_HTTPHEADER);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetPort(): void
@@ -552,11 +450,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->setCurlOption(CURLOPT_PORT, 8080);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
         $client->unsetCurlOption(CURLOPT_PORT);
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testSetCurlOptionHttpheaderWithoutArrayThrowsException(): void
@@ -619,7 +517,7 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testCustomPortWillSetFromUrl(): void
@@ -669,230 +567,7 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $client->requestGet('/path');
-    }
-
-    /**
-     * @dataProvider getRequestReponseData
-     */
-    #[DataProvider('getRequestReponseData')]
-    public function testRequestsReturnsCorrectContent(string $method, string $data, bool $boolReturn, int $statusCode, string $contentType, string $content): void
-    {
-        $curl = curl_init();
-
-        $curlInit = $this->getFunctionMock(self::__NAMESPACE__, 'curl_init');
-        $curlInit->expects($this->exactly(1))->willReturn($curl);
-
-        $curlExec = $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-        $curlExec->expects($this->exactly(1))->willReturn($content);
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-
-        $curlGetinfo = $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
-            [$curl, CURLINFO_HTTP_CODE, $statusCode],
-            [$curl, CURLINFO_CONTENT_TYPE, $contentType],
-        ]));
-
-        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
-
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        $this->assertSame($boolReturn, $client->$method('/path', $data));
-        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
-        $this->assertSame($contentType, $client->getLastResponseContentType());
-        $this->assertSame($content, $client->getLastResponseBody());
-    }
-
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getRequestReponseData(): array
-    {
-        return [
-            ['requestGet', '', true, 101, 'text/plain', ''],
-            ['requestGet', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestGet', '', true, 301, 'application/json', ''],
-            ['requestGet', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestGet', '', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestPost', '{"foo":"bar"}', true, 101, 'text/plain', ''],
-            ['requestPost', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestPost', '{"foo":"bar"}', true, 301, 'application/json', ''],
-            ['requestPost', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestPost', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestPut', '{"foo":"bar"}', true, 101, 'text/plain', ''],
-            ['requestPut', '{"foo":"bar"}', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestPut', '{"foo":"bar"}', true, 301, 'application/json', ''],
-            ['requestPut', '{"foo":"bar"}', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestPut', '{"foo":"bar"}', false, 500, 'text/plain', 'Internal Server Error'],
-            ['requestDelete', '', true, 101, 'text/plain', ''],
-            ['requestDelete', '', true, 200, 'application/json', '{"foo_bar": 12345}'],
-            ['requestDelete', '', true, 301, 'application/json', ''],
-            ['requestDelete', '', false, 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['requestDelete', '', false, 500, 'text/plain', 'Internal Server Error'],
-        ];
-    }
-
-    public function testRequestGetTriggersDeprecationWarning(): void
-    {
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init')->expects($this->once())->willReturn(curl_init());
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
-
-        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
-        $curlError->expects($this->exactly(1))->willReturn('');
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
-
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::requestGet()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestGet('/path');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestPostTriggersDeprecationWarning(): void
-    {
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init')->expects($this->once())->willReturn(curl_init());
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
-
-        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
-        $curlError->expects($this->exactly(1))->willReturn('');
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
-
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::requestPost()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestPost('/path', '');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestPutTriggersDeprecationWarning(): void
-    {
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init')->expects($this->once())->willReturn(curl_init());
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
-
-        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
-        $curlError->expects($this->exactly(1))->willReturn('');
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
-
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::requestPut()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestPut('/path', '');
-        } catch (ClientException) {
-        }
-    }
-
-    public function testRequestDeleteTriggersDeprecationWarning(): void
-    {
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_init')->expects($this->once())->willReturn(curl_init());
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_exec');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_setopt_array');
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_getinfo');
-        $curlErrno = $this->getFunctionMock(self::__NAMESPACE__, 'curl_errno');
-        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_COULDNT_CONNECT);
-
-        $curlError = $this->getFunctionMock(self::__NAMESPACE__, 'curl_error');
-        $curlError->expects($this->exactly(1))->willReturn('');
-
-        $this->getFunctionMock(self::__NAMESPACE__, 'curl_close');
-
-        $client = new NativeCurlClient(
-            'http://test.local',
-            'access_token',
-        );
-
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    '`Redmine\Client\NativeCurlClient::requestDelete()` is deprecated since v2.8.0, use `\Redmine\Client\NativeCurlClient::request()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            $client->requestDelete('/path');
-        } catch (ClientException) {
-        }
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     public function testHandlingOfResponseWithoutContent(): void
@@ -927,10 +602,11 @@ class NativeCurlClientTest extends TestCase
             'access_token',
         );
 
-        $this->assertSame(true, $client->requestPut('/path', '{"foo":"bar"}'));
-        $this->assertSame($statusCode, $client->getLastResponseStatusCode());
-        $this->assertSame('', $client->getLastResponseContentType());
-        $this->assertSame($content, $client->getLastResponseBody());
+        $response = $client->request(HttpFactory::makeRequest('PUT', '/path', '', '{"foo":"bar"}'));
+
+        $this->assertSame($statusCode, $response->getStatusCode());
+        $this->assertSame('', $response->getContentType());
+        $this->assertSame($content, $response->getContent());
     }
 
     public function testCurlErrorThrowsException(): void
@@ -961,7 +637,7 @@ class NativeCurlClientTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('cURL error 3: <url> malformed');
 
-        $client->requestGet('/path');
+        $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
     /**

@@ -8,7 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
-use Redmine\Client\Client;
+use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 use SimpleXMLElement;
@@ -50,9 +51,8 @@ class GetTest extends TestCase
     #[DataProvider('getJsonDecodingFromGetMethodData')]
     public function testJsonDecodingFromGetMethod(string $response, ?bool $shouldDecode, string|bool|array $expected): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/json');
+        $client = $this->createStub(HttpClient::class);
+        $client->method('request')->willReturn(HttpFactory::makeResponse(200, 'application/json', $response));
 
         $api = new class ($client) extends AbstractApi {};
 
@@ -111,9 +111,8 @@ class GetTest extends TestCase
     #[DataProvider('getXmlDecodingFromGetMethodData')]
     public function testXmlDecodingFromGetMethod(string $response, ?bool $decode, string $expected): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn('application/xml');
+        $client = $this->createStub(HttpClient::class);
+        $client->method('request')->willReturn(HttpFactory::makeResponse(200, 'application/xml', $response));
 
         $api = new class ($client) extends AbstractApi {};
 

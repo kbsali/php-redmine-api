@@ -12,6 +12,7 @@ use Redmine\Api\AbstractApi;
 use Redmine\Client\Client;
 use Redmine\Exception\SerializerException;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
 use Redmine\Http\Response;
 use ReflectionMethod;
 
@@ -29,15 +30,26 @@ class AbstractApiTest extends TestCase
         $this->assertSame($client, $method->invoke($api));
     }
 
-    public function testCreateWitClientWorks(): void
+    public function testCreateWithClientAndHttpClientWorks(): void
     {
-        $client = $this->createStub(Client::class);
+        /** @var Client&HttpClient&\PHPUnit\Framework\MockObject\Stub $client */
+        $client = $this->createStubForIntersectionOfInterfaces([Client::class, HttpClient::class]);
 
         $api = new class ($client) extends AbstractApi {};
 
         $method = new ReflectionMethod($api, 'getHttpClient');
 
-        $this->assertInstanceOf(HttpClient::class, $method->invoke($api));
+        $this->assertSame($client, $method->invoke($api));
+    }
+
+    public function testCreateWithClientWithoutHttpClientThrowsException(): void
+    {
+        $client = $this->createStub(Client::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redmine\Api\AbstractApi::__construct(): Argument #1 ($client) of type Redmine\Client\Client must also implement Redmine\Http\HttpClient, `');
+
+        new class ($client) extends AbstractApi {};
     }
 
     public function testCreateWithoutClitentOrHttpClientThrowsException(): void
@@ -200,10 +212,8 @@ class AbstractApiTest extends TestCase
     #[DataProvider('retrieveDataData')]
     public function testRetrieveData(string $path, string $contentType, string $response, array $expected): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')->willReturn(true);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn($contentType);
+        $client = $this->createStub(HttpClient::class);
+        $client->method('request')->willReturn(HttpFactory::makeResponse(200, $contentType, $response));
 
         $api = new class ($client) extends AbstractApi {};
 
@@ -279,10 +289,8 @@ class AbstractApiTest extends TestCase
     #[DataProvider('getRetrieveDataToExceptionData')]
     public function testRetrieveDataThrowsException(string $response, string $contentType, string $expectedException, string $expectedMessage): void
     {
-        $client = $this->createStub(Client::class);
-        $client->method('requestGet')->willReturn(true);
-        $client->method('getLastResponseBody')->willReturn($response);
-        $client->method('getLastResponseContentType')->willReturn($contentType);
+        $client = $this->createStub(HttpClient::class);
+        $client->method('request')->willReturn(HttpFactory::makeResponse(200, $contentType, $response));
 
         $api = new class ($client) extends AbstractApi {};
 

@@ -63,13 +63,17 @@ abstract class AbstractApi implements Api
             $this->client = $client;
         }
 
-        $httpClient = $client;
-
-        if (! $httpClient instanceof HttpClient) {
-            $httpClient = $this->handleClient($client);
+        if (! $client instanceof HttpClient) {
+            throw new InvalidArgumentException(sprintf(
+                '%s(): Argument #1 ($client) of type %s must also implement %s, `%s` given',
+                __METHOD__,
+                Client::class,
+                HttpClient::class,
+                get_debug_type($client),
+            ));
         }
 
-        $this->httpClient = $httpClient;
+        $this->httpClient = $client;
     }
 
     final protected function getHttpClient(): HttpClient
@@ -353,32 +357,6 @@ abstract class AbstractApi implements Api
         }
 
         return $returnData;
-    }
-
-    private function handleClient(Client $client): HttpClient
-    {
-        return new class ($client) implements HttpClient {
-            public function __construct(private readonly Client $client) {}
-
-            public function request(Request $request): Response
-            {
-                if ($request->getMethod() === 'POST') {
-                    $this->client->requestPost($request->getPath(), $request->getContent());
-                } elseif ($request->getMethod() === 'PUT') {
-                    $this->client->requestPut($request->getPath(), $request->getContent());
-                } elseif ($request->getMethod() === 'DELETE') {
-                    $this->client->requestDelete($request->getPath());
-                } else {
-                    $this->client->requestGet($request->getPath());
-                }
-
-                return HttpFactory::makeResponse(
-                    $this->client->getLastResponseStatusCode(),
-                    $this->client->getLastResponseContentType(),
-                    $this->client->getLastResponseBody(),
-                );
-            }
-        };
     }
 
     private function getContentTypeFromPath(string $path): string

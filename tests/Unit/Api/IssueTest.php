@@ -14,6 +14,9 @@ use Redmine\Api\Tracker;
 use Redmine\Api\User;
 use Redmine\Client\Client;
 use Redmine\Http\HttpClient;
+use Redmine\Http\HttpFactory;
+use Redmine\Http\Request;
+use Redmine\Http\Response;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 /**
@@ -61,9 +64,9 @@ class IssueTest extends TestCase
     }
 
     /**
-     * Test cleanParams() with Client for BC
+     * Test cleanParams() with a Client that is also a HttpClient
      */
-    public function testCreateWithClientCleansParameters(): void
+    public function testCreateWithClientAndHttpClientCleansParameters(): void
     {
         // Test values
         $response = '<?xml version="1.0"?><issue></issue>';
@@ -125,7 +128,8 @@ class IssueTest extends TestCase
             ],
         );
 
-        $legacyClient = $this->createMock(Client::class);
+        /** @var Client&HttpClient&\PHPUnit\Framework\MockObject\MockObject $legacyClient */
+        $legacyClient = $this->createMockForIntersectionOfInterfaces([Client::class, HttpClient::class]);
         $legacyClient->expects($this->exactly(5))
             ->method('getApi')
             ->willReturnMap(
@@ -140,25 +144,21 @@ class IssueTest extends TestCase
         ;
 
         $legacyClient->expects($this->once())
-            ->method('requestPost')
-            ->with(
-                '/issues.xml',
-                <<< XML
-                <?xml version="1.0"?>
-                <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
+            ->method('request')
+            ->willReturnCallback(function (Request $request) use ($response): Response {
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('/issues.xml', $request->getPath());
+                $this->assertSame(
+                    <<< XML
+                    <?xml version="1.0"?>
+                    <issue><project_id>1</project_id><category_id>5</category_id><status_id>6</status_id><tracker_id>2</tracker_id><assigned_to_id>3</assigned_to_id><author_id>4</author_id></issue>
 
-                XML,
-            )
-            ->willReturn(true);
-        $legacyClient->expects($this->exactly(1))
-            ->method('getLastResponseBody')
-            ->willReturn($response);
-        $legacyClient->expects($this->exactly(1))
-            ->method('getLastResponseContentType')
-            ->willReturn('application/xml');
-        $legacyClient->expects($this->exactly(1))
-            ->method('getLastResponseStatusCode')
-            ->willReturn(201);
+                    XML,
+                    $request->getContent(),
+                );
+
+                return HttpFactory::makeResponse(201, 'application/xml', $response);
+            });
 
         // Create the object under test
         $api = new Issue($legacyClient);
