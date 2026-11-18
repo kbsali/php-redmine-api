@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: Subclasses of `Redmine\Api\AbstractApi` that called the removed `retrieveAll()` must now handle exceptions. `retrieveData()` throws on an invalid response body, while `retrieveAll()` returned `false` or the error message as a string (#349).
 - **BREAKING**: Code that used the removed `lastCallFailed()` must check the status code itself with `getLastResponse()->getStatusCode()` of the API instance that made the request. An instance that made no request reports `0`, while `lastCallFailed()` fell back to the status of the client. `lastCallFailed()` treated every 2xx code except `200` and `201` as a failure, e.g. `204` (#343).
 - **BREAKING**: Subclasses of `Redmine\Api\Project` that called the removed `prepareParamsXml()` must now call `\Redmine\Serializer\XmlSerializer::createFromArray(['project' => $params])` themselves. The `project` key is required, it is the root element of the XML. `createFromArray()` returns an `XmlSerializer` and not a `SimpleXMLElement`, use `new SimpleXMLElement($serializer->getEncoded())` if you need one (#346).
+- **BREAKING**: Subclasses of `Redmine\Api\AbstractApi` that called the removed `attachCustomFieldXML()` can no longer attach the custom fields to an existing `SimpleXMLElement`. Pass them as the `custom_fields` key of the array you give to `\Redmine\Serializer\XmlSerializer::createFromArray()`, e.g. `createFromArray(['issue' => ['custom_fields' => $fields]])`. It returns an `XmlSerializer` and not a `SimpleXMLElement`, use `new SimpleXMLElement($serializer->getEncoded())` if you need one (#345).
 
 ### Removed
 
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING**: The protected methods `Redmine\Api\AbstractApi::sanitizeParams()` and `Redmine\Api\AbstractApi::isNotNull()` were removed, they were deprecated since v2.11.0. Subclasses that need them must filter empty values (`null`, `false`, `''`, `[]`) themselves, e.g. with `array_filter()` (#531).
 - **BREAKING**: The constants `Redmine\Api\Issue::PRIO_LOW`, `PRIO_NORMAL`, `PRIO_HIGH`, `PRIO_URGENT` and `PRIO_IMMEDIATE` were removed, they were deprecated since v2.6.0. The IDs of the issue priorities are not fixed in Redmine and differ between servers, use `IssuePriority::list()` and search the `issue_priorities` in the result for the `name` to get the ID of a priority (#385).
 - **BREAKING**: The protected method `Redmine\Api\Project::prepareParamsXml()` was removed, it was deprecated since v2.3.0. Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead (#346).
+- **BREAKING**: The protected method `Redmine\Api\AbstractApi::attachCustomFieldXML()` was removed, it was deprecated since v2.3.0. Use `\Redmine\Serializer\XmlSerializer::createFromArray()` instead (#345).
 
 ## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
 
