@@ -122,26 +122,6 @@ class UploadTest extends TestCase
         ];
     }
 
-    public function testUploadWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/uploads.json',
-                'application/octet-stream',
-                'attachment-content',
-                500,
-                'application/json',
-                '{"error":"internal error"}',
-            ],
-        );
-
-        $api = Attachment::fromHttpClient($client);
-
-        $this->assertSame('{"error":"internal error"}', $api->upload('attachment-content'));
-    }
-
     public function testUploadWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
