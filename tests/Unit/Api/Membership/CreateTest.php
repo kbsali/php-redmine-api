@@ -107,30 +107,6 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/projects/5/memberships.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        // Create the object under test
-        $api = Membership::fromHttpClient($client);
-
-        // Perform the tests
-        $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
-
-        $this->assertSame('', $return);
-    }
-
     public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
@@ -179,29 +155,6 @@ class CreateTest extends TestCase
         $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
 
         $this->assertSame('', $return);
-    }
-
-    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/projects/5/memberships.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
-                500,
-                '',
-                '<error>error</error>',
-            ],
-        );
-
-        $api = Membership::fromHttpClient($client);
-
-        $return = $api->create(5, ['user_id' => 4, 'role_ids' => 2]);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString('<error>error</error>', $return->asXml());
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void

@@ -120,28 +120,6 @@ class UpdateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/projects/5/wiki/test.xml',
-                'application/xml',
-                '<?xml version="1.0"?><wiki_page/>',
-                500,
-                '',
-                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
-            ],
-        );
-
-        $api = Wiki::fromHttpClient($client);
-
-        $return = $api->update(5, 'test', []);
-
-        $this->assertSame('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return);
-    }
-
     public function testUpdateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

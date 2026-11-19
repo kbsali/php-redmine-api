@@ -19,10 +19,10 @@ class ShowTest extends TestCase
     /**
      * @dataProvider getShowData
      *
-     * @param string|bool|array<mixed> $expectedReturn
+     * @param array<mixed> $expectedReturn
      */
     #[DataProvider('getShowData')]
-    public function testShowReturnsCorrectResponse(int|string $identifier, string $page, ?int $version, string $expectedPath, string $response, string|bool|array $expectedReturn): void
+    public function testShowReturnsCorrectResponse(int|string $identifier, string $page, ?int $version, string $expectedPath, string $response, array $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -98,22 +98,6 @@ class ShowTest extends TestCase
                 '["API Response"]',
                 ['API Response'],
             ],
-            'string response' => [
-                5,
-                'page',
-                null,
-                '/projects/5/wiki/page.json?include=attachments',
-                'string',
-                (PHP_VERSION_ID < 80600) ? 'Error decoding body as JSON: Syntax error' : 'Error decoding body as JSON: Syntax error near location 1:1',
-            ],
-            'false response' => [
-                5,
-                'page',
-                null,
-                '/projects/5/wiki/page.json?include=attachments',
-                '',
-                false,
-            ],
         ];
     }
 
@@ -137,26 +121,6 @@ class ShowTest extends TestCase
         FutureMode::enable($api);
 
         $this->assertSame(['API Response'], $api->show(5, 'page'));
-    }
-
-    public function testShowWithIncorrectStatusCodeReturnsFalse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/wiki/page.json?include=attachments',
-                'application/json',
-                '',
-                404,
-                'application/json',
-                '',
-            ],
-        );
-
-        $api = Wiki::fromHttpClient($client);
-
-        $this->assertFalse($api->show(5, 'page'));
     }
 
     /**

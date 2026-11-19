@@ -66,7 +66,7 @@ class Membership extends AbstractApi
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of memberships found
      */
@@ -114,14 +114,6 @@ class Membership extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
-
         $this->throwOnUnexpectedStatusCode(201);
 
         if ('' !== $body) {
@@ -159,10 +151,6 @@ class Membership extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
-
         $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
@@ -185,10 +173,6 @@ class Membership extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 

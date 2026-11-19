@@ -101,30 +101,6 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateReturnsEmptyString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/memberships/5.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids>2</role_ids></membership>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        // Create the object under test
-        $api = Membership::fromHttpClient($client);
-
-        // Perform the tests
-        $return = $api->update(5, ['user_id' => 4, 'role_ids' => 2]);
-
-        $this->assertSame('', $return);
-    }
-
     public function testUpdateThrowsExceptionWithEmptyParameters(): void
     {
         // Create the used mock objects

@@ -62,24 +62,6 @@ class ShowTest extends TestCase
                 '{"relation":{"child":[5,2,3]}}',
                 ['child' => [5, 2, 3]],
             ],
-            'array response on object without relation key error' => [
-                5,
-                '/relations/5.json',
-                '{}',
-                [],
-            ],
-            'array response on string error' => [
-                5,
-                '/relations/5.json',
-                'string',
-                [],
-            ],
-            'array response on empty error' => [
-                5,
-                '/relations/5.json',
-                '',
-                [],
-            ],
         ];
     }
 
@@ -103,26 +85,6 @@ class ShowTest extends TestCase
         FutureMode::enable($api);
 
         $this->assertSame(['id' => 5], $api->show(5));
-    }
-
-    public function testShowWithIncorrectStatusCodeReturnsEmptyArray(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/relations/5.json',
-                'application/json',
-                '',
-                404,
-                'application/json',
-                '',
-            ],
-        );
-
-        $api = IssueRelation::fromHttpClient($client);
-
-        $this->assertSame([], $api->show(5));
     }
 
     /**

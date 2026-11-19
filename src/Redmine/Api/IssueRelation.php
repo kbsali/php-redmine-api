@@ -63,7 +63,7 @@ class IssueRelation extends AbstractApi
      * @param array<mixed> $params  optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of relations found
      */
@@ -83,9 +83,9 @@ class IssueRelation extends AbstractApi
      *
      * @param int $id the relation id
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed> relation's details or empty array on error
+     * @return array<mixed> relation's details
      */
     public function show($id)
     {
@@ -93,26 +93,6 @@ class IssueRelation extends AbstractApi
             'GET',
             '/relations/' . urlencode(strval($id)) . '.json',
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return [];
-            }
-
-            try {
-                $data = JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException) {
-                return [];
-            }
-
-            if (! is_array($data) || ! array_key_exists('relation', $data) || ! is_array($data['relation'])) {
-                return [];
-            }
-
-            return $data['relation'];
-        }
 
         $data = $this->getJsonArrayOrThrow();
 
@@ -140,10 +120,6 @@ class IssueRelation extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -186,10 +162,6 @@ class IssueRelation extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return JsonSerializer::createFromString($body)->getNormalized();
-        }
 
         $this->throwOnUnexpectedStatusCode(201);
 
