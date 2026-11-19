@@ -39,24 +39,14 @@ class Psr18ClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $client);
     }
 
-    public function testServerRequestFactoryIsAcceptedInConstructorForBC(): void
+    public function testServerRequestFactoryIsNotAcceptedInConstructor(): void
     {
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    'Redmine\Client\Psr18Client::__construct(): Providing Argument #2 ($requestFactory) as Psr\Http\Message\ServerRequestFactoryInterface is deprecated since v2.3.0, please provide as Psr\Http\Message\RequestFactoryInterface instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Redmine\Client\Psr18Client::__construct(): Argument #2 ($requestFactory) must be of type Psr\Http\Message\RequestFactoryInterface');
 
         new Psr18Client(
             $this->createStub(ClientInterface::class),
+            /** @phpstan-ignore-next-line We are providing an invalid parameter to test the exception */
             $this->createStub(ServerRequestFactoryInterface::class),
             $this->createStub(StreamFactoryInterface::class),
             'http://test.local',
