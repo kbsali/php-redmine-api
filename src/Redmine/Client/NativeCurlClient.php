@@ -250,17 +250,7 @@ final class NativeCurlClient implements Client, HttpClient
         switch ($method) {
             case 'POST':
                 $curlOptions[CURLOPT_POST] = 1;
-                if ($this->isUploadCall($path) && $this->isValidFilePath($body)) {
-                    @trigger_error('Uploading an attachment by filepath is deprecated since v2.1.0, use file_get_contents() to upload the file content instead.', E_USER_DEPRECATED);
-
-                    $file = fopen($body, 'r');
-                    $size = filesize($body);
-                    $filedata = fread($file, $size);
-
-                    $curlOptions[CURLOPT_POSTFIELDS] = $filedata;
-                    $curlOptions[CURLOPT_INFILE] = $file;
-                    $curlOptions[CURLOPT_INFILESIZE] = $size;
-                } elseif ($body !== '') {
+                if ($body !== '') {
                     $curlOptions[CURLOPT_POSTFIELDS] = $body;
                 }
                 break;

@@ -101,13 +101,4 @@ trait ClientApiTrait
 
         return (str_contains($path, '/uploads.json')) || (str_contains($path, '/uploads.xml'));
     }
-
-    private function isValidFilePath(string $body): bool
-    {
-        return
-            '' !== $body
-            && strlen($body) <= \PHP_MAXPATHLEN
-            && is_file(strval(str_replace("\0", '', $body)))
-        ;
-    }
 }
