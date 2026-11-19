@@ -134,48 +134,6 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateWithIncorrectStatusCodeReturnsEmptyString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/projects/5/wiki/test.xml',
-                'application/xml',
-                '<?xml version="1.0"?><wiki_page/>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Wiki::fromHttpClient($client);
-
-        $this->assertSame('', $api->create(5, 'test', []));
-    }
-
-    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/projects/5/wiki/test.xml',
-                'application/xml',
-                '<?xml version="1.0"?><wiki_page/>',
-                500,
-                '',
-                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
-            ],
-        );
-
-        $api = Wiki::fromHttpClient($client);
-
-        $return = $api->create(5, 'test', []);
-
-        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
-    }
-
     public function testCreateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

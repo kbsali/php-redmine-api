@@ -8,7 +8,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Serializer\JsonSerializer;
 
 /**
  * Listing roles.
@@ -65,7 +64,7 @@ class Role extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of roles found
      */
@@ -110,9 +109,9 @@ class Role extends AbstractApi
      *
      * @param int $id the role id
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the role as array or false|string on error
+     * @return array<mixed> information about the role
      */
     public function show($id)
     {
@@ -120,20 +119,6 @@ class Role extends AbstractApi
             'GET',
             '/roles/' . urlencode(strval($id)) . '.json',
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
 
         return $this->getJsonArrayOrThrow();
     }

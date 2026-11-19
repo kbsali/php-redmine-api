@@ -93,12 +93,3 @@ Feature: Interacting with the REST API for roles
         And the response has the status code "404"
         And the response has the content type "application/json"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Showing a not existing role without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I show the role with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
