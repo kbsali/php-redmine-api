@@ -173,30 +173,6 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateReturnsEmptyString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/projects.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        // Create the object under test
-        $api = Project::fromHttpClient($client);
-
-        // Perform the tests
-        $return = $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
-
-        $this->assertSame('', $return);
-    }
-
     public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
@@ -245,28 +221,6 @@ class CreateTest extends TestCase
         $return = $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
 
         $this->assertSame('', $return);
-    }
-
-    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/projects.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
-                500,
-                '',
-                '<?xml version="1.0" encoding="UTF-8"?><error>error</error>',
-            ],
-        );
-
-        $api = Project::fromHttpClient($client);
-
-        $return = $api->create(['identifier' => 'test-project', 'name' => 'Test Project']);
-
-        $this->assertXmlStringEqualsXmlString('<?xml version="1.0" encoding="UTF-8"?><error>error</error>', $return->asXML());
     }
 
     public function testCreateThrowsExceptionWithEmptyParameters(): void

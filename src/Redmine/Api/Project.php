@@ -10,7 +10,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
@@ -132,9 +131,9 @@ class Project extends AbstractApi
      * @param array<mixed> $params available parameters:
      *                             include: fetch associated data (optional). Possible values: trackers, issue_categories, enabled_modules (since 2.6.0)
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the project as array or false|string on error
+     * @return array<mixed> information about the project
      */
     public function show($id, array $params = [])
     {
@@ -148,20 +147,6 @@ class Project extends AbstractApi
             'GET',
             PathSerializer::create('/projects/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
 
         return $this->getJsonArrayOrThrow();
     }
@@ -196,14 +181,6 @@ class Project extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
-
         $this->throwOnUnexpectedStatusCode(201);
 
         if ('' !== $body) {
@@ -221,7 +198,7 @@ class Project extends AbstractApi
      * @param string|int $id project id or identifier
      * @param array<mixed> $params
      *
-     * @return string|false
+     * @return string
      */
     public function update($id, array $params)
     {
@@ -237,10 +214,6 @@ class Project extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -392,10 +365,6 @@ class Project extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
