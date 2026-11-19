@@ -10,7 +10,6 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Redmine\Exception\ClientException;
 use Redmine\Http\HttpClient;
@@ -28,7 +27,7 @@ final class Psr18Client implements Client, HttpClient
     private RequestFactoryInterface $requestFactory;
 
     /**
-     * @param RequestFactoryInterface|ServerRequestFactoryInterface $requestFactory
+     * @param RequestFactoryInterface $requestFactory
      * @param string $apikeyOrUsername should be your ApiKey, but it could also be your username.
      * @param ?string $password needs to be set if a username is given (not recommended).
      */
@@ -40,7 +39,7 @@ final class Psr18Client implements Client, HttpClient
         private string $apikeyOrUsername,
         private ?string $password = null,
     ) {
-        if (! $requestFactory instanceof RequestFactoryInterface && ! $requestFactory instanceof ServerRequestFactoryInterface) {
+        if (! $requestFactory instanceof RequestFactoryInterface) {
             throw new Exception(sprintf(
                 '%s(): Argument #2 ($requestFactory) must be of type %s',
                 __METHOD__,
@@ -48,19 +47,6 @@ final class Psr18Client implements Client, HttpClient
             ));
         }
 
-        if ($requestFactory instanceof ServerRequestFactoryInterface) {
-            @trigger_error(
-                sprintf(
-                    '%s(): Providing Argument #2 ($requestFactory) as %s is deprecated since v2.3.0, please provide as %s instead.',
-                    __METHOD__,
-                    ServerRequestFactoryInterface::class,
-                    RequestFactoryInterface::class,
-                ),
-                E_USER_DEPRECATED,
-            );
-
-            $requestFactory = $this->handleServerRequestFactory($requestFactory);
-        }
         $this->requestFactory = $requestFactory;
     }
 
@@ -170,20 +156,5 @@ final class Psr18Client implements Client, HttpClient
         }
 
         return $request;
-    }
-
-    /**
-     * We accept ServerRequestFactoryInterface for BC
-     */
-    private function handleServerRequestFactory(ServerRequestFactoryInterface $factory): RequestFactoryInterface
-    {
-        return new class ($factory) implements RequestFactoryInterface {
-            public function __construct(private readonly ServerRequestFactoryInterface $factory) {}
-
-            public function createRequest(string $method, $uri): RequestInterface
-            {
-                return $this->factory->createServerRequest($method, $uri);
-            }
-        };
     }
 }
