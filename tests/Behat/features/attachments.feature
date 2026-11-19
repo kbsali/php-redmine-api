@@ -87,15 +87,6 @@ Feature: Interacting with the REST API for attachments
         And the response has the content type "application/json"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to show details of a non-existing attachment without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I show the attachment with the id "1"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
-
     Scenario: Downloading an attachment
         Given I have a "NativeCurlClient" client
         And I upload the content of the file "%tests_dir%/Fixtures/testfile_01.txt" with the following data
@@ -126,16 +117,6 @@ Feature: Interacting with the REST API for attachments
         And the response has the content type "text/html"
         # The response body contains a 404 HTML page from Redmine
         # And the response has the content "<!DOCTYPE html><html lang="en">..."
-
-    @error @without-future-mode
-    Scenario: Try to download a non-existing attachment without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I download the attachment with the id "1"
-        Then the response has the status code "404"
-        And the response has the content type "text/html"
-        # The response body contains a 404 HTML page from Redmine
-        # And the response has the content "<!DOCTYPE html><html lang="en">..."
-        And the returned data is false
 
     Scenario: Deleting an attachment
         Given I have a "NativeCurlClient" client
@@ -185,12 +166,3 @@ Feature: Interacting with the REST API for attachments
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to remove a non-existing attachment without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the attachment with the id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""

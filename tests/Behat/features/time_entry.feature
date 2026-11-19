@@ -163,17 +163,6 @@ Feature: Interacting with the REST API for time_entries
         And the response has the content type "application/json"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to show a non-existing time_entry without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I have a time entry activiy with name "development"
-        And I create a project with name "Test Project" and identifier "test-project"
-        When I show the time entry with the id "1"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
-
     Scenario: Removing a time_entry to a project
         Given I have a "NativeCurlClient" client
         And I have a time entry activiy with name "development"
@@ -207,29 +196,6 @@ Feature: Interacting with the REST API for time_entries
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Hours is invalid</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to create a time_entry with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I have a time entry activiy with name "development"
-        And I create a project with name "Test Project" and identifier "test-project"
-        When I create a time entry with the following data
-            | property          | value                |
-            | project_id        | 1                    |
-            | hours             | -1                   |
-            | activity_id       | 1                    |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Hours is invalid</error></errors>
-            """
-        And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
-            """
-            @attributes
-            error
-            """
-
     @error
     Scenario: Try to update a time_entry with invalid data
         Given I have a "NativeCurlClient" client
@@ -251,30 +217,6 @@ Feature: Interacting with the REST API for time_entries
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Hours is invalid</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to update a time_entry with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I have a time entry activiy with name "development"
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I create a time entry with the following data
-            | property          | value                |
-            | project_id        | 1                    |
-            | hours             | 1                    |
-            | activity_id       | 1                    |
-        When I update the time entry with id "1" and the following data
-            | property          | value                |
-            | hours             | -1                   |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Hours is invalid</error></errors>
-            """
-        And the returned data is exactly
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Hours is invalid</error></errors>
-            """
-
     @error
     Scenario: Try to update a non-existing time_entry
         Given I have a "NativeCurlClient" client
@@ -286,17 +228,6 @@ Feature: Interacting with the REST API for time_entries
         And the response has the content type "application/xml"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to update a non-existing time_entry without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I update the time entry with id "10" and the following data
-            | property          | value                |
-            | hours             | 2                    |
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
-
     @error
     Scenario: Try to remove a non-existing time_entry
         Given I have a "NativeCurlClient" client
@@ -305,12 +236,3 @@ Feature: Interacting with the REST API for time_entries
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to remove a non-existing time_entry without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the time entry with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""

@@ -75,26 +75,6 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update($id, $parameters));
     }
 
-    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/time_entries/1.xml',
-                'application/xml',
-                '<?xml version="1.0"?><time_entry><id>1</id><hours>10.25</hours></time_entry>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = TimeEntry::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(1, ['hours' => '10.25']));
-    }
-
     public function testUpdateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

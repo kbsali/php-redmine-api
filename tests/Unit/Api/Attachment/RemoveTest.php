@@ -56,26 +56,6 @@ class RemoveTest extends TestCase
         $this->assertSame('', $api->remove(5));
     }
 
-    public function testRemoveWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                '/attachments/5.xml',
-                'application/xml',
-                '',
-                500,
-                '',
-                'error body',
-            ],
-        );
-
-        $api = Attachment::fromHttpClient($client);
-
-        $this->assertSame('error body', $api->remove(5));
-    }
-
     public function testRemoveWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

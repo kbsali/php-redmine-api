@@ -19,7 +19,7 @@ class DownloadTest extends TestCase
      * @dataProvider getDownloadData
      */
     #[DataProvider('getDownloadData')]
-    public function testDownloadReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response, string|bool $expectedReturn): void
+    public function testDownloadReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -49,7 +49,6 @@ class DownloadTest extends TestCase
         return [
             'string response with integer id' => [5, '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
             'string response with string id' => ['5', '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
-            'false response' => [5, '/attachments/download/5', 404, '', false],
         ];
     }
 

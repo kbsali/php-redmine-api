@@ -9,7 +9,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
 
@@ -84,9 +83,9 @@ class TimeEntry extends AbstractApi
      *
      * @param int $id the time entry id
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the time entry as array or false|string on error
+     * @return array<mixed> information about the time entry
      */
     public function show($id)
     {
@@ -94,20 +93,6 @@ class TimeEntry extends AbstractApi
             'GET',
             '/time_entries/' . urlencode(strval($id)) . '.json',
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
 
         return $this->getJsonArrayOrThrow();
     }
@@ -142,14 +127,6 @@ class TimeEntry extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
-
         $this->throwOnUnexpectedStatusCode(201);
 
         if ('' !== $body) {
@@ -167,7 +144,7 @@ class TimeEntry extends AbstractApi
      * @param int          $id
      * @param array<mixed> $params
      *
-     * @return string|false
+     * @return string
      */
     public function update($id, array $params)
     {
@@ -183,10 +160,6 @@ class TimeEntry extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -210,10 +183,6 @@ class TimeEntry extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
