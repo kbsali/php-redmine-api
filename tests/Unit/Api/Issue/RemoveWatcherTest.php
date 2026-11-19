@@ -85,26 +85,6 @@ class RemoveWatcherTest extends TestCase
         ];
     }
 
-    public function testRemoveWatcherWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                '/issues/25/watchers/5.xml',
-                'application/xml',
-                '',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->removeWatcher(25, 5));
-    }
-
     public function testRemoveWatcherWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

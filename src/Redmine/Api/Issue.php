@@ -109,9 +109,9 @@ class Issue extends AbstractApi
      * @param int          $id     the issue id
      * @param array<mixed> $params extra associated data
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the issue as array or false|string on error
+     * @return array<mixed> information about the issue
      */
     public function show($id, array $params = [])
     {
@@ -124,20 +124,6 @@ class Issue extends AbstractApi
             PathSerializer::create('/issues/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
 
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
-
         return $this->getJsonArrayOrThrow();
     }
 
@@ -149,7 +135,7 @@ class Issue extends AbstractApi
      *
      * @param array<mixed> $params the new issue data
      *
-     * @return string|SimpleXMLElement|false
+     * @return string|SimpleXMLElement
      */
     public function create(array $params = [])
     {
@@ -169,14 +155,6 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
-
         $this->throwOnUnexpectedStatusCode(201);
 
         if ($body === '') {
@@ -194,12 +172,12 @@ class Issue extends AbstractApi
      * `Param::Clear` unassigns the user (`assigned_to_id`) or the version (`fixed_version_id`), `null` values are not sent.
      * Use `Param::Clear` to clear other fields.
      * An empty string also unassigns the version. Redmine ignores an empty `assigned_to_id` in XML requests,
-     * so an empty string unassigns the user only if future mode is enabled.
+     * so an empty string also unassigns the user.
      *
      * @param int          $id     the issue number
      * @param array<mixed> $params
      *
-     * @return string|SimpleXMLElement|false
+     * @return string|SimpleXMLElement
      */
     public function update($id, array $params)
     {
@@ -211,7 +189,7 @@ class Issue extends AbstractApi
         // Redmine ignores an empty `assigned_to_id` in XML requests, only JSON requests can unassign an issue
         // @see https://www.redmine.org/issues/33744
         $unassignUserWithJson = array_key_exists('assigned_to_id', $params)
-            && (Param::Clear === $params['assigned_to_id'] || ($this->isFutureModeEnabled() && '' === $params['assigned_to_id']));
+            && (Param::Clear === $params['assigned_to_id'] || '' === $params['assigned_to_id']);
 
         // An empty string is still allowed to unassign a user or a version
         foreach (['assigned_to_id', 'fixed_version_id'] as $name) {
@@ -240,10 +218,6 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
-
         $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
@@ -264,14 +238,6 @@ class Issue extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -297,10 +263,6 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
-
         $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
@@ -310,7 +272,7 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $status
      *
-     * @return string|SimpleXMLElement|false
+     * @return string|SimpleXMLElement
      */
     public function setIssueStatus($id, $status)
     {
@@ -326,7 +288,7 @@ class Issue extends AbstractApi
      * @param string $note
      * @param bool   $privateNote
      *
-     * @return string|false
+     * @return string|SimpleXMLElement
      */
     public function addNoteToIssue($id, $note, $privateNote = false)
     {
@@ -342,15 +304,15 @@ class Issue extends AbstractApi
      * @param mixed                   $value the literal identifier given by the caller
      * @param array<int|string,mixed> $names the known names indexed by their id
      *
-     * @throws InvalidParameterException if future mode is enabled and the name is unknown
+     * @throws InvalidParameterException if the name is unknown
      *
-     * @return int|string|false the id, or false if the name is unknown and future mode is disabled
+     * @return int|string the id
      */
-    private function lookupId(string $param, $value, array $names): int|string|false
+    private function lookupId(string $param, $value, array $names): int|string
     {
         $id = array_search($value, $names, true);
 
-        if (false === $id && $this->isFutureModeEnabled()) {
+        if (false === $id) {
             throw new InvalidParameterException(sprintf(
                 'The value "%s" of the parameter "%s" is unknown.',
                 is_scalar($value) ? strval($value) : get_debug_type($value),
@@ -365,7 +327,7 @@ class Issue extends AbstractApi
      * Transforms literal identifiers to integer ids.
      *
      * @param array<mixed> $params
-     * @param int|string|null $issueId the id of the issue to update, its project is used to look up a category name if the params contain no project (only if future mode is enabled)
+     * @param int|string|null $issueId the id of the issue to update, its project is used to look up a category name if the params contain no project
      *
      * @return array<mixed>
      */
@@ -393,7 +355,7 @@ class Issue extends AbstractApi
 
         $projectIdOfIssue = false;
 
-        if (isset($params['category']) && ! isset($params['project_id']) && null !== $issueId && $this->isFutureModeEnabled()) {
+        if (isset($params['category']) && ! isset($params['project_id']) && null !== $issueId) {
             $issue = $this->show($issueId);
 
             if (is_array($issue) && isset($issue['issue']['project']['id'])) {
@@ -508,10 +470,6 @@ class Issue extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
-
         $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
@@ -532,10 +490,6 @@ class Issue extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 

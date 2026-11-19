@@ -87,16 +87,4 @@ class SetIssueStatusTest extends TestCase
         $api->setIssueStatus(5, 'Missing');
     }
 
-    public function testSetIssueStatusWithoutFutureModeDropsUnknownStatus(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            ['GET', '/issue_statuses.json', 'application/json', '', 200, 'application/json', '{"issue_statuses":[{"name":"Status Name","id":123}]}'],
-            ['PUT', '/issues/5.xml', 'application/xml', '<?xml version="1.0"?><issue><id>5</id></issue>', 204, '', ''],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->setIssueStatus(5, 'Missing'));
-    }
 }
