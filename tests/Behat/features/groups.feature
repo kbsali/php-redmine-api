@@ -105,15 +105,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content type "application/json"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to show a non-existing group without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I show the group with id "40"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
-
     Scenario: Updating a group
         Given I have a "NativeCurlClient" client
         And I create a group with the following data
@@ -183,26 +174,6 @@ Feature: Interacting with the REST API for groups
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to create a group with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a group with name "Test Group"
-        When I create a group with the following data
-            | property          | value                |
-            | name              | Test Group           |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-        And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
-            """
-            @attributes
-            error
-            """
-
     @error
     Scenario: Try to update a group with invalid data
         Given I have a "NativeCurlClient" client
@@ -219,25 +190,6 @@ Feature: Interacting with the REST API for groups
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to update a group with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a group with name "Test Group"
-        And I create a group with name "Other Group"
-        When I update the group with id "6" with the following data
-            | property          | value                |
-            | name              | Test Group           |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-        And the returned data is exactly
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-
     @error
     Scenario: Try to update a non-existing group
         Given I have a "NativeCurlClient" client
@@ -249,17 +201,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content type "application/xml"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to update a non-existing group without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I update the group with id "10" with the following data
-            | property          | value                |
-            | name              | new group name       |
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
-
     @error
     Scenario: Try to add an user to a non-existing group
         Given I have a "NativeCurlClient" client
@@ -268,15 +209,6 @@ Feature: Interacting with the REST API for groups
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to add an user to a non-existing group without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I add the user with id "1" to the group with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
 
     @error
     Scenario: Try to remove an user from a non-existing group
@@ -287,15 +219,6 @@ Feature: Interacting with the REST API for groups
         And the response has the content type "application/xml"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to remove an user from a non-existing group without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the user with id "1" from the group with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
-
     @error
     Scenario: Try to remove a non-existing group
         Given I have a "NativeCurlClient" client
@@ -304,12 +227,3 @@ Feature: Interacting with the REST API for groups
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to remove a non-existing group without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the group with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""

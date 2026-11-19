@@ -56,26 +56,6 @@ class RemoveUserTest extends TestCase
         $this->assertSame('', $api->removeUser(5, 10));
     }
 
-    public function testRemoveUserWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                '/groups/5/users/10.xml',
-                'application/xml',
-                '',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Group::fromHttpClient($client);
-
-        $this->assertSame('', $api->removeUser(5, 10));
-    }
-
     public function testRemoveUserWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

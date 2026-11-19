@@ -96,26 +96,6 @@ class RemoveTest extends TestCase
         ];
     }
 
-    public function testRemoveWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                '/issue_categories/25.xml',
-                'application/xml',
-                '',
-                500,
-                '',
-                'error body',
-            ],
-        );
-
-        $api = IssueCategory::fromHttpClient($client);
-
-        $this->assertSame('error body', $api->remove(25));
-    }
-
     public function testRemoveWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

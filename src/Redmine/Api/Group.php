@@ -9,7 +9,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
@@ -70,7 +69,7 @@ class Group extends AbstractApi
      * @param array<mixed> $params optional parameters to be passed to the api (offset, limit, ...)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of groups found
      */
@@ -114,7 +113,7 @@ class Group extends AbstractApi
      *
      * @throws MissingParameterException Missing mandatory parameters
      *
-     * @return string|SimpleXMLElement|false
+     * @return string|SimpleXMLElement
      */
     public function create(array $params = [])
     {
@@ -133,14 +132,6 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
 
         $this->throwOnUnexpectedStatusCode(201);
 
@@ -175,10 +166,6 @@ class Group extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
-
         $this->throwOnUnexpectedStatusCode(204);
 
         return $body;
@@ -194,9 +181,9 @@ class Group extends AbstractApi
      * @param string|int $id the group id
      * @param array<mixed> $params params to pass to url
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the group as array or false|string on error
+     * @return array<mixed> information about the group
      */
     public function show($id, array $params = [])
     {
@@ -204,20 +191,6 @@ class Group extends AbstractApi
             'GET',
             PathSerializer::create('/groups/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
 
         return $this->getJsonArrayOrThrow();
     }
@@ -239,10 +212,6 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -268,14 +237,6 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -304,10 +265,6 @@ class Group extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
