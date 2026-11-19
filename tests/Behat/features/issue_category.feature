@@ -211,15 +211,6 @@ Feature: Interacting with the REST API for issue categories
         And the response has the content type "application/json"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Showing a not existing issue category without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I show the issue category with id "1"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
-
     Scenario: Updating an issue category with all data
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"
@@ -257,25 +248,6 @@ Feature: Interacting with the REST API for issue categories
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to create an issue category with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the name "Category name"
-        When I create an issue category for project identifier "test-project" and with the name "Category name"
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-        And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
-            """
-            @attributes
-            error
-            """
-
     @error
     Scenario: Try to create an issue category for a non-existing project
         Given I have a "NativeCurlClient" client
@@ -284,15 +256,6 @@ Feature: Interacting with the REST API for issue categories
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to create an issue category for a non-existing project without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I create an issue category for project identifier "not-existing" and with the name "Category name"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
 
     @error
     Scenario: Try to update an issue category with invalid data
@@ -311,26 +274,6 @@ Feature: Interacting with the REST API for issue categories
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to update an issue category with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I create an issue category for project identifier "test-project" and with the name "Category name"
-        And I create an issue category for project identifier "test-project" and with the name "Other name"
-        When I update the issue category with id "2" and the following data
-            | property          | value                |
-            | name              | Category name        |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-        And the returned data is exactly
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Name has already been taken</error></errors>
-            """
-
     @error
     Scenario: Try to update a non-existing issue category
         Given I have a "NativeCurlClient" client
@@ -342,17 +285,6 @@ Feature: Interacting with the REST API for issue categories
         And the response has the content type "application/xml"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Try to update a non-existing issue category without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I update the issue category with id "10" and the following data
-            | property          | value                |
-            | name              | New category name    |
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
-
     @error
     Scenario: Try to remove a non-existing issue category
         Given I have a "NativeCurlClient" client
@@ -361,12 +293,3 @@ Feature: Interacting with the REST API for issue categories
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to remove a non-existing issue category without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the issue category with id "10"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
