@@ -264,15 +264,6 @@ Feature: Interacting with the REST API for projects
         And the response has the content type "application/json"
         And the response has the content ""
 
-    @error @without-future-mode
-    Scenario: Showing a not existing project without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I show the project with identifier "not-existing"
-        Then the response has the status code "404"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
-
     @error
     Scenario: Showing an archived project is not possible
         Given I have a "NativeCurlClient" client
@@ -283,17 +274,6 @@ Feature: Interacting with the REST API for projects
         And the response has the status code "403"
         And the response has the content type "application/json"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Showing an archived project is not possible without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I archive the project with identifier "test-project"
-        When I show the project with identifier "test-project"
-        Then the response has the status code "403"
-        And the response has the content type "application/json"
-        And the response has the content ""
-        And the returned data is false
 
     Scenario: Unarchiving a project
         Given I have a "NativeCurlClient" client
@@ -334,27 +314,6 @@ Feature: Interacting with the REST API for projects
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Identifier has already been taken</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to create a project with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        When I create a project with the following data
-            | property          | value                |
-            | name              | Other Project        |
-            | identifier        | test-project         |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Identifier has already been taken</error></errors>
-            """
-        And the returned data is an instance of "SimpleXMLElement"
-        And the returned data has only the following properties
-            """
-            @attributes
-            error
-            """
-
     @error
     Scenario: Try to update a project with invalid data
         Given I have a "NativeCurlClient" client
@@ -370,24 +329,6 @@ Feature: Interacting with the REST API for projects
             <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Subproject of is invalid</error></errors>
             """
 
-    @error @without-future-mode
-    Scenario: Try to update a project with invalid data without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        When I update the project with identifier "test-project" with the following data
-            | property          | value                |
-            | parent_id         | 1                    |
-        Then the response has the status code "422"
-        And the response has the content type "application/xml"
-        And the response has the content
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Subproject of is invalid</error></errors>
-            """
-        And the returned data is exactly
-            """
-            <?xml version="1.0" encoding="UTF-8"?><errors type="array"><error>Subproject of is invalid</error></errors>
-            """
-
     @error
     Scenario: Try to update a non-existing project
         Given I have a "NativeCurlClient" client
@@ -398,17 +339,6 @@ Feature: Interacting with the REST API for projects
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to update a non-existing project without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I update the project with identifier "not-existing" with the following data
-            | property          | value                |
-            | name              | New name             |
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""
 
     @error
     Scenario: Try to close a non-existing project
@@ -454,12 +384,3 @@ Feature: Interacting with the REST API for projects
         And the response has the status code "404"
         And the response has the content type "application/xml"
         And the response has the content ""
-
-    @error @without-future-mode
-    Scenario: Try to remove a non-existing project without future mode
-        Given I have a "NativeCurlClient" client without future mode
-        When I remove the project with identifier "not-existing"
-        Then the response has the status code "404"
-        And the response has the content type "application/xml"
-        And the response has the content ""
-        And the returned data is exactly ""

@@ -92,26 +92,6 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/projects/1.xml',
-                'application/xml',
-                '<?xml version="1.0"?><project><id>1</id></project>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Project::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(1, []));
-    }
-
     public function testUpdateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(

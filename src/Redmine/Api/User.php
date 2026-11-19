@@ -9,7 +9,6 @@ use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
-use Redmine\Serializer\JsonSerializer;
 use Redmine\Serializer\PathSerializer;
 use Redmine\Serializer\XmlSerializer;
 use SimpleXMLElement;
@@ -151,9 +150,9 @@ class User extends AbstractApi
      * @param int|string   $id     the user id or `current` for retrieving the user whose credentials are used
      * @param array<mixed> $params extra associated data
      *
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected response
      *
-     * @return array<mixed>|false|string information about the user as array or false|string on error
+     * @return array<mixed> information about the user
      */
     public function show($id, array $params = [])
     {
@@ -173,20 +172,6 @@ class User extends AbstractApi
             'GET',
             PathSerializer::create('/users/' . urlencode(strval($id)) . '.json', $params)->getPath(),
         ));
-
-        if (!$this->isFutureModeEnabled()) {
-            $body = $this->lastResponse->getContent();
-
-            if ('' === $body) {
-                return false;
-            }
-
-            try {
-                return JsonSerializer::createFromString($body)->getNormalized();
-            } catch (SerializerException $e) {
-                return 'Error decoding body as JSON: ' . $e->getPrevious()->getMessage();
-            }
-        }
 
         return $this->getJsonArrayOrThrow();
     }
@@ -223,14 +208,6 @@ class User extends AbstractApi
 
         $body = $this->lastResponse->getContent();
 
-        if (!$this->isFutureModeEnabled()) {
-            if ($body === '') {
-                return $body;
-            }
-
-            return new SimpleXMLElement($body);
-        }
-
         $this->throwOnUnexpectedStatusCode(201);
 
         if ('' !== $body) {
@@ -248,7 +225,7 @@ class User extends AbstractApi
      * @param int          $id     the user id
      * @param array<mixed> $params
      *
-     * @return string|false
+     * @return string
      */
     public function update($id, array $params)
     {
@@ -264,10 +241,6 @@ class User extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
@@ -291,10 +264,6 @@ class User extends AbstractApi
         ));
 
         $body = $this->lastResponse->getContent();
-
-        if (!$this->isFutureModeEnabled()) {
-            return $body;
-        }
 
         $this->throwOnUnexpectedStatusCode(204);
 
