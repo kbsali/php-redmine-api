@@ -20,14 +20,14 @@ use SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-class User extends AbstractApi
+final class User extends AbstractApi
 {
     use RequestParamsTrait;
     use ResponseValidationTrait;
 
-    final public static function fromHttpClient(HttpClient $httpClient): self
+    public static function fromHttpClient(HttpClient $httpClient): self
     {
-        return new self($httpClient, true);
+        return new self($httpClient);
     }
 
     /**
@@ -35,30 +35,9 @@ class User extends AbstractApi
      */
     private ?array $userLogins = null;
 
-    /**
-     * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see User::fromHttpClient()
-     *
-     * @param HttpClient $client
-     */
-    public function __construct($client/*, bool $privatelyCalled = false*/)
+    private function __construct(HttpClient $httpClient)
     {
-        $privatelyCalled = (func_num_args() > 1) ? func_get_arg(1) : false;
-
-        if ($privatelyCalled === true) {
-            parent::__construct($client);
-
-            return;
-        }
-
-        if (static::class !== self::class) {
-            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
-            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
-        } else {
-            @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
-        }
-
-        parent::__construct($client);
+        parent::__construct($httpClient);
     }
 
     /**
@@ -130,7 +109,7 @@ class User extends AbstractApi
      *
      * @return array<mixed> current user data
      */
-    public function getCurrentUser(array $params = [])
+    public function getCurrentUser(array $params = []): array
     {
         return $this->show('current', $params);
     }
@@ -154,7 +133,7 @@ class User extends AbstractApi
      *
      * @return array<mixed> information about the user
      */
-    public function show($id, array $params = [])
+    public function show($id, array $params = []): array
     {
         // set default ones
         $params['include'] = array_unique(
@@ -184,10 +163,8 @@ class User extends AbstractApi
      * @param array<mixed> $params the new user data
      *
      * @throws MissingParameterException Missing mandatory parameters
-     *
-     * @return SimpleXMLElement|string
      */
-    public function create(array $params = [])
+    public function create(array $params = []): \SimpleXMLElement|string
     {
         $params = $this->buildRequestParams([], $params);
 
@@ -224,10 +201,8 @@ class User extends AbstractApi
      *
      * @param int          $id     the user id
      * @param array<mixed> $params
-     *
-     * @return string
      */
-    public function update($id, array $params)
+    public function update($id, array $params): string
     {
         $defaults = [
             'id' => $id,
@@ -256,7 +231,7 @@ class User extends AbstractApi
      *
      * @return string empty string on success
      */
-    public function remove($id)
+    public function remove($id): string
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',

@@ -20,40 +20,19 @@ use SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-class Membership extends AbstractApi
+final class Membership extends AbstractApi
 {
     use RequestParamsTrait;
     use ResponseValidationTrait;
 
-    final public static function fromHttpClient(HttpClient $httpClient): self
+    public static function fromHttpClient(HttpClient $httpClient): self
     {
-        return new self($httpClient, true);
+        return new self($httpClient);
     }
 
-    /**
-     * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see Membership::fromHttpClient()
-     *
-     * @param HttpClient $client
-     */
-    public function __construct($client/*, bool $privatelyCalled = false*/)
+    private function __construct(HttpClient $httpClient)
     {
-        $privatelyCalled = (func_num_args() > 1) ? func_get_arg(1) : false;
-
-        if ($privatelyCalled === true) {
-            parent::__construct($client);
-
-            return;
-        }
-
-        if (static::class !== self::class) {
-            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
-            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
-        } else {
-            @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
-        }
-
-        parent::__construct($client);
+        parent::__construct($httpClient);
     }
 
     /**
@@ -95,10 +74,8 @@ class Membership extends AbstractApi
      * @param array<mixed> $params  the new membership data
      *
      * @throws MissingParameterException Missing mandatory parameters
-     *
-     * @return SimpleXMLElement|string
      */
-    public function create($project, array $params = [])
+    public function create($project, array $params = []): \SimpleXMLElement|string
     {
         $params = $this->buildRequestParams([], $params);
 
@@ -132,10 +109,8 @@ class Membership extends AbstractApi
      * @param array<mixed> $params the new membership data
      *
      * @throws MissingParameterException Missing mandatory parameters
-     *
-     * @return string|false
      */
-    public function update($id, array $params = [])
+    public function update($id, array $params = []): string
     {
         $params = $this->buildRequestParams([], $params);
 
@@ -165,7 +140,7 @@ class Membership extends AbstractApi
      *
      * @return string empty string on success
      */
-    public function remove($id)
+    public function remove($id): string
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
@@ -187,10 +162,8 @@ class Membership extends AbstractApi
      * @param int          $projectId id of project
      * @param int          $userId    id of user
      * @param array<mixed> $params    optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return false|\SimpleXMLElement|string
      */
-    public function removeMember($projectId, $userId, array $params = [])
+    public function removeMember($projectId, $userId, array $params = []): false|string
     {
         $memberships = $this->listByProject($projectId, $params);
         if (!isset($memberships['memberships']) || !is_array($memberships['memberships'])) {

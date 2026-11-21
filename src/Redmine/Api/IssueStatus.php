@@ -15,11 +15,11 @@ use Redmine\Http\HttpClient;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-class IssueStatus extends AbstractApi
+final class IssueStatus extends AbstractApi
 {
-    final public static function fromHttpClient(HttpClient $httpClient): self
+    public static function fromHttpClient(HttpClient $httpClient): self
     {
-        return new self($httpClient, true);
+        return new self($httpClient);
     }
 
     /**
@@ -27,30 +27,9 @@ class IssueStatus extends AbstractApi
      */
     private ?array $issueStatusNames = null;
 
-    /**
-     * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see IssueStatus::fromHttpClient()
-     *
-     * @param HttpClient $client
-     */
-    public function __construct($client/*, bool $privatelyCalled = false*/)
+    private function __construct(HttpClient $httpClient)
     {
-        $privatelyCalled = (func_num_args() > 1) ? func_get_arg(1) : false;
-
-        if ($privatelyCalled === true) {
-            parent::__construct($client);
-
-            return;
-        }
-
-        if (static::class !== self::class) {
-            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
-            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
-        } else {
-            @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
-        }
-
-        parent::__construct($client);
+        parent::__construct($httpClient);
     }
 
     /**
