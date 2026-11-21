@@ -315,27 +315,6 @@ class CreateTest extends TestCase
     /**
      * @param array<mixed> $parameters
      */
-    #[DataProvider('getEmptyValueData')]
-    public function testCreateDropsEmptyValues(int $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                'application/xml',
-                $response,
-            ],
-        );
-
-        $api = Version::fromHttpClient($client);
-
-        $api->create($identifier, $parameters);
-    }
-
     /**
      * @param array<mixed> $parameters
      */

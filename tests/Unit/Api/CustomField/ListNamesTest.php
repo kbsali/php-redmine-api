@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without custom fields' => [
                 '/custom_fields.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "custom_fields": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple custom fields' => [
                 '/custom_fields.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "custom_fields": [

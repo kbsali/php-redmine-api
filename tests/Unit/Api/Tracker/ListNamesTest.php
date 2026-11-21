@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without trackers' => [
                 '/trackers.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "trackers": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple trackers' => [
                 '/trackers.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "trackers": [

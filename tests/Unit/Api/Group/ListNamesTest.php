@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without groups' => [
                 '/groups.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "groups": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple groups' => [
                 '/groups.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "groups": [

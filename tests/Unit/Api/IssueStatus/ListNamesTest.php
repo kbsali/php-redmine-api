@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without issue statuses' => [
                 '/issue_statuses.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "issue_statuses": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple issue statuses' => [
                 '/issue_statuses.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "issue_statuses": [

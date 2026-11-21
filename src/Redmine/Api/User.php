@@ -69,7 +69,7 @@ class User extends AbstractApi
      * @param array<mixed> $params to allow offset/limit (and more) to be passed
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of users found
      */

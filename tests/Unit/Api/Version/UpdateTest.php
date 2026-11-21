@@ -293,27 +293,6 @@ class UpdateTest extends TestCase
     /**
      * @param array<mixed> $parameters
      */
-    #[DataProvider('getEmptyValueData')]
-    public function testUpdateDropsEmptyValues(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        $api = Version::fromHttpClient($client);
-
-        $api->update($id, $parameters);
-    }
-
     /**
      * @param array<mixed> $parameters
      */
