@@ -22,14 +22,14 @@ use SimpleXMLElement;
  *
  * @author Kevin Saliou <kevin at saliou dot name>
  */
-class Issue extends AbstractApi
+final class Issue extends AbstractApi
 {
     use RequestParamsTrait;
     use ResponseValidationTrait;
 
-    final public static function fromHttpClient(HttpClient $httpClient): self
+    public static function fromHttpClient(HttpClient $httpClient): self
     {
-        return new self($httpClient, true);
+        return new self($httpClient);
     }
 
     private ?IssueCategory $issueCategoryApi = null;
@@ -42,30 +42,9 @@ class Issue extends AbstractApi
 
     private ?User $userApi = null;
 
-    /**
-     * @deprecated v2.9.0 Use fromHttpClient() instead.
-     * @see Issue::fromHttpClient()
-     *
-     * @param HttpClient $client
-     */
-    public function __construct($client/*, bool $privatelyCalled = false*/)
+    private function __construct(HttpClient $httpClient)
     {
-        $privatelyCalled = (func_num_args() > 1) ? func_get_arg(1) : false;
-
-        if ($privatelyCalled === true) {
-            parent::__construct($client);
-
-            return;
-        }
-
-        if (static::class !== self::class) {
-            $className = (new \ReflectionClass($this))->isAnonymous() ? '' : ' in `' . static::class . '`';
-            @trigger_error('Class `' . self::class . '` will declared as final in v3.0.0, stop extending it' . $className . '.', E_USER_DEPRECATED);
-        } else {
-            @trigger_error('Method `' . __METHOD__ . '()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `' . self::class . '::fromHttpClient()` instead.', E_USER_DEPRECATED);
-        }
-
-        parent::__construct($client);
+        parent::__construct($httpClient);
     }
 
     /**
@@ -113,7 +92,7 @@ class Issue extends AbstractApi
      *
      * @return array<mixed> information about the issue
      */
-    public function show($id, array $params = [])
+    public function show($id, array $params = []): array
     {
         if (isset($params['include']) && is_array($params['include'])) {
             $params['include'] = implode(',', $params['include']);
@@ -134,10 +113,8 @@ class Issue extends AbstractApi
      * @see http://www.redmine.org/projects/redmine/wiki/Rest_Issues#Creating-an-issue
      *
      * @param array<mixed> $params the new issue data
-     *
-     * @return string|SimpleXMLElement
      */
-    public function create(array $params = [])
+    public function create(array $params = []): string|\SimpleXMLElement
     {
         $params = $this->cleanParams($params);
         $params = $this->buildRequestParams([], $params);
@@ -176,10 +153,8 @@ class Issue extends AbstractApi
      *
      * @param int          $id     the issue number
      * @param array<mixed> $params
-     *
-     * @return string|SimpleXMLElement
      */
-    public function update($id, array $params)
+    public function update($id, array $params): string
     {
         $defaults = [
             'id' => $id,
@@ -226,10 +201,8 @@ class Issue extends AbstractApi
     /**
      * @param int $id
      * @param int $watcherUserId
-     *
-     * @return SimpleXMLElement|string
      */
-    public function addWatcher($id, $watcherUserId)
+    public function addWatcher($id, $watcherUserId): string|\SimpleXMLElement
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'POST',
@@ -254,7 +227,7 @@ class Issue extends AbstractApi
      *
      * @return string empty string on success
      */
-    public function removeWatcher($id, $watcherUserId)
+    public function removeWatcher($id, $watcherUserId): string
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',
@@ -271,10 +244,8 @@ class Issue extends AbstractApi
     /**
      * @param int    $id
      * @param string $status
-     *
-     * @return string|SimpleXMLElement
      */
-    public function setIssueStatus($id, $status)
+    public function setIssueStatus($id, $status): string
     {
         $issueStatusApi = $this->getIssueStatusApi();
 
@@ -287,10 +258,8 @@ class Issue extends AbstractApi
      * @param int    $id
      * @param string $note
      * @param bool   $privateNote
-     *
-     * @return string|SimpleXMLElement
      */
-    public function addNoteToIssue($id, $note, $privateNote = false)
+    public function addNoteToIssue($id, $note, $privateNote = false): string
     {
         return $this->update($id, [
             'notes' => $note,
@@ -358,7 +327,7 @@ class Issue extends AbstractApi
         if (isset($params['category']) && ! isset($params['project_id']) && null !== $issueId) {
             $issue = $this->show($issueId);
 
-            if (is_array($issue) && isset($issue['issue']['project']['id'])) {
+            if (isset($issue['issue']['project']['id'])) {
                 $params['project_id'] = $issue['issue']['project']['id'];
                 $projectIdOfIssue = true;
             }
@@ -434,10 +403,8 @@ class Issue extends AbstractApi
      *
      * @param int          $id         the issue number
      * @param array<mixed> $attachment ['token' => '...', 'filename' => '...', 'content_type' => '...']
-     *
-     * @return bool|string
      */
-    public function attach($id, array $attachment)
+    public function attach($id, array $attachment): string
     {
         return $this->attachMany($id, [$attachment]);
     }
@@ -452,10 +419,8 @@ class Issue extends AbstractApi
      *                                  ['token' => '...', 'filename' => '...', 'content_type' => '...'],
      *                                  ['token' => '...', 'filename' => '...', 'content_type' => '...']
      *                                  ]
-     *
-     * @return bool|string
      */
-    public function attachMany($id, array $attachments)
+    public function attachMany($id, array $attachments): string
     {
         $params = [
             'id' => $id,
@@ -482,7 +447,7 @@ class Issue extends AbstractApi
      *
      * @return string empty string on success
      */
-    public function remove($id)
+    public function remove($id): string
     {
         $this->lastResponse = $this->getHttpClient()->request(HttpFactory::makeXmlRequest(
             'DELETE',

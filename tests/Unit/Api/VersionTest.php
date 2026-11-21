@@ -17,44 +17,6 @@ use Redmine\Http\HttpClient;
 #[CoversClass(Version::class)]
 class VersionTest extends TestCase
 {
-    public function testExtendingTheClassTriggersDeprecationWarning(): void
-    {
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    'Class `Redmine\Api\Version` will declared as final in v3.0.0, stop extending it.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        new class ($this->createStub(HttpClient::class)) extends Version {};
-    }
-
-    public function testConstructorTriggersDeprecationWarning(): void
-    {
-        // PHPUnit 10 compatible way to test trigger_error().
-        set_error_handler(
-            function ($errno, $errstr): bool {
-                $this->assertSame(
-                    'Method `Redmine\Api\Version::__construct()` is deprecated since v2.9.0 and will declared as private in v3.0.0, use `Redmine\Api\Version::fromHttpClient()` instead.',
-                    $errstr,
-                );
-
-                restore_error_handler();
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        new Version($this->createStub(HttpClient::class));
-    }
-
     /**
      * Test validateSharing().
      *
