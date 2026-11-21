@@ -12,7 +12,6 @@ use Redmine\Api\TimeEntry;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(TimeEntry::class)]
 class UpdateTest extends TestCase
@@ -45,36 +44,6 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update($id, $parameters));
     }
 
-    /**
-     * @dataProvider getUpdateData
-     *
-     * @param array<mixed> $parameters
-     */
-    #[DataProvider('getUpdateData')]
-    public function testUpdateWithFutureModeReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = TimeEntry::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame('', $api->update($id, $parameters));
-    }
-
     public function testUpdateWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
@@ -94,7 +63,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(1, ['hours' => '10.25']);
     }
@@ -173,14 +141,13 @@ class UpdateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testUpdateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = TimeEntry::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"comments"');

@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Attachment::class)]
 class RemoveTest extends TestCase
@@ -34,28 +33,6 @@ class RemoveTest extends TestCase
         $this->assertSame('', $api->remove(5));
     }
 
-    public function testRemoveWithFutureModeReturnsString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                '/attachments/5.xml',
-                'application/xml',
-                '',
-                204,
-                '',
-                '',
-            ],
-        );
-
-        $api = Attachment::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame('', $api->remove(5));
-    }
-
     public function testRemoveWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
@@ -75,7 +52,6 @@ class RemoveTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->remove(5);
     }

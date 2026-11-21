@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Wiki;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Wiki::class)]
 class UpdateTest extends TestCase
@@ -113,7 +112,6 @@ class UpdateTest extends TestCase
 
         $api = Wiki::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $return = $api->update(5, 'test', []);
 
@@ -139,7 +137,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(5, 'test', []);
     }

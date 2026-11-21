@@ -11,7 +11,6 @@ use Redmine\Api\Wiki;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Wiki::class)]
 class ShowTest extends TestCase
@@ -101,28 +100,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    public function testShowWithFutureModeReturnsCorrectResponse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5/wiki/page.json?include=attachments',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '["API Response"]',
-            ],
-        );
-
-        $api = Wiki::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame(['API Response'], $api->show(5, 'page'));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */
@@ -144,7 +121,6 @@ class ShowTest extends TestCase
 
         $api = Wiki::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5, 'page');
@@ -189,7 +165,6 @@ class ShowTest extends TestCase
 
         $api = Wiki::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5, 'page');

@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Issue::class)]
@@ -48,34 +47,6 @@ class AddWatcherTest extends TestCase
     /**
      * @dataProvider getAddWatcherData
      */
-    #[DataProvider('getAddWatcherData')]
-    public function testAddWatcherWithFutureModeReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                'application/xml',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Issue::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $return = $api->addWatcher($issueId, $watcherUserId);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -113,7 +84,6 @@ class AddWatcherTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $return = $api->addWatcher(1, 2);
 
@@ -139,7 +109,6 @@ class AddWatcherTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->addWatcher(1, 2);
     }

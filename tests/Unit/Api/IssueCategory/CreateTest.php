@@ -12,7 +12,6 @@ use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(IssueCategory::class)]
@@ -51,37 +50,7 @@ class CreateTest extends TestCase
 
     /**
      * @dataProvider getCreateData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getCreateData')]
-    public function testCreateWithFutureModeReturnsCorrectResponse(int|string $identifier, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                'application/xml',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueCategory::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $return = $api->create($identifier, $parameters);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -139,7 +108,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateWithFutureModeAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    public function testCreateAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -157,7 +126,6 @@ class CreateTest extends TestCase
         // Create the object under test
         $api = IssueCategory::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         // Perform the tests
         $return = $api->create(5, ['name' => 'Test Category']);
@@ -184,7 +152,6 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->create(5, ['name' => 'Test Category']);
     }
@@ -257,14 +224,13 @@ class CreateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testCreateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testCreateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = IssueCategory::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"assigned_to_id"');

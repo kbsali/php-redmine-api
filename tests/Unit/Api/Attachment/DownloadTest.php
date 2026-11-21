@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Attachment::class)]
 class DownloadTest extends TestCase
@@ -49,45 +48,7 @@ class DownloadTest extends TestCase
         return [
             'string response with integer id' => [5, '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
             'string response with string id' => ['5', '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
-        ];
-    }
-
-    /**
-     * @dataProvider getDownloadWithFutureModeData
-     */
-    #[DataProvider('getDownloadWithFutureModeData')]
-    public function testDownloadWithFutureModeReturnsCorrectResponse(int|string $id, string $expectedPath, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                $expectedPath,
-                '',
-                '',
-                200,
-                'application/octet-stream',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Attachment::fromHttpClient($client);
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame($response, $api->download($id));
-    }
-
-    /**
-     * @return array<string, array<mixed>>
-     */
-    public static function getDownloadWithFutureModeData(): array
-    {
-        return [
-            'string response with integer id' => [5, '/attachments/download/5', 'attachment-content'],
-            'string response with string id' => ['5', '/attachments/download/5', 'attachment-content'],
-            'empty response' => [5, '/attachments/download/5', ''],
+            'empty response' => [5, '/attachments/download/5', 200, '', ''],
         ];
     }
 
@@ -95,7 +56,7 @@ class DownloadTest extends TestCase
      * @dataProvider getUnexpectedResponseData
      */
     #[DataProvider('getUnexpectedResponseData')]
-    public function testDownloadWithFutureModeAndUnexpectedResponseThrowsException(int $responseCode, string $responseContentType, string $response): void
+    public function testDownloadAndUnexpectedResponseThrowsException(int $responseCode, string $responseContentType, string $response): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -112,7 +73,6 @@ class DownloadTest extends TestCase
 
         // Create the object under test
         $api = Attachment::fromHttpClient($client);
-        FutureMode::enable($api);
 
         // Perform the tests
         try {

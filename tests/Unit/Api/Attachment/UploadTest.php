@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Attachment;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Attachment::class)]
 class UploadTest extends TestCase
@@ -45,34 +44,7 @@ class UploadTest extends TestCase
 
     /**
      * @dataProvider getUploadData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getUploadData')]
-    public function testUploadWithFutureModeReturnsCorrectResponse(string $attachment, array $parameters, string $expectedAttachment, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/octet-stream',
-                $expectedAttachment,
-                $responseCode,
-                'application/json',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Attachment::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame($expectedReturn, $api->upload($attachment, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -141,7 +113,6 @@ class UploadTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->upload('attachment-content');
     }

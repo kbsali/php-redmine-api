@@ -11,7 +11,6 @@ use Redmine\Api\Project;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Project::class)]
 class ShowTest extends TestCase
@@ -97,28 +96,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    public function testShowWithFutureModeReturnsCorrectResponse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '["API Response"]',
-            ],
-        );
-
-        $api = Project::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame(['API Response'], $api->show(5));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */
@@ -140,7 +117,6 @@ class ShowTest extends TestCase
 
         $api = Project::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);
@@ -185,7 +161,6 @@ class ShowTest extends TestCase
 
         $api = Project::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);

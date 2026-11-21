@@ -12,7 +12,6 @@ use Redmine\Exception\MissingParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(IssueRelation::class)]
 class CreateTest extends TestCase
@@ -51,38 +50,7 @@ class CreateTest extends TestCase
 
     /**
      * @dataProvider getCreateData
-     *
-     * @param array<mixed> $parameters
-     * @param array<mixed> $expectedReturn
      */
-    #[DataProvider('getCreateData')]
-    public function testCreateWithFutureModeReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response, array $expectedReturn): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/json',
-                $expectedBody,
-                $responseCode,
-                'application/json',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueRelation::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $return = $api->create($issueId, $parameters);
-
-        $this->assertIsArray($return);
-        $this->assertSame($expectedReturn, $return);
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -175,7 +143,6 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->create(5, ['issue_to_id' => 10]);
     }
@@ -193,14 +160,13 @@ class CreateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testCreateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testCreateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = IssueRelation::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"delay"');

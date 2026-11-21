@@ -13,7 +13,6 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class UpdateTest extends TestCase
@@ -48,34 +47,7 @@ class UpdateTest extends TestCase
 
     /**
      * @dataProvider getUpdateData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getUpdateData')]
-    public function testUpdateWithFutureModeReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Issue::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame('', $api->update($id, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -278,7 +250,7 @@ class UpdateTest extends TestCase
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateWithJsonData')]
-    public function testUpdateUnassignUserWithFutureModeSendsJson(array $parameters, string $expectedBody): void
+    public function testUpdateUnassignUserSendsJson(array $parameters, string $expectedBody): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -295,7 +267,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(1, $parameters));
     }
@@ -321,7 +292,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateClearAssigneeWithParamClearSendsJsonWithoutFutureMode(): void
+    public function testUpdateClearAssigneeWithParamClearSendsJson(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -358,7 +329,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(1, ['assigned_to' => Param::Clear]));
     }
@@ -422,7 +392,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(1, ['assigned_to_id' => '']);
     }
@@ -446,7 +415,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(1, []);
     }
@@ -464,14 +432,13 @@ class UpdateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testUpdateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/"description".*Param::Clear/');
@@ -479,7 +446,7 @@ class UpdateTest extends TestCase
         $api->update(1, ['description' => $value]);
     }
 
-    public function testUpdateWithFutureModeAllowsNullAndEmptyStringForUnassign(): void
+    public function testUpdateAllowsNullAndEmptyStringForUnassign(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -496,7 +463,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(1, ['description' => null, 'fixed_version_id' => '']));
     }
@@ -507,7 +473,7 @@ class UpdateTest extends TestCase
      * @param array<mixed> $params
      */
     #[DataProvider('getUnknownNames')]
-    public function testUpdateWithFutureModeThrowsOnUnknownName(array $params, string $lookupPath, string $lookupResponse, string $expectedMessage): void
+    public function testUpdateThrowsOnUnknownName(array $params, string $lookupPath, string $lookupResponse, string $expectedMessage): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -516,7 +482,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -569,7 +534,7 @@ class UpdateTest extends TestCase
         ];
     }
 
-    public function testUpdateWithFutureModeResolvesCategoryWithProjectOfIssue(): void
+    public function testUpdateResolvesCategoryWithProjectOfIssue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -580,12 +545,11 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(5, ['category' => 'Category Name']));
     }
 
-    public function testUpdateWithFutureModeUsesProjectIdOfTheCallWithoutLoadingTheIssue(): void
+    public function testUpdateUsesProjectIdOfTheCallWithoutLoadingTheIssue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -595,12 +559,11 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(5, ['project_id' => 1, 'category' => 'Category Name']));
     }
 
-    public function testUpdateWithFutureModeUsesProjectNameOfTheCallWithoutLoadingTheIssue(): void
+    public function testUpdateUsesProjectNameOfTheCallWithoutLoadingTheIssue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -611,12 +574,11 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->assertSame('', $api->update(5, ['project' => 'Project Name', 'category' => 'Category Name']));
     }
 
-    public function testUpdateWithFutureModeThrowsOnUnknownCategoryOfProjectOfIssue(): void
+    public function testUpdateThrowsOnUnknownCategoryOfProjectOfIssue(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -626,7 +588,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('The value "Missing" of the parameter "category" is unknown');
@@ -634,7 +595,7 @@ class UpdateTest extends TestCase
         $api->update(5, ['category' => 'Missing']);
     }
 
-    public function testUpdateWithFutureModeThrowsIfTheIssueCannotBeLoaded(): void
+    public function testUpdateThrowsIfTheIssueCannotBeLoaded(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -643,7 +604,6 @@ class UpdateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(UnexpectedResponseException::class);
 

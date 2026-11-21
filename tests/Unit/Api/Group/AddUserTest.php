@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Group;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
@@ -48,34 +47,6 @@ class AddUserTest extends TestCase
     /**
      * @dataProvider getAddUserData
      */
-    #[DataProvider('getAddUserData')]
-    public function testAddUserWithFutureModeReturnsCorrectResponse(int $groupId, int $userId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                'application/xml',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Group::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $return = $api->addUser($groupId, $userId);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -113,7 +84,6 @@ class AddUserTest extends TestCase
 
         $api = Group::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $return = $api->addUser(1, 2);
 
@@ -139,7 +109,6 @@ class AddUserTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->addUser(1, 2);
     }
