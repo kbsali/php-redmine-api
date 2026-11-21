@@ -262,7 +262,7 @@ $client->getApi('issue')->update($issueId, ['category' => 'Category name']);
 
 ### Empty values in `create()` and `update()`
 
-Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the value `null` to Redmine. A top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException`. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that accepts `''` for `assigned_to_id` and `fixed_version_id` to unassign the user or the version. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the value `null` to Redmine. A top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException`. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that accepts `''` for `assigned_to_id` and `fixed_version_id` to unassign the user or the version. `Param::Clear` works for all fields that Redmine accepts empty, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). The validated fields `status` and `sharing` of `Version::create()` and `Version::update()` do not accept it and throw an `InvalidParameterException`. To clear a field, use `\Redmine\Api\Param::Clear`:
 
 ```php
 use Redmine\Api\Param;
