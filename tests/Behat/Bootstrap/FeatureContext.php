@@ -122,17 +122,6 @@ final class FeatureContext implements Context
     }
 
     /**
-     * @todo remove this step and all scenarios tagged with `@without-future-mode` in v3.0.0
-     *
-     * @param mixed $clientName
-     */
-    #[\Behat\Step\Given('I have a :clientName client without future mode')]
-    public function iHaveAClientWithoutFutureMode($clientName): void
-    {
-        $this->client = $this->createClient($clientName);
-    }
-
-    /**
      * @param mixed $clientName
      */
     private function createClient($clientName): NativeCurlClient

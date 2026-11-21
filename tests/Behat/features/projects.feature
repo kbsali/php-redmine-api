@@ -203,22 +203,6 @@ Feature: Interacting with the REST API for projects
             | description       | null                 |
             | homepage          | null                 |
 
-    @without-future-mode
-    Scenario: Updating a project with an empty description without future mode does not clear the description
-        Given I have a "NativeCurlClient" client without future mode
-        And I create a project with name "Test Project" and identifier "test-project"
-        And I update the project with identifier "test-project" with the following data
-            | property          | value                |
-            | description       | some description     |
-        When I update the project with identifier "test-project" with the following data
-            | property          | value                |
-            | description       |                      |
-        Then the response has the status code "204"
-        When I show the project with identifier "test-project"
-        Then the returned data "project" property contains the following data
-            | property          | value                |
-            | description       | some description     |
-
     Scenario: Closing a project
         Given I have a "NativeCurlClient" client
         And I create a project with name "Test Project" and identifier "test-project"

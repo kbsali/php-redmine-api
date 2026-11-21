@@ -479,27 +479,6 @@ class UpdateTest extends TestCase
         $api->update(1, ['description' => $value]);
     }
 
-    #[DataProvider('getEmptyValues')]
-    public function testUpdateWithoutFutureModeDropsEmptyValue(mixed $value): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/issues/1.xml',
-                'application/xml',
-                '<?xml version="1.0"?><issue><id>1</id></issue>',
-                204,
-                '',
-                '',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(1, ['description' => $value, 'subject' => null]));
-    }
-
     public function testUpdateWithFutureModeAllowsNullAndEmptyStringForUnassign(): void
     {
         $client = AssertingHttpClient::create(

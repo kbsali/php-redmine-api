@@ -122,6 +122,7 @@ class AbstractApiTest extends TestCase
     public function testRetrieveDataWith100ResultsMakes1Request(): void
     {
         $response1 = $this->createStub(Response::class);
+        $response1->method('getStatusCode')->willReturn(200);
         $response1->method('getContentType')->willReturn('application/json');
         $response1->method('getContent')->willReturn('{"total_count":100,"offset":0,"limit":100,"data":[]}');
 
@@ -138,14 +139,17 @@ class AbstractApiTest extends TestCase
     public function testRetrieveDataWith250ResultsMakes3Requests(): void
     {
         $response1 = $this->createStub(Response::class);
+        $response1->method('getStatusCode')->willReturn(200);
         $response1->method('getContentType')->willReturn('application/json');
         $response1->method('getContent')->willReturn('{"total_count":250,"offset":0,"limit":100,"data":[]}');
 
         $response2 = $this->createStub(Response::class);
+        $response2->method('getStatusCode')->willReturn(200);
         $response2->method('getContentType')->willReturn('application/json');
         $response2->method('getContent')->willReturn('{"total_count":250,"offset":100,"limit":100,"data":[]}');
 
         $response3 = $this->createStub(Response::class);
+        $response3->method('getStatusCode')->willReturn(200);
         $response3->method('getContentType')->willReturn('application/json');
         $response3->method('getContent')->willReturn('{"total_count":250,"offset":200,"limit":100,"data":[]}');
 

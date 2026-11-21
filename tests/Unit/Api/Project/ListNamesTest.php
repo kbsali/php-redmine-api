@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without projects' => [
                 '/projects.json?limit=100&offset=0',
-                201,
+                200,
                 <<<JSON
                 {
                     "projects": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple projects' => [
                 '/projects.json?limit=100&offset=0',
-                201,
+                200,
                 <<<JSON
                 {
                     "projects": [

@@ -86,7 +86,7 @@ class Issue extends AbstractApi
      * @param array<mixed> $params the additional parameters (cf available $params above)
      *
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of issues found
      */
@@ -294,7 +294,7 @@ class Issue extends AbstractApi
     {
         return $this->update($id, [
             'notes' => $note,
-            'private_notes' => $privateNote,
+            'private_notes' => $privateNote ?: null,
         ]);
     }
 

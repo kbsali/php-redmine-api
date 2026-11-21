@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without roles' => [
                 '/roles.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "roles": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple roles' => [
                 '/roles.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "roles": [

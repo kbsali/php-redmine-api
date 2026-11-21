@@ -55,7 +55,7 @@ class ListNamesByProjectTest extends TestCase
             'test without versions' => [
                 5,
                 '/projects/5/versions.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "versions": []
@@ -66,7 +66,7 @@ class ListNamesByProjectTest extends TestCase
             'test with multiple categories' => [
                 'test-project',
                 '/projects/test-project/versions.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "versions": [

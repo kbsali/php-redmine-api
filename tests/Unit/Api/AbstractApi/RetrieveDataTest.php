@@ -64,17 +64,6 @@ class RetrieveDataTest extends TestCase
     /**
      * @dataProvider getUnexpectedResponseData
      */
-    #[DataProvider('getUnexpectedResponseData')]
-    public function testRetrieveDataWithUnexpectedResponseReturnsResponseData(int $responseCode, string $response): void
-    {
-        $api = $this->createApi(AssertingHttpClient::create(
-            $this,
-            ['GET', '/issues.json', 'application/json', '', $responseCode, 'application/json', $response],
-        ));
-
-        $this->assertSame(['errors' => ['Status is invalid']], $this->retrieveData($api, '/issues.json'));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */

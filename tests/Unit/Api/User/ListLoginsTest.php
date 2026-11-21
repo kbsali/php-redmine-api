@@ -50,7 +50,7 @@ class ListLoginsTest extends TestCase
         return [
             'test without users' => [
                 '/users.json?limit=100&offset=0',
-                201,
+                200,
                 <<<JSON
                 {
                     "users": []
@@ -60,7 +60,7 @@ class ListLoginsTest extends TestCase
             ],
             'test with multiple users' => [
                 '/users.json?limit=100&offset=0',
-                201,
+                200,
                 <<<JSON
                 {
                     "users": [

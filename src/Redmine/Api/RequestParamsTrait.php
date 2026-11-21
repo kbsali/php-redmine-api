@@ -18,7 +18,7 @@ trait RequestParamsTrait
      * @param array<mixed> $defaults
      * @param array<mixed> $params
      *
-     * @throws \InvalidArgumentException if future mode is enabled and a value is `''`, `[]` or `false`
+     * @throws \InvalidArgumentException if a value is `''`, `[]` or `false`
      *
      * @return array<mixed>
      */
@@ -37,7 +37,7 @@ trait RequestParamsTrait
                 $value = $this->replaceNestedParamClear($value);
             }
 
-            if ($this->isFutureModeEnabled() && ('' === $value || [] === $value || false === $value)) {
+            if ('' === $value || [] === $value || false === $value) {
                 throw new \InvalidArgumentException(sprintf(
                     'The parameter "%s" must not be %s. Use `null` to skip the parameter, `Param::Clear` to clear the field%s.',
                     $name,
@@ -46,12 +46,7 @@ trait RequestParamsTrait
                 ));
             }
 
-            if (
-                false !== $value
-                && null !== $value
-                && '' !== $value
-                && (!is_array($value) && !is_object($value) || !empty($value))
-            ) {
+            if (null !== $value) {
                 $requestParams[$name] = $value;
             }
         }

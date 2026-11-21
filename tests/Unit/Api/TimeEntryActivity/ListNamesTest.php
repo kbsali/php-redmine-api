@@ -50,7 +50,7 @@ class ListNamesTest extends TestCase
         return [
             'test without time entry activities' => [
                 '/enumerations/time_entry_activities.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "time_entry_activities": []
@@ -60,7 +60,7 @@ class ListNamesTest extends TestCase
             ],
             'test with multiple time entry activities' => [
                 '/enumerations/time_entry_activities.json',
-                201,
+                200,
                 <<<JSON
                 {
                     "time_entry_activities": [

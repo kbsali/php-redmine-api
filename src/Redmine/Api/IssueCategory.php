@@ -72,7 +72,7 @@ class IssueCategory extends AbstractApi
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<mixed> list of issue categories found
      */
@@ -99,7 +99,7 @@ class IssueCategory extends AbstractApi
      *
      * @throws InvalidParameterException if $projectIdentifier is not of type int or string
      * @throws UnexpectedResponseException if response body could not be converted into array
-     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code (only if future mode is enabled)
+     * @throws UnexpectedResponseException if the Redmine server delivers an unexpected status code
      *
      * @return array<int,string> list of issue category names (id => name)
      */
