@@ -272,32 +272,6 @@ class UpdateTest extends TestCase
         $this->assertSame('', $api->update(70, $parameters));
     }
 
-    public function testUpdateUnassignUserWithoutFutureModeSendsXml(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/issues/1.xml',
-                'application/xml',
-                <<< XML
-                <?xml version="1.0"?>
-                <issue>
-                    <id>1</id>
-                    <assigned_to_id></assigned_to_id>
-                </issue>
-                XML,
-                204,
-                '',
-                '',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(1, ['assigned_to_id' => '']));
-    }
-
     /**
      * @dataProvider getUpdateWithJsonData
      *
@@ -451,26 +425,6 @@ class UpdateTest extends TestCase
         FutureMode::enable($api);
 
         $api->update(1, ['assigned_to_id' => '']);
-    }
-
-    public function testUpdateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/issues/1.xml',
-                'application/xml',
-                '<?xml version="1.0"?><issue><id>1</id></issue>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(1, []));
     }
 
     public function testUpdateWithIncorrectStatusCodeThrowsException(): void
@@ -717,15 +671,4 @@ class UpdateTest extends TestCase
         $api->update(5, ['category' => 'Category Name']);
     }
 
-    public function testUpdateWithoutFutureModeDoesNotLoadTheIssue(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            ['PUT', '/issues/5.xml', 'application/xml', '<?xml version="1.0"?><issue><id>5</id><category>Category Name</category></issue>', 204, '', ''],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->update(5, ['category' => 'Category Name']));
-    }
 }

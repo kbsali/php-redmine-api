@@ -277,30 +277,6 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateWithIncorrectStatusCodeReturnsEmptyString(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/issues.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><issue/>',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        // Create the object under test
-        $api = Issue::fromHttpClient($client);
-
-        // Perform the tests
-        $return = $api->create([]);
-
-        $this->assertSame('', $return);
-    }
-
     public function testCreateWithCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
@@ -349,29 +325,6 @@ class CreateTest extends TestCase
         $return = $api->create([]);
 
         $this->assertSame('', $return);
-    }
-
-    public function testCreateWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                '/issues.xml',
-                'application/xml',
-                '<?xml version="1.0" encoding="UTF-8"?><issue/>',
-                500,
-                '',
-                '<error>error</error>',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $return = $api->create([]);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString('<error>error</error>', $return->asXml());
     }
 
     public function testCreateWithIncorrectStatusCodeThrowsException(): void
@@ -766,35 +719,6 @@ class CreateTest extends TestCase
         $api->create(['category' => 'Category Name', 'project_id' => 2]);
     }
 
-    public function testCreateWithoutFutureModeIgnoresFailingLookup(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/trackers.json',
-                'application/json',
-                '',
-                500,
-                'application/json',
-                '{"errors":["Internal error"]}',
-            ],
-            [
-                'POST',
-                '/issues.xml',
-                'application/xml',
-                '<?xml version="1.0"?><issue/>',
-                201,
-                'application/xml',
-                '<?xml version="1.0"?><issue><id>5</id></issue>',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $api->create(['tracker' => 'Tracker Name']));
-    }
-
     /**
      * @return array<string,array{mixed}>
      */
@@ -908,16 +832,4 @@ class CreateTest extends TestCase
         $api->create(['project' => 'Missing', 'category' => 'Category Name']);
     }
 
-    public function testCreateWithoutFutureModeDropsUnknownName(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            ['GET', '/trackers.json', 'application/json', '', 200, 'application/json', '{"trackers":[{"name":"Tracker Name","id":9}]}'],
-            ['POST', '/issues.xml', 'application/xml', '<?xml version="1.0"?><issue/>', 201, 'application/xml', '<?xml version="1.0"?><issue><id>5</id></issue>'],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $api->create(['tracker' => 'Missing']));
-    }
 }

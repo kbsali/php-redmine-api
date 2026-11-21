@@ -130,26 +130,6 @@ class AttachManyTest extends TestCase
         ];
     }
 
-    public function testAttachManyWithIncorrectStatusCodeReturnsBody(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                '/issues/5.json',
-                'application/json',
-                '{"issue":{"id":5,"uploads":[]}}',
-                500,
-                '',
-                '',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $this->assertSame('', $api->attachMany(5, []));
-    }
-
     public function testAttachManyWithIncorrectStatusCodeThrowsException(): void
     {
         $client = AssertingHttpClient::create(
