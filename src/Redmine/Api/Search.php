@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Redmine\Api;
 
-use Redmine\Exception;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
@@ -46,38 +45,5 @@ final class Search extends AbstractApi
         } catch (SerializerException $th) {
             throw UnexpectedResponseException::create($this->getLastResponse(), $th);
         }
-    }
-
-    /**
-     * Search.
-     *
-     * @deprecated v2.4.0 Use listByQuery() instead.
-     * @see Search::listByQuery()
-     * @see   http://www.redmine.org/projects/redmine/wiki/Rest_Search
-     *
-     * @param string        $query  string to search
-     * @param array<mixed>  $params optional parameters to be passed to the api (offset, limit, ...)
-     *
-     * @return array<mixed>|string|false list of results (projects, issues) found or error message or false
-     */
-    public function search($query, array $params = []): false|string|array
-    {
-        @trigger_error('`' . __METHOD__ . '()` is deprecated since v2.4.0, use `' . self::class . '::listByQuery()` instead.', E_USER_DEPRECATED);
-
-        try {
-            $results = $this->listByQuery((string) $query, $params);
-        } catch (Exception $e) {
-            if ($this->getLastResponse()->getContent() === '') {
-                return false;
-            }
-
-            if ($e instanceof UnexpectedResponseException && $e->getPrevious() instanceof \Throwable) {
-                $e = $e->getPrevious();
-            }
-
-            return $e->getMessage();
-        }
-
-        return $results;
     }
 }
