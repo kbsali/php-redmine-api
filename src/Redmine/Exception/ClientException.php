@@ -12,4 +12,4 @@ use Redmine\Exception as RedmineException;
  *
  * Will be thrown if anything goes wrong on creating or sending a HTTP request
  */
-class ClientException extends Exception implements RedmineException {}
+final class ClientException extends Exception implements RedmineException {}
