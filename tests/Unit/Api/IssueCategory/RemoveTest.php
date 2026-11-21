@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\IssueCategory;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(IssueCategory::class)]
 class RemoveTest extends TestCase
@@ -45,34 +44,7 @@ class RemoveTest extends TestCase
 
     /**
      * @dataProvider getRemoveData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getRemoveData')]
-    public function testRemoveWithFutureModeReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                $expectedPath,
-                'application/xml',
-                '',
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueCategory::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame($response, $api->remove($issueId, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -115,7 +87,6 @@ class RemoveTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->remove(25);
     }

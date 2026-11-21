@@ -36,7 +36,7 @@ When you notice a possible refactoring while doing other work, post it directly 
 
 ### Conventions
 
-- **Strict BC promise** – on `v2.x` no breaking changes; new exceptions only behind the per-client future mode gate (`$this->isFutureModeEnabled()` in `AbstractApi`, enabled via `$client->enableFutureMode()`; tests use `Redmine\Tests\Fixtures\FutureMode::enable($api)`)
+- **Strict BC promise** – on `v2.x` no breaking changes; new exceptions only behind the per-client future mode gate (enabled via `$client->enableFutureMode()`). On `v3.x` the future mode is the only behaviour: there is no gate anymore, `enableFutureMode()` does nothing and the `FutureMode` test fixture is removed
 - **v3.x removes deprecated API** – on `v3.x` only what v2.11 has deprecated is removed (see the deprecation gate in #539); everything else still follows the BC promise. Each removal is its own pull request with a changelog entry.
 - **One unit test file per API method** – tests live in `tests/Unit/Api/<Api>/<Method>Test.php` (e.g. `Issue/UpdateTest.php`). Add to the existing file instead of creating a topic file; the maintainers merge topic files into the method files.
 - **QA before committing** – PHPUnit + code style + PHPStan + Rector + Behat must pass, on PHP 8.2 (the lowest supported version). Run Rector with `docker compose run --rm php composer run rector -- --dry-run`. Mention the PHP versions used in the PR's QA section.

@@ -20,8 +20,6 @@ trait ClientApiTrait
      */
     private array $apiInstances = [];
 
-    private bool $futureMode = false;
-
     /**
      * @var array<string,class-string>
      */
@@ -62,38 +60,13 @@ trait ClientApiTrait
         $class = $this->apiClassnames[$name];
         $this->apiInstances[$name] = $class::fromHttpClient($this);
 
-        if ($this->futureMode) {
-            self::enableFutureModeOnApi($this->apiInstances[$name]);
-        }
-
         return $this->apiInstances[$name];
     }
 
     /**
-     * Throw an `UnexpectedResponseException` on unexpected response status codes.
-     *
-     * The mode applies to all APIs of this client, including APIs already returned by `getApi()`.
-     *
-     * The params of `create()` and `update()` methods must not be `''`, `[]` or `false` on the top level,
-     * otherwise an `InvalidArgumentException` is thrown. Use `null` to skip a parameter,
-     * `Param::Clear` to clear a field or `0` to switch off a boolean.
+     * Does nothing, the future mode is the only behaviour since v3.0.0.
      */
-    public function enableFutureMode(): void
-    {
-        $this->futureMode = true;
-
-        foreach ($this->apiInstances as $api) {
-            self::enableFutureModeOnApi($api);
-        }
-    }
-
-    private static function enableFutureModeOnApi(AbstractApi $api): void
-    {
-        // Set the private property without adding a public method to AbstractApi
-        \Closure::bind(static function (AbstractApi $api): void {
-            $api->futureMode = true;
-        }, null, AbstractApi::class)($api);
-    }
+    public function enableFutureMode(): void {}
 
     private function isUploadCall(string $path): bool
     {

@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class AttachManyTest extends TestCase
@@ -45,34 +44,7 @@ class AttachManyTest extends TestCase
 
     /**
      * @dataProvider getAttachManyData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getAttachManyData')]
-    public function testAttachManyWithFutureModeReturnsCorrectResponse(int $issueId, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/json',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // AttachMany the object under test
-        $api = Issue::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame('', $api->attachMany($issueId, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -149,7 +121,6 @@ class AttachManyTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->attachMany(5, []);
     }

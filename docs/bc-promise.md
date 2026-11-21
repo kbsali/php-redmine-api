@@ -42,8 +42,7 @@ the public API stays the same. The tested Redmine versions are in the README.
 ## Exceptions to the promise
 
 Security fixes and bug fixes may change behavior that users relied on, when keeping it would be unsafe or wrong.
-They are listed in the changelog. A fix that makes a call throw a new exception does so only behind the future mode (see
-[docs/usage.md](usage.md)).
+They are listed in the changelog.
 
 ## How the promise is checked
 

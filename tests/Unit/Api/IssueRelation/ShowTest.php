@@ -11,7 +11,6 @@ use Redmine\Api\IssueRelation;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(IssueRelation::class)]
 class ShowTest extends TestCase
@@ -65,28 +64,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    public function testShowWithFutureModeReturnsCorrectResponse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/relations/5.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '{"relation":{"id":5}}',
-            ],
-        );
-
-        $api = IssueRelation::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame(['id' => 5], $api->show(5));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */
@@ -108,7 +85,6 @@ class ShowTest extends TestCase
 
         $api = IssueRelation::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);
@@ -157,7 +133,6 @@ class ShowTest extends TestCase
 
         $api = IssueRelation::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);

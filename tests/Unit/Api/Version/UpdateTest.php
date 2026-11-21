@@ -13,7 +13,6 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Version::class)]
 class UpdateTest extends TestCase
@@ -48,34 +47,7 @@ class UpdateTest extends TestCase
 
     /**
      * @dataProvider getUpdateData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getUpdateData')]
-    public function testUpdateWithFutureModeReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Update the object under test
-        $api = Version::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame($response, $api->update($id, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -244,7 +216,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(5, []);
     }
@@ -297,14 +268,13 @@ class UpdateTest extends TestCase
      * @param array<mixed> $parameters
      */
     #[DataProvider('getEmptyValueData')]
-    public function testUpdateWithFutureModeThrowsOnEmptyValues(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
+    public function testUpdateThrowsOnEmptyValues(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = Version::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
 
@@ -324,14 +294,13 @@ class UpdateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testUpdateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = Version::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"description"');

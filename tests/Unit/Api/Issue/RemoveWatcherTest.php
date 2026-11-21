@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Api\Issue;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class RemoveWatcherTest extends TestCase
@@ -44,31 +43,6 @@ class RemoveWatcherTest extends TestCase
     /**
      * @dataProvider getRemoveWatcherData
      */
-    #[DataProvider('getRemoveWatcherData')]
-    public function testRemoveWatcherWithFutureModeReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'DELETE',
-                $expectedPath,
-                'application/xml',
-                '',
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Issue::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame($response, $api->removeWatcher($issueId, $watcherUserId));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -104,7 +78,6 @@ class RemoveWatcherTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->removeWatcher(25, 5);
     }

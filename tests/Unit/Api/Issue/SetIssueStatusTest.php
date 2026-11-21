@@ -10,7 +10,6 @@ use Redmine\Api\Issue;
 use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Issue::class)]
 class SetIssueStatusTest extends TestCase
@@ -46,7 +45,7 @@ class SetIssueStatusTest extends TestCase
         $this->assertSame('', $api->setIssueStatus(5, 'Status Name'));
     }
 
-    public function testSetIssueStatusWithFutureModeThrowsOnFailingStatusLookup(): void
+    public function testSetIssueStatusThrowsOnFailingStatusLookup(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -63,14 +62,13 @@ class SetIssueStatusTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(UnexpectedResponseException::class);
 
         $api->setIssueStatus(5, 'Status Name');
     }
 
-    public function testSetIssueStatusWithFutureModeThrowsOnUnknownStatus(): void
+    public function testSetIssueStatusThrowsOnUnknownStatus(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -79,7 +77,6 @@ class SetIssueStatusTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('The value "Missing" of the parameter "status" is unknown');

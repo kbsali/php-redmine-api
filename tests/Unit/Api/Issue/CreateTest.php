@@ -12,7 +12,6 @@ use Redmine\Exception\InvalidParameterException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 use SimpleXMLElement;
 
 #[CoversClass(Issue::class)]
@@ -51,37 +50,7 @@ class CreateTest extends TestCase
 
     /**
      * @dataProvider getCreateData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getCreateData')]
-    public function testCreateWithFutureModeReturnsCorrectResponse(array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'POST',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                'application/xml',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = Issue::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $return = $api->create($parameters);
-
-        $this->assertInstanceOf(SimpleXMLElement::class, $return);
-        $this->assertXmlStringEqualsXmlString($response, $return->asXml());
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -301,7 +270,7 @@ class CreateTest extends TestCase
         $this->assertSame('', $return);
     }
 
-    public function testCreateWithFutureModeAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
+    public function testCreateAndCorrectStatusCodeAndEmptyBodyReturnsEmptyString(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -319,7 +288,6 @@ class CreateTest extends TestCase
         // Create the object under test
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         // Perform the tests
         $return = $api->create([]);
@@ -347,7 +315,6 @@ class CreateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->create([]);
     }
@@ -636,7 +603,7 @@ class CreateTest extends TestCase
      * @param array<mixed> $params
      */
     #[DataProvider('getFailingLookups')]
-    public function testCreateWithFutureModeThrowsOnFailingLookup(array $params, string $lookupPath): void
+    public function testCreateThrowsOnFailingLookup(array $params, string $lookupPath): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -653,7 +620,6 @@ class CreateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(UnexpectedResponseException::class);
 
@@ -675,50 +641,6 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testFutureModeEnabledAfterFirstUseAppliesToCachedLookupApi(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/projects/1/issue_categories.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '{"issue_categories":[{"id":7,"name":"Category Name"}]}',
-            ],
-            [
-                'POST',
-                '/issues.xml',
-                'application/xml',
-                '<?xml version="1.0"?><issue><project_id>1</project_id><category_id>7</category_id></issue>',
-                201,
-                'application/xml',
-                '<?xml version="1.0"?><issue><id>5</id></issue>',
-            ],
-            [
-                'GET',
-                '/projects/2/issue_categories.json',
-                'application/json',
-                '',
-                500,
-                'application/json',
-                '{"errors":["Internal error"]}',
-            ],
-        );
-
-        $api = Issue::fromHttpClient($client);
-
-        $api->create(['category' => 'Category Name', 'project_id' => 1]);
-
-        FutureMode::enable($api);
-
-        $this->expectException(UnexpectedResponseException::class);
-
-        $api->create(['category' => 'Category Name', 'project_id' => 2]);
-    }
-
     /**
      * @return array<string,array{mixed}>
      */
@@ -732,14 +654,13 @@ class CreateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testCreateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testCreateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"subject"');
@@ -753,7 +674,7 @@ class CreateTest extends TestCase
      * @param array<mixed> $params
      */
     #[DataProvider('getUnknownNames')]
-    public function testCreateWithFutureModeThrowsOnUnknownName(array $params, string $lookupPath, string $lookupResponse, string $expectedMessage): void
+    public function testCreateThrowsOnUnknownName(array $params, string $lookupPath, string $lookupResponse, string $expectedMessage): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -762,7 +683,6 @@ class CreateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -815,7 +735,7 @@ class CreateTest extends TestCase
         ];
     }
 
-    public function testCreateWithFutureModeReportsUnknownProjectBeforeLookingUpCategory(): void
+    public function testCreateReportsUnknownProjectBeforeLookingUpCategory(): void
     {
         $client = AssertingHttpClient::create(
             $this,
@@ -824,7 +744,6 @@ class CreateTest extends TestCase
 
         $api = Issue::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(InvalidParameterException::class);
         $this->expectExceptionMessage('The value "Missing" of the parameter "project" is unknown');

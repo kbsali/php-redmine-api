@@ -11,7 +11,6 @@ use Redmine\Api\AbstractApi;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 use ReflectionMethod;
 
 #[CoversClass(AbstractApi::class)]
@@ -35,21 +34,7 @@ class RetrieveDataTest extends TestCase
 
     /**
      * @dataProvider getRetrieveDataData
-     *
-     * @param array<mixed> $expectedReturn
      */
-    #[DataProvider('getRetrieveDataData')]
-    public function testRetrieveDataWithFutureModeReturnsCorrectResponse(string $path, string $contentType, int $responseCode, string $response, array $expectedReturn): void
-    {
-        $api = $this->createApi(AssertingHttpClient::create(
-            $this,
-            ['GET', $path, $contentType, '', $responseCode, $contentType, $response],
-        ));
-        FutureMode::enable($api);
-
-        $this->assertSame($expectedReturn, $this->retrieveData($api, $path));
-    }
-
     /**
      * @return array<string, array<mixed>>
      */
@@ -68,13 +53,12 @@ class RetrieveDataTest extends TestCase
      * @dataProvider getUnexpectedResponseData
      */
     #[DataProvider('getUnexpectedResponseData')]
-    public function testRetrieveDataWithFutureModeAndUnexpectedResponseThrowsException(int $responseCode, string $response): void
+    public function testRetrieveDataAndUnexpectedResponseThrowsException(int $responseCode, string $response): void
     {
         $api = $this->createApi(AssertingHttpClient::create(
             $this,
             ['GET', '/issues.json', 'application/json', '', $responseCode, 'application/json', $response],
         ));
-        FutureMode::enable($api);
 
         try {
             $this->retrieveData($api, '/issues.json');
@@ -97,7 +81,7 @@ class RetrieveDataTest extends TestCase
         ];
     }
 
-    public function testRetrieveDataWithFutureModeAndUnexpectedResponseOnSecondPageThrowsException(): void
+    public function testRetrieveDataAndUnexpectedResponseOnSecondPageThrowsException(): void
     {
         $api = $this->createApi(AssertingHttpClient::create(
             $this,
@@ -120,7 +104,6 @@ class RetrieveDataTest extends TestCase
                 '{"errors":["Internal error"]}',
             ],
         ));
-        FutureMode::enable($api);
 
         try {
             $this->retrieveData($api, '/issues.json', ['limit' => 150]);
@@ -131,7 +114,7 @@ class RetrieveDataTest extends TestCase
         }
     }
 
-    public function testRetrieveDataWithFutureModeAndSeveralPagesReturnsMergedResponse(): void
+    public function testRetrieveDataAndSeveralPagesReturnsMergedResponse(): void
     {
         $api = $this->createApi(AssertingHttpClient::create(
             $this,
@@ -154,7 +137,6 @@ class RetrieveDataTest extends TestCase
                 '{"issues":[{"id":2}],"total_count":150,"offset":100,"limit":50}',
             ],
         ));
-        FutureMode::enable($api);
 
         $this->assertSame(
             [

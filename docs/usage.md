@@ -215,70 +215,13 @@ try {
 }
 ```
 
-### Forward compatibility mode
+### Handling unexpected responses
 
-By default, API methods that create, update, or delete resources do not check the HTTP status code of the response. Their return values are unchanged from earlier versions, even if the status code indicates an error: depending on the method this is the response body as a string, a `SimpleXMLElement` or an array. This preserves backwards compatibility with existing code.
+Any unexpected status code (e.g. a 422 validation error or a 404 for a not existing resource) throws a `\Redmine\Exception\UnexpectedResponseException`. This applies to all API methods that read, create, update or delete resources. This allows you to catch and handle errors reliably.
 
-The same applies to the `show()` methods that read a single resource: on errors they return `false`, an error message as a string or, in `IssueRelation::show()`, an empty array.
-
-You can opt-in to stricter behavior by enabling the forward compatibility mode on the client:
+The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException` if the response body is empty or cannot be decoded into an array. So `show()` either returns an array or throws an exception.
 
 ```php
-$client->enableFutureMode();
-```
-
-After calling `enableFutureMode()`, any unexpected status code (e.g. a 422 validation error or a 404 for a not existing resource) throws `\Redmine\Exception\UnexpectedResponseException`. This allows you to catch and handle errors more reliably.
-
-The `show()` methods also throw `\Redmine\Exception\UnexpectedResponseException` if the response body is empty or cannot be decoded into an array. So in forward compatibility mode, `show()` either returns an array or throws an exception.
-
-> :bulb: The forward compatibility mode only applies to the client on which `enableFutureMode()` was called and to all APIs returned by its `getApi()` method, including APIs that were returned before. Other clients are not affected. API instances created manually with `fromHttpClient()` always use the default behavior.
-
-> :bulb: The forward compatibility mode requires Redmine 4.1 or newer. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which would be treated as an unexpected status code.
-
-#### Preparing for v3.0.0
-
-v3.0.0 will only have the behaviour of the forward compatibility mode, `enableFutureMode()` will then do nothing. To prepare your code for v3.0.0:
-
-1. Update to v2.11.0.
-2. Call `enableFutureMode()` on your client and handle the `\Redmine\Exception\UnexpectedResponseException` and the other exceptions it enables. APIs created with `fromHttpClient()` are not affected, get them from `$client->getApi()` instead.
-3. Replace everything that is marked as deprecated in [CHANGELOG.md](../CHANGELOG.md) and fix the `E_USER_DEPRECATED` notices of your tests.
-4. Update to v3.0.0.
-
-### Name aliases in `Issue::create()` and `Issue::update()`
-
-Instead of ids, `Issue::create()` and `Issue::update()` accept the names `project`, `category`, `status`, `tracker`, `assigned_to` (login) and `author` (login). Each name needs extra requests to look up the id. Use the `*_id` params to avoid them.
-
-The alias `category` is resolved with the project of the same call (`project` or `project_id`). If `Issue::update()` is called without a project, the alias is only resolved after calling `enableFutureMode()`: the project of the issue is loaded with one extra request. Without future mode the key `category` is sent unchanged and Redmine ignores it, so pass `project_id` or use `category_id`.
-
-```php
-$client->enableFutureMode();
-
-$client->getApi('issue')->update($issueId, ['category' => 'Category name']);
-```
-
-### Empty values in `create()` and `update()`
-
-Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the values `null`, `false`, `''` and `[]` to Redmine. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that sends `''` for `assigned_to_id` and `fixed_version_id`: it unassigns the version, but the user only if the client has called `enableFutureMode()`, because Redmine ignores an empty `assigned_to_id` in XML requests. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
-
-```php
-use Redmine\Api\Param;
-
-$client->getApi('issue')->update($issueId, [
-    'description' => Param::Clear,
-    'due_date' => Param::Clear,
-]);
-$client->getApi('group')->update($groupId, ['user_ids' => Param::Clear]);
-```
-
-To switch off a boolean (e.g. `is_public`, `admin` or `is_private`), pass `0` instead of `false`.
-
-Except for `Attachment::update()`, after calling `enableFutureMode()`, a top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException` instead of being dropped silently. Use `null` to skip a parameter, `Param::Clear` to clear a field or `0` to switch off a boolean. `Issue::update()` still accepts `''` for `assigned_to_id` and `fixed_version_id`.
-
-`Attachment::update()` sends all values unchanged, with and without future mode (`null` is sent as `null`). Omit a parameter to skip it. `Param::Clear` is sent as an empty string.
-
-```php
-$client->enableFutureMode();
-
 try {
     $client->getApi('issue')->create([
         'project_id' => 1,
@@ -293,8 +236,6 @@ try {
 ```
 
 ```php
-$client->enableFutureMode();
-
 try {
     $issue = $client->getApi('issue')->show(123);
 } catch (\Redmine\Exception\UnexpectedResponseException $e) {
@@ -306,6 +247,36 @@ try {
     // In this case $e->getPrevious() contains the decoding error.
 }
 ```
+
+> :bulb: Redmine 4.1 or newer is required. Older Redmine versions respond with `200 OK` instead of `204 No Content` on successful updates and deletions, which is treated as an unexpected status code.
+
+### Name aliases in `Issue::create()` and `Issue::update()`
+
+Instead of ids, `Issue::create()` and `Issue::update()` accept the names `project`, `category`, `status`, `tracker`, `assigned_to` (login) and `author` (login). Each name needs extra requests to look up the id. Use the `*_id` params to avoid them.
+
+The alias `category` is resolved with the project of the same call (`project` or `project_id`). If `Issue::update()` is called without a project, the project of the issue is loaded with one extra request.
+
+```php
+$client->getApi('issue')->update($issueId, ['category' => 'Category name']);
+```
+
+### Empty values in `create()` and `update()`
+
+Except for `Attachment::update()`, the `create()` and `update()` methods do not send top-level params with the value `null` to Redmine. A top-level value of `''`, `[]` or `false` throws an `\InvalidArgumentException`. Nested values (e.g. in `custom_fields`) are sent unchanged, only `Param::Clear` is converted to an empty string there as well. `Issue::update()` is the only method that accepts `''` for `assigned_to_id` and `fixed_version_id` to unassign the user or the version. `Param::Clear` always works, also for the name aliases of `Issue::create()` and `Issue::update()` (e.g. `'assigned_to' => Param::Clear`). To clear a field, use `\Redmine\Api\Param::Clear`:
+
+```php
+use Redmine\Api\Param;
+
+$client->getApi('issue')->update($issueId, [
+    'description' => Param::Clear,
+    'due_date' => Param::Clear,
+]);
+$client->getApi('group')->update($groupId, ['user_ids' => Param::Clear]);
+```
+
+Use `null` to skip a parameter. To switch off a boolean (e.g. `is_public`, `admin` or `is_private`), pass `0` instead of `false`.
+
+`Attachment::update()` sends all values unchanged (`null` is sent as `null`). Omit a parameter to skip it. `Param::Clear` is sent as an empty string.
 
 ## API
 
@@ -452,8 +423,7 @@ $client->getApi('issue')->update($issueId, [
 ]);
 
 // To unassign a user or a version, use `Param::Clear` (`null` values are not sent).
-// An empty string for `assigned_to_id` unassigns the user only if the client has called
-// `enableFutureMode()`, because Redmine ignores it in XML requests. `Param::Clear` always works.
+// An empty string for `assigned_to_id` or `fixed_version_id` unassigns them as well.
 $client->getApi('issue')->update($issueId, [
     'assigned_to_id' => \Redmine\Api\Param::Clear,
     'fixed_version_id' => \Redmine\Api\Param::Clear,

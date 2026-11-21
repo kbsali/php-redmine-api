@@ -12,7 +12,6 @@ use Redmine\Api\Param;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(IssueCategory::class)]
 class UpdateTest extends TestCase
@@ -47,34 +46,7 @@ class UpdateTest extends TestCase
 
     /**
      * @dataProvider getUpdateData
-     *
-     * @param array<mixed> $parameters
      */
-    #[DataProvider('getUpdateData')]
-    public function testUpdateWithFutureModeReturnsCorrectResponse(int $id, array $parameters, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'PUT',
-                $expectedPath,
-                'application/xml',
-                $expectedBody,
-                $responseCode,
-                '',
-                $response,
-            ],
-        );
-
-        // Create the object under test
-        $api = IssueCategory::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        // Perform the tests
-        $this->assertSame('', $api->update($id, $parameters));
-    }
-
     /**
      * @return array<array<mixed>>
      */
@@ -133,7 +105,6 @@ class UpdateTest extends TestCase
 
         $this->expectException(UnexpectedResponseException::class);
 
-        FutureMode::enable($api);
 
         $api->update(5, ['name' => 'new name']);
     }
@@ -151,14 +122,13 @@ class UpdateTest extends TestCase
     }
 
     #[DataProvider('getEmptyValues')]
-    public function testUpdateWithFutureModeThrowsOnEmptyValue(mixed $value): void
+    public function testUpdateThrowsOnEmptyValue(mixed $value): void
     {
         $client = $this->createMock(HttpClient::class);
         $client->expects($this->never())->method('request');
 
         $api = IssueCategory::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"assigned_to_id"');

@@ -11,7 +11,6 @@ use Redmine\Api\User;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(User::class)]
 class ShowTest extends TestCase
@@ -75,28 +74,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    public function testShowWithFutureModeReturnsCorrectResponse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/users/5.json?include=memberships%2Cgroups',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '["API Response"]',
-            ],
-        );
-
-        $api = User::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame(['API Response'], $api->show(5));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */
@@ -118,7 +95,6 @@ class ShowTest extends TestCase
 
         $api = User::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);
@@ -163,7 +139,6 @@ class ShowTest extends TestCase
 
         $api = User::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);

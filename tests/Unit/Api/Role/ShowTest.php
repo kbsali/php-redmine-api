@@ -11,7 +11,6 @@ use Redmine\Api\Role;
 use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
-use Redmine\Tests\Fixtures\FutureMode;
 
 #[CoversClass(Role::class)]
 class ShowTest extends TestCase
@@ -65,28 +64,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    public function testShowWithFutureModeReturnsCorrectResponse(): void
-    {
-        $client = AssertingHttpClient::create(
-            $this,
-            [
-                'GET',
-                '/roles/5.json',
-                'application/json',
-                '',
-                200,
-                'application/json',
-                '["API Response"]',
-            ],
-        );
-
-        $api = Role::fromHttpClient($client);
-
-        FutureMode::enable($api);
-
-        $this->assertSame(['API Response'], $api->show(5));
-    }
-
     /**
      * @dataProvider getUnexpectedResponseData
      */
@@ -108,7 +85,6 @@ class ShowTest extends TestCase
 
         $api = Role::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);
@@ -153,7 +129,6 @@ class ShowTest extends TestCase
 
         $api = Role::fromHttpClient($client);
 
-        FutureMode::enable($api);
 
         try {
             $api->show(5);
