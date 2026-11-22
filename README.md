@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/kbsali/php-redmine-api.svg)](https://github.com/kbsali/php-redmine-api/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-blueviolet.svg)](LICENSE)
-[![Build Status](https://github.com/kbsali/php-redmine-api/actions/workflows/tests.yml/badge.svg?branch=v2.x)](https://github.com/kbsali/php-redmine-api/actions)
+[![Build Status](https://github.com/kbsali/php-redmine-api/actions/workflows/tests.yml/badge.svg?branch=v3.x)](https://github.com/kbsali/php-redmine-api/actions)
 [![Codecov](https://codecov.io/gh/kbsali/php-redmine-api/graph/badge.svg?token=4P6dAaDbJ9)](https://codecov.io/gh/kbsali/php-redmine-api)
 [![Total Downloads](https://img.shields.io/packagist/dt/kbsali/redmine-api.svg)](https://packagist.org/packages/kbsali/redmine-api)
 
@@ -40,7 +40,8 @@ that receive security updates.
 
 | php-redmine-api | 7.0 | 6.1 | 6.0 | 5.1 | 5.0 | 4.2 |
 |-----------------|:---:|:---:|:---:|:---:|:---:|:---:|
-| **v2.11** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **v3.0** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| v2.11 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | v2.10 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | v2.9 | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | v2.8 | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
