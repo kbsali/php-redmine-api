@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kbsali/php-redmine-api/compare/v2.11.0...v3.x)
 
+### Added
+
+- Migration guide [docs/migrate-to-v3.md](docs/migrate-to-v3.md) for the upgrade from v2.11 to v3.0 (#539).
+
 ### Changed
 
 - **BREAKING**: Code that used the removed `all()` methods must now handle exceptions. The `list*()` methods throw an `UnexpectedResponseException` on an error response, while `all()` returned `false` or the error message as a string (#348).
