@@ -180,7 +180,7 @@ jobs:
         run: composer run rector -- --dry-run --output-format=github
 
   roave-bc-check:
-    name: BC check (PHP ${{ matrix.php }})
+    name: BC check
     # v3.x removes the deprecated API on purpose, so the check is off until the tag v3.0.0 exists (#539).
     if: false
     runs-on: ubuntu-latest
