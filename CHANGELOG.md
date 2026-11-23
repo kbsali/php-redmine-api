@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The migration guides `docs/migrate-to-psr18client.md` and `docs/migrate-to-nativecurlclient.md` were removed, they described the upgrade from the old `Redmine\Client` of v1.x to the `Psr18Client` and to the `NativeCurlClient` (#427).
 - **BREAKING**: The method `Redmine\Api\Search::search()` was removed, it was deprecated since v2.4.0. Use `listByQuery()` instead: it throws an `UnexpectedResponseException` on an unexpected response, while `search()` returned `false` or the error message as a string (#575).
 
-## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - TBD
+## [v2.11.0](https://github.com/kbsali/php-redmine-api/compare/v2.10.0...v2.11.0) - 2026-11-24
 
 ### Added
 
