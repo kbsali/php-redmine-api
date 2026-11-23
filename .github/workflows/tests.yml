@@ -12,12 +12,15 @@ jobs:
   tests:
     name: Tests (PHPUnit with PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
+    # PHP 8.7 is a nightly build, a break in PHP itself must not make a pull request red.
+    # Remove this when PHP 8.7 is released and supported (#567).
+    continue-on-error: ${{ matrix.php == '8.7' }}
 
     strategy:
       fail-fast: false
       matrix:
         operating-system: ["ubuntu-latest"]
-        php: ["8.2", "8.3", "8.4", "8.5", "8.6"]
+        php: ["8.2", "8.3", "8.4", "8.5", "8.6", "8.7"]
 
     steps:
       - name: Checkout
@@ -38,6 +41,10 @@ jobs:
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: "Install Composer dependencies"
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
+        with:
+          # behat/behat 4.1 requires php <8.7, but Behat does not run in this job.
+          # Remove this as soon as Behat supports PHP 8.7 or PHP 8.7 is released.
+          composer-options: ${{ matrix.php == '8.7' && '--ignore-platform-req=php+' || '' }}
 
       - name: Run tests
         run: composer run phpunit -- --no-coverage
