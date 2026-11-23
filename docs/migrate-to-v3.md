@@ -36,7 +36,7 @@ What changes for your code:
   }
   ```
 
-- **Empty values in params throw.** A top-level param with the value `''`, `[]` or `false` in `create()` and `update()` throws an `\InvalidArgumentException` instead of being dropped. Use `null` to skip a param, `Param::Clear` to clear a field and `0` to switch off a boolean. Two methods differ: `Issue::update()` accepts `''` for `assigned_to_id` and `fixed_version_id` to unassign the user or the version, and `Attachment::update()` sends all values unchanged (`null` is sent as `null`). See [Empty values](usage.md#empty-values-in-create-and-update).
+- **Empty values in params throw.** A top-level param with the value `''`, `[]` or `false` in `create()` and `update()` throws an `\InvalidArgumentException` instead of being dropped. Use `null` to skip a param, `Param::Clear` to clear a field and `0` to switch off a boolean. Two methods differ: `Issue::update()` accepts `''` for `assigned_to_id` and `fixed_version_id` to unassign the user or the version, and `Attachment::update()` sends all values unchanged, except that `Param::Clear` is sent as an empty string (`null` is sent as `null`). See [Empty values](usage.md#empty-values-in-create-and-update).
 
   ```php
   use Redmine\Api\Param;
@@ -87,7 +87,7 @@ The replacements behave differently in details:
 | --- | --- |
 | `retrieveAll()` | `retrieveData()`, it throws on an invalid response body |
 | `lastCallFailed()` | `getLastResponse()->getStatusCode()` |
-| `sanitizeParams()`, `isNotNull()` | filter empty values (`null`, `false`, `''`, `[]`) yourself, e.g. with `array_filter($params, static fn($value) => $value !== null && $value !== false && $value !== '' && $value !== [])`. A plain `array_filter()` would also remove `0` and `'0'` |
+| `sanitizeParams()`, `isNotNull()` | merge the defaults with the parameters, then filter empty values (`null`, `false`, `''`, `[]`) yourself, e.g. with `array_filter(array_merge($defaults, $params), static fn($value) => $value !== null && $value !== false && $value !== '' && $value !== [])`. A plain `array_filter()` would also remove `0` and `'0'` |
 | `Project::prepareParamsXml()`, `attachCustomFieldXML()` | `\Redmine\Serializer\XmlSerializer::createFromArray()` |
 | property `$client` | `getHttpClient()` |
 | `get()`, `post()`, `put()`, `delete()` | `$this->getHttpClient()->request()` with a request from `\Redmine\Http\HttpFactory::makeRequest()` (or `makeJsonRequest()` / `makeXmlRequest()`) |
