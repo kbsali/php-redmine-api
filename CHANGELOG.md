@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add support for PHP 8.6 (#566)
 - Migration guide [docs/migrate-to-v3.md](docs/migrate-to-v3.md) for the upgrade from v2.11 to v3.0 (#539).
 
 ### Changed
