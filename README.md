@@ -10,6 +10,8 @@ A simple PHP Object Oriented wrapper for Redmine API.
 
 Uses [Redmine API](https://www.redmine.org/projects/redmine/wiki/Rest_api/).
 
+> :arrow_up: Upgrading from v2? See the [migration guide to v3](docs/migrate-to-v3.md).
+
 ## Features
 
 * Follows PSR-4 conventions and coding standard: autoload friendly
