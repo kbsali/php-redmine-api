@@ -21,7 +21,7 @@ This will create a new entry in your `composer.json`.
 ```diff
 {
     "require": {
-+        "kbsali/redmine-api": "^2.2"
++        "kbsali/redmine-api": "^3.0"
     }
 }
 ```
