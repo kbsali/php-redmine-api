@@ -132,4 +132,67 @@ class RequestTest extends TestCase
 
         $client->request($request);
     }
+
+    /**
+     * @dataProvider getGuessedContentTypeData
+     */
+    #[DataProvider('getGuessedContentTypeData')]
+    public function testRequestGuessesContentTypeFromPath(string $path, ?string $expectedContentType): void
+    {
+        $stream = $this->createStub(StreamInterface::class);
+        $stream->method('__toString')->willReturn('');
+
+        $response = $this->createStub(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(200);
+        $response->method('getHeaderLine')->willReturn('');
+        $response->method('getBody')->willReturn($stream);
+
+        $httpClient = $this->createStub(ClientInterface::class);
+        $httpClient->method('sendRequest')->willReturn($response);
+
+        $psrRequest = $this->createMock(RequestInterface::class);
+        $psrRequest->method('withBody')->willReturn($psrRequest);
+        $contentTypes = [];
+        $psrRequest->method('withHeader')->willReturnCallback(function (string $name, string $value) use ($psrRequest, &$contentTypes): RequestInterface {
+            if ($name === 'Content-Type') {
+                $contentTypes[] = $value;
+            }
+
+            return $psrRequest;
+        });
+
+        $requestFactory = $this->createStub(RequestFactoryInterface::class);
+        $requestFactory->method('createRequest')->willReturn($psrRequest);
+
+        $client = new Psr18Client(
+            $httpClient,
+            $requestFactory,
+            $this->createStub(StreamFactoryInterface::class),
+            'http://test.local',
+            'access_token',
+        );
+
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn('GET');
+        $request->method('getPath')->willReturn($path);
+        $request->method('getContentType')->willReturn('');
+        $request->method('getContent')->willReturn('');
+
+        $client->request($request);
+
+        $this->assertSame($expectedContentType === null ? [] : [$expectedContentType], $contentTypes);
+    }
+
+    /**
+     * @return array<string, array<mixed>>
+     */
+    public static function getGuessedContentTypeData(): array
+    {
+        return [
+            'json path' => ['/issues.json', 'application/json'],
+            'xml path' => ['/issues.xml', 'text/xml'],
+            'upload path' => ['/uploads.json', 'application/octet-stream'],
+            'other path' => ['/path', null],
+        ];
+    }
 }

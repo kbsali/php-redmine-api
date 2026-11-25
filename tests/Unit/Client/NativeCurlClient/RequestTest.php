@@ -147,4 +147,76 @@ class RequestTest extends TestCase
         $this->assertSame('application/json', $response->getContentType());
         $this->assertSame('{"upload":{}}', $response->getContent());
     }
+
+    /**
+     * @dataProvider getRequestHeaderData
+     *
+     * @param array<string> $expectedHeaders
+     */
+    #[DataProvider('getRequestHeaderData')]
+    public function testRequestSendsCorrectHeaders(?string $password, ?string $impersonateUser, string $path, string $contentType, array $expectedHeaders): void
+    {
+        $namespace = 'Redmine\Client';
+
+        $curl = curl_init();
+
+        $curlInit = $this->getFunctionMock($namespace, 'curl_init');
+        $curlInit->expects($this->exactly(1))->willReturn($curl);
+
+        $curlExec = $this->getFunctionMock($namespace, 'curl_exec');
+        $curlExec->expects($this->exactly(1))->willReturn('');
+
+        $curlSetoptArray = $this->getFunctionMock($namespace, 'curl_setopt_array');
+        $curlSetoptArray->expects($this->exactly(1))->willReturnCallback(function ($handle, array $options) use ($expectedHeaders): bool {
+            $this->assertSame($expectedHeaders, $options[CURLOPT_HTTPHEADER]);
+
+            return true;
+        });
+
+        $curlGetinfo = $this->getFunctionMock($namespace, 'curl_getinfo');
+        $curlGetinfo->expects($this->exactly(2))->willReturnMap(([
+            [$curl, CURLINFO_HTTP_CODE, 200],
+            [$curl, CURLINFO_CONTENT_TYPE, ''],
+        ]));
+
+        $curlErrno = $this->getFunctionMock($namespace, 'curl_errno');
+        $curlErrno->expects($this->exactly(1))->willReturn(CURLE_OK);
+
+        $this->getFunctionMock($namespace, 'curl_close');
+
+        $client = new NativeCurlClient(
+            'http://test.local',
+            'username',
+            $password,
+        );
+
+        if ($impersonateUser !== null) {
+            $client->startImpersonateUser($impersonateUser);
+        }
+
+        $request = $this->createStub(Request::class);
+        $request->method('getMethod')->willReturn('GET');
+        $request->method('getPath')->willReturn($path);
+        $request->method('getContentType')->willReturn($contentType);
+        $request->method('getContent')->willReturn('');
+
+        $client->request($request);
+    }
+
+    /**
+     * @return array<string, array<mixed>>
+     */
+    public static function getRequestHeaderData(): array
+    {
+        return [
+            'api key' => [null, null, '/path', '', ['Expect: ', 'X-Redmine-API-Key: username']],
+            'basic auth' => ['secret', null, '/path', '', ['Expect: ', 'Authorization: Basic ' . base64_encode('username:secret')]],
+            'impersonate user' => [null, 'jdoe', '/path', '', ['Expect: ', 'X-Redmine-Switch-User: jdoe', 'X-Redmine-API-Key: username']],
+            'content type from request' => [null, null, '/path', 'application/json', ['Expect: ', 'X-Redmine-API-Key: username', 'Content-Type: application/json']],
+            'content type guessed from json path' => [null, null, '/issues.json', '', ['Expect: ', 'X-Redmine-API-Key: username', 'Content-Type: application/json']],
+            'content type guessed from xml path' => [null, null, '/issues.xml', '', ['Expect: ', 'X-Redmine-API-Key: username', 'Content-Type: text/xml']],
+            'content type guessed from upload path' => [null, null, '/uploads.json', '', ['Expect: ', 'X-Redmine-API-Key: username', 'Content-Type: application/octet-stream']],
+            'no content type guessed' => [null, null, '/path', '', ['Expect: ', 'X-Redmine-API-Key: username']],
+        ];
+    }
 }
