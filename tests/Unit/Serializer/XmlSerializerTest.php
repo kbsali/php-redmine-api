@@ -144,6 +144,24 @@ class XmlSerializerTest extends TestCase
         ];
     }
 
+    public function testCreateFromStringWithTooDeeplyNestedXmlThrowsException(): void
+    {
+        // json_encode() fails if the structure is deeper than 512 levels, libxml only parses a limited nesting depth.
+        // Two elements with the same name become a list in an object, so every XML level adds two JSON levels.
+        // The two comments in the innermost element add three more. 255 levels below the root exceed the limit
+        // of json_encode() and are still parsed by libxml 2.15, which allows one level less than older versions.
+        $xml = '<item><!--a--><!--b--></item><item/>';
+
+        for ($level = 1; $level < 255; $level++) {
+            $xml = '<item>' . $xml . '</item><item/>';
+        }
+
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage('Catched error "Maximum stack depth exceeded" while encoding SimpleXMLElement');
+
+        XmlSerializer::createFromString('<root>' . $xml . '</root>');
+    }
+
     /**
      * @param array<mixed> $data
      *
