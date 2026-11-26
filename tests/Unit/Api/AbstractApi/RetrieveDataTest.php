@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Redmine\Api\AbstractApi;
+use Redmine\Exception\SerializerException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
@@ -181,6 +182,63 @@ class RetrieveDataTest extends TestCase
             'array with 0 is sent' => [[0], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
             'array with "0" is sent' => [['0'], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
             'array with empty string is sent' => [[''], '/issues.json?limit=1&offset=0&foo%5B%5D='],
+        ];
+    }
+
+    /**
+     * @dataProvider getRequestContentTypeData
+     */
+    #[DataProvider('getRequestContentTypeData')]
+    public function testRetrieveDataSendsContentTypeGuessedFromPath(string $path, string $expectedContentType): void
+    {
+        $api = $this->createApi(AssertingHttpClient::create(
+            $this,
+            ['GET', $path, $expectedContentType, '', 200, 'application/json', '{}'],
+        ));
+
+        $this->assertSame([], $this->retrieveData($api, $path));
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function getRequestContentTypeData(): array
+    {
+        return [
+            'JSON path' => ['/issues.json', 'application/json'],
+            'JSON path with query' => ['/issues.json?limit=1', 'application/json'],
+            'XML path' => ['/issues.xml', 'application/xml'],
+            'JSON upload path' => ['/uploads.json', 'application/octet-stream'],
+            'XML upload path' => ['/uploads.xml', 'application/octet-stream'],
+            'other path' => ['/issues', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider getNotConvertibleResponseData
+     */
+    #[DataProvider('getNotConvertibleResponseData')]
+    public function testRetrieveDataAndNotConvertibleResponseThrowsException(string $contentType, string $response): void
+    {
+        $api = $this->createApi(AssertingHttpClient::create(
+            $this,
+            ['GET', '/issues.json', 'application/json', '', 200, $contentType, $response],
+        ));
+
+        $this->expectException(SerializerException::class);
+        $this->expectExceptionMessage('Could not convert response body into array: ' . $response);
+
+        $this->retrieveData($api, '/issues.json');
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function getNotConvertibleResponseData(): array
+    {
+        return [
+            'unsupported content type' => ['text/plain', 'not an array'],
+            'JSON scalar' => ['application/json', '12345'],
         ];
     }
 
