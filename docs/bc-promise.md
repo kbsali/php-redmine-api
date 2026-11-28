@@ -46,6 +46,10 @@ They are listed in the changelog.
 
 ## How the promise is checked
 
-The tests, PHPStan and the code style check run in the CI on every change. Rector with a BC library
-(`art4/rector-bc-library`) runs as a check before a commit (`composer test`), not in the CI. There is no automatic
-comparison of the public API with the last release.
+The CI runs on every pull request and on every push to `v2.x` and `v3.x`. It runs the tests, PHPStan, the code
+style check and Rector. The Rector configuration includes a BC library (`art4/rector-bc-library`) for type
+declarations. In addition, the job `BC check` compares the public API with the last release tag using the
+[Roave Backward Compatibility Check](https://github.com/Roave/BackwardCompatibilityCheck).
+
+`composer test` runs PHPStan, the tests, Rector and the code style check locally. It does not include the Roave
+check.
