@@ -43,9 +43,6 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getUpdateData(): array

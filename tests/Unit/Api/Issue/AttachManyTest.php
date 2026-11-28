@@ -41,9 +41,6 @@ class AttachManyTest extends TestCase
     }
 
     /**
-     * @dataProvider getAttachManyData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getAttachManyData(): array

@@ -41,9 +41,6 @@ class UploadTest extends TestCase
     }
 
     /**
-     * @dataProvider getUploadData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getUploadData(): array

@@ -42,9 +42,6 @@ class AddWatcherTest extends TestCase
     }
 
     /**
-     * @dataProvider getAddWatcherData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getAddWatcherData(): array

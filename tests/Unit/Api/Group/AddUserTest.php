@@ -42,9 +42,6 @@ class AddUserTest extends TestCase
     }
 
     /**
-     * @dataProvider getAddUserData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getAddUserData(): array

@@ -38,9 +38,6 @@ class RemoveTest extends TestCase
     }
 
     /**
-     * @dataProvider getRemoveData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getRemoveData(): array

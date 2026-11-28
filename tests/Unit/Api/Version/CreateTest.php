@@ -48,9 +48,6 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getCreateData(): array

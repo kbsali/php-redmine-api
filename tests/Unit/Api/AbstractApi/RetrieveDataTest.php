@@ -32,9 +32,6 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @dataProvider getRetrieveDataData
-     */
-    /**
      * @return array<string, array<mixed>>
      */
     public static function getRetrieveDataData(): array

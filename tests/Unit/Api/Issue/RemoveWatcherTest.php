@@ -38,9 +38,6 @@ class RemoveWatcherTest extends TestCase
     }
 
     /**
-     * @dataProvider getRemoveWatcherData
-     */
-    /**
      * @return array<array<mixed>>
      */
     public static function getRemoveWatcherData(): array
