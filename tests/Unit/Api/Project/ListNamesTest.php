@@ -15,7 +15,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class ListNamesTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesData')]

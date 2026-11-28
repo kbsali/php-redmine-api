@@ -74,7 +74,6 @@ class ListByProjectTest extends TestCase
     }
 
     /**
-     *
      * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]

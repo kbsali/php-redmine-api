@@ -81,7 +81,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     *
      * @param array<mixed> $expected
      */
     #[DataProvider('retrieveDataData')]

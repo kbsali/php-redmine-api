@@ -19,7 +19,6 @@ use ReflectionProperty;
 class ResponseValidationTraitTest extends TestCase
 {
     /**
-     *
      * @param int[] $expectedStatusCodes
      */
     #[DataProvider('getExpectedStatusCodeData')]
@@ -45,7 +44,6 @@ class ResponseValidationTraitTest extends TestCase
     }
 
     /**
-     *
      * @param int[] $expectedStatusCodes
      */
     #[DataProvider('getUnexpectedStatusCodeData')]

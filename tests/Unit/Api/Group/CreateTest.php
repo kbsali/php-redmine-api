@@ -18,7 +18,6 @@ use SimpleXMLElement;
 class CreateTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]

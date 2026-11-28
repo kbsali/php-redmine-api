@@ -146,7 +146,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     *
      * @param array<string> $expectedHeaders
      */
     #[DataProvider('getRequestHeaderData')]

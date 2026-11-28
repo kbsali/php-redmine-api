@@ -63,7 +63,6 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     *
      * @param bool|int|string|array<mixed>|null $expected
      */
     #[DataProvider('getEncodedToNormalizedData')]

@@ -16,7 +16,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class ShowTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $expectedReturn
      */
     #[DataProvider('getShowData')]

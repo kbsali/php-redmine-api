@@ -18,7 +18,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class UpdateTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]

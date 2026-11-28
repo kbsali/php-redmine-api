@@ -18,7 +18,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class UpdateTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -244,7 +243,6 @@ class UpdateTest extends TestCase
     }
 
     /**
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateWithJsonData')]
@@ -466,7 +464,6 @@ class UpdateTest extends TestCase
     }
 
     /**
-     *
      * @param array<mixed> $params
      */
     #[DataProvider('getUnknownNames')]

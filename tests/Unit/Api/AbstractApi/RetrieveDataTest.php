@@ -18,7 +18,6 @@ use ReflectionMethod;
 class RetrieveDataTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $expectedReturn
      */
     #[DataProvider('getRetrieveDataData')]

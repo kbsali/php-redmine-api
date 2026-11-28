@@ -14,7 +14,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class RemoveMemberTest extends TestCase
 {
     /**
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getRemoveMemberData')]
