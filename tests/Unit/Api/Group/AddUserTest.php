@@ -15,9 +15,6 @@ use SimpleXMLElement;
 #[CoversClass(Group::class)]
 class AddUserTest extends TestCase
 {
-    /**
-     * @dataProvider getAddUserData
-     */
     #[DataProvider('getAddUserData')]
     public function testAddUserReturnsCorrectResponse(int $groupId, int $userId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {

@@ -23,9 +23,6 @@ use Redmine\Http\Response;
 #[CoversClass(Psr18Client::class)]
 class RequestTest extends TestCase
 {
-    /**
-     * @dataProvider getRequestReponseData
-     */
     #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
@@ -133,9 +130,6 @@ class RequestTest extends TestCase
         $client->request($request);
     }
 
-    /**
-     * @dataProvider getGuessedContentTypeData
-     */
     #[DataProvider('getGuessedContentTypeData')]
     public function testRequestGuessesContentTypeFromPath(string $path, ?string $expectedContentType): void
     {

@@ -15,7 +15,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class UploadTest extends TestCase
 {
     /**
-     * @dataProvider getUploadData
      *
      * @param array<mixed> $parameters
      */

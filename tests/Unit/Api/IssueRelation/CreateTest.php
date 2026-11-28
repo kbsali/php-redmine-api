@@ -17,7 +17,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
      *
      * @param array<mixed> $parameters
      * @param array<mixed> $expectedReturn
@@ -85,7 +84,6 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider incompleteCreateParameterProvider
      *
      * @param array<mixed> $parameters
      */

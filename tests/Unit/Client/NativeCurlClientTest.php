@@ -640,9 +640,6 @@ class NativeCurlClientTest extends TestCase
         $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
-    /**
-     * @dataProvider getApiClassesProvider
-     */
     #[DataProvider('getApiClassesProvider')]
     public function testGetApiReturnsApiInstance(string $apiName, string $class): void
     {
@@ -682,9 +679,6 @@ class NativeCurlClientTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getApiClassesProvider
-     */
     #[DataProvider('getApiClassesProvider')]
     public function testGetApiOnMultipleCallsReturnSameApiInstance(string $apiName, string $class): void
     {

@@ -13,9 +13,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Issue::class)]
 class AddNoteToIssueTest extends TestCase
 {
-    /**
-     * @dataProvider getAddNoteToIssueData
-     */
     #[DataProvider('getAddNoteToIssueData')]
     public function testAddNoteToIssueReturnsCorrectResponse(int $id, string $note, bool $isPrivate, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {

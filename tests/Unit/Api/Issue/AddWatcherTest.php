@@ -15,9 +15,6 @@ use SimpleXMLElement;
 #[CoversClass(Issue::class)]
 class AddWatcherTest extends TestCase
 {
-    /**
-     * @dataProvider getAddWatcherData
-     */
     #[DataProvider('getAddWatcherData')]
     public function testAddWatcherReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {

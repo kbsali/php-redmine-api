@@ -19,7 +19,6 @@ use Redmine\Tests\Fixtures\TestDataProvider;
 class ListNamesByProjectTest extends TestCase
 {
     /**
-     * @dataProvider getListNamesByProjectData
      *
      * @param array<mixed> $expectedResponse
      */
@@ -123,7 +122,6 @@ class ListNamesByProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
      *
      * @param mixed $projectIdentifier
      */

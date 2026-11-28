@@ -15,8 +15,6 @@ class XmlSerializerTest extends TestCase
 {
     /**
      * @param array<mixed> $expected
-     *
-     * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
     public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, array $expected): void
@@ -81,8 +79,6 @@ class XmlSerializerTest extends TestCase
     /**
      * @param array<int>    $expectedCodes
      * @param array<string> $expectedMessages
-     *
-     * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
     public function testCreateFromStringWithInvalidStringThrowsException(string $data, array $expectedCodes, array $expectedMessages): void
@@ -164,8 +160,6 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
-     *
-     * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
     public function testCreateFromArrayEncodesToExpectedString(array $data, string $expected): void
@@ -386,8 +380,6 @@ class XmlSerializerTest extends TestCase
     /**
      * @param array<string> $expectedMessages
      * @param array<mixed>  $data
-     *
-     * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
     public function testCreateFromArrayWithInvalidDataThrowsException(array $expectedMessages, array $data): void

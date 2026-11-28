@@ -17,9 +17,6 @@ class RequestTest extends TestCase
 {
     use PHPMock;
 
-    /**
-     * @dataProvider getRequestReponseData
-     */
     #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
@@ -149,7 +146,6 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @dataProvider getRequestHeaderData
      *
      * @param array<string> $expectedHeaders
      */

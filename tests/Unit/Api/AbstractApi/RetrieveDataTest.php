@@ -18,7 +18,6 @@ use ReflectionMethod;
 class RetrieveDataTest extends TestCase
 {
     /**
-     * @dataProvider getRetrieveDataData
      *
      * @param array<mixed> $expectedReturn
      */
@@ -47,12 +46,6 @@ class RetrieveDataTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
     #[DataProvider('getUnexpectedResponseData')]
     public function testRetrieveDataAndUnexpectedResponseThrowsException(int $responseCode, string $response): void
     {
@@ -150,9 +143,6 @@ class RetrieveDataTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider getRetrieveDataWithParamsData
-     */
     #[DataProvider('getRetrieveDataWithParamsData')]
     public function testRetrieveDataSendsOnlyNonEmptyParams(mixed $value, string $expectedPath): void
     {
@@ -185,9 +175,6 @@ class RetrieveDataTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getRequestContentTypeData
-     */
     #[DataProvider('getRequestContentTypeData')]
     public function testRetrieveDataSendsContentTypeGuessedFromPath(string $path, string $expectedContentType): void
     {
@@ -214,9 +201,6 @@ class RetrieveDataTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getNotConvertibleResponseData
-     */
     #[DataProvider('getNotConvertibleResponseData')]
     public function testRetrieveDataAndNotConvertibleResponseThrowsException(string $contentType, string $response): void
     {

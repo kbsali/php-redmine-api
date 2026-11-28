@@ -14,9 +14,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Attachment::class)]
 class DownloadTest extends TestCase
 {
-    /**
-     * @dataProvider getDownloadData
-     */
     #[DataProvider('getDownloadData')]
     public function testDownloadReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
     {
@@ -52,9 +49,6 @@ class DownloadTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
     #[DataProvider('getUnexpectedResponseData')]
     public function testDownloadAndUnexpectedResponseThrowsException(int $responseCode, string $responseContentType, string $response): void
     {

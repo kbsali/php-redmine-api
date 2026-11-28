@@ -15,7 +15,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class RemoveTest extends TestCase
 {
     /**
-     * @dataProvider getRemoveData
      *
      * @param array<mixed> $parameters
      */

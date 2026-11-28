@@ -14,7 +14,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class AttachTest extends TestCase
 {
     /**
-     * @dataProvider getAttachData
      *
      * @param array<mixed> $parameters
      */

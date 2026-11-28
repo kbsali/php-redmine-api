@@ -81,7 +81,6 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @dataProvider retrieveDataData
      *
      * @param array<mixed> $expected
      */
@@ -163,9 +162,6 @@ class AbstractApiTest extends TestCase
         $method->invoke($api, '/data.json', ['limit' => 301]);
     }
 
-    /**
-     * @dataProvider getRetrieveDataToExceptionData
-     */
     #[DataProvider('getRetrieveDataToExceptionData')]
     public function testRetrieveDataThrowsException(string $response, string $contentType, string $expectedException, string $expectedMessage): void
     {

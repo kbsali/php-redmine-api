@@ -102,9 +102,6 @@ class Psr18ClientTest extends TestCase
         $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
-    /**
-     * @dataProvider getApiClassesProvider
-     */
     #[DataProvider('getApiClassesProvider')]
     public function testGetApiShouldReturnApiInstance(string $apiName, string $class): void
     {

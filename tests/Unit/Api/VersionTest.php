@@ -19,8 +19,6 @@ class VersionTest extends TestCase
 {
     /**
      * Test validateSharing().
-     *
-     * @dataProvider      invalidSharingProvider
      */
     #[DataProvider('invalidSharingProvider')]
     public function testCreateThrowsExceptionWithInvalidSharing(string $sharingValue): void

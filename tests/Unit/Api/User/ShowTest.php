@@ -16,7 +16,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 class ShowTest extends TestCase
 {
     /**
-     * @dataProvider getShowData
      *
      * @param array<mixed> $parameters
      * @param array<mixed> $expectedReturn
@@ -74,9 +73,6 @@ class ShowTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
     #[DataProvider('getUnexpectedResponseData')]
     public function testShowWithUnexpectedResponseThrowsException(int $responseCode, string $responseContentType, string $response): void
     {

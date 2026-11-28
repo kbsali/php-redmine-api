@@ -14,9 +14,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Version::class)]
 class RemoveTest extends TestCase
 {
-    /**
-     * @dataProvider getRemoveData
-     */
     #[DataProvider('getRemoveData')]
     public function testRemoveReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response): void
     {

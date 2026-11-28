@@ -19,7 +19,6 @@ use ReflectionProperty;
 class ResponseValidationTraitTest extends TestCase
 {
     /**
-     * @dataProvider getExpectedStatusCodeData
      *
      * @param int[] $expectedStatusCodes
      */
@@ -46,7 +45,6 @@ class ResponseValidationTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider getUnexpectedStatusCodeData
      *
      * @param int[] $expectedStatusCodes
      */
@@ -85,9 +83,6 @@ class ResponseValidationTraitTest extends TestCase
         ));
     }
 
-    /**
-     * @dataProvider getUnexpectedJsonResponseData
-     */
     #[DataProvider('getUnexpectedJsonResponseData')]
     public function testGetJsonArrayOrThrowWithUnexpectedResponseThrowsException(int $statusCode, string $contentType, string $body): void
     {

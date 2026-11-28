@@ -63,7 +63,6 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @dataProvider getEncodedToNormalizedData
      *
      * @param bool|int|string|array<mixed>|null $expected
      */
@@ -92,9 +91,6 @@ class JsonSerializerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getInvalidEncodedData
-     */
     #[DataProvider('getInvalidEncodedData')]
     public function testCreateFromStringWithInvalidStringThrowsException(string $data, string $message): void
     {
@@ -193,8 +189,6 @@ class JsonSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
-     *
-     * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
     public function testCreateFromArrayEncodesToExpectedString(array $data, string $expected): void
@@ -220,8 +214,6 @@ class JsonSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
-     *
-     * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
     public function testCreateFromArrayWithInvalidDataThrowsException(string $message, array $data): void

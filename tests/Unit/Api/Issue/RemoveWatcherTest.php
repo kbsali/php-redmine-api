@@ -14,9 +14,6 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 #[CoversClass(Issue::class)]
 class RemoveWatcherTest extends TestCase
 {
-    /**
-     * @dataProvider getRemoveWatcherData
-     */
     #[DataProvider('getRemoveWatcherData')]
     public function testRemoveWatcherReturnsCorrectResponse(int $issueId, int $watcherUserId, string $expectedPath, int $responseCode, string $response): void
     {

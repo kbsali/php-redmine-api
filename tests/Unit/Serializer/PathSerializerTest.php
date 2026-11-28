@@ -55,8 +55,6 @@ class PathSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $params
-     *
-     * @dataProvider getPathData
      */
     #[DataProvider('getPathData')]
     public function testGetPathShouldReturnExpectedString(string $path, array $params, string $expected): void

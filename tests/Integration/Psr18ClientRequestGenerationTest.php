@@ -21,9 +21,6 @@ use Redmine\Http\HttpFactory;
 #[CoversClass(Psr18Client::class)]
 class Psr18ClientRequestGenerationTest extends TestCase
 {
-    /**
-     * @dataProvider createdGetRequestsData
-     */
     #[DataProvider('createdGetRequestsData')]
     public function testPsr18ClientCreatesCorrectRequests(
         string $url,

@@ -71,7 +71,6 @@ class ListByProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
      *
      * @param mixed $projectIdentifier
      */
