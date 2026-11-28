@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(CustomField::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
-     * @dataProvider getListNamesData
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesData')]
@@ -43,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without custom fields' => [
-                '/custom_fields.json',
-                200,
-                <<<JSON
+        yield 'test without custom fields' => [
+            '/custom_fields.json',
+            200,
+            <<<JSON
                 {
                     "custom_fields": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple custom fields' => [
-                '/custom_fields.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple custom fields' => [
+            '/custom_fields.json',
+            200,
+            <<<JSON
                 {
                     "custom_fields": [
                         {"id": 7, "name": "CustomField 3"},
@@ -70,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "CustomField 3",
-                    8 => "CustomField 2",
-                    9 => "CustomField 1",
-                ],
+            [
+                7 => "CustomField 3",
+                8 => "CustomField 2",
+                9 => "CustomField 1",
             ],
         ];
     }

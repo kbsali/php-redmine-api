@@ -14,11 +14,9 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueCategory::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getUpdateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -45,44 +43,39 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test update the name' => [
-                5,
-                [
-                    'name' => 'new name',
-                ],
-                '/issue_categories/5.xml',
-                <<< XML
+        yield 'test update the name' => [
+            5,
+            [
+                'name' => 'new name',
+            ],
+            '/issue_categories/5.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue_category>
                     <name>new name</name>
                 </issue_category>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test assign user to category' => [
+            5,
+            [
+                'assigned_to_id' => 2,
             ],
-            'test assign user to category' => [
-                5,
-                [
-                    'assigned_to_id' => 2,
-                ],
-                '/issue_categories/5.xml',
-                <<< XML
+            '/issue_categories/5.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue_category>
                     <assigned_to_id>2</assigned_to_id>
                 </issue_category>
                 XML,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 
@@ -110,15 +103,13 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

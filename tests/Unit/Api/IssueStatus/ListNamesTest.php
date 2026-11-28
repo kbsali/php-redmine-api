@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueStatus::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
-     * @dataProvider getListNamesData
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesData')]
@@ -43,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without issue statuses' => [
-                '/issue_statuses.json',
-                200,
-                <<<JSON
+        yield 'test without issue statuses' => [
+            '/issue_statuses.json',
+            200,
+            <<<JSON
                 {
                     "issue_statuses": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple issue statuses' => [
-                '/issue_statuses.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple issue statuses' => [
+            '/issue_statuses.json',
+            200,
+            <<<JSON
                 {
                     "issue_statuses": [
                         {"id": 7, "name": "IssueStatus C"},
@@ -70,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "IssueStatus C",
-                    8 => "IssueStatus B",
-                    9 => "IssueStatus A",
-                ],
+            [
+                7 => "IssueStatus C",
+                8 => "IssueStatus B",
+                9 => "IssueStatus A",
             ],
         ];
     }

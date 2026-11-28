@@ -15,11 +15,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Project::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
@@ -49,32 +47,28 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                [
-                    'identifier' => 'test-project',
-                    'name' => 'Test Project',
-                ],
-                '/projects.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+        yield 'test with minimal parameters' => [
+            [
+                'identifier' => 'test-project',
+                'name' => 'Test Project',
             ],
-            'test with special chars in parameters' => [
-                [
-                    'identifier' => 'test-project',
-                    'name' => 'Test Project with some xml entities: & < > " \' ',
-                    'description' => 'Description with some xml entities: & < > " \' ',
-                ],
-                '/projects.xml',
-                <<<XML
+            '/projects.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><project><identifier>test-project</identifier><name>Test Project</name></project>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+        ];
+        yield 'test with special chars in parameters' => [
+            [
+                'identifier' => 'test-project',
+                'name' => 'Test Project with some xml entities: & < > " \' ',
+                'description' => 'Description with some xml entities: & < > " \' ',
+            ],
+            '/projects.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
                     <identifier>test-project</identifier>
@@ -82,17 +76,17 @@ class CreateTest extends TestCase
                     <description>Description with some xml entities: &amp; &lt; &gt; " ' </description>
                 </project>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+        ];
+        yield 'test with all parameters' => [
+            [
+                'identifier' => 'test-project',
+                'name' => 'Test Project',
+                'tracker_ids' => [10, 5],
             ],
-            'test with all parameters' => [
-                [
-                    'identifier' => 'test-project',
-                    'name' => 'Test Project',
-                    'tracker_ids' => [10, 5],
-                ],
-                '/projects.xml',
-                <<<XML
+            '/projects.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
                     <identifier>test-project</identifier>
@@ -103,24 +97,24 @@ class CreateTest extends TestCase
                     </tracker_ids>
                 </project>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><project></project>',
-            ],
-            'test with custom fields' => [
-                [
-                    'identifier' => 'test-project',
-                    'name' => 'Test Project',
-                    'custom_fields' => [
-                        [
-                            'id' => 123,
-                            'name' => 'cf_name',
-                            'field_format' => 'string',
-                            'value' => [1, 2, 3],
-                        ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><project></project>',
+        ];
+        yield 'test with custom fields' => [
+            [
+                'identifier' => 'test-project',
+                'name' => 'Test Project',
+                'custom_fields' => [
+                    [
+                        'id' => 123,
+                        'name' => 'cf_name',
+                        'field_format' => 'string',
+                        'value' => [1, 2, 3],
                     ],
                 ],
-                '/projects.xml',
-                <<<XML
+            ],
+            '/projects.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <project>
                     <identifier>test-project</identifier>
@@ -136,9 +130,8 @@ class CreateTest extends TestCase
                     </custom_fields>
                 </project>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><project></project>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><project></project>',
         ];
     }
 
@@ -207,8 +200,6 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider incompleteCreateParameterProvider
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteCreateParameterProvider')]
@@ -230,25 +221,23 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [
-                    'description' => 'project description',
-                ],
+        yield 'missing all mandatory parameters' => [
+            [
+                'description' => 'project description',
             ],
-            'missing `identifier` parameters' => [
-                [
-                    'name' => 'Test Project',
-                ],
+        ];
+        yield 'missing `identifier` parameters' => [
+            [
+                'name' => 'Test Project',
             ],
-            'missing `name` parameter' => [
-                [
-                    'identifier' => 'test-project',
-                ],
+        ];
+        yield 'missing `name` parameter' => [
+            [
+                'identifier' => 'test-project',
             ],
         ];
     }
@@ -277,15 +266,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

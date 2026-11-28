@@ -21,11 +21,8 @@ use Redmine\Http\Request;
 use Redmine\Http\Response;
 
 #[CoversClass(Psr18Client::class)]
-class RequestTest extends TestCase
+final class RequestTest extends TestCase
 {
-    /**
-     * @dataProvider getRequestReponseData
-     */
     #[DataProvider('getRequestReponseData')]
     public function testRequestReturnsCorrectResponse(string $method, string $data, int $statusCode, string $contentType, string $content): void
     {
@@ -70,33 +67,31 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getRequestReponseData(): array
+    public static function getRequestReponseData(): \Iterator
     {
-        return [
-            ['GET', '', 101, '', ''],
-            ['GET', '', 101, 'text/plain', ''],
-            ['GET', '', 200, 'application/json', '{"foo_bar": 12345}'],
-            ['GET', '', 301, 'application/xml', ''],
-            ['GET', '', 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['GET', '', 500, 'text/plain', 'Internal Server Error'],
-            ['POST', '{"foo":"bar"}', 101, 'text/plain', ''],
-            ['POST', '{"foo":"bar"}', 200, 'application/json', '{"foo_bar": 12345}'],
-            ['POST', '{"foo":"bar"}', 301, 'application/json', ''],
-            ['POST', '{"foo":"bar"}', 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['POST', '{"foo":"bar"}', 500, 'text/plain', 'Internal Server Error'],
-            ['PUT', '{"foo":"bar"}', 101, 'text/plain', ''],
-            ['PUT', '{"foo":"bar"}', 200, 'application/json', '{"foo_bar": 12345}'],
-            ['PUT', '{"foo":"bar"}', 301, 'application/json', ''],
-            ['PUT', '{"foo":"bar"}', 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['PUT', '{"foo":"bar"}', 500, 'text/plain', 'Internal Server Error'],
-            ['DELETE', '', 101, 'text/plain', ''],
-            ['DELETE', '', 200, 'application/json', '{"foo_bar": 12345}'],
-            ['DELETE', '', 301, 'application/json', ''],
-            ['DELETE', '', 404, 'application/json', '{"title": "404 Not Found"}'],
-            ['DELETE', '', 500, 'text/plain', 'Internal Server Error'],
-        ];
+        yield ['GET', '', 101, '', ''];
+        yield ['GET', '', 101, 'text/plain', ''];
+        yield ['GET', '', 200, 'application/json', '{"foo_bar": 12345}'];
+        yield ['GET', '', 301, 'application/xml', ''];
+        yield ['GET', '', 404, 'application/json', '{"title": "404 Not Found"}'];
+        yield ['GET', '', 500, 'text/plain', 'Internal Server Error'];
+        yield ['POST', '{"foo":"bar"}', 101, 'text/plain', ''];
+        yield ['POST', '{"foo":"bar"}', 200, 'application/json', '{"foo_bar": 12345}'];
+        yield ['POST', '{"foo":"bar"}', 301, 'application/json', ''];
+        yield ['POST', '{"foo":"bar"}', 404, 'application/json', '{"title": "404 Not Found"}'];
+        yield ['POST', '{"foo":"bar"}', 500, 'text/plain', 'Internal Server Error'];
+        yield ['PUT', '{"foo":"bar"}', 101, 'text/plain', ''];
+        yield ['PUT', '{"foo":"bar"}', 200, 'application/json', '{"foo_bar": 12345}'];
+        yield ['PUT', '{"foo":"bar"}', 301, 'application/json', ''];
+        yield ['PUT', '{"foo":"bar"}', 404, 'application/json', '{"title": "404 Not Found"}'];
+        yield ['PUT', '{"foo":"bar"}', 500, 'text/plain', 'Internal Server Error'];
+        yield ['DELETE', '', 101, 'text/plain', ''];
+        yield ['DELETE', '', 200, 'application/json', '{"foo_bar": 12345}'];
+        yield ['DELETE', '', 301, 'application/json', ''];
+        yield ['DELETE', '', 404, 'application/json', '{"title": "404 Not Found"}'];
+        yield ['DELETE', '', 500, 'text/plain', 'Internal Server Error'];
     }
 
     public function testRequestThrowsClientException(): void
@@ -133,9 +128,6 @@ class RequestTest extends TestCase
         $client->request($request);
     }
 
-    /**
-     * @dataProvider getGuessedContentTypeData
-     */
     #[DataProvider('getGuessedContentTypeData')]
     public function testRequestGuessesContentTypeFromPath(string $path, ?string $expectedContentType): void
     {
@@ -184,15 +176,13 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getGuessedContentTypeData(): array
+    public static function getGuessedContentTypeData(): \Iterator
     {
-        return [
-            'json path' => ['/issues.json', 'application/json'],
-            'xml path' => ['/issues.xml', 'text/xml'],
-            'upload path' => ['/uploads.json', 'application/octet-stream'],
-            'other path' => ['/path', null],
-        ];
+        yield 'json path' => ['/issues.json', 'application/json'];
+        yield 'xml path' => ['/issues.xml', 'text/xml'];
+        yield 'upload path' => ['/uploads.json', 'application/octet-stream'];
+        yield 'other path' => ['/path', null];
     }
 }

@@ -15,11 +15,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(IssueCategory::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
@@ -49,38 +47,33 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                5,
-                ['name' => 'Test Category'],
-                '/projects/5/issue_categories.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
-            ],
-            'test with minimal parameters and project identifier as string' => [
-                'test-project',
-                ['name' => 'Test Category'],
-                '/projects/test-project/issue_categories.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
-            ],
-            'test with all parameters' => [
-                5,
-                ['name' => 'Test Category', 'assigned_to_id' => 2],
-                '/projects/5/issue_categories.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name><assigned_to_id>2</assigned_to_id></issue_category>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
-            ],
+        yield 'test with minimal parameters' => [
+            5,
+            ['name' => 'Test Category'],
+            '/projects/5/issue_categories.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
+        ];
+        yield 'test with minimal parameters and project identifier as string' => [
+            'test-project',
+            ['name' => 'Test Category'],
+            '/projects/test-project/issue_categories.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name></issue_category>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
+        ];
+        yield 'test with all parameters' => [
+            5,
+            ['name' => 'Test Category', 'assigned_to_id' => 2],
+            '/projects/5/issue_categories.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category><name>Test Category</name><assigned_to_id>2</assigned_to_id></issue_category>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue_category></issue_category>',
         ];
     }
 
@@ -172,8 +165,6 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider incompleteCreateParameterProvider
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteCreateParameterProvider')]
@@ -195,32 +186,28 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [],
-            ],
-            'missing `name` parameter' => [
-                [
-                    'assigned_to_id' => 2,
-                ],
+        yield 'missing all mandatory parameters' => [
+            [],
+        ];
+        yield 'missing `name` parameter' => [
+            [
+                'assigned_to_id' => 2,
             ],
         ];
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

@@ -13,11 +13,8 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
-class AddUserTest extends TestCase
+final class AddUserTest extends TestCase
 {
-    /**
-     * @dataProvider getAddUserData
-     */
     #[DataProvider('getAddUserData')]
     public function testAddUserReturnsCorrectResponse(int $groupId, int $userId, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
@@ -45,25 +42,20 @@ class AddUserTest extends TestCase
     }
 
     /**
-     * @dataProvider getAddUserData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getAddUserData(): array
+    public static function getAddUserData(): \Iterator
     {
-        return [
-            'test with integers' => [
-                25,
-                5,
-                '/groups/25/users.xml',
-                <<<XML
+        yield 'test with integers' => [
+            25,
+            5,
+            '/groups/25/users.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user_id>5</user_id>
                 XML,
-                204,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
-            ],
+            204,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
         ];
     }
 

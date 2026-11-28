@@ -15,11 +15,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use ReflectionMethod;
 
 #[CoversClass(AbstractApi::class)]
-class RetrieveDataTest extends TestCase
+final class RetrieveDataTest extends TestCase
 {
     /**
-     * @dataProvider getRetrieveDataData
-     *
      * @param array<mixed> $expectedReturn
      */
     #[DataProvider('getRetrieveDataData')]
@@ -34,25 +32,14 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @dataProvider getRetrieveDataData
+     * @return \Iterator<string, mixed[]>
      */
-    /**
-     * @return array<string, array<mixed>>
-     */
-    public static function getRetrieveDataData(): array
+    public static function getRetrieveDataData(): \Iterator
     {
-        return [
-            'JSON response' => ['/issues.json', 'application/json', 200, '{"issues":[]}', ['issues' => []]],
-            'XML response' => ['/issues.xml', 'application/xml', 200, '<?xml version="1.0"?><issues type="array"></issues>', ['@attributes' => ['type' => 'array']]],
-        ];
+        yield 'JSON response' => ['/issues.json', 'application/json', 200, '{"issues":[]}', ['issues' => []]];
+        yield 'XML response' => ['/issues.xml', 'application/xml', 200, '<?xml version="1.0"?><issues type="array"></issues>', ['@attributes' => ['type' => 'array']]];
     }
 
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
     #[DataProvider('getUnexpectedResponseData')]
     public function testRetrieveDataAndUnexpectedResponseThrowsException(int $responseCode, string $response): void
     {
@@ -72,14 +59,12 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedResponseData(): array
+    public static function getUnexpectedResponseData(): \Iterator
     {
-        return [
-            'status code 403' => [403, '{"errors":["Status is invalid"]}'],
-            'status code 422' => [422, '{"errors":["Status is invalid"]}'],
-        ];
+        yield 'status code 403' => [403, '{"errors":["Status is invalid"]}'];
+        yield 'status code 422' => [422, '{"errors":["Status is invalid"]}'];
     }
 
     public function testRetrieveDataAndUnexpectedResponseOnSecondPageThrowsException(): void
@@ -150,9 +135,6 @@ class RetrieveDataTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider getRetrieveDataWithParamsData
-     */
     #[DataProvider('getRetrieveDataWithParamsData')]
     public function testRetrieveDataSendsOnlyNonEmptyParams(mixed $value, string $expectedPath): void
     {
@@ -165,29 +147,24 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @return array<string, array{mixed, string}>
+     * @return \Iterator<string, array{mixed, string}>
      */
-    public static function getRetrieveDataWithParamsData(): array
+    public static function getRetrieveDataWithParamsData(): \Iterator
     {
-        return [
-            'null is not sent' => [null, '/issues.json?limit=1&offset=0'],
-            'false is not sent' => [false, '/issues.json?limit=1&offset=0'],
-            'empty string is not sent' => ['', '/issues.json?limit=1&offset=0'],
-            'empty array is not sent' => [[], '/issues.json?limit=1&offset=0'],
-            'true is sent' => [true, '/issues.json?limit=1&offset=0&foo=1'],
-            'integer 0 is sent' => [0, '/issues.json?limit=1&offset=0&foo=0'],
-            'float 0.0 is sent' => [0.0, '/issues.json?limit=1&offset=0&foo=0'],
-            'string "0" is sent' => ['0', '/issues.json?limit=1&offset=0&foo=0'],
-            'string is sent' => ['string', '/issues.json?limit=1&offset=0&foo=string'],
-            'array with 0 is sent' => [[0], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
-            'array with "0" is sent' => [['0'], '/issues.json?limit=1&offset=0&foo%5B%5D=0'],
-            'array with empty string is sent' => [[''], '/issues.json?limit=1&offset=0&foo%5B%5D='],
-        ];
+        yield 'null is not sent' => [null, '/issues.json?limit=1&offset=0'];
+        yield 'false is not sent' => [false, '/issues.json?limit=1&offset=0'];
+        yield 'empty string is not sent' => ['', '/issues.json?limit=1&offset=0'];
+        yield 'empty array is not sent' => [[], '/issues.json?limit=1&offset=0'];
+        yield 'true is sent' => [true, '/issues.json?limit=1&offset=0&foo=1'];
+        yield 'integer 0 is sent' => [0, '/issues.json?limit=1&offset=0&foo=0'];
+        yield 'float 0.0 is sent' => [0.0, '/issues.json?limit=1&offset=0&foo=0'];
+        yield 'string "0" is sent' => ['0', '/issues.json?limit=1&offset=0&foo=0'];
+        yield 'string is sent' => ['string', '/issues.json?limit=1&offset=0&foo=string'];
+        yield 'array with 0 is sent' => [[0], '/issues.json?limit=1&offset=0&foo%5B%5D=0'];
+        yield 'array with "0" is sent' => [['0'], '/issues.json?limit=1&offset=0&foo%5B%5D=0'];
+        yield 'array with empty string is sent' => [[''], '/issues.json?limit=1&offset=0&foo%5B%5D='];
     }
 
-    /**
-     * @dataProvider getRequestContentTypeData
-     */
     #[DataProvider('getRequestContentTypeData')]
     public function testRetrieveDataSendsContentTypeGuessedFromPath(string $path, string $expectedContentType): void
     {
@@ -200,23 +177,18 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string, string}>
+     * @return \Iterator<string, array{string, string}>
      */
-    public static function getRequestContentTypeData(): array
+    public static function getRequestContentTypeData(): \Iterator
     {
-        return [
-            'JSON path' => ['/issues.json', 'application/json'],
-            'JSON path with query' => ['/issues.json?limit=1', 'application/json'],
-            'XML path' => ['/issues.xml', 'application/xml'],
-            'JSON upload path' => ['/uploads.json', 'application/octet-stream'],
-            'XML upload path' => ['/uploads.xml', 'application/octet-stream'],
-            'other path' => ['/issues', ''],
-        ];
+        yield 'JSON path' => ['/issues.json', 'application/json'];
+        yield 'JSON path with query' => ['/issues.json?limit=1', 'application/json'];
+        yield 'XML path' => ['/issues.xml', 'application/xml'];
+        yield 'JSON upload path' => ['/uploads.json', 'application/octet-stream'];
+        yield 'XML upload path' => ['/uploads.xml', 'application/octet-stream'];
+        yield 'other path' => ['/issues', ''];
     }
 
-    /**
-     * @dataProvider getNotConvertibleResponseData
-     */
     #[DataProvider('getNotConvertibleResponseData')]
     public function testRetrieveDataAndNotConvertibleResponseThrowsException(string $contentType, string $response): void
     {
@@ -232,14 +204,12 @@ class RetrieveDataTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string, string}>
+     * @return \Iterator<string, array{string, string}>
      */
-    public static function getNotConvertibleResponseData(): array
+    public static function getNotConvertibleResponseData(): \Iterator
     {
-        return [
-            'unsupported content type' => ['text/plain', 'not an array'],
-            'JSON scalar' => ['application/json', '12345'],
-        ];
+        yield 'unsupported content type' => ['text/plain', 'not an array'];
+        yield 'JSON scalar' => ['application/json', '12345'];
     }
 
     private function createApi(HttpClient $client): AbstractApi

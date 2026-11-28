@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
-class SetIssueStatusTest extends TestCase
+final class SetIssueStatusTest extends TestCase
 {
     public function testSetIssueStatusReturnsCorrectResponse(): void
     {

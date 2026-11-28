@@ -15,5 +15,9 @@ return \Rector\Config\RectorConfig::configure()
         \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION,
         \Rector\Set\ValueObject\SetList::PHP_POLYFILLS,
         \Rector\Set\ValueObject\SetList::PRIVATIZATION,
+        \Rector\PHPUnit\Set\PHPUnitSetList::COMPOSER_BASED,
+        \Rector\PHPUnit\Set\PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+        \Rector\PHPUnit\Set\PHPUnitSetList::PHPUNIT_MOCK_TO_STUB,
+        \Rector\PHPUnit\Set\PHPUnitSetList::PHPUNIT_NARROW_ASSERTS,
     ])
 ;

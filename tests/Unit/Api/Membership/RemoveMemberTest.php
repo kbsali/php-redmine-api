@@ -11,11 +11,9 @@ use Redmine\Api\Membership;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Membership::class)]
-class RemoveMemberTest extends TestCase
+final class RemoveMemberTest extends TestCase
 {
     /**
-     * @dataProvider getRemoveMemberData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getRemoveMemberData')]
@@ -51,27 +49,25 @@ class RemoveMemberTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getRemoveMemberData(): array
+    public static function getRemoveMemberData(): \Iterator
     {
-        return [
-            'test without params' => [
-                1,
-                5,
-                [],
-                '/memberships/2.xml',
-                204,
-                '',
-            ],
-            'test with params' => [
-                1,
-                5,
-                ['limit' => 100, 'offset' => 0],
-                '/memberships/2.xml',
-                204,
-                '',
-            ],
+        yield 'test without params' => [
+            1,
+            5,
+            [],
+            '/memberships/2.xml',
+            204,
+            '',
+        ];
+        yield 'test with params' => [
+            1,
+            5,
+            ['limit' => 100, 'offset' => 0],
+            '/memberships/2.xml',
+            204,
+            '',
         ];
     }
 

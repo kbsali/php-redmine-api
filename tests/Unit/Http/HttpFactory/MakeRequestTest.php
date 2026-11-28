@@ -10,7 +10,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Http\Request;
 
 #[CoversClass(HttpFactory::class)]
-class MakeRequestTest extends TestCase
+final class MakeRequestTest extends TestCase
 {
     public function testMakeRequest(): void
     {

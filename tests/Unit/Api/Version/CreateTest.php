@@ -16,11 +16,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Version::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
@@ -50,78 +48,73 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                5,
-                ['name' => 'test'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with status parameter' => [
-                5,
-                ['name' => 'test', 'status' => 'locked'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><status>locked</status></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with sharing parameter none' => [
-                5,
-                ['name' => 'test', 'sharing' => 'none'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>none</sharing></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with sharing parameter descendants' => [
-                5,
-                ['name' => 'test', 'sharing' => 'descendants'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>descendants</sharing></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with sharing parameter hierarchy' => [
-                5,
-                ['name' => 'test', 'sharing' => 'hierarchy'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>hierarchy</sharing></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with sharing parameter tree' => [
-                5,
-                ['name' => 'test', 'sharing' => 'tree'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>tree</sharing></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with sharing parameter system' => [
-                5,
-                ['name' => 'test', 'sharing' => 'system'],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>system</sharing></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with empty sharing parameter null' => [
-                5,
-                ['name' => 'test', 'sharing' => null],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
+        yield 'test with minimal parameters' => [
+            5,
+            ['name' => 'test'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with status parameter' => [
+            5,
+            ['name' => 'test', 'status' => 'locked'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><status>locked</status></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with sharing parameter none' => [
+            5,
+            ['name' => 'test', 'sharing' => 'none'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>none</sharing></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with sharing parameter descendants' => [
+            5,
+            ['name' => 'test', 'sharing' => 'descendants'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>descendants</sharing></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with sharing parameter hierarchy' => [
+            5,
+            ['name' => 'test', 'sharing' => 'hierarchy'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>hierarchy</sharing></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with sharing parameter tree' => [
+            5,
+            ['name' => 'test', 'sharing' => 'tree'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>tree</sharing></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with sharing parameter system' => [
+            5,
+            ['name' => 'test', 'sharing' => 'system'],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name><sharing>system</sharing></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with empty sharing parameter null' => [
+            5,
+            ['name' => 'test', 'sharing' => null],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
         ];
     }
 
@@ -255,27 +248,25 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getEmptyValueData(): array
+    public static function getEmptyValueData(): \Iterator
     {
-        return [
-            'test with empty sharing parameter false' => [
-                5,
-                ['name' => 'test', 'sharing' => false],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
-            'test with empty sharing parameter empty string' => [
-                5,
-                ['name' => 'test', 'sharing' => ''],
-                '/projects/5/versions.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-            ],
+        yield 'test with empty sharing parameter false' => [
+            5,
+            ['name' => 'test', 'sharing' => false],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+        ];
+        yield 'test with empty sharing parameter empty string' => [
+            5,
+            ['name' => 'test', 'sharing' => ''],
+            '/projects/5/versions.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>test</name></version>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
         ];
     }
 

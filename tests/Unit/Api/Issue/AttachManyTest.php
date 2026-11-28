@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
-class AttachManyTest extends TestCase
+final class AttachManyTest extends TestCase
 {
     /**
-     * @dataProvider getAttachManyData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getAttachManyData')]
@@ -43,19 +41,15 @@ class AttachManyTest extends TestCase
     }
 
     /**
-     * @dataProvider getAttachManyData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getAttachManyData(): array
+    public static function getAttachManyData(): \Iterator
     {
-        return [
-            'test without parameters' => [
-                5,
-                [],
-                '/issues/5.json',
-                <<<JSON
+        yield 'test without parameters' => [
+            5,
+            [],
+            '/issues/5.json',
+            <<<JSON
                 {
                     "issue": {
                         "id": 5,
@@ -63,23 +57,23 @@ class AttachManyTest extends TestCase
                     }
                 }
                 JSON,
-                204,
-                '',
-            ],
-            'test with many attachments' => [
-                5,
+            204,
+            '',
+        ];
+        yield 'test with many attachments' => [
+            5,
+            [
                 [
-                    [
-                        'token' => '1.sample-test-token',
-                        'filename' => 'test-1.txt',
-                    ],
-                    [
-                        'token' => '2.sample-test-token',
-                        'filename' => 'test-2.txt',
-                    ],
+                    'token' => '1.sample-test-token',
+                    'filename' => 'test-1.txt',
                 ],
-                '/issues/5.json',
-                <<<JSON
+                [
+                    'token' => '2.sample-test-token',
+                    'filename' => 'test-2.txt',
+                ],
+            ],
+            '/issues/5.json',
+            <<<JSON
                 {
                     "issue": {
                         "id": 5,
@@ -96,9 +90,8 @@ class AttachManyTest extends TestCase
                     }
                 }
                 JSON,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 

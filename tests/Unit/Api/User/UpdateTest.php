@@ -14,11 +14,9 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(User::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getUpdateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -45,63 +43,59 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test with firstname' => [
-                5,
-                [
-                    'firstname' => 'Raul',
-                ],
-                '/users/5.xml',
-                <<< XML
+        yield 'test with firstname' => [
+            5,
+            [
+                'firstname' => 'Raul',
+            ],
+            '/users/5.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <user>
                     <id>5</id>
                     <firstname>Raul</firstname>
                 </user>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test with mail' => [
+            5,
+            [
+                'mail' => 'user@example.com',
             ],
-            'test with mail' => [
-                5,
-                [
-                    'mail' => 'user@example.com',
-                ],
-                '/users/5.xml',
-                <<< XML
+            '/users/5.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <user>
                     <id>5</id>
                     <mail>user@example.com</mail>
                 </user>
                 XML,
-                204,
-                '',
-            ],
-            'test with custom fields' => [
-                5,
-                [
-                    'custom_fields' => [
-                        [
-                            'id' => 5,
-                            'value' => 'Value 5',
-                        ],
-                        [
-                            'id' => 13,
-                            'value' => 'Value 13',
-                            'name' => 'CF Name',
-                        ],
+            204,
+            '',
+        ];
+        yield 'test with custom fields' => [
+            5,
+            [
+                'custom_fields' => [
+                    [
+                        'id' => 5,
+                        'value' => 'Value 5',
+                    ],
+                    [
+                        'id' => 13,
+                        'value' => 'Value 13',
+                        'name' => 'CF Name',
                     ],
                 ],
-                '/users/5.xml',
-                <<< XML
+            ],
+            '/users/5.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <user>
                     <id>5</id>
@@ -115,9 +109,8 @@ class UpdateTest extends TestCase
                     </custom_fields>
                 </user>
                 XML,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 
@@ -145,15 +138,13 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

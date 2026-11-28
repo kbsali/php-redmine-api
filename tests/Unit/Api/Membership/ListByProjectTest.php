@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\TestDataProvider;
 
 #[CoversClass(Membership::class)]
-class ListByProjectTest extends TestCase
+final class ListByProjectTest extends TestCase
 {
     public function testListByProjectWithoutParametersReturnsResponse(): void
     {
@@ -71,8 +71,6 @@ class ListByProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
-     *
      * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]

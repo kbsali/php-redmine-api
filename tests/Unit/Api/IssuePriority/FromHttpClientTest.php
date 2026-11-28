@@ -10,7 +10,7 @@ use Redmine\Api\IssuePriority;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(IssuePriority::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

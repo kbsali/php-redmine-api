@@ -11,12 +11,10 @@ use Redmine\Exception\SerializerException;
 use Redmine\Serializer\XmlSerializer;
 
 #[CoversClass(XmlSerializer::class)]
-class XmlSerializerTest extends TestCase
+final class XmlSerializerTest extends TestCase
 {
     /**
      * @param array<mixed> $expected
-     *
-     * @dataProvider getEncodedToNormalizedData
      */
     #[DataProvider('getEncodedToNormalizedData')]
     public function testCreateFromStringDecodesToExpectedNormalizedData(string $data, array $expected): void
@@ -27,29 +25,28 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getEncodedToNormalizedData(): array
+    public static function getEncodedToNormalizedData(): \Iterator
     {
-        return [
-            'test with single tag' => [
-                '<a/>',
-                [],
-            ],
-            'test with closed tag' => [
-                '<?xml version="1.0"?><issue/>',
-                [],
-            ],
-            'test with open and close tag' => [
-                '<?xml version="1.0"?><issue></issue>',
-                [],
-            ],
-            'test with integer' => [
-                '<?xml version="1.0"?><issue>1</issue>',
-                ['1'],
-            ],
-            'test with array' => [
-                <<< XML
+        yield 'test with single tag' => [
+            '<a/>',
+            [],
+        ];
+        yield 'test with closed tag' => [
+            '<?xml version="1.0"?><issue/>',
+            [],
+        ];
+        yield 'test with open and close tag' => [
+            '<?xml version="1.0"?><issue></issue>',
+            [],
+        ];
+        yield 'test with integer' => [
+            '<?xml version="1.0"?><issue>1</issue>',
+            ['1'],
+        ];
+        yield 'test with array' => [
+            <<< XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issues type="array" count="1640">
                   <issue>
@@ -60,18 +57,17 @@ class XmlSerializerTest extends TestCase
                   </issue>
                 </issues>
                 XML,
-                [
-                    '@attributes' => [
-                        'type' => 'array',
-                        'count' => '1640',
+            [
+                '@attributes' => [
+                    'type' => 'array',
+                    'count' => '1640',
+                ],
+                'issue' => [
+                    [
+                        'id' => '4326',
                     ],
-                    'issue' => [
-                        [
-                            'id' => '4326',
-                        ],
-                        [
-                            'id' => '4325',
-                        ],
+                    [
+                        'id' => '4325',
                     ],
                 ],
             ],
@@ -81,8 +77,6 @@ class XmlSerializerTest extends TestCase
     /**
      * @param array<int>    $expectedCodes
      * @param array<string> $expectedMessages
-     *
-     * @dataProvider getInvalidEncodedData
      */
     #[DataProvider('getInvalidEncodedData')]
     public function testCreateFromStringWithInvalidStringThrowsException(string $data, array $expectedCodes, array $expectedMessages): void
@@ -96,50 +90,48 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getInvalidEncodedData(): array
+    public static function getInvalidEncodedData(): \Iterator
     {
-        return [
-            'empty string' => [
-                '',
-                // libxml2 < 2.13 reports no error, newer versions report "Document is empty"
-                [\LIBXML_ERR_NONE, \LIBXML_ERR_FATAL],
-                [
-                    'Catched errors: "" while decoding XML: ',
-                    'Catched errors: "Document is empty' . "\n" . '" while decoding XML: ',
-                ],
+        yield 'empty string' => [
+            '',
+            // libxml2 < 2.13 reports no error, newer versions report "Document is empty"
+            [\LIBXML_ERR_NONE, \LIBXML_ERR_FATAL],
+            [
+                'Catched errors: "" while decoding XML: ',
+                'Catched errors: "Document is empty' . "\n" . '" while decoding XML: ',
             ],
-            'wrong start tag' => [
-                '<?xml version="1.0" encoding="UTF-8"?>',
-                [\LIBXML_ERR_FATAL],
-                [
-                    'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
-                ],
+        ];
+        yield 'wrong start tag' => [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            [\LIBXML_ERR_FATAL],
+            [
+                'Catched errors: "Start tag expected, \'<\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?>',
             ],
-            'invalid element name as start tag' => [
-                '<?xml version="1.0" encoding="UTF-8"?><>',
-                [\LIBXML_ERR_FATAL],
-                [
-                    'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
-                    'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
-                ],
+        ];
+        yield 'invalid element name as start tag' => [
+            '<?xml version="1.0" encoding="UTF-8"?><>',
+            [\LIBXML_ERR_FATAL],
+            [
+                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
+                'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><>',
             ],
-            'Premature end of data' => [
-                '<?xml version="1.0" encoding="UTF-8"?><a>',
-                [\LIBXML_ERR_FATAL],
-                [
-                    'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
-                    'Catched errors: "EndTag: \'</\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
-                ],
+        ];
+        yield 'Premature end of data' => [
+            '<?xml version="1.0" encoding="UTF-8"?><a>',
+            [\LIBXML_ERR_FATAL],
+            [
+                'Catched errors: "Premature end of data in tag a line 1' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
+                'Catched errors: "EndTag: \'</\' not found' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?><a>',
             ],
-            'invalid element name as start tag 2' => [
-                '<?xml version="1.0" encoding="UTF-8"?></>',
-                [\LIBXML_ERR_FATAL],
-                [
-                    'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
-                    'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
-                ],
+        ];
+        yield 'invalid element name as start tag 2' => [
+            '<?xml version="1.0" encoding="UTF-8"?></>',
+            [\LIBXML_ERR_FATAL],
+            [
+                'Catched errors: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
+                'Catched errors: "StartTag: invalid element name' . "\n" . '" while decoding XML: <?xml version="1.0" encoding="UTF-8"?></>',
             ],
         ];
     }
@@ -164,8 +156,6 @@ class XmlSerializerTest extends TestCase
 
     /**
      * @param array<mixed> $data
-     *
-     * @dataProvider getNormalizedToEncodedData
      */
     #[DataProvider('getNormalizedToEncodedData')]
     public function testCreateFromArrayEncodesToExpectedString(array $data, string $expected): void
@@ -177,29 +167,28 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getNormalizedToEncodedData(): array
+    public static function getNormalizedToEncodedData(): \Iterator
     {
-        return [
-            'test with simple string' => [
-                [
-                    'key' => 'value',
-                ],
-                <<< XML
+        yield 'test with simple string' => [
+            [
+                'key' => 'value',
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <key>value</key>
                 XML,
-            ],
-            'test with simple array' => [
-                [
-                    'issue' => [
-                        'project_id' => 1,
-                        'subject' => 'Example',
-                        'priority_id' => 4,
-                    ],
+        ];
+        yield 'test with simple array' => [
+            [
+                'issue' => [
+                    'project_id' => 1,
+                    'subject' => 'Example',
+                    'priority_id' => 4,
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <project_id>1</project_id>
@@ -207,17 +196,17 @@ class XmlSerializerTest extends TestCase
                     <priority_id>4</priority_id>
                 </issue>
                 XML,
-            ],
-            'test with custom array' => [
-                [
-                    'issue' => [
-                        'taglist' => [
-                            'approved',
-                            'finished',
-                        ],
+        ];
+        yield 'test with custom array' => [
+            [
+                'issue' => [
+                    'taglist' => [
+                        'approved',
+                        'finished',
                     ],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                 <taglist type="array">
@@ -226,19 +215,19 @@ class XmlSerializerTest extends TestCase
                 </taglist>
                 </issue>
                 XML,
-            ],
-            'test with ignored elements' => [
-                [
-                    'issue' => [
-                        'project_id' => 1,
-                        'subject' => 'Example',
-                        'priority_id' => 4,
-                    ],
-                    'ignored' => [
-                        'only the first element of the array will be used',
-                    ],
+        ];
+        yield 'test with ignored elements' => [
+            [
+                'issue' => [
+                    'project_id' => 1,
+                    'subject' => 'Example',
+                    'priority_id' => 4,
                 ],
-                <<< XML
+                'ignored' => [
+                    'only the first element of the array will be used',
+                ],
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <project_id>1</project_id>
@@ -246,23 +235,23 @@ class XmlSerializerTest extends TestCase
                     <priority_id>4</priority_id>
                 </issue>
                 XML,
-            ],
-            'test with custom fields with attachment token' => [
-                [
-                    'issue' => [
-                        'subject' => 'Example',
-                        'custom_fields' => [
-                            [
-                                'id' => 123,
-                                'value' => [
-                                    'token' => '1.sample-token',
-                                    'filename' => 'test.txt',
-                                ],
+        ];
+        yield 'test with custom fields with attachment token' => [
+            [
+                'issue' => [
+                    'subject' => 'Example',
+                    'custom_fields' => [
+                        [
+                            'id' => 123,
+                            'value' => [
+                                'token' => '1.sample-token',
+                                'filename' => 'test.txt',
                             ],
                         ],
                     ],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <subject>Example</subject>
@@ -276,23 +265,23 @@ class XmlSerializerTest extends TestCase
                     </custom_fields>
                 </issue>
                 XML,
-            ],
-            'test with custom fields with single value' => [
-                [
-                    'project' => [
-                        'name' => 'some name',
-                        'identifier' => 'the_identifier',
-                        'custom_fields' => [
-                            [
-                                'id' => 123,
-                                'name' => 'cf_name',
-                                'field_format' => 'string',
-                                'value' => 1,
-                            ],
+        ];
+        yield 'test with custom fields with single value' => [
+            [
+                'project' => [
+                    'name' => 'some name',
+                    'identifier' => 'the_identifier',
+                    'custom_fields' => [
+                        [
+                            'id' => 123,
+                            'name' => 'cf_name',
+                            'field_format' => 'string',
+                            'value' => 1,
                         ],
                     ],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <project>
                     <name>some name</name>
@@ -304,23 +293,23 @@ class XmlSerializerTest extends TestCase
                     </custom_fields>
                 </project>
                 XML,
-            ],
-            'test with custom fields with array value' => [
-                [
-                    'project' => [
-                        'name' => 'some name',
-                        'identifier' => 'the_identifier',
-                        'custom_fields' => [
-                            [
-                                'id' => 123,
-                                'name' => 'cf_name',
-                                'field_format' => 'string',
-                                'value' => [1, 2, 3],
-                            ],
+        ];
+        yield 'test with custom fields with array value' => [
+            [
+                'project' => [
+                    'name' => 'some name',
+                    'identifier' => 'the_identifier',
+                    'custom_fields' => [
+                        [
+                            'id' => 123,
+                            'name' => 'cf_name',
+                            'field_format' => 'string',
+                            'value' => [1, 2, 3],
                         ],
                     ],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <project>
                     <name>some name</name>
@@ -336,21 +325,21 @@ class XmlSerializerTest extends TestCase
                     </custom_fields>
                 </project>
                 XML,
-            ],
-            'test with uploads' => [
-                [
-                    'issue' => [
-                        'uploads' => [
-                            [
-                                'token' => 'asdfasdfasdfasdf',
-                                'filename' => 'MyFile.pdf',
-                                'description' => 'MyFile is better then YourFile...',
-                                'content_type' => 'application/pdf',
-                            ],
+        ];
+        yield 'test with uploads' => [
+            [
+                'issue' => [
+                    'uploads' => [
+                        [
+                            'token' => 'asdfasdfasdfasdf',
+                            'filename' => 'MyFile.pdf',
+                            'description' => 'MyFile is better then YourFile...',
+                            'content_type' => 'application/pdf',
                         ],
                     ],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <uploads type="array">
@@ -363,14 +352,14 @@ class XmlSerializerTest extends TestCase
                     </uploads>
                 </issue>
                 XML,
-            ],
-            'test with role_ids' => [
-                [
-                    'membership' => [
-                        'role_ids' => [1, 2],
-                    ],
+        ];
+        yield 'test with role_ids' => [
+            [
+                'membership' => [
+                    'role_ids' => [1, 2],
                 ],
-                <<< XML
+            ],
+            <<< XML
                 <?xml version="1.0"?>
                 <membership>
                     <role_ids type="array">
@@ -379,15 +368,12 @@ class XmlSerializerTest extends TestCase
                     </role_ids>
                 </membership>
                 XML,
-            ],
         ];
     }
 
     /**
      * @param array<string> $expectedMessages
      * @param array<mixed>  $data
-     *
-     * @dataProvider getInvalidSerializedData
      */
     #[DataProvider('getInvalidSerializedData')]
     public function testCreateFromArrayWithInvalidDataThrowsException(array $expectedMessages, array $data): void
@@ -404,19 +390,17 @@ class XmlSerializerTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getInvalidSerializedData(): array
+    public static function getInvalidSerializedData(): \Iterator
     {
-        return [
-            'invalid element name as start tag' => [
-                [
-                    'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
-                    // newer libxml2 versions stop after the first error
-                    'Could not create XML from array: "StartTag: invalid element name' . "\n" . '"',
-                ],
-                ['0' => ['foobar']],
+        yield 'invalid element name as start tag' => [
+            [
+                'Could not create XML from array: "StartTag: invalid element name' . "\n" . '", "Extra content at the end of the document' . "\n" . '"',
+                // newer libxml2 versions stop after the first error
+                'Could not create XML from array: "StartTag: invalid element name' . "\n" . '"',
             ],
+            ['0' => ['foobar']],
         ];
     }
 }

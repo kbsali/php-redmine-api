@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Search::class)]
-class ListByQueryTest extends TestCase
+final class ListByQueryTest extends TestCase
 {
     public function testListByQueryWithoutParametersReturnsResponse(): void
     {

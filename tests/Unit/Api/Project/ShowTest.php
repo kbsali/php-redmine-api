@@ -13,11 +13,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
-class ShowTest extends TestCase
+final class ShowTest extends TestCase
 {
     /**
-     * @dataProvider getShowData
-     *
      * @param array<mixed> $parameters
      * @param array<mixed> $expectedReturn
      */
@@ -45,60 +43,55 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getShowData(): array
+    public static function getShowData(): \Iterator
     {
-        return [
-            'array response with integer id' => [
-                5,
-                [],
-                '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
-                '["API Response"]',
-                ['API Response'],
+        yield 'array response with integer id' => [
+            5,
+            [],
+            '/projects/5.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with string id' => [
+            'test',
+            [],
+            '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'test include parameter as array' => [
+            'test',
+            [
+                'include' => ['resource1', 'resource2'],
             ],
-            'array response with string id' => [
-                'test',
-                [],
-                '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
-                '["API Response"]',
-                ['API Response'],
+            '/projects/test.json?include=resource1%2Cresource2',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'test include parameter as string will be ignored' => [
+            'test',
+            [
+                'include' => 'resource1,resource2',
             ],
-            'test include parameter as array' => [
-                'test',
-                [
-                    'include' => ['resource1', 'resource2'],
-                ],
-                '/projects/test.json?include=resource1%2Cresource2',
-                '["API Response"]',
-                ['API Response'],
+            '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with parameters' => [
+            5,
+            [
+                'parameter1',
+                'parameter2',
+                'enabled_modules',
             ],
-            'test include parameter as string will be ignored' => [
-                'test',
-                [
-                    'include' => 'resource1,resource2',
-                ],
-                '/projects/test.json?include=trackers%2Cissue_categories%2Cattachments%2Crelations',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with parameters' => [
-                5,
-                [
-                    'parameter1',
-                    'parameter2',
-                    'enabled_modules',
-                ],
-                '/projects/5.json?0=parameter1&1=parameter2&2=enabled_modules&include=trackers%2Cissue_categories%2Cattachments%2Crelations',
-                '["API Response"]',
-                ['API Response'],
-            ],
+            '/projects/5.json?0=parameter1&1=parameter2&2=enabled_modules&include=trackers%2Cissue_categories%2Cattachments%2Crelations',
+            '["API Response"]',
+            ['API Response'],
         ];
     }
 
-    /**
-     * @dataProvider getUnexpectedResponseData
-     */
     #[DataProvider('getUnexpectedResponseData')]
     public function testShowWithUnexpectedResponseThrowsException(int $responseCode, string $responseContentType, string $response): void
     {
@@ -128,20 +121,18 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedResponseData(): array
+    public static function getUnexpectedResponseData(): \Iterator
     {
-        return [
-            'status code 404 with empty body' => [404, 'application/json', ''],
-            'status code 403 with empty body' => [403, 'application/json', ''],
-            'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'],
-            'status code 500 with JSON body' => [500, 'application/json', '["API Response"]'],
-            'status code 200 with empty body' => [200, 'application/json', ''],
-            'status code 200 with JSON null' => [200, 'application/json', 'null'],
-            'status code 200 with JSON integer' => [200, 'application/json', '5'],
-            'status code 200 with JSON string' => [200, 'application/json', '"text"'],
-        ];
+        yield 'status code 404 with empty body' => [404, 'application/json', ''];
+        yield 'status code 403 with empty body' => [403, 'application/json', ''];
+        yield 'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'];
+        yield 'status code 500 with JSON body' => [500, 'application/json', '["API Response"]'];
+        yield 'status code 200 with empty body' => [200, 'application/json', ''];
+        yield 'status code 200 with JSON null' => [200, 'application/json', 'null'];
+        yield 'status code 200 with JSON integer' => [200, 'application/json', '5'];
+        yield 'status code 200 with JSON string' => [200, 'application/json', '"text"'];
     }
 
     public function testShowWithInvalidJsonThrowsException(): void

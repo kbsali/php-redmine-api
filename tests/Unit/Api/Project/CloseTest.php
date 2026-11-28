@@ -13,7 +13,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
-class CloseTest extends TestCase
+final class CloseTest extends TestCase
 {
     public function testCloseReturnsTrue(): void
     {

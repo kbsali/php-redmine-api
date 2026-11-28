@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Role::class)]
-class ListTest extends TestCase
+final class ListTest extends TestCase
 {
     public function testListWithoutParametersReturnsResponse(): void
     {

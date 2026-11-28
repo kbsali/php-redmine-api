@@ -15,12 +15,10 @@ use Redmine\Http\HttpClient;
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 #[CoversClass(Version::class)]
-class VersionTest extends TestCase
+final class VersionTest extends TestCase
 {
     /**
      * Test validateSharing().
-     *
-     * @dataProvider      invalidSharingProvider
      */
     #[DataProvider('invalidSharingProvider')]
     public function testCreateThrowsExceptionWithInvalidSharing(string $sharingValue): void
@@ -47,13 +45,11 @@ class VersionTest extends TestCase
     /**
      * Data provider for invalid sharing values.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function invalidSharingProvider(): array
+    public static function invalidSharingProvider(): \Iterator
     {
-        return [
-            ['all'],
-            ['invalid'],
-        ];
+        yield ['all'];
+        yield ['invalid'];
     }
 }

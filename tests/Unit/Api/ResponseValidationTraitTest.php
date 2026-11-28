@@ -16,11 +16,9 @@ use Redmine\Http\Response;
 use ReflectionMethod;
 use ReflectionProperty;
 
-class ResponseValidationTraitTest extends TestCase
+final class ResponseValidationTraitTest extends TestCase
 {
     /**
-     * @dataProvider getExpectedStatusCodeData
-     *
      * @param int[] $expectedStatusCodes
      */
     #[DataProvider('getExpectedStatusCodeData')]
@@ -34,20 +32,16 @@ class ResponseValidationTraitTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getExpectedStatusCodeData(): array
+    public static function getExpectedStatusCodeData(): \Iterator
     {
-        return [
-            'one expected status code' => [201, [201]],
-            'first of several expected status codes' => [201, [201, 204]],
-            'last of several expected status codes' => [204, [201, 204]],
-        ];
+        yield 'one expected status code' => [201, [201]];
+        yield 'first of several expected status codes' => [201, [201, 204]];
+        yield 'last of several expected status codes' => [204, [201, 204]];
     }
 
     /**
-     * @dataProvider getUnexpectedStatusCodeData
-     *
      * @param int[] $expectedStatusCodes
      */
     #[DataProvider('getUnexpectedStatusCodeData')]
@@ -65,16 +59,14 @@ class ResponseValidationTraitTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedStatusCodeData(): array
+    public static function getUnexpectedStatusCodeData(): \Iterator
     {
-        return [
-            'one expected status code' => [422, [201]],
-            'several expected status codes' => [422, [201, 204]],
-            'other successful status code' => [200, [204]],
-            'no status code' => [0, [204]],
-        ];
+        yield 'one expected status code' => [422, [201]];
+        yield 'several expected status codes' => [422, [201, 204]];
+        yield 'other successful status code' => [200, [204]];
+        yield 'no status code' => [0, [204]];
     }
 
     public function testGetJsonArrayOrThrowReturnsArray(): void
@@ -85,9 +77,6 @@ class ResponseValidationTraitTest extends TestCase
         ));
     }
 
-    /**
-     * @dataProvider getUnexpectedJsonResponseData
-     */
     #[DataProvider('getUnexpectedJsonResponseData')]
     public function testGetJsonArrayOrThrowWithUnexpectedResponseThrowsException(int $statusCode, string $contentType, string $body): void
     {
@@ -103,19 +92,17 @@ class ResponseValidationTraitTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedJsonResponseData(): array
+    public static function getUnexpectedJsonResponseData(): \Iterator
     {
-        return [
-            'status code 404 with empty body' => [404, 'application/json', ''],
-            'status code 500 with JSON body' => [500, 'application/json', '{"group":{"id":5}}'],
-            'status code 201 with JSON body' => [201, 'application/json', '{"group":{"id":5}}'],
-            'status code 200 with empty body' => [200, 'application/json', ''],
-            'status code 200 with JSON null' => [200, 'application/json', 'null'],
-            'status code 200 with JSON integer' => [200, 'application/json', '5'],
-            'status code 200 with JSON string' => [200, 'application/json', '"text"'],
-        ];
+        yield 'status code 404 with empty body' => [404, 'application/json', ''];
+        yield 'status code 500 with JSON body' => [500, 'application/json', '{"group":{"id":5}}'];
+        yield 'status code 201 with JSON body' => [201, 'application/json', '{"group":{"id":5}}'];
+        yield 'status code 200 with empty body' => [200, 'application/json', ''];
+        yield 'status code 200 with JSON null' => [200, 'application/json', 'null'];
+        yield 'status code 200 with JSON integer' => [200, 'application/json', '5'];
+        yield 'status code 200 with JSON string' => [200, 'application/json', '"text"'];
     }
 
     public function testGetJsonArrayOrThrowWithInvalidJsonThrowsException(): void

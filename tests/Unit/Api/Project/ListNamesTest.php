@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
-     * @dataProvider getListNamesData
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesData')]
@@ -43,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without projects' => [
-                '/projects.json?limit=100&offset=0',
-                200,
-                <<<JSON
+        yield 'test without projects' => [
+            '/projects.json?limit=100&offset=0',
+            200,
+            <<<JSON
                 {
                     "projects": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple projects' => [
-                '/projects.json?limit=100&offset=0',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple projects' => [
+            '/projects.json?limit=100&offset=0',
+            200,
+            <<<JSON
                 {
                     "projects": [
                         {"id": 7, "name": "Project C"},
@@ -70,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "Project C",
-                    8 => "Project B",
-                    9 => "Project A",
-                ],
+            [
+                7 => "Project C",
+                8 => "Project B",
+                9 => "Project A",
             ],
         ];
     }

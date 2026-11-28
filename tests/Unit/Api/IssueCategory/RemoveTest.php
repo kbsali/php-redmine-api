@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueCategory::class)]
-class RemoveTest extends TestCase
+final class RemoveTest extends TestCase
 {
     /**
-     * @dataProvider getRemoveData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getRemoveData')]
@@ -43,28 +41,23 @@ class RemoveTest extends TestCase
     }
 
     /**
-     * @dataProvider getRemoveData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getRemoveData(): array
+    public static function getRemoveData(): \Iterator
     {
-        return [
-            'test without params' => [
-                25,
-                [],
-                '/issue_categories/25.xml',
-                204,
-                '',
-            ],
-            'test with params' => [
-                25,
-                ['reassign_to_id' => 30],
-                '/issue_categories/25.xml?reassign_to_id=30',
-                204,
-                '',
-            ],
+        yield 'test without params' => [
+            25,
+            [],
+            '/issue_categories/25.xml',
+            204,
+            '',
+        ];
+        yield 'test with params' => [
+            25,
+            ['reassign_to_id' => 30],
+            '/issue_categories/25.xml?reassign_to_id=30',
+            204,
+            '',
         ];
     }
 

@@ -19,6 +19,6 @@ final class EnableFutureModeTest extends TestCase
 
         $client->enableFutureMode();
 
-        self::assertSame($api, $client->getApi('issue'));
+        $this->assertSame($api, $client->getApi('issue'));
     }
 }

@@ -14,11 +14,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Wiki::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
@@ -48,48 +46,44 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test without params' => [
-                5,
-                'test',
-                [],
-                '/projects/5/wiki/test.xml',
-                <<< XML
+        yield 'test without params' => [
+            5,
+            'test',
+            [],
+            '/projects/5/wiki/test.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page/>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
-            ],
-            'test without special char in page name' => [
-                5,
-                'about page',
-                [],
-                '/projects/5/wiki/about%20page.xml',
-                <<< XML
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
+        ];
+        yield 'test without special char in page name' => [
+            5,
+            'about page',
+            [],
+            '/projects/5/wiki/about%20page.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page/>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
+        ];
+        yield 'test with params' => [
+            5,
+            'test',
+            [
+                'title' => 'Test Wikipage with xml entities: & < > " \' ',
+                'comments' => 'Initial Edit with xml entities: & < > " \' ',
+                'text' => 'Some page text with xml entities: & < > " \' ',
             ],
-            'test with params' => [
-                5,
-                'test',
-                [
-                    'title' => 'Test Wikipage with xml entities: & < > " \' ',
-                    'comments' => 'Initial Edit with xml entities: & < > " \' ',
-                    'text' => 'Some page text with xml entities: & < > " \' ',
-                ],
-                '/projects/5/wiki/test.xml',
-                <<< XML
+            '/projects/5/wiki/test.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page>
                     <title>Test Wikipage with xml entities: &amp; &lt; &gt; " ' </title>
@@ -97,9 +91,8 @@ class CreateTest extends TestCase
                     <text>Some page text with xml entities: &amp; &lt; &gt; " ' </text>
                 </wiki_page>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><wiki_page></wiki_page>',
         ];
     }
 
@@ -127,15 +120,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

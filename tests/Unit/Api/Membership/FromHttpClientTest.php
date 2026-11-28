@@ -10,7 +10,7 @@ use Redmine\Api\Membership;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(Membership::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

@@ -11,11 +11,8 @@ use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
-class AddNoteToIssueTest extends TestCase
+final class AddNoteToIssueTest extends TestCase
 {
-    /**
-     * @dataProvider getAddNoteToIssueData
-     */
     #[DataProvider('getAddNoteToIssueData')]
     public function testAddNoteToIssueReturnsCorrectResponse(int $id, string $note, bool $isPrivate, string $expectedPath, string $expectedBody, int $responseCode, string $response): void
     {
@@ -40,29 +37,27 @@ class AddNoteToIssueTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getAddNoteToIssueData(): array
+    public static function getAddNoteToIssueData(): \Iterator
     {
-        return [
-            'test with public note' => [
-                1,
-                'public note',
-                false,
-                '/issues/1.xml',
-                '<?xml version="1.0"?><issue><id>1</id><notes>public note</notes></issue>',
-                204,
-                '',
-            ],
-            'test with private note' => [
-                1,
-                'some private comment',
-                true,
-                '/issues/1.xml',
-                '<?xml version="1.0"?><issue><id>1</id><notes>some private comment</notes><private_notes>1</private_notes></issue>',
-                204,
-                '',
-            ],
+        yield 'test with public note' => [
+            1,
+            'public note',
+            false,
+            '/issues/1.xml',
+            '<?xml version="1.0"?><issue><id>1</id><notes>public note</notes></issue>',
+            204,
+            '',
+        ];
+        yield 'test with private note' => [
+            1,
+            'some private comment',
+            true,
+            '/issues/1.xml',
+            '<?xml version="1.0"?><issue><id>1</id><notes>some private comment</notes><private_notes>1</private_notes></issue>',
+            204,
+            '',
         ];
     }
 }

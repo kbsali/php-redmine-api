@@ -12,11 +12,8 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(User::class)]
-class RemoveTest extends TestCase
+final class RemoveTest extends TestCase
 {
-    /**
-     * @dataProvider getRemoveData
-     */
     #[DataProvider('getRemoveData')]
     public function testRemoveReturnsCorrectResponse(int $id, string $expectedPath, int $responseCode, string $response): void
     {
@@ -41,20 +38,15 @@ class RemoveTest extends TestCase
     }
 
     /**
-     * @dataProvider getRemoveData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getRemoveData(): array
+    public static function getRemoveData(): \Iterator
     {
-        return [
-            'test with integer' => [
-                5,
-                '/users/5.xml',
-                204,
-                '',
-            ],
+        yield 'test with integer' => [
+            5,
+            '/users/5.xml',
+            204,
+            '',
         ];
     }
 

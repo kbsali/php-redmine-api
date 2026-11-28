@@ -10,7 +10,7 @@ use Redmine\Api\Search;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(Search::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

@@ -16,7 +16,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Http\HttpFactory;
 
 #[CoversClass(NativeCurlClient::class)]
-class NativeCurlClientTest extends TestCase
+final class NativeCurlClientTest extends TestCase
 {
     use PHPMock;
 
@@ -640,9 +640,6 @@ class NativeCurlClientTest extends TestCase
         $client->request(HttpFactory::makeRequest('GET', '/path'));
     }
 
-    /**
-     * @dataProvider getApiClassesProvider
-     */
     #[DataProvider('getApiClassesProvider')]
     public function testGetApiReturnsApiInstance(string $apiName, string $class): void
     {
@@ -655,36 +652,31 @@ class NativeCurlClientTest extends TestCase
     }
 
     /**
-     * @return array<array{string, class-string}>
+     * @return \Iterator<int|string, array{string, class-string}>
      */
-    public static function getApiClassesProvider(): array
+    public static function getApiClassesProvider(): \Iterator
     {
-        return [
-            ['attachment', \Redmine\Api\Attachment::class],
-            ['group', \Redmine\Api\Group::class],
-            ['custom_fields', \Redmine\Api\CustomField::class],
-            ['issue', \Redmine\Api\Issue::class],
-            ['issue_category', \Redmine\Api\IssueCategory::class],
-            ['issue_priority', \Redmine\Api\IssuePriority::class],
-            ['issue_relation', \Redmine\Api\IssueRelation::class],
-            ['issue_status', \Redmine\Api\IssueStatus::class],
-            ['membership', \Redmine\Api\Membership::class],
-            ['news', \Redmine\Api\News::class],
-            ['project', \Redmine\Api\Project::class],
-            ['query', \Redmine\Api\Query::class],
-            ['role', \Redmine\Api\Role::class],
-            ['time_entry', \Redmine\Api\TimeEntry::class],
-            ['time_entry_activity', \Redmine\Api\TimeEntryActivity::class],
-            ['tracker', \Redmine\Api\Tracker::class],
-            ['user', \Redmine\Api\User::class],
-            ['version', \Redmine\Api\Version::class],
-            ['wiki', \Redmine\Api\Wiki::class],
-        ];
+        yield ['attachment', \Redmine\Api\Attachment::class];
+        yield ['group', \Redmine\Api\Group::class];
+        yield ['custom_fields', \Redmine\Api\CustomField::class];
+        yield ['issue', \Redmine\Api\Issue::class];
+        yield ['issue_category', \Redmine\Api\IssueCategory::class];
+        yield ['issue_priority', \Redmine\Api\IssuePriority::class];
+        yield ['issue_relation', \Redmine\Api\IssueRelation::class];
+        yield ['issue_status', \Redmine\Api\IssueStatus::class];
+        yield ['membership', \Redmine\Api\Membership::class];
+        yield ['news', \Redmine\Api\News::class];
+        yield ['project', \Redmine\Api\Project::class];
+        yield ['query', \Redmine\Api\Query::class];
+        yield ['role', \Redmine\Api\Role::class];
+        yield ['time_entry', \Redmine\Api\TimeEntry::class];
+        yield ['time_entry_activity', \Redmine\Api\TimeEntryActivity::class];
+        yield ['tracker', \Redmine\Api\Tracker::class];
+        yield ['user', \Redmine\Api\User::class];
+        yield ['version', \Redmine\Api\Version::class];
+        yield ['wiki', \Redmine\Api\Wiki::class];
     }
 
-    /**
-     * @dataProvider getApiClassesProvider
-     */
     #[DataProvider('getApiClassesProvider')]
     public function testGetApiOnMultipleCallsReturnSameApiInstance(string $apiName, string $class): void
     {

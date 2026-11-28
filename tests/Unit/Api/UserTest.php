@@ -13,7 +13,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
  * @author     Malte Gerth <mail@malte-gerth.de>
  */
 #[CoversClass(User::class)]
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     /**
      * Test getCurrentUser().

@@ -10,7 +10,7 @@ use Redmine\Exception as RedmineException;
 use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Http\Response;
 
-class UnexpectedResponseExceptionTest extends TestCase
+final class UnexpectedResponseExceptionTest extends TestCase
 {
     public function testCreateReturnsException(): void
     {

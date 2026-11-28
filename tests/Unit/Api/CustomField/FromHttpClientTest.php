@@ -10,7 +10,7 @@ use Redmine\Api\CustomField;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(CustomField::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

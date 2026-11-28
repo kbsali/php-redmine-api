@@ -11,11 +11,9 @@ use Redmine\Api\Issue;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
-class AttachTest extends TestCase
+final class AttachTest extends TestCase
 {
     /**
-     * @dataProvider getAttachData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getAttachData')]
@@ -42,16 +40,15 @@ class AttachTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getAttachData(): array
+    public static function getAttachData(): \Iterator
     {
-        return [
-            'test without parameters' => [
-                5,
-                [],
-                '/issues/5.json',
-                <<<JSON
+        yield 'test without parameters' => [
+            5,
+            [],
+            '/issues/5.json',
+            <<<JSON
                 {
                     "issue": {
                         "id": 5,
@@ -61,17 +58,17 @@ class AttachTest extends TestCase
                     }
                 }
                 JSON,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test with attachment' => [
+            5,
+            [
+                'token' => 'sample-test-token',
+                'filename' => 'test.txt',
             ],
-            'test with attachment' => [
-                5,
-                [
-                    'token' => 'sample-test-token',
-                    'filename' => 'test.txt',
-                ],
-                '/issues/5.json',
-                <<<JSON
+            '/issues/5.json',
+            <<<JSON
                 {
                     "issue": {
                         "id": 5,
@@ -84,9 +81,8 @@ class AttachTest extends TestCase
                     }
                 }
                 JSON,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 }

@@ -15,11 +15,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(User::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
-     * @dataProvider getCreateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getCreateData')]
@@ -49,35 +47,31 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider getCreateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                ['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com'],
-                '/users.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><user></user>',
-            ],
-            'test with all parameters' => [
-                [
-                    'login' => 'user',
-                    'lastname' => 'last',
-                    'firstname' => 'first',
-                    'mail' => 'mail@example.com',
-                    'password' => 'secret',
-                    'custom_fields' => [
-                        ['id' => 5, 'value' => 'Value 5'],
-                        ['id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'],
-                    ],
+        yield 'test with minimal parameters' => [
+            ['login' => 'user', 'lastname' => 'last', 'firstname' => 'first', 'mail' => 'mail@example.com'],
+            '/users.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><user><login>user</login><lastname>last</lastname><firstname>first</firstname><mail>mail@example.com</mail></user>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><user></user>',
+        ];
+        yield 'test with all parameters' => [
+            [
+                'login' => 'user',
+                'lastname' => 'last',
+                'firstname' => 'first',
+                'mail' => 'mail@example.com',
+                'password' => 'secret',
+                'custom_fields' => [
+                    ['id' => 5, 'value' => 'Value 5'],
+                    ['id' => 13, 'value' => 'Value 13', 'name' => 'CF Name'],
                 ],
-                '/users.xml',
-                <<<XML
+            ],
+            '/users.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <user>
                     <login>user</login>
@@ -95,9 +89,8 @@ class CreateTest extends TestCase
                     </custom_fields>
                 </user>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><user></user>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><user></user>',
         ];
     }
 
@@ -169,8 +162,6 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @dataProvider incompleteCreateParameterProvider
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteCreateParameterProvider')]
@@ -192,46 +183,44 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            // Missing Login
+        // Missing Login
+        yield [
             [
-                [
-                    'password' => 'secretPass',
-                    'lastname' => 'Last Name',
-                    'firstname' => 'Firstname',
-                    'mail' => 'mail@example.com',
-                ],
+                'password' => 'secretPass',
+                'lastname' => 'Last Name',
+                'firstname' => 'Firstname',
+                'mail' => 'mail@example.com',
             ],
-            // Missing last name
+        ];
+        // Missing last name
+        yield [
             [
-                [
-                    'login' => 'TestUser',
-                    'password' => 'secretPass',
-                    'firstname' => 'Firstname',
-                    'mail' => 'mail@example.com',
-                ],
+                'login' => 'TestUser',
+                'password' => 'secretPass',
+                'firstname' => 'Firstname',
+                'mail' => 'mail@example.com',
             ],
-            // Missing first name
+        ];
+        // Missing first name
+        yield [
             [
-                [
-                    'login' => 'TestUser',
-                    'password' => 'secretPass',
-                    'lastname' => 'Last Name',
-                    'mail' => 'mail@example.com',
-                ],
+                'login' => 'TestUser',
+                'password' => 'secretPass',
+                'lastname' => 'Last Name',
+                'mail' => 'mail@example.com',
             ],
-            // Missing email
+        ];
+        // Missing email
+        yield [
             [
-                [
-                    'login' => 'TestUser',
-                    'password' => 'secretPass',
-                    'lastname' => 'Last Name',
-                    'firstname' => 'Firstname',
-                ],
+                'login' => 'TestUser',
+                'password' => 'secretPass',
+                'lastname' => 'Last Name',
+                'firstname' => 'Firstname',
             ],
         ];
     }
@@ -260,15 +249,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

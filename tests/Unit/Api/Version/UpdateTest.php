@@ -15,11 +15,9 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Version::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getUpdateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -46,110 +44,105 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test without parameters' => [
-                5,
-                [],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with name' => [
-                5,
-                ['name' => 'Test version'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><name>Test version</name></version>',
-                204,
-                '',
-            ],
-            'test with status open' => [
-                5,
-                ['status' => 'open'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><status>open</status></version>',
-                204,
-                '',
-            ],
-            'test with status locked' => [
-                5,
-                ['status' => 'locked'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><status>locked</status></version>',
-                204,
-                '',
-            ],
-            'test with status closed' => [
-                5,
-                ['status' => 'closed'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><status>closed</status></version>',
-                204,
-                '',
-            ],
-            'test with status null' => [
-                5,
-                ['status' => null],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with sharing none' => [
-                5,
-                ['sharing' => 'none'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><sharing>none</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing descendants' => [
-                5,
-                ['sharing' => 'descendants'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><sharing>descendants</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing hierarchy' => [
-                5,
-                ['sharing' => 'hierarchy'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><sharing>hierarchy</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing tree' => [
-                5,
-                ['sharing' => 'tree'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><sharing>tree</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing system' => [
-                5,
-                ['sharing' => 'system'],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version><sharing>system</sharing></version>',
-                204,
-                '',
-            ],
-            'test with sharing null' => [
-                5,
-                ['sharing' => null],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
+        yield 'test without parameters' => [
+            5,
+            [],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
+        ];
+        yield 'test with name' => [
+            5,
+            ['name' => 'Test version'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><name>Test version</name></version>',
+            204,
+            '',
+        ];
+        yield 'test with status open' => [
+            5,
+            ['status' => 'open'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><status>open</status></version>',
+            204,
+            '',
+        ];
+        yield 'test with status locked' => [
+            5,
+            ['status' => 'locked'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><status>locked</status></version>',
+            204,
+            '',
+        ];
+        yield 'test with status closed' => [
+            5,
+            ['status' => 'closed'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><status>closed</status></version>',
+            204,
+            '',
+        ];
+        yield 'test with status null' => [
+            5,
+            ['status' => null],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing none' => [
+            5,
+            ['sharing' => 'none'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><sharing>none</sharing></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing descendants' => [
+            5,
+            ['sharing' => 'descendants'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><sharing>descendants</sharing></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing hierarchy' => [
+            5,
+            ['sharing' => 'hierarchy'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><sharing>hierarchy</sharing></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing tree' => [
+            5,
+            ['sharing' => 'tree'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><sharing>tree</sharing></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing system' => [
+            5,
+            ['sharing' => 'system'],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version><sharing>system</sharing></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing null' => [
+            5,
+            ['sharing' => null],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
         ];
     }
 
@@ -221,43 +214,41 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getEmptyValueData(): array
+    public static function getEmptyValueData(): \Iterator
     {
-        return [
-            'test with status empty string' => [
-                5,
-                ['status' => ''],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with status false' => [
-                5,
-                ['status' => false],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with sharing empty string' => [
-                5,
-                ['sharing' => ''],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
-            'test with sharing false' => [
-                5,
-                ['sharing' => false],
-                '/versions/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><version></version>',
-                204,
-                '',
-            ],
+        yield 'test with status empty string' => [
+            5,
+            ['status' => ''],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
+        ];
+        yield 'test with status false' => [
+            5,
+            ['status' => false],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing empty string' => [
+            5,
+            ['sharing' => ''],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
+        ];
+        yield 'test with sharing false' => [
+            5,
+            ['sharing' => false],
+            '/versions/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><version></version>',
+            204,
+            '',
         ];
     }
 
@@ -282,15 +273,13 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

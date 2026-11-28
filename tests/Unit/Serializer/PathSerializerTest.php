@@ -10,53 +10,49 @@ use PHPUnit\Framework\TestCase;
 use Redmine\Serializer\PathSerializer;
 
 #[CoversClass(PathSerializer::class)]
-class PathSerializerTest extends TestCase
+final class PathSerializerTest extends TestCase
 {
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getPathData(): array
+    public static function getPathData(): \Iterator
     {
-        return [
+        yield [
+            'foo.json',
+            [],
+            'foo.json',
+        ];
+        yield [
+            'foo.xml?format=xml',
+            [],
+            'foo.xml?format=xml',
+        ];
+        yield [
+            'foo.xml',
             [
-                'foo.json',
-                [],
-                'foo.json',
+                'format' => 'xml',
             ],
+            'foo.xml?format=xml',
+        ];
+        // Test for #154: fix http_build_query encoding array values with numeric keys
+        yield [
+            '/time_entries.json',
             [
-                'foo.xml?format=xml',
-                [],
-                'foo.xml?format=xml',
-            ],
-            [
-                'foo.xml',
-                [
-                    'format' => 'xml',
-                ],
-                'foo.xml?format=xml',
-            ],
-            // Test for #154: fix http_build_query encoding array values with numeric keys
-            [
-                '/time_entries.json',
-                [
-                    'f' => ['spent_on'],
-                    'op' => ['spent_on' => '><'],
-                    'v' => [
-                        'spent_on' => [
-                            '2016-01-18',
-                            '2016-01-22',
-                        ],
+                'f' => ['spent_on'],
+                'op' => ['spent_on' => '><'],
+                'v' => [
+                    'spent_on' => [
+                        '2016-01-18',
+                        '2016-01-22',
                     ],
                 ],
-                '/time_entries.json?f%5B%5D=spent_on&op%5Bspent_on%5D=%3E%3C&v%5Bspent_on%5D%5B%5D=2016-01-18&v%5Bspent_on%5D%5B%5D=2016-01-22',
             ],
+            '/time_entries.json?f%5B%5D=spent_on&op%5Bspent_on%5D=%3E%3C&v%5Bspent_on%5D%5B%5D=2016-01-18&v%5Bspent_on%5D%5B%5D=2016-01-22',
         ];
     }
 
     /**
      * @param array<mixed> $params
-     *
-     * @dataProvider getPathData
      */
     #[DataProvider('getPathData')]
     public function testGetPathShouldReturnExpectedString(string $path, array $params, string $expected): void

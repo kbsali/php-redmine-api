@@ -14,11 +14,9 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getUpdateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -45,22 +43,17 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test with title' => [
-                1,
-                ['name' => 'Test Project'],
-                '/projects/1.xml',
-                '<?xml version="1.0"?><project><id>1</id><name>Test Project</name></project>',
-                204,
-                '',
-            ],
+        yield 'test with title' => [
+            1,
+            ['name' => 'Test Project'],
+            '/projects/1.xml',
+            '<?xml version="1.0"?><project><id>1</id><name>Test Project</name></project>',
+            204,
+            '',
         ];
     }
 
@@ -88,15 +81,13 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

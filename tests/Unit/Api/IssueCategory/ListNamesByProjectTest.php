@@ -16,11 +16,9 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\TestDataProvider;
 
 #[CoversClass(IssueCategory::class)]
-class ListNamesByProjectTest extends TestCase
+final class ListNamesByProjectTest extends TestCase
 {
     /**
-     * @dataProvider getListNamesByProjectData
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListNamesByProjectData')]
@@ -47,27 +45,26 @@ class ListNamesByProjectTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesByProjectData(): array
+    public static function getListNamesByProjectData(): \Iterator
     {
-        return [
-            'test without issue categories' => [
-                5,
-                '/projects/5/issue_categories.json',
-                200,
-                <<<JSON
+        yield 'test without issue categories' => [
+            5,
+            '/projects/5/issue_categories.json',
+            200,
+            <<<JSON
                 {
                     "issue_categories": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple categories' => [
-                'test-project',
-                '/projects/test-project/issue_categories.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple categories' => [
+            'test-project',
+            '/projects/test-project/issue_categories.json',
+            200,
+            <<<JSON
                 {
                     "issue_categories": [
                         {"id": 7, "name": "IssueCategory 3"},
@@ -76,11 +73,10 @@ class ListNamesByProjectTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "IssueCategory 3",
-                    8 => "IssueCategory 2",
-                    9 => "IssueCategory 1",
-                ],
+            [
+                7 => "IssueCategory 3",
+                8 => "IssueCategory 2",
+                9 => "IssueCategory 1",
             ],
         ];
     }
@@ -123,8 +119,6 @@ class ListNamesByProjectTest extends TestCase
     }
 
     /**
-     * @dataProvider Redmine\Tests\Fixtures\TestDataProvider::getInvalidProjectIdentifiers
-     *
      * @param mixed $projectIdentifier
      */
     #[DataProviderExternal(TestDataProvider::class, 'getInvalidProjectIdentifiers')]

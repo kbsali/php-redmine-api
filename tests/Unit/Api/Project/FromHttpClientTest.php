@@ -10,7 +10,7 @@ use Redmine\Api\Project;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(Project::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

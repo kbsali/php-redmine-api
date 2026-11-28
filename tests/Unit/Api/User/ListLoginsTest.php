@@ -12,11 +12,9 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(User::class)]
-class ListLoginsTest extends TestCase
+final class ListLoginsTest extends TestCase
 {
     /**
-     * @dataProvider getListLoginsData
-     *
      * @param array<mixed> $expectedResponse
      */
     #[DataProvider('getListLoginsData')]
@@ -43,25 +41,24 @@ class ListLoginsTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListLoginsData(): array
+    public static function getListLoginsData(): \Iterator
     {
-        return [
-            'test without users' => [
-                '/users.json?limit=100&offset=0',
-                200,
-                <<<JSON
+        yield 'test without users' => [
+            '/users.json?limit=100&offset=0',
+            200,
+            <<<JSON
                 {
                     "users": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple users' => [
-                '/users.json?limit=100&offset=0',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple users' => [
+            '/users.json?limit=100&offset=0',
+            200,
+            <<<JSON
                 {
                     "users": [
                         {"id": 7, "login": "username_C"},
@@ -70,11 +67,10 @@ class ListLoginsTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "username_C",
-                    8 => "username_B",
-                    9 => "username_A",
-                ],
+            [
+                7 => "username_C",
+                8 => "username_B",
+                9 => "username_A",
             ],
         ];
     }

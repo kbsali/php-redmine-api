@@ -14,11 +14,9 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Membership::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
-     * @dataProvider getUpdateData
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('getUpdateData')]
@@ -45,31 +43,26 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider getUpdateData
+     * @return \Iterator<int|string, mixed[]>
      */
-    /**
-     * @return array<array<mixed>>
-     */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test with one role_id' => [
-                5,
-                ['user_id' => 4, 'role_ids' => [2]],
-                '/memberships/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>2</role_id></role_ids>
+        yield 'test with one role_id' => [
+            5,
+            ['user_id' => 4, 'role_ids' => [2]],
+            '/memberships/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>2</role_id></role_ids>
                 </membership>',
-                204,
-                '',
-            ],
-            'test with multiple role_ids' => [
-                5,
-                ['user_id' => 4, 'role_ids' => [5, 6]],
-                '/memberships/5.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids></membership>',
-                204,
-                '',
-            ],
+            204,
+            '',
+        ];
+        yield 'test with multiple role_ids' => [
+            5,
+            ['user_id' => 4, 'role_ids' => [5, 6]],
+            '/memberships/5.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids></membership>',
+            204,
+            '',
         ];
     }
 
@@ -89,8 +82,6 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @dataProvider incompleteUpdateParameterProvider
-     *
      * @param array<mixed> $parameters
      */
     #[DataProvider('incompleteUpdateParameterProvider')]
@@ -135,32 +126,28 @@ class UpdateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteUpdateParameterProvider(): array
+    public static function incompleteUpdateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [],
-            ],
-            'missing `role_ids` parameter' => [
-                [
-                    'user_id' => 4,
-                ],
+        yield 'missing all mandatory parameters' => [
+            [],
+        ];
+        yield 'missing `role_ids` parameter' => [
+            [
+                'user_id' => 4,
             ],
         ];
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

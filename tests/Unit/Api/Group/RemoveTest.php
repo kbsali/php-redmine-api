@@ -11,7 +11,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Group::class)]
-class RemoveTest extends TestCase
+final class RemoveTest extends TestCase
 {
     public function testRemoveReturnsString(): void
     {
