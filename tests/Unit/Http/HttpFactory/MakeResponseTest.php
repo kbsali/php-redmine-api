@@ -10,7 +10,7 @@ use Redmine\Http\HttpFactory;
 use Redmine\Http\Response;
 
 #[CoversClass(HttpFactory::class)]
-class MakeResponseTest extends TestCase
+final class MakeResponseTest extends TestCase
 {
     public function testMakeResponse(): void
     {

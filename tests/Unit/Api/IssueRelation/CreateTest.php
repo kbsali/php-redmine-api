@@ -14,7 +14,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueRelation::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -47,20 +47,18 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                5,
-                ['issue_to_id' => 10],
-                '/issues/5/relations.json',
-                '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
-                201,
-                '{"relation":{}}',
-                ['relation' => []],
-            ],
+        yield 'test with minimal parameters' => [
+            5,
+            ['issue_to_id' => 10],
+            '/issues/5/relations.json',
+            '{"relation":{"issue_to_id":10,"relation_type":"relates"}}',
+            201,
+            '{"relation":{}}',
+            ['relation' => []],
         ];
     }
 
@@ -101,18 +99,16 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [],
-            ],
-            'missing `issue_to_id` parameter' => [
-                [
-                    'relation_type' => 'relates',
-                ],
+        yield 'missing all mandatory parameters' => [
+            [],
+        ];
+        yield 'missing `issue_to_id` parameter' => [
+            [
+                'relation_type' => 'relates',
             ],
         ];
     }
@@ -141,15 +137,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

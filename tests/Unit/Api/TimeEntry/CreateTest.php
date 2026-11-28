@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(TimeEntry::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -47,46 +47,45 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with issue_id' => [
-                ['issue_id' => 5, 'hours' => 5.25],
-                '/time_entries.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
-            ],
-            'test with project_id' => [
-                ['project_id' => 5, 'hours' => 5.25],
-                '/time_entries.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><time_entry><project_id>5</project_id><hours>5.25</hours></time_entry>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
-            ],
-            'test with all parameters' => [
-                [
-                    'issue_id' => '15',
-                    'project_id' => '25',
-                    'hours' => '5.25',
-                    'comments' => 'some text with xml entities: & < > " \' ',
-                    'custom_fields' => [
-                        [
-                            'id' => 1,
-                            'name' => 'Affected version',
-                            'value' => '1.0.1',
-                        ],
-                        [
-                            'id' => 2,
-                            'name' => 'Resolution',
-                            'value' => 'Fixed',
-                        ],
+        yield 'test with issue_id' => [
+            ['issue_id' => 5, 'hours' => 5.25],
+            '/time_entries.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><time_entry><issue_id>5</issue_id><hours>5.25</hours></time_entry>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
+        ];
+        yield 'test with project_id' => [
+            ['project_id' => 5, 'hours' => 5.25],
+            '/time_entries.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><time_entry><project_id>5</project_id><hours>5.25</hours></time_entry>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
+        ];
+        yield 'test with all parameters' => [
+            [
+                'issue_id' => '15',
+                'project_id' => '25',
+                'hours' => '5.25',
+                'comments' => 'some text with xml entities: & < > " \' ',
+                'custom_fields' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Affected version',
+                        'value' => '1.0.1',
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Resolution',
+                        'value' => 'Fixed',
                     ],
                 ],
-                '/time_entries.xml',
-                <<<XML
+            ],
+            '/time_entries.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <time_entry>
                     <issue_id>15</issue_id>
@@ -103,9 +102,8 @@ class CreateTest extends TestCase
                     </custom_fields>
                 </time_entry>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><time_entry></time_entry>',
         ];
     }
 
@@ -198,26 +196,24 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [
-                    'id' => '5',
-                ],
+        yield 'missing all mandatory parameters' => [
+            [
+                'id' => '5',
             ],
-            'missing `issue_id` or `project_id` parameters' => [
-                [
-                    'hours' => '5.25',
-                ],
+        ];
+        yield 'missing `issue_id` or `project_id` parameters' => [
+            [
+                'hours' => '5.25',
             ],
-            'missing `hours` parameter' => [
-                [
-                    'issue_id' => 5,
-                    'project_id' => 5,
-                ],
+        ];
+        yield 'missing `hours` parameter' => [
+            [
+                'issue_id' => 5,
+                'project_id' => 5,
             ],
         ];
     }
@@ -246,15 +242,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

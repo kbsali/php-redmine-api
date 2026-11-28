@@ -13,7 +13,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Project::class)]
-class UnarchiveTest extends TestCase
+final class UnarchiveTest extends TestCase
 {
     public function testUnarchiveReturnsTrue(): void
     {

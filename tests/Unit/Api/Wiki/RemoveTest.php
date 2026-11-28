@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Wiki::class)]
-class RemoveTest extends TestCase
+final class RemoveTest extends TestCase
 {
     #[DataProvider('getRemoveData')]
     public function testRemoveReturnsCorrectResponse(int $id, string $page, string $expectedPath, int $responseCode, string $response): void
@@ -38,25 +38,23 @@ class RemoveTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getRemoveData(): array
+    public static function getRemoveData(): \Iterator
     {
-        return [
-            'test with integer' => [
-                5,
-                'test',
-                '/projects/5/wiki/test.xml',
-                204,
-                '',
-            ],
-            'test with special chars in page name' => [
-                5,
-                'test page',
-                '/projects/5/wiki/test%20page.xml',
-                204,
-                '',
-            ],
+        yield 'test with integer' => [
+            5,
+            'test',
+            '/projects/5/wiki/test.xml',
+            204,
+            '',
+        ];
+        yield 'test with special chars in page name' => [
+            5,
+            'test page',
+            '/projects/5/wiki/test%20page.xml',
+            204,
+            '',
         ];
     }
 

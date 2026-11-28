@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Group::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedResponse
@@ -41,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without groups' => [
-                '/groups.json',
-                200,
-                <<<JSON
+        yield 'test without groups' => [
+            '/groups.json',
+            200,
+            <<<JSON
                 {
                     "groups": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple groups' => [
-                '/groups.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple groups' => [
+            '/groups.json',
+            200,
+            <<<JSON
                 {
                     "groups": [
                         {"id": 7, "name": "Group 3"},
@@ -68,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "Group 3",
-                    8 => "Group 2",
-                    9 => "Group 1",
-                ],
+            [
+                7 => "Group 3",
+                8 => "Group 2",
+                9 => "Group 1",
             ],
         ];
     }

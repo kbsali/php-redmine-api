@@ -11,7 +11,7 @@ use Redmine\Exception as RedmineException;
 use Redmine\Exception\ClientException;
 
 #[CoversClass(ClientException::class)]
-class ClientExceptionTest extends TestCase
+final class ClientExceptionTest extends TestCase
 {
     public function testClientException(): void
     {

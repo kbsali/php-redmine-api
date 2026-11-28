@@ -15,7 +15,7 @@ use Redmine\Http\HttpClient;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Issue::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -44,33 +44,32 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test with title' => [
-                1,
-                ['name' => 'Issue title'],
-                '/issues/1.xml',
-                '<?xml version="1.0"?><issue><id>1</id><name>Issue title</name></issue>',
-                204,
-                '',
+        yield 'test with title' => [
+            1,
+            ['name' => 'Issue title'],
+            '/issues/1.xml',
+            '<?xml version="1.0"?><issue><id>1</id><name>Issue title</name></issue>',
+            204,
+            '',
+        ];
+        yield 'test with all parameters' => [
+            1,
+            [
+                'subject' => 'test note (xml) 1',
+                'notes' => 'test note api',
+                'assigned_to_id' => 1,
+                'status_id' => 2,
+                'priority_id' => 5,
+                'due_date' => '2014-05-13',
+                // not testable because this will trigger a status name to id resolving
+                // 'status' => 'Resolved',
             ],
-            'test with all parameters' => [
-                1,
-                [
-                    'subject' => 'test note (xml) 1',
-                    'notes' => 'test note api',
-                    'assigned_to_id' => 1,
-                    'status_id' => 2,
-                    'priority_id' => 5,
-                    'due_date' => '2014-05-13',
-                    // not testable because this will trigger a status name to id resolving
-                    // 'status' => 'Resolved',
-                ],
-                '/issues/1.xml',
-                <<< XML
+            '/issues/1.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <id>1</id>
@@ -82,73 +81,72 @@ class UpdateTest extends TestCase
                     <due_date>2014-05-13</due_date>
                 </issue>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test assign user to issue' => [
+            1,
+            [
+                'assigned_to_id' => 5,
             ],
-            'test assign user to issue' => [
-                1,
-                [
-                    'assigned_to_id' => 5,
-                ],
-                '/issues/1.xml',
-                <<< XML
+            '/issues/1.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <id>1</id>
                     <assigned_to_id>5</assigned_to_id>
                 </issue>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test assign fixed_version_id to issue' => [
+            1,
+            [
+                'fixed_version_id' => 5,
             ],
-            'test assign fixed_version_id to issue' => [
-                1,
-                [
-                    'fixed_version_id' => 5,
-                ],
-                '/issues/1.xml',
-                <<< XML
+            '/issues/1.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <id>1</id>
                     <fixed_version_id>5</fixed_version_id>
                 </issue>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test unassign fixed_version_id from issue' => [
+            1,
+            [
+                'fixed_version_id' => '',
             ],
-            'test unassign fixed_version_id from issue' => [
-                1,
-                [
-                    'fixed_version_id' => '',
-                ],
-                '/issues/1.xml',
-                <<< XML
+            '/issues/1.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <id>1</id>
                     <fixed_version_id></fixed_version_id>
                 </issue>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test clear description of issue' => [
+            1,
+            [
+                'description' => Param::Clear,
             ],
-            'test clear description of issue' => [
-                1,
-                [
-                    'description' => Param::Clear,
-                ],
-                '/issues/1.xml',
-                <<< XML
+            '/issues/1.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <issue>
                     <id>1</id>
                     <description></description>
                 </issue>
                 XML,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 
@@ -265,23 +263,21 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getUpdateWithJsonData(): array
+    public static function getUpdateWithJsonData(): \Iterator
     {
-        return [
-            'test unassign user from issue' => [
-                ['assigned_to_id' => ''],
-                '{"issue":{"id":1,"assigned_to_id":""}}',
-            ],
-            'test unassign user and update other fields' => [
-                ['subject' => 'new subject', 'notes' => 'unassigned', 'assigned_to_id' => '', 'fixed_version_id' => ''],
-                '{"issue":{"id":1,"subject":"new subject","notes":"unassigned","assigned_to_id":"","fixed_version_id":""}}',
-            ],
-            'test unassign user and update custom fields' => [
-                ['assigned_to_id' => '', 'custom_fields' => [['id' => 1, 'value' => 'Note']]],
-                '{"issue":{"id":1,"assigned_to_id":"","custom_fields":[{"id":1,"value":"Note"}]}}',
-            ],
+        yield 'test unassign user from issue' => [
+            ['assigned_to_id' => ''],
+            '{"issue":{"id":1,"assigned_to_id":""}}',
+        ];
+        yield 'test unassign user and update other fields' => [
+            ['subject' => 'new subject', 'notes' => 'unassigned', 'assigned_to_id' => '', 'fixed_version_id' => ''],
+            '{"issue":{"id":1,"subject":"new subject","notes":"unassigned","assigned_to_id":"","fixed_version_id":""}}',
+        ];
+        yield 'test unassign user and update custom fields' => [
+            ['assigned_to_id' => '', 'custom_fields' => [['id' => 1, 'value' => 'Note']]],
+            '{"issue":{"id":1,"assigned_to_id":"","custom_fields":[{"id":1,"value":"Note"}]}}',
         ];
     }
 
@@ -413,15 +409,13 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]
@@ -481,47 +475,45 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{array<mixed>,string,string,string}>
+     * @return \Iterator<string, array{array<mixed>, string, string, string}>
      */
-    public static function getUnknownNames(): array
+    public static function getUnknownNames(): \Iterator
     {
-        return [
-            'project' => [
-                ['project' => 'Missing'],
-                '/projects.json?limit=100&offset=0',
-                '{"projects":[{"name":"Project Name","id":3}]}',
-                'The value "Missing" of the parameter "project" is unknown',
-            ],
-            'category' => [
-                ['category' => 'Missing', 'project_id' => 1],
-                '/projects/1/issue_categories.json',
-                '{"issue_categories":[{"name":"Category Name","id":7}]}',
-                'The value "Missing" of the parameter "category" is unknown',
-            ],
-            'status' => [
-                ['status' => 'Missing'],
-                '/issue_statuses.json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
-                'The value "Missing" of the parameter "status" is unknown',
-            ],
-            'tracker' => [
-                ['tracker' => 'Missing'],
-                '/trackers.json',
-                '{"trackers":[{"name":"Tracker Name","id":9}]}',
-                'The value "Missing" of the parameter "tracker" is unknown',
-            ],
-            'assigned_to' => [
-                ['assigned_to' => 'Missing'],
-                '/users.json?limit=100&offset=0',
-                '{"users":[{"login":"user_5","id":5}]}',
-                'The value "Missing" of the parameter "assigned_to" is unknown',
-            ],
-            'author' => [
-                ['author' => 'Missing'],
-                '/users.json?limit=100&offset=0',
-                '{"users":[{"login":"user_5","id":5}]}',
-                'The value "Missing" of the parameter "author" is unknown',
-            ],
+        yield 'project' => [
+            ['project' => 'Missing'],
+            '/projects.json?limit=100&offset=0',
+            '{"projects":[{"name":"Project Name","id":3}]}',
+            'The value "Missing" of the parameter "project" is unknown',
+        ];
+        yield 'category' => [
+            ['category' => 'Missing', 'project_id' => 1],
+            '/projects/1/issue_categories.json',
+            '{"issue_categories":[{"name":"Category Name","id":7}]}',
+            'The value "Missing" of the parameter "category" is unknown',
+        ];
+        yield 'status' => [
+            ['status' => 'Missing'],
+            '/issue_statuses.json',
+            '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+            'The value "Missing" of the parameter "status" is unknown',
+        ];
+        yield 'tracker' => [
+            ['tracker' => 'Missing'],
+            '/trackers.json',
+            '{"trackers":[{"name":"Tracker Name","id":9}]}',
+            'The value "Missing" of the parameter "tracker" is unknown',
+        ];
+        yield 'assigned_to' => [
+            ['assigned_to' => 'Missing'],
+            '/users.json?limit=100&offset=0',
+            '{"users":[{"login":"user_5","id":5}]}',
+            'The value "Missing" of the parameter "assigned_to" is unknown',
+        ];
+        yield 'author' => [
+            ['author' => 'Missing'],
+            '/users.json?limit=100&offset=0',
+            '{"users":[{"login":"user_5","id":5}]}',
+            'The value "Missing" of the parameter "author" is unknown',
         ];
     }
 

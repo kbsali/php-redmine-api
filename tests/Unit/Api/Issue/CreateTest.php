@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Issue::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -47,31 +47,30 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test without parameters' => [
-                [],
-                '/issues.xml',
-                <<<XML
+        yield 'test without parameters' => [
+            [],
+            '/issues.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue/>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+        ];
+        yield 'test with minimal parameters' => [
+            [
+                'subject' => 'Issue subject',
+                'project_id' => 1,
+                'tracker_id' => 2,
+                'priority_id' => 3,
+                'status_id' => 4,
             ],
-            'test with minimal parameters' => [
-                [
-                    'subject' => 'Issue subject',
-                    'project_id' => 1,
-                    'tracker_id' => 2,
-                    'priority_id' => 3,
-                    'status_id' => 4,
-                ],
-                '/issues.xml',
-                <<<XML
+            '/issues.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
                     <subject>Issue subject</subject>
@@ -81,20 +80,20 @@ class CreateTest extends TestCase
                     <status_id>4</status_id>
                 </issue>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+        ];
+        yield 'test with line break in description' => [
+            [
+                'subject' => 'Issue subject',
+                'description' => "line1\nline2",
+                'project_id' => 1,
+                'tracker_id' => 2,
+                'priority_id' => 3,
+                'status_id' => 4,
             ],
-            'test with line break in description' => [
-                [
-                    'subject' => 'Issue subject',
-                    'description' => "line1\nline2",
-                    'project_id' => 1,
-                    'tracker_id' => 2,
-                    'priority_id' => 3,
-                    'status_id' => 4,
-                ],
-                '/issues.xml',
-                <<<XML
+            '/issues.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
                     <subject>Issue subject</subject>
@@ -106,20 +105,20 @@ class CreateTest extends TestCase
                     <status_id>4</status_id>
                 </issue>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+        ];
+        yield 'test with with some xml entities' => [
+            [
+                'subject' => 'Issue subject with some xml entities: & < > " \' ',
+                'project_id' => 1,
+                'tracker_id' => 2,
+                'priority_id' => 3,
+                'status_id' => 4,
+                'description' => 'Description with some xml entities: & < > " \' ',
             ],
-            'test with with some xml entities' => [
-                [
-                    'subject' => 'Issue subject with some xml entities: & < > " \' ',
-                    'project_id' => 1,
-                    'tracker_id' => 2,
-                    'priority_id' => 3,
-                    'status_id' => 4,
-                    'description' => 'Description with some xml entities: & < > " \' ',
-                ],
-                '/issues.xml',
-                <<<XML
+            '/issues.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
                     <subject>Issue subject with some xml entities: &amp; &lt; &gt; " ' </subject>
@@ -130,60 +129,60 @@ class CreateTest extends TestCase
                     <description>Description with some xml entities: &amp; &lt; &gt; " ' </description>
                 </issue>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
-            ],
-            'test with all possible parameters' => [
-                [
-                    'project_id' => 1,
-                    'tracker_id' => 2,
-                    'status_id' => 3,
-                    'priority_id' => 4,
-                    'subject' => 'Issue subject',
-                    'description' => 'Issue description',
-                    'category_id' => 5,
-                    'fixed_version_id' => 6,
-                    'assigned_to_id' => 7,
-                    'parent_issue_id' => 8,
-                    'custom_fields' => [
-                        [
-                            'id' => 9,
-                            'name' => 'Custom field 9',
-                            'value' => 'value of cf9',
-                        ],
-                        [
-                            'id' => 123,
-                            'name' => 'cf_name',
-                            'field_format' => 'string',
-                            'value' => [1, 2, 3],
-                        ],
-                        [
-                            'id' => 321,
-                            'value' => 'https://example.com/?one=first&two=second',
-                        ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
+        ];
+        yield 'test with all possible parameters' => [
+            [
+                'project_id' => 1,
+                'tracker_id' => 2,
+                'status_id' => 3,
+                'priority_id' => 4,
+                'subject' => 'Issue subject',
+                'description' => 'Issue description',
+                'category_id' => 5,
+                'fixed_version_id' => 6,
+                'assigned_to_id' => 7,
+                'parent_issue_id' => 8,
+                'custom_fields' => [
+                    [
+                        'id' => 9,
+                        'name' => 'Custom field 9',
+                        'value' => 'value of cf9',
                     ],
-                    'watcher_user_ids' => [10, 11],
-                    'is_private' => true,
-                    'estimated_hours' => 2.5,
-                    'author_id' => 12,
-                    'due_date' => '2024-12-31',
-                    'start_date' => '2024-01-01',
-                    'uploads' => [
-                        [
-                            'token' => '1.first-token',
-                            'filename' => 'SomeRandomFile.txt',
-                            'description' => 'Simple description',
-                            'content_type' => 'text/plain',
-                        ],
-                        [
-                            'token' => '2.second-token',
-                            'filename' => 'An-Other-File.css',
-                            'content_type' => 'text/css',
-                        ],
+                    [
+                        'id' => 123,
+                        'name' => 'cf_name',
+                        'field_format' => 'string',
+                        'value' => [1, 2, 3],
+                    ],
+                    [
+                        'id' => 321,
+                        'value' => 'https://example.com/?one=first&two=second',
                     ],
                 ],
-                '/issues.xml',
-                <<<XML
+                'watcher_user_ids' => [10, 11],
+                'is_private' => true,
+                'estimated_hours' => 2.5,
+                'author_id' => 12,
+                'due_date' => '2024-12-31',
+                'start_date' => '2024-01-01',
+                'uploads' => [
+                    [
+                        'token' => '1.first-token',
+                        'filename' => 'SomeRandomFile.txt',
+                        'description' => 'Simple description',
+                        'content_type' => 'text/plain',
+                    ],
+                    [
+                        'token' => '2.second-token',
+                        'filename' => 'An-Other-File.css',
+                        'content_type' => 'text/css',
+                    ],
+                ],
+            ],
+            '/issues.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <issue>
                     <project_id>1</project_id>
@@ -235,9 +234,8 @@ class CreateTest extends TestCase
                     </uploads>
                 </issue>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><issue></issue>',
         ];
     }
 
@@ -622,30 +620,26 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{array<mixed>,string}>
+     * @return \Iterator<string, array{array<mixed>, string}>
      */
-    public static function getFailingLookups(): array
+    public static function getFailingLookups(): \Iterator
     {
-        return [
-            'project' => [['project' => 'Project Name'], '/projects.json?limit=100&offset=0'],
-            'category' => [['category' => 'Category Name', 'project_id' => 1], '/projects/1/issue_categories.json'],
-            'status' => [['status' => 'Status Name'], '/issue_statuses.json'],
-            'tracker' => [['tracker' => 'Tracker Name'], '/trackers.json'],
-            'assigned_to' => [['assigned_to' => 'login'], '/users.json?limit=100&offset=0'],
-            'author' => [['author' => 'login'], '/users.json?limit=100&offset=0'],
-        ];
+        yield 'project' => [['project' => 'Project Name'], '/projects.json?limit=100&offset=0'];
+        yield 'category' => [['category' => 'Category Name', 'project_id' => 1], '/projects/1/issue_categories.json'];
+        yield 'status' => [['status' => 'Status Name'], '/issue_statuses.json'];
+        yield 'tracker' => [['tracker' => 'Tracker Name'], '/trackers.json'];
+        yield 'assigned_to' => [['assigned_to' => 'login'], '/users.json?limit=100&offset=0'];
+        yield 'author' => [['author' => 'login'], '/users.json?limit=100&offset=0'];
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]
@@ -684,47 +678,45 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{array<mixed>,string,string,string}>
+     * @return \Iterator<string, array{array<mixed>, string, string, string}>
      */
-    public static function getUnknownNames(): array
+    public static function getUnknownNames(): \Iterator
     {
-        return [
-            'project' => [
-                ['project' => 'Missing'],
-                '/projects.json?limit=100&offset=0',
-                '{"projects":[{"name":"Project Name","id":3}]}',
-                'The value "Missing" of the parameter "project" is unknown',
-            ],
-            'category' => [
-                ['category' => 'Missing', 'project_id' => 1],
-                '/projects/1/issue_categories.json',
-                '{"issue_categories":[{"name":"Category Name","id":7}]}',
-                'The value "Missing" of the parameter "category" is unknown',
-            ],
-            'status' => [
-                ['status' => 'Missing'],
-                '/issue_statuses.json',
-                '{"issue_statuses":[{"name":"Status Name","id":123}]}',
-                'The value "Missing" of the parameter "status" is unknown',
-            ],
-            'tracker' => [
-                ['tracker' => 'Missing'],
-                '/trackers.json',
-                '{"trackers":[{"name":"Tracker Name","id":9}]}',
-                'The value "Missing" of the parameter "tracker" is unknown',
-            ],
-            'assigned_to' => [
-                ['assigned_to' => 'Missing'],
-                '/users.json?limit=100&offset=0',
-                '{"users":[{"login":"user_5","id":5}]}',
-                'The value "Missing" of the parameter "assigned_to" is unknown',
-            ],
-            'author' => [
-                ['author' => 'Missing'],
-                '/users.json?limit=100&offset=0',
-                '{"users":[{"login":"user_5","id":5}]}',
-                'The value "Missing" of the parameter "author" is unknown',
-            ],
+        yield 'project' => [
+            ['project' => 'Missing'],
+            '/projects.json?limit=100&offset=0',
+            '{"projects":[{"name":"Project Name","id":3}]}',
+            'The value "Missing" of the parameter "project" is unknown',
+        ];
+        yield 'category' => [
+            ['category' => 'Missing', 'project_id' => 1],
+            '/projects/1/issue_categories.json',
+            '{"issue_categories":[{"name":"Category Name","id":7}]}',
+            'The value "Missing" of the parameter "category" is unknown',
+        ];
+        yield 'status' => [
+            ['status' => 'Missing'],
+            '/issue_statuses.json',
+            '{"issue_statuses":[{"name":"Status Name","id":123}]}',
+            'The value "Missing" of the parameter "status" is unknown',
+        ];
+        yield 'tracker' => [
+            ['tracker' => 'Missing'],
+            '/trackers.json',
+            '{"trackers":[{"name":"Tracker Name","id":9}]}',
+            'The value "Missing" of the parameter "tracker" is unknown',
+        ];
+        yield 'assigned_to' => [
+            ['assigned_to' => 'Missing'],
+            '/users.json?limit=100&offset=0',
+            '{"users":[{"login":"user_5","id":5}]}',
+            'The value "Missing" of the parameter "assigned_to" is unknown',
+        ];
+        yield 'author' => [
+            ['author' => 'Missing'],
+            '/users.json?limit=100&offset=0',
+            '{"users":[{"login":"user_5","id":5}]}',
+            'The value "Missing" of the parameter "author" is unknown',
         ];
     }
 

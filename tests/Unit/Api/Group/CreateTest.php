@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Group::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -47,32 +47,31 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with minimal parameters' => [
-                [
-                    'name' => 'Group Name',
-                ],
-                '/groups.xml',
-                <<<XML
+        yield 'test with minimal parameters' => [
+            [
+                'name' => 'Group Name',
+            ],
+            '/groups.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <group>
                     <name>Group Name</name>
                 </group>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><group></group>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><group></group>',
+        ];
+        yield 'test with user ids' => [
+            [
+                'name' => 'Group Name',
+                'user_ids' => [1, 2, 3],
             ],
-            'test with user ids' => [
-                [
-                    'name' => 'Group Name',
-                    'user_ids' => [1, 2, 3],
-                ],
-                '/groups.xml',
-                <<<XML
+            '/groups.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <group>
                     <name>Group Name</name>
@@ -83,18 +82,18 @@ class CreateTest extends TestCase
                     </user_ids>
                 </group>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><group></group>',
-            ],
-            'test with custom fields' => [
-                [
-                    'name' => 'Group Name',
-                    'custom_fields' => [
-                        ['id' => 1, 'value' => 5],
-                    ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><group></group>',
+        ];
+        yield 'test with custom fields' => [
+            [
+                'name' => 'Group Name',
+                'custom_fields' => [
+                    ['id' => 1, 'value' => 5],
                 ],
-                '/groups.xml',
-                <<<XML
+            ],
+            '/groups.xml',
+            <<<XML
                 <?xml version="1.0" encoding="UTF-8"?>
                 <group>
                     <name>Group Name</name>
@@ -105,9 +104,8 @@ class CreateTest extends TestCase
                     </custom_fields>
                 </group>
                 XML,
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><group></group>',
-            ],
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><group></group>',
         ];
     }
 
@@ -202,15 +200,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

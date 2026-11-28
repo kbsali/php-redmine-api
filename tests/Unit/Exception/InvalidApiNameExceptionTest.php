@@ -11,7 +11,7 @@ use Redmine\Exception as RedmineException;
 use Redmine\Exception\InvalidApiNameException;
 
 #[CoversClass(InvalidApiNameException::class)]
-class InvalidApiNameExceptionTest extends TestCase
+final class InvalidApiNameExceptionTest extends TestCase
 {
     public function testInvalidApiNameException(): void
     {

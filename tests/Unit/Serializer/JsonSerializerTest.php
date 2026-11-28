@@ -11,54 +11,52 @@ use Redmine\Exception\SerializerException;
 use Redmine\Serializer\JsonSerializer;
 
 #[CoversClass(JsonSerializer::class)]
-class JsonSerializerTest extends TestCase
+final class JsonSerializerTest extends TestCase
 {
     /**
-     * @return array<mixed>
+     * @return \Iterator<int|string, mixed>
      */
-    public static function getEncodedToNormalizedData(): array
+    public static function getEncodedToNormalizedData(): \Iterator
     {
-        return [
-            [
-                'null',
-                null,
-            ],
-            [
-                'true',
-                true,
-            ],
-            [
-                'false',
-                false,
-            ],
-            [
-                '0',
-                0,
-            ],
-            [
-                '""',
-                '',
-            ],
-            [
-                '"foobar"',
-                'foobar',
-            ],
-            [
-                '[]',
-                [],
-            ],
-            [
-                '{}',
-                [],
-            ],
-            [
-                '["foo","bar"]',
-                ['foo', 'bar'],
-            ],
-            [
-                '{"foo":"bar"}',
-                ['foo' => 'bar'],
-            ],
+        yield [
+            'null',
+            null,
+        ];
+        yield [
+            'true',
+            true,
+        ];
+        yield [
+            'false',
+            false,
+        ];
+        yield [
+            '0',
+            0,
+        ];
+        yield [
+            '""',
+            '',
+        ];
+        yield [
+            '"foobar"',
+            'foobar',
+        ];
+        yield [
+            '[]',
+            [],
+        ];
+        yield [
+            '{}',
+            [],
+        ];
+        yield [
+            '["foo","bar"]',
+            ['foo', 'bar'],
+        ];
+        yield [
+            '{"foo":"bar"}',
+            ['foo' => 'bar'],
         ];
     }
 
@@ -74,19 +72,17 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @return array<array<string>>
+     * @return \Iterator<int|string, string[]>
      */
-    public static function getInvalidEncodedData(): array
+    public static function getInvalidEncodedData(): \Iterator
     {
-        return [
-            [
-                '',
-                'Catched error "Syntax error" while decoding JSON: ',
-            ],
-            [
-                '["foo":"bar"]',
-                (PHP_VERSION_ID < 80600) ? 'Catched error "Syntax error" while decoding JSON: ["foo":"bar"]' : 'Catched error "Syntax error near location 1:7" while decoding JSON: ["foo":"bar"]',
-            ],
+        yield [
+            '',
+            'Catched error "Syntax error" while decoding JSON: ',
+        ];
+        yield [
+            '["foo":"bar"]',
+            (PHP_VERSION_ID < 80600) ? 'Catched error "Syntax error" while decoding JSON: ["foo":"bar"]' : 'Catched error "Syntax error near location 1:7" while decoding JSON: ["foo":"bar"]',
         ];
     }
 
@@ -100,20 +96,19 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getNormalizedToEncodedData(): array
+    public static function getNormalizedToEncodedData(): \Iterator
     {
-        return [
+        yield [
             [
-                [
-                    'issue' => [
-                        'project_id' => 1,
-                        'subject' => 'Example',
-                        'priority_id' => 4,
-                    ],
+                'issue' => [
+                    'project_id' => 1,
+                    'subject' => 'Example',
+                    'priority_id' => 4,
                 ],
-                <<< JSON
+            ],
+            <<< JSON
                 {
                     "issue": {
                         "project_id": 1,
@@ -122,19 +117,19 @@ class JsonSerializerTest extends TestCase
                     }
                 }
                 JSON,
-            ],
+        ];
+        yield [
             [
-                [
-                    'issue' => [
-                        'project_id' => 1,
-                        'subject' => 'Example',
-                        'priority_id' => 4,
-                    ],
-                    'ignored' => [
-                        'only the first element of the array will be used',
-                    ],
+                'issue' => [
+                    'project_id' => 1,
+                    'subject' => 'Example',
+                    'priority_id' => 4,
                 ],
-                <<< JSON
+                'ignored' => [
+                    'only the first element of the array will be used',
+                ],
+            ],
+            <<< JSON
                 {
                     "issue": {
                         "project_id": 1,
@@ -146,23 +141,23 @@ class JsonSerializerTest extends TestCase
                     ]
                 }
                 JSON,
-            ],
+        ];
+        yield [
             [
-                [
-                    'project' => [
-                        'name' => 'some name',
-                        'identifier' => 'the_identifier',
-                        'custom_fields' => [
-                            [
-                                'id' => 123,
-                                'name' => 'cf_name',
-                                'field_format' => 'string',
-                                'value' => [1, 2, 3],
-                            ],
+                'project' => [
+                    'name' => 'some name',
+                    'identifier' => 'the_identifier',
+                    'custom_fields' => [
+                        [
+                            'id' => 123,
+                            'name' => 'cf_name',
+                            'field_format' => 'string',
+                            'value' => [1, 2, 3],
                         ],
                     ],
                 ],
-                <<< JSON
+            ],
+            <<< JSON
                 {
                     "project": {
                         "name": "some name",
@@ -182,7 +177,6 @@ class JsonSerializerTest extends TestCase
                     }
                 }
                 JSON,
-            ],
         ];
     }
 
@@ -199,15 +193,13 @@ class JsonSerializerTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getInvalidSerializedData(): array
+    public static function getInvalidSerializedData(): \Iterator
     {
-        return [
-            [
-                'Could not encode JSON from array: Type is not supported',
-                [fopen('php://temp', 'r+')],
-            ],
+        yield [
+            'Could not encode JSON from array: Type is not supported',
+            [fopen('php://temp', 'r+')],
         ];
     }
 

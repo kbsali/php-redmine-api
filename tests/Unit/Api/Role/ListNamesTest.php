@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Role::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedResponse
@@ -41,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without roles' => [
-                '/roles.json',
-                200,
-                <<<JSON
+        yield 'test without roles' => [
+            '/roles.json',
+            200,
+            <<<JSON
                 {
                     "roles": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple roles' => [
-                '/roles.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple roles' => [
+            '/roles.json',
+            200,
+            <<<JSON
                 {
                     "roles": [
                         {"id": 7, "name": "Role 3"},
@@ -68,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "Role 3",
-                    8 => "Role 2",
-                    9 => "Role 1",
-                ],
+            [
+                7 => "Role 3",
+                8 => "Role 2",
+                9 => "Role 1",
             ],
         ];
     }

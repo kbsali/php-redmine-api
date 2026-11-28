@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(TimeEntryActivity::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedResponse
@@ -41,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without time entry activities' => [
-                '/enumerations/time_entry_activities.json',
-                200,
-                <<<JSON
+        yield 'test without time entry activities' => [
+            '/enumerations/time_entry_activities.json',
+            200,
+            <<<JSON
                 {
                     "time_entry_activities": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple time entry activities' => [
-                '/enumerations/time_entry_activities.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple time entry activities' => [
+            '/enumerations/time_entry_activities.json',
+            200,
+            <<<JSON
                 {
                     "time_entry_activities": [
                         {"id": 7, "name": "TimeEntryActivity 3"},
@@ -68,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "TimeEntryActivity 3",
-                    8 => "TimeEntryActivity 2",
-                    9 => "TimeEntryActivity 1",
-                ],
+            [
+                7 => "TimeEntryActivity 3",
+                8 => "TimeEntryActivity 2",
+                9 => "TimeEntryActivity 1",
             ],
         ];
     }

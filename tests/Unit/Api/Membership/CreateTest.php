@@ -15,7 +15,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use SimpleXMLElement;
 
 #[CoversClass(Membership::class)]
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -47,27 +47,25 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getCreateData(): array
+    public static function getCreateData(): \Iterator
     {
-        return [
-            'test with one role_id' => [
-                5,
-                ['user_id' => 4, 'role_ids' => [2]],
-                '/projects/5/memberships.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>2</role_id></role_ids></membership>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
-            ],
-            'test with multiple role_ids' => [
-                5,
-                ['user_id' => 4, 'role_ids' => [5, 6]],
-                '/projects/5/memberships.xml',
-                '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids></membership>',
-                201,
-                '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
-            ],
+        yield 'test with one role_id' => [
+            5,
+            ['user_id' => 4, 'role_ids' => [2]],
+            '/projects/5/memberships.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>2</role_id></role_ids></membership>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
+        ];
+        yield 'test with multiple role_ids' => [
+            5,
+            ['user_id' => 4, 'role_ids' => [5, 6]],
+            '/projects/5/memberships.xml',
+            '<?xml version="1.0" encoding="UTF-8"?><membership><user_id>4</user_id><role_ids type="array"><role_id>5</role_id><role_id>6</role_id></role_ids></membership>',
+            201,
+            '<?xml version="1.0" encoding="UTF-8"?><membership></membership>',
         ];
     }
 
@@ -155,23 +153,21 @@ class CreateTest extends TestCase
     /**
      * Provider for incomplete create parameters.
      *
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function incompleteCreateParameterProvider(): array
+    public static function incompleteCreateParameterProvider(): \Iterator
     {
-        return [
-            'missing all mandatory parameters' => [
-                [],
+        yield 'missing all mandatory parameters' => [
+            [],
+        ];
+        yield 'missing `user_id` parameter' => [
+            [
+                'role_ids' => [2],
             ],
-            'missing `user_id` parameter' => [
-                [
-                    'role_ids' => [2],
-                ],
-            ],
-            'missing `role_ids` parameter' => [
-                [
-                    'user_id' => 4,
-                ],
+        ];
+        yield 'missing `role_ids` parameter' => [
+            [
+                'user_id' => 4,
             ],
         ];
     }
@@ -200,15 +196,13 @@ class CreateTest extends TestCase
     }
 
     /**
-     * @return array<string,array{mixed}>
+     * @return \Iterator<string, array{mixed}>
      */
-    public static function getEmptyValues(): array
+    public static function getEmptyValues(): \Iterator
     {
-        return [
-            'empty string' => [''],
-            'empty array' => [[]],
-            'false' => [false],
-        ];
+        yield 'empty string' => [''];
+        yield 'empty array' => [[]];
+        yield 'false' => [false];
     }
 
     #[DataProvider('getEmptyValues')]

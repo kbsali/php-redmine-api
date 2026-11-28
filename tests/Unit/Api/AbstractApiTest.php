@@ -17,7 +17,7 @@ use Redmine\Http\Response;
 use ReflectionMethod;
 
 #[CoversClass(AbstractApi::class)]
-class AbstractApiTest extends TestCase
+final class AbstractApiTest extends TestCase
 {
     public function testCreateWithHttpClientWorks(): void
     {
@@ -97,23 +97,21 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function retrieveDataData(): array
+    public static function retrieveDataData(): \Iterator
     {
-        return [
-            'test json decode by default' => [
-                '/issues.json',
-                'application/json',
-                '{"foo_bar": 12345}',
-                ['foo_bar' => 12345],
-            ],
-            'test xml decode by default' => [
-                '/issues.xml',
-                'application/xml',
-                '<?xml version="1.0"?><issues type="array"></issues>',
-                ['@attributes' => ['type' => 'array']],
-            ],
+        yield 'test json decode by default' => [
+            '/issues.json',
+            'application/json',
+            '{"foo_bar": 12345}',
+            ['foo_bar' => 12345],
+        ];
+        yield 'test xml decode by default' => [
+            '/issues.xml',
+            'application/xml',
+            '<?xml version="1.0"?><issues type="array"></issues>',
+            ['@attributes' => ['type' => 'array']],
         ];
     }
 
@@ -178,12 +176,10 @@ class AbstractApiTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getRetrieveDataToExceptionData(): array
+    public static function getRetrieveDataToExceptionData(): \Iterator
     {
-        return [
-            'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '],
-        ];
+        yield 'Empty body' => ['', 'application/json', SerializerException::class, 'Syntax error" while decoding JSON: '];
     }
 }

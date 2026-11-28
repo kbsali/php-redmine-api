@@ -13,7 +13,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(IssueRelation::class)]
-class ShowTest extends TestCase
+final class ShowTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedReturn
@@ -42,23 +42,21 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getShowData(): array
+    public static function getShowData(): \Iterator
     {
-        return [
-            'array response with integer id' => [
-                5,
-                '/relations/5.json',
-                '{"relation":{"child":[5,2,3]}}',
-                ['child' => [5, 2, 3]],
-            ],
-            'array response with string id' => [
-                '5',
-                '/relations/5.json',
-                '{"relation":{"child":[5,2,3]}}',
-                ['child' => [5, 2, 3]],
-            ],
+        yield 'array response with integer id' => [
+            5,
+            '/relations/5.json',
+            '{"relation":{"child":[5,2,3]}}',
+            ['child' => [5, 2, 3]],
+        ];
+        yield 'array response with string id' => [
+            '5',
+            '/relations/5.json',
+            '{"relation":{"child":[5,2,3]}}',
+            ['child' => [5, 2, 3]],
         ];
     }
 
@@ -91,24 +89,22 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedResponseData(): array
+    public static function getUnexpectedResponseData(): \Iterator
     {
-        return [
-            'status code 404 with empty body' => [404, 'application/json', ''],
-            'status code 403 with empty body' => [403, 'application/json', ''],
-            'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'],
-            'status code 500 with JSON body' => [500, 'application/json', '{"relation":{"id":5}}'],
-            'status code 200 with empty body' => [200, 'application/json', ''],
-            'status code 200 with JSON null' => [200, 'application/json', 'null'],
-            'status code 200 with JSON integer' => [200, 'application/json', '5'],
-            'status code 200 with JSON string' => [200, 'application/json', '"text"'],
-            'status code 200 with JSON object without relation key' => [200, 'application/json', '{}'],
-            'status code 200 with JSON object with other key' => [200, 'application/json', '{"foo":{"id":5}}'],
-            'status code 200 with JSON object with string relation' => [200, 'application/json', '{"relation":"text"}'],
-            'status code 200 with JSON object with null relation' => [200, 'application/json', '{"relation":null}'],
-        ];
+        yield 'status code 404 with empty body' => [404, 'application/json', ''];
+        yield 'status code 403 with empty body' => [403, 'application/json', ''];
+        yield 'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'];
+        yield 'status code 500 with JSON body' => [500, 'application/json', '{"relation":{"id":5}}'];
+        yield 'status code 200 with empty body' => [200, 'application/json', ''];
+        yield 'status code 200 with JSON null' => [200, 'application/json', 'null'];
+        yield 'status code 200 with JSON integer' => [200, 'application/json', '5'];
+        yield 'status code 200 with JSON string' => [200, 'application/json', '"text"'];
+        yield 'status code 200 with JSON object without relation key' => [200, 'application/json', '{}'];
+        yield 'status code 200 with JSON object with other key' => [200, 'application/json', '{"foo":{"id":5}}'];
+        yield 'status code 200 with JSON object with string relation' => [200, 'application/json', '{"relation":"text"}'];
+        yield 'status code 200 with JSON object with null relation' => [200, 'application/json', '{"relation":null}'];
     }
 
     public function testShowWithInvalidJsonThrowsException(): void

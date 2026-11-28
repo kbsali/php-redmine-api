@@ -13,7 +13,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Attachment::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -42,40 +42,38 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test with all params' => [
-                5,
-                [
-                    'filename' => 'renamed.zip',
-                    'description' => 'updated',
-                ],
-                '/attachments/5.json',
-                '{"attachment":{"filename":"renamed.zip","description":"updated"}}',
-                true,
+        yield 'test with all params' => [
+            5,
+            [
+                'filename' => 'renamed.zip',
+                'description' => 'updated',
             ],
-            'test clear description' => [
-                5,
-                [
-                    'description' => Param::Clear,
-                ],
-                '/attachments/5.json',
-                '{"attachment":{"description":""}}',
-                true,
+            '/attachments/5.json',
+            '{"attachment":{"filename":"renamed.zip","description":"updated"}}',
+            true,
+        ];
+        yield 'test clear description' => [
+            5,
+            [
+                'description' => Param::Clear,
             ],
-            'test empty values are sent unchanged' => [
-                5,
-                [
-                    'filename' => null,
-                    'description' => '',
-                ],
-                '/attachments/5.json',
-                '{"attachment":{"filename":null,"description":""}}',
-                true,
+            '/attachments/5.json',
+            '{"attachment":{"description":""}}',
+            true,
+        ];
+        yield 'test empty values are sent unchanged' => [
+            5,
+            [
+                'filename' => null,
+                'description' => '',
             ],
+            '/attachments/5.json',
+            '{"attachment":{"filename":null,"description":""}}',
+            true,
         ];
     }
 

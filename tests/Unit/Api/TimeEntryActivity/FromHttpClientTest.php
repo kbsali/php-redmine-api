@@ -10,7 +10,7 @@ use Redmine\Api\TimeEntryActivity;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(TimeEntryActivity::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

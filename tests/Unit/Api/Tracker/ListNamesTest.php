@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Tracker::class)]
-class ListNamesTest extends TestCase
+final class ListNamesTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedResponse
@@ -41,25 +41,24 @@ class ListNamesTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesData(): array
+    public static function getListNamesData(): \Iterator
     {
-        return [
-            'test without trackers' => [
-                '/trackers.json',
-                200,
-                <<<JSON
+        yield 'test without trackers' => [
+            '/trackers.json',
+            200,
+            <<<JSON
                 {
                     "trackers": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple trackers' => [
-                '/trackers.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple trackers' => [
+            '/trackers.json',
+            200,
+            <<<JSON
                 {
                     "trackers": [
                         {"id": 7, "name": "Tracker 3"},
@@ -68,11 +67,10 @@ class ListNamesTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "Tracker 3",
-                    8 => "Tracker 2",
-                    9 => "Tracker 1",
-                ],
+            [
+                7 => "Tracker 3",
+                8 => "Tracker 2",
+                9 => "Tracker 1",
             ],
         ];
     }

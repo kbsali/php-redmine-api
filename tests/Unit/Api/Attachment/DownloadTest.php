@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Attachment::class)]
-class DownloadTest extends TestCase
+final class DownloadTest extends TestCase
 {
     #[DataProvider('getDownloadData')]
     public function testDownloadReturnsCorrectResponse(int|string $id, string $expectedPath, int $responseCode, string $response, string $expectedReturn): void
@@ -38,15 +38,13 @@ class DownloadTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getDownloadData(): array
+    public static function getDownloadData(): \Iterator
     {
-        return [
-            'string response with integer id' => [5, '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
-            'string response with string id' => ['5', '/attachments/download/5', 200, 'attachment-content', 'attachment-content'],
-            'empty response' => [5, '/attachments/download/5', 200, '', ''],
-        ];
+        yield 'string response with integer id' => [5, '/attachments/download/5', 200, 'attachment-content', 'attachment-content'];
+        yield 'string response with string id' => ['5', '/attachments/download/5', 200, 'attachment-content', 'attachment-content'];
+        yield 'empty response' => [5, '/attachments/download/5', 200, '', ''];
     }
 
     #[DataProvider('getUnexpectedResponseData')]
@@ -79,14 +77,12 @@ class DownloadTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedResponseData(): array
+    public static function getUnexpectedResponseData(): \Iterator
     {
-        return [
-            'status code 403' => [403, 'application/json', ''],
-            'status code 404' => [404, 'text/html', ''],
-            'status code 500' => [500, 'text/html', 'Internal Server Error'],
-        ];
+        yield 'status code 403' => [403, 'application/json', ''];
+        yield 'status code 404' => [404, 'text/html', ''];
+        yield 'status code 500' => [500, 'text/html', 'Internal Server Error'];
     }
 }

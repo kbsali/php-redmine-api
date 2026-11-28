@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Wiki::class)]
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -41,45 +41,44 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getUpdateData(): array
+    public static function getUpdateData(): \Iterator
     {
-        return [
-            'test without params' => [
-                5,
-                'test',
-                [],
-                '/projects/5/wiki/test.xml',
-                <<< XML
+        yield 'test without params' => [
+            5,
+            'test',
+            [],
+            '/projects/5/wiki/test.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page/>
                 XML,
-                204,
-                '',
-            ],
-            'test with space in page name' => [
-                5,
-                'about page',
-                [],
-                '/projects/5/wiki/about%20page.xml',
-                <<< XML
+            204,
+            '',
+        ];
+        yield 'test with space in page name' => [
+            5,
+            'about page',
+            [],
+            '/projects/5/wiki/about%20page.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page/>
                 XML,
-                204,
-                '',
+            204,
+            '',
+        ];
+        yield 'test with params' => [
+            5,
+            'test',
+            [
+                'title' => 'Test Wikipage with xml entities: & < > " \' ',
+                'comments' => 'Initial Edit with xml entities: & < > " \' ',
+                'text' => 'Some page text with xml entities: & < > " \' ',
             ],
-            'test with params' => [
-                5,
-                'test',
-                [
-                    'title' => 'Test Wikipage with xml entities: & < > " \' ',
-                    'comments' => 'Initial Edit with xml entities: & < > " \' ',
-                    'text' => 'Some page text with xml entities: & < > " \' ',
-                ],
-                '/projects/5/wiki/test.xml',
-                <<< XML
+            '/projects/5/wiki/test.xml',
+            <<< XML
                 <?xml version="1.0"?>
                 <wiki_page>
                     <title>Test Wikipage with xml entities: &amp; &lt; &gt; " ' </title>
@@ -87,9 +86,8 @@ class UpdateTest extends TestCase
                     <text>Some page text with xml entities: &amp; &lt; &gt; " ' </text>
                 </wiki_page>
                 XML,
-                204,
-                '',
-            ],
+            204,
+            '',
         ];
     }
 

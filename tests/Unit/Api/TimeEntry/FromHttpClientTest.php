@@ -10,7 +10,7 @@ use Redmine\Api\TimeEntry;
 use Redmine\Http\HttpClient;
 
 #[CoversClass(TimeEntry::class)]
-class FromHttpClientTest extends TestCase
+final class FromHttpClientTest extends TestCase
 {
     public function testReturnsCorrectObject(): void
     {

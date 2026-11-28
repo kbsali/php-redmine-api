@@ -16,7 +16,7 @@ use Redmine\Tests\Fixtures\AssertingHttpClient;
 use Redmine\Tests\Fixtures\TestDataProvider;
 
 #[CoversClass(Version::class)]
-class ListNamesByProjectTest extends TestCase
+final class ListNamesByProjectTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedResponse
@@ -45,27 +45,26 @@ class ListNamesByProjectTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getListNamesByProjectData(): array
+    public static function getListNamesByProjectData(): \Iterator
     {
-        return [
-            'test without versions' => [
-                5,
-                '/projects/5/versions.json',
-                200,
-                <<<JSON
+        yield 'test without versions' => [
+            5,
+            '/projects/5/versions.json',
+            200,
+            <<<JSON
                 {
                     "versions": []
                 }
                 JSON,
-                [],
-            ],
-            'test with multiple categories' => [
-                'test-project',
-                '/projects/test-project/versions.json',
-                200,
-                <<<JSON
+            [],
+        ];
+        yield 'test with multiple categories' => [
+            'test-project',
+            '/projects/test-project/versions.json',
+            200,
+            <<<JSON
                 {
                     "versions": [
                         {"id": 7, "name": "Version 3"},
@@ -74,11 +73,10 @@ class ListNamesByProjectTest extends TestCase
                     ]
                 }
                 JSON,
-                [
-                    7 => "Version 3",
-                    8 => "Version 2",
-                    9 => "Version 1",
-                ],
+            [
+                7 => "Version 3",
+                8 => "Version 2",
+                9 => "Version 1",
             ],
         ];
     }

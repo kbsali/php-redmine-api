@@ -12,7 +12,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Attachment::class)]
-class UploadTest extends TestCase
+final class UploadTest extends TestCase
 {
     /**
      * @param array<mixed> $parameters
@@ -41,51 +41,49 @@ class UploadTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getUploadData(): array
+    public static function getUploadData(): \Iterator
     {
-        return [
-            'test attachment without params' => [
-                'attachment-content',
-                [],
-                'attachment-content',
-                '/uploads.json',
-                201,
-                '{}',
-                '{}',
+        yield 'test attachment without params' => [
+            'attachment-content',
+            [],
+            'attachment-content',
+            '/uploads.json',
+            201,
+            '{}',
+            '{}',
+        ];
+        yield 'test attachment returns empty string' => [
+            'attachment-content',
+            [],
+            'attachment-content',
+            '/uploads.json',
+            201,
+            '',
+            '',
+        ];
+        yield 'test attachment with params' => [
+            'attachment-content',
+            [
+                'filename' => 'testfile.txt',
             ],
-            'test attachment returns empty string' => [
-                'attachment-content',
-                [],
-                'attachment-content',
-                '/uploads.json',
-                201,
-                '',
-                '',
+            'attachment-content',
+            '/uploads.json?filename=testfile.txt',
+            201,
+            '{"upload":{}}',
+            '{"upload":{}}',
+        ];
+        yield 'test attachment with filepath' => [
+            '/path/to/testfile_01.txt',
+            [
+                'filename' => 'testfile.txt',
             ],
-            'test attachment with params' => [
-                'attachment-content',
-                [
-                    'filename' => 'testfile.txt',
-                ],
-                'attachment-content',
-                '/uploads.json?filename=testfile.txt',
-                201,
-                '{"upload":{}}',
-                '{"upload":{}}',
-            ],
-            'test attachment with filepath' => [
-                '/path/to/testfile_01.txt',
-                [
-                    'filename' => 'testfile.txt',
-                ],
-                '/path/to/testfile_01.txt',
-                '/uploads.json?filename=testfile.txt',
-                201,
-                '{"upload":{}}',
-                '{"upload":{}}',
-            ],
+            '/path/to/testfile_01.txt',
+            '/uploads.json?filename=testfile.txt',
+            201,
+            '{"upload":{}}',
+            '{"upload":{}}',
         ];
     }
 

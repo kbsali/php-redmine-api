@@ -13,7 +13,7 @@ use Redmine\Exception\UnexpectedResponseException;
 use Redmine\Tests\Fixtures\AssertingHttpClient;
 
 #[CoversClass(Wiki::class)]
-class ShowTest extends TestCase
+final class ShowTest extends TestCase
 {
     /**
      * @param array<mixed> $expectedReturn
@@ -42,59 +42,57 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return \Iterator<int|string, mixed[]>
      */
-    public static function getShowData(): array
+    public static function getShowData(): \Iterator
     {
-        return [
-            'array response with integer identifier' => [
-                5,
-                'page',
-                null,
-                '/projects/5/wiki/page.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with string identifier' => [
-                'project',
-                'page',
-                null,
-                '/projects/project/wiki/page.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with integer identifier and version' => [
-                5,
-                'page',
-                22,
-                '/projects/5/wiki/page/22.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with string identifier and version' => [
-                'project',
-                'page',
-                22,
-                '/projects/project/wiki/page/22.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with space in page name' => [
-                5,
-                'about page',
-                null,
-                '/projects/5/wiki/about%20page.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
-            'array response with plus in page name' => [
-                5,
-                'about+page',
-                null,
-                '/projects/5/wiki/about%2Bpage.json?include=attachments',
-                '["API Response"]',
-                ['API Response'],
-            ],
+        yield 'array response with integer identifier' => [
+            5,
+            'page',
+            null,
+            '/projects/5/wiki/page.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with string identifier' => [
+            'project',
+            'page',
+            null,
+            '/projects/project/wiki/page.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with integer identifier and version' => [
+            5,
+            'page',
+            22,
+            '/projects/5/wiki/page/22.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with string identifier and version' => [
+            'project',
+            'page',
+            22,
+            '/projects/project/wiki/page/22.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with space in page name' => [
+            5,
+            'about page',
+            null,
+            '/projects/5/wiki/about%20page.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
+        ];
+        yield 'array response with plus in page name' => [
+            5,
+            'about+page',
+            null,
+            '/projects/5/wiki/about%2Bpage.json?include=attachments',
+            '["API Response"]',
+            ['API Response'],
         ];
     }
 
@@ -127,20 +125,18 @@ class ShowTest extends TestCase
     }
 
     /**
-     * @return array<string, array<mixed>>
+     * @return \Iterator<string, mixed[]>
      */
-    public static function getUnexpectedResponseData(): array
+    public static function getUnexpectedResponseData(): \Iterator
     {
-        return [
-            'status code 404 with empty body' => [404, 'application/json', ''],
-            'status code 403 with empty body' => [403, 'application/json', ''],
-            'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'],
-            'status code 500 with JSON body' => [500, 'application/json', '["API Response"]'],
-            'status code 200 with empty body' => [200, 'application/json', ''],
-            'status code 200 with JSON null' => [200, 'application/json', 'null'],
-            'status code 200 with JSON integer' => [200, 'application/json', '5'],
-            'status code 200 with JSON string' => [200, 'application/json', '"text"'],
-        ];
+        yield 'status code 404 with empty body' => [404, 'application/json', ''];
+        yield 'status code 403 with empty body' => [403, 'application/json', ''];
+        yield 'status code 500 with HTML body' => [500, 'text/html', '<html><body>Internal Server Error</body></html>'];
+        yield 'status code 500 with JSON body' => [500, 'application/json', '["API Response"]'];
+        yield 'status code 200 with empty body' => [200, 'application/json', ''];
+        yield 'status code 200 with JSON null' => [200, 'application/json', 'null'];
+        yield 'status code 200 with JSON integer' => [200, 'application/json', '5'];
+        yield 'status code 200 with JSON string' => [200, 'application/json', '"text"'];
     }
 
     public function testShowWithInvalidJsonThrowsException(): void
